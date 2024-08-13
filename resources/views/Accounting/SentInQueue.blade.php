@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="iQdGnQclGHVc4Uhh3RU4s02p3rw6e9bJ14kpKP1W">
 
-    <title>CourierLab - Courier Cash Collection</title>
+    <title>CourierLab - Sent In Queue</title>
 
     <link rel="shortcut icon" type="image/png" href="https://script.viserlab.com/courierlab/demo/assets/images/logo_icon/favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -18,7 +18,8 @@
     <link rel="stylesheet" href="https://script.viserlab.com/courierlab/demo/assets/global/css/all.min.css">
     <link rel="stylesheet" href="https://script.viserlab.com/courierlab/demo/assets/global/css/line-awesome.min.css">
 
-    
+        <link rel="stylesheet" type="text/css" href="https://script.viserlab.com/courierlab/demo/assets/viseradmin/css/daterangepicker.css">
+
     <link rel="stylesheet" href="https://script.viserlab.com/courierlab/demo/assets/global/css/select2.min.css">
     <link rel="stylesheet" href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast_custom.css">
     <link rel="stylesheet" href="https://script.viserlab.com/courierlab/demo/assets/viseradmin/css/app.css?v=3">
@@ -30,6 +31,7 @@
         <div class="page-wrapper default-version">
 
         @include('Components.Accounting.Sidebar')
+
         <nav class="navbar-wrapper bg--dark d-flex flex-wrap">
     <div class="navbar__left">
         <button type="button" class="res-sidebar-open-btn me-3"><i class="las la-bars"></i></button>
@@ -95,9 +97,23 @@
 
                     
                     <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-    <h6 class="page-title">Courier Cash Collection</h6>
+    <h6 class="page-title">Sent In Queue</h6>
     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-            </div>
+            <form class="d-flex flex-wrap gap-2">
+            <div class="input-group w-auto flex-fill">
+    <input type="search" name="search" class="form-control bg--white" placeholder="Search here..." value="">
+    <button class="btn btn--primary" type="submit"><i class="la la-search"></i></button>
+</div>
+        
+</form>
+    <div class="input-group w-auto flex-fill">
+    <input name="date" type="search" class="datepicker-here form-control bg--white pe-2 date-range" placeholder="Start Date - End Date" autocomplete="off" value="">
+    <button class="btn btn--primary input-group-text"><i class="la la-search"></i></button>
+</div>
+
+
+
+    </div>
 </div>
 
                         <div class="row">
@@ -108,244 +124,58 @@
                         <table class="table table--light style--two">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Date</th>
-                                    <th>Income</th>
+                                    <th>
+                                        <input type="checkbox" class="checkAll"> Select All                                    </th>
+                                    <th>Sender Branch - Staff</th>
+                                    <th>Receiver Branch - Staff</th>
+                                    <th>Amount - Order Number</th>
+                                    <th>Creations Date</th>
+                                    <th>Estimate Delivery Date</th>
+                                    <th>Payment Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                                                     <tr>
-                                        <td>
-                                            <span class="fw-bold">1</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">12 Nov 2022</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">$3,033.00</span>
-                                        </td>
+                                        <td class="text-muted text-center" colspan="100%">Data not found</td>
                                     </tr>
-                                                                    <tr>
-                                        <td>
-                                            <span class="fw-bold">2</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">18 Nov 2022</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">$23.75</span>
-                                        </td>
-                                    </tr>
-                                                                    <tr>
-                                        <td>
-                                            <span class="fw-bold">3</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">28 Nov 2022</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">$45.00</span>
-                                        </td>
-                                    </tr>
-                                                                    <tr>
-                                        <td>
-                                            <span class="fw-bold">4</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">08 Dec 2022</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">$49.00</span>
-                                        </td>
-                                    </tr>
-                                                                    <tr>
-                                        <td>
-                                            <span class="fw-bold">5</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">10 Dec 2022</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">$153.00</span>
-                                        </td>
-                                    </tr>
-                                                                    <tr>
-                                        <td>
-                                            <span class="fw-bold">6</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">23 Dec 2022</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">$10.00</span>
-                                        </td>
-                                    </tr>
-                                                                    <tr>
-                                        <td>
-                                            <span class="fw-bold">7</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">26 Dec 2022</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">$5,400.00</span>
-                                        </td>
-                                    </tr>
-                                                                    <tr>
-                                        <td>
-                                            <span class="fw-bold">8</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">27 Dec 2022</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">$10.00</span>
-                                        </td>
-                                    </tr>
-                                                                    <tr>
-                                        <td>
-                                            <span class="fw-bold">9</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">31 Dec 2022</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">$19.80</span>
-                                        </td>
-                                    </tr>
-                                                                    <tr>
-                                        <td>
-                                            <span class="fw-bold">10</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">04 Jan 2023</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">$20.00</span>
-                                        </td>
-                                    </tr>
-                                                                    <tr>
-                                        <td>
-                                            <span class="fw-bold">11</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">05 Jan 2023</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">$18.00</span>
-                                        </td>
-                                    </tr>
-                                                                    <tr>
-                                        <td>
-                                            <span class="fw-bold">12</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">11 Jan 2023</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">$3,686.00</span>
-                                        </td>
-                                    </tr>
-                                                                    <tr>
-                                        <td>
-                                            <span class="fw-bold">13</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">12 Jan 2023</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">$29.70</span>
-                                        </td>
-                                    </tr>
-                                                                    <tr>
-                                        <td>
-                                            <span class="fw-bold">14</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">13 Jan 2023</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">$445.50</span>
-                                        </td>
-                                    </tr>
-                                                                    <tr>
-                                        <td>
-                                            <span class="fw-bold">15</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">13 Jan 2023</span>
-                                        </td>
-                                        <td>
-                                            <span class="fw-bold">$40.00</span>
-                                        </td>
-                                    </tr>
-                                
+                                                                <tr class="d-none dispatch">
+                                    <td colspan="8">
+                                        <button class="btn btn-sm btn--primary h-45 w-100 " id="dispatch_all">
+                                            <i class="las la-arrow-circle-right "></i> Dispatch                                        </button>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                                    <div class="card-footer py-4">
-                        <nav class="d-flex justify-items-center justify-content-between">
-        <div class="d-flex justify-content-between flex-fill d-sm-none">
-            <ul class="pagination">
-                
-                                    <li class="page-item disabled" aria-disabled="true">
-                        <span class="page-link">‹</span>
-                    </li>
-                
-                
-                                    <li class="page-item">
-                        <a class="page-link" href="https://script.viserlab.com/courierlab/demo/staff/cash/collection?page=2" rel="next">›</a>
-                    </li>
-                            </ul>
-        </div>
 
-        <div class="d-none flex-sm-fill d-sm-flex align-items-sm-center justify-content-sm-between">
-            <div>
-                <p class="small text-muted">
-                    Showing
-                    <span class="fw-semibold">1</span>
-                    to
-                    <span class="fw-semibold">15</span>
-                    of
-                    <span class="fw-semibold">115</span>
-                    results
-                </p>
-            </div>
-
-            <div>
-                <ul class="pagination">
-                    
-                                            <li class="page-item disabled" aria-disabled="true" aria-label="‹">
-                            <span class="page-link" aria-hidden="true">&lsaquo;</span>
-                        </li>
-                    
-                    
-                                            
-                        
-                        
-                                                                                                                        <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
-                                                                                                                                <li class="page-item"><a class="page-link" href="https://script.viserlab.com/courierlab/demo/staff/cash/collection?page=2">2</a></li>
-                                                                                                                                <li class="page-item"><a class="page-link" href="https://script.viserlab.com/courierlab/demo/staff/cash/collection?page=3">3</a></li>
-                                                                                                                                <li class="page-item"><a class="page-link" href="https://script.viserlab.com/courierlab/demo/staff/cash/collection?page=4">4</a></li>
-                                                                                                                                <li class="page-item"><a class="page-link" href="https://script.viserlab.com/courierlab/demo/staff/cash/collection?page=5">5</a></li>
-                                                                                                                                <li class="page-item"><a class="page-link" href="https://script.viserlab.com/courierlab/demo/staff/cash/collection?page=6">6</a></li>
-                                                                                                                                <li class="page-item"><a class="page-link" href="https://script.viserlab.com/courierlab/demo/staff/cash/collection?page=7">7</a></li>
-                                                                                                                                <li class="page-item"><a class="page-link" href="https://script.viserlab.com/courierlab/demo/staff/cash/collection?page=8">8</a></li>
-                                                                                                        
-                    
-                                            <li class="page-item">
-                            <a class="page-link" href="https://script.viserlab.com/courierlab/demo/staff/cash/collection?page=2" rel="next" aria-label="›">&rsaquo;</a>
-                        </li>
-                                    </ul>
-            </div>
-        </div>
-    </nav>
-
-                    </div>
                             </div>
         </div>
     </div>
+
+    <div id="confirmationModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation Alert!</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="las la-times"></i>
+                </button>
+            </div>
+            <form method="POST">
+                <input type="hidden" name="_token" value="iQdGnQclGHVc4Uhh3RU4s02p3rw6e9bJ14kpKP1W" autocomplete="off">                <div class="modal-body">
+                    <p class="question"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn--dark" data-bs-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn--primary">Yes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
                 </div>
             </div>
@@ -418,7 +248,9 @@
     }
 </script>
 
-    
+        <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/moment.min.js"></script>
+    <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/daterangepicker.min.js"></script>
+
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/nicEdit.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/select2.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
@@ -471,7 +303,107 @@
         })(jQuery);
     </script>
 
+    
+<script>
+    (function ($) {
+        "use strict";
+        $(document).on('click','.confirmationBtn', function () {
+            var modal   = $('#confirmationModal');
+            let data    = $(this).data();
+            modal.find('.question').text(`${data.question}`);
+            modal.find('form').attr('action', `${data.action}`);
+            modal.modal('show');
+        });
+    })(jQuery);
+</script>
     <script>
+        (function($){
+            "use strict"
+
+            const datePicker = $('.date-range').daterangepicker({
+                autoUpdateInput: false,
+                locale: {
+                    cancelLabel: 'Clear'
+                },
+                showDropdowns: true,
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 15 Days': [moment().subtract(14, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(30, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                    'Last 6 Months': [moment().subtract(6, 'months').startOf('month'), moment().endOf('month')],
+                    'This Year': [moment().startOf('year'), moment().endOf('year')],
+                },
+                maxDate: moment()
+            });
+
+            const changeDatePickerText = (event, startDate, endDate) => {
+                $(event.target).val(startDate.format('MMMM DD, YYYY') + ' - ' + endDate.format('MMMM DD, YYYY'));
+            }
+
+            $('.date-range').on('apply.daterangepicker', (event, picker) => changeDatePickerText(event, picker.startDate, picker.endDate));
+
+            if ($('.date-range').val()) {
+                let dateRange = $('.date-range').val().split(' - ');
+                $('.date-range').data('daterangepicker').setStartDate(new Date(dateRange[0]));
+                $('.date-range').data('daterangepicker').setEndDate(new Date(dateRange[1]));
+            }
+        })(jQuery)
+    </script>
+    <script>
+        (function($) {
+            "use strict";
+            $(".childCheckBox").on('change', function(e) {
+                let totalLength = $(".childCheckBox").length;
+                let checkedLength = $(".childCheckBox:checked").length;
+                if (totalLength == checkedLength) {
+                    $('.checkAll').prop('checked', true);
+                } else {
+                    $('.checkAll').prop('checked', false);
+                }
+                if (checkedLength) {
+                    $('.dispatch').removeClass('d-none')
+                } else {
+                    $('.dispatch').addClass('d-none')
+                }
+            });
+
+            $('.checkAll').on('change', function() {
+                if ($('.checkAll:checked').length) {
+                    $('.childCheckBox').prop('checked', true);
+                } else {
+                    $('.childCheckBox').prop('checked', false);
+                }
+                $(".childCheckBox").change();
+            });
+            $('#dispatch_all').on('click', function() {
+                let ids = [];
+                $('.childCheckBox:checked').each(function() {
+                    ids.push($(this).attr('data-id'))
+                })
+                let id = ids.join(',')
+                $.ajax({
+                    url: "https://script.viserlab.com/courierlab/demo/staff/courier/dispatch-all",
+                    type: "post",
+                    data: {
+                        id: id
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(data) {
+                        notify('success', 'Courier dispatched successfully')
+                        location.reload();
+                    }
+                })
+            });
+
+        })(jQuery)
+    </script>
+<script>
     if ($('li').hasClass('active')) {
         $('#sidebar__menuWrapper').animate({
             scrollTop: eval($(".active").offset().top - 320)

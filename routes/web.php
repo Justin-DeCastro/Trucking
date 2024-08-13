@@ -9,6 +9,7 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\BranchManagerController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\AccountingController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,6 +33,16 @@ Route::get('team', [HomeController::class, 'team'])->name('team');
 Route::get('blog', [HomeController::class, 'blog'])->name('blog');
 Route::get('contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('appointment', [HomeController::class, 'appointment'])->name('appointment');
+//accounting
+Route::get('allcourier', [AccountingController::class, 'all_courier'])->name('allcourier');
+Route::get('branchlist', [AccountingController::class, 'branch_list'])->name('branchlist');
+Route::get('cashcollection', [AccountingController::class, 'cash_collection'])->name('cashcollection');
+Route::get('deliveryqueue', [AccountingController::class, 'delivery_queue'])->name('deliveryqueue');
+Route::get('sendcourier', [AccountingController::class, 'send_courier'])->name('sendcourier');
+Route::get('sentInQueue', [AccountingController::class, 'sentin_queue'])->name('sentInQueue');
+Route::get('shippingcourier', [AccountingController::class, 'shipping_courier'])->name('shippingcourier');
+Route::get('totaldelivered', [AccountingController::class, 'total_delivered'])->name('totaldelivered');
+Route::get('totalsent', [AccountingController::class, 'total_sent'])->name('totalsent');
 
 //admin
 Route::get('admindash', [AdminController::class, 'dashboard'])->name('admindash');
