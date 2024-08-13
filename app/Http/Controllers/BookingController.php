@@ -29,7 +29,27 @@ class BookingController extends Controller
     }
     
     
+    public function storePlateNumber(Request $request, Booking $booking)
+    {
+        // Validate the plate number input
+        $request->validate([
+            'plate_number' => 'required|string|max:255',
+        ]);
+
+        // Ensure the user is authorized to perform this action (if necessary)
+        if (Auth::id() !== $booking->driver_id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Update the booking with the plate number
+        $booking->update(['plate_number' => $request->input('plate_number')]);
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Plate number saved successfully.');
+    }
     
+    
+
 
     // Handle form submission
     public function submitForm(Request $request)
@@ -96,7 +116,7 @@ public function updateOrderStatus(Request $request, Booking $booking)
 {
     // Validate the order status input
     $request->validate([
-        'order_status' => 'required|in:Pickup,Out For Delivery,Shipped,Delivered,Returned,Cancel',
+        'order_status' => 'required|in:Pickup,Out For Delivery,Shipped,Delivered,Cancel,Waiting for Courier',
     ]);
 
     // Ensure the user is authorized to perform this action (if necessary)
@@ -111,7 +131,37 @@ public function updateOrderStatus(Request $request, Booking $booking)
     // Redirect back with success message
     return redirect()->back()->with('success', 'Order status updated successfully.');
 }
+public function updateLocationStatus(Request $request, Booking $booking)
+    {
+        // Validate the input
+        $request->validate([
+            'location' => 'required|in:Manila,Laguna,Batangas,Other',
+            'other_location' => 'required_if:location,Other|string|max:255',
+        ]);
 
+        // Ensure the user is authorized to perform this action
+        if (Auth::id() !== $booking->driver_id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Prepare data for updating
+        $data = [
+            'location' => $request->input('location'),
+        ];
+
+        // If location is 'Other', include 'other_location'
+        if ($request->input('location') === 'Other') {
+            $data['other_location'] = $request->input('other_location');
+        } else {
+            $data['other_location'] = null; // Clear 'other_location' if not needed
+        }
+
+        // Update the booking
+        $booking->update($data);
+
+        // Redirect back with success message
+        return redirect()->back()->with('success', 'Location status updated successfully.');
+    }
 
 
 

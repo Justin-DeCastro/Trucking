@@ -217,11 +217,11 @@
             <th>Amount</th>
             <th>Creation Date</th>
             <th>Order Status</th>
-           
             <th>Tracking Number</th>
             <th>Assigned Driver</th>
             <th>Set Order Status</th>
-            <th>Action</th>
+            <th>Location Status</th>
+            <th>Update Location</th>
         </tr>
     </thead>
     <tbody>
@@ -231,12 +231,11 @@
             <td>{{ $booking->receiver_name }}</td>
             <td>₱{{ number_format((float)$booking->order_amount, 2, '.', ',') }}</td>
             <td>{{ $booking->created_at->format('Y-m-d') }}</td>
-            <td>{{ $booking->order_status }}</td> <!-- Display current payment status -->
-            
+            <td>{{ $booking->order_status }}</td>
             <td>{{ $booking->tracking_number }}</td>
             <td>
                 @if($booking->driver)
-                    {{ $booking->driver->name }} <!-- Assuming the driver's name is stored in the 'name' field -->
+                    {{ $booking->driver->name }}
                 @else
                     Not Assigned
                 @endif
@@ -245,21 +244,37 @@
                 <form action="{{ route('update.order.status', $booking->id) }}" method="POST" style="display: inline;">
                     @csrf
                     <div class="form-group">
-                    <select name="order_status" class="form-control form-control-sm" required>
-    <option value="Pickup" {{ $booking->order_status == 'Pickup' ? 'selected' : '' }}>Pickup</option>
-    <option value="Out For Delivery" {{ $booking->order_status == 'Out For Delivery' ? 'selected' : '' }}>Out For Delivery</option>
-    <option value="Shipped" {{ $booking->order_status == 'Shipped' ? 'selected' : '' }}>Shipped</option>
-    <option value="Delivered" {{ $booking->order_status == 'Delivered' ? 'selected' : '' }}>Delivered</option>
-    <option value="Returned" {{ $booking->order_status == 'Returned' ? 'selected' : '' }}>Returned</option>
-    <option value="Cancel" {{ $booking->order_status == 'Cancel' ? 'selected' : '' }}>Cancel</option>
-</select>
-
+                        <select name="order_status" class="form-control form-control-sm" required>
+                        <option value="Waiting for Courier" {{ $booking->order_status == 'Waiting for Courier' ? 'selected' : '' }}>Waiting for Courier</option>
+                            <option value="Pickup" {{ $booking->order_status == 'Pickup' ? 'selected' : '' }}>Pickup</option>
+                            <option value="Out For Delivery" {{ $booking->order_status == 'Out For Delivery' ? 'selected' : '' }}>Out For Delivery</option>
+                            <option value="Shipped" {{ $booking->order_status == 'Shipped' ? 'selected' : '' }}>Shipped</option>
+                            <option value="Delivered" {{ $booking->order_status == 'Delivered' ? 'selected' : '' }}>Delivered</option>
+                         
+                            <option value="Cancel" {{ $booking->order_status == 'Cancel' ? 'selected' : '' }}>Cancel</option>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary btn-sm">Update Status</button>
                 </form>
             </td>
             <td>
-                <!-- Actions such as Edit, Delete or Assign Driver -->
+                {{ $booking->location }} @if($booking->location == 'Other') - {{ $booking->other_location }} @endif
+            </td>
+            <td>
+                <form action="{{ route('update.location.status', $booking->id) }}" method="POST" style="display: inline;">
+                    @csrf
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <select name="location" id="location-{{ $booking->id }}" class="form-control form-control-sm" required onchange="handleLocationChange(this)">
+                            <option value="Manila" {{ $booking->location == 'Manila' ? 'selected' : '' }}>Manila</option>
+                            <option value="Laguna" {{ $booking->location == 'Laguna' ? 'selected' : '' }}>Laguna</option>
+                            <option value="Batangas" {{ $booking->location == 'Batangas' ? 'selected' : '' }}>Batangas</option>
+                            <option value="Other" {{ $booking->location == 'Other' ? 'selected' : '' }}>Other</option>
+                        </select>
+                        <input type="text" name="other_location" id="other_location-{{ $booking->id }}" class="form-control form-control-sm mt-2" placeholder="Specify location" style="display: none;" value="{{ $booking->location == 'Other' ? $booking->other_location : '' }}" />
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">Update Status</button>
+                </form>
             </td>
         </tr>
         @endforeach
@@ -313,7 +328,21 @@
     <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast.min.css" rel="stylesheet">
     <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast_custom.css" rel="stylesheet">
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/iziToast.min.js"></script>
+    <script>
+function handleLocationChange(select) {
+    var otherLocationInput = document.getElementById('other_location');
+    if (select.value === 'Other') {
+        otherLocationInput.style.display = 'block';
+    } else {
+        otherLocationInput.style.display = 'none';
+    }
+}
 
+// Initialize the state based on the current selection
+document.addEventListener('DOMContentLoaded', function() {
+    handleLocationChange(document.getElementById('location'));
+});
+</script>
     <script>
         "use strict";
         const colors = {

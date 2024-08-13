@@ -120,8 +120,8 @@
                                 </div>
 
                             </form>
-                            <button class="btn  btn-outline--primary h-45 addNewBranch"><i class="las la-plus"></i>Add
-                                New</button>
+                            <!-- <button class="btn  btn-outline--primary h-45 addNewBranch"><i class="las la-plus"></i>Add
+                                New</button> -->
                         </div>
                     </div>
 
@@ -139,7 +139,7 @@
                 <th>Email</th>
                 <th>Driver License</th>
                 <th>License Number</th>
-                <!-- <th>Plate Number</th> -->
+                <th>Plate Number</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -156,7 +156,7 @@
             @else
                 No License
             @endif
-        </td>
+        </td>   
         <td>{{ $driver->license_number }}</td>
         <td>{{ $driver->plate_number }}</td>
         <!-- Optionally display the driver's license file path or a link to the file -->
@@ -172,91 +172,8 @@
                         </div>
                     </div>
 
-                    <div id="branchModel" class="modal fade" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Add New Driver</h5>
-                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                        <i class="las la-times"></i> </button>
-                                </div>
-                                <form action="{{ route('drivers.store') }}" method="POST" class="resetForm">
-                                    @csrf
-                                    
-
-                                    <div class="modal-body">
-                                        <div class="form-group">
-                                            <label>Name</label>
-                                            <input type="text" class="form-control" name="name" required>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>Address</label>
-                                            <input type="text" class="form-control" name="address" required>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>Contact</label>
-                                            <input type="text" class="form-control" name="contact_number" required>
-                                        </div>
-
-
-                                        <div class="form-group">
-                                            <label>Email</label>
-                                            <input type="email" class="form-control" name="email" required>
-                                        </div>
-                                     
-                            <div class="form-outline">
-                                <input type="text" id="form1Example6" name="license_number" class="form-control form-control-lg" />
-                                <label class="form-label" for="form1Example6">Driver's License Number</label>
-                                @error('license_number')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                                        
-                            <div class="form-outline">
-                                <input type="file" id="form1Example5" name="driver_license" class="form-control form-control-lg" />
-                                <label class="form-label" for="form1Example5">Upload Driver's License</label>
-                                @error('driver_license')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                                        <div class="form-group">
-                                            <label>Plate Number</label>
-                                            <input type="text" class="form-control" name="plate_number" required>
-                                        </div>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn--primary w-100 h-45">Submit</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="confirmationModal" class="modal fade" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Confirmation Alert!</h5>
-                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                        <i class="las la-times"></i>
-                                    </button>
-                                </div>
-                                <form method="POST">
-                                    <input type="hidden" name="_token" value="qCBWlbNxa5THzJiZQHtGIyHBhtJwhhLoG8TwosWw"
-                                        autocomplete="off">
-                                    <div class="modal-body">
-                                        <p class="question"></p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn--dark" data-bs-dismiss="modal">No</button>
-                                        <button type="submit" class="btn btn--primary">Yes</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                   
+                    
 
      
 </div>

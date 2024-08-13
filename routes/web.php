@@ -33,6 +33,9 @@ Route::get('blog', [HomeController::class, 'blog'])->name('blog');
 Route::get('contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('appointment', [HomeController::class, 'appointment'])->name('appointment');
 
+//accounting
+// Route::get('accountingdash', [AdminController::class, 'accounting_dash'])->name('accountingdash');
+Route::get('accountingDash', [AccountingController::class, 'accounting_dash'])->name('accountingdash');
 //admin
 Route::get('admindash', [AdminController::class, 'dashboard'])->name('admindash');
 Route::get('adminside', [AdminController::class, 'adminside'])->name('adminside');
@@ -90,12 +93,24 @@ Route::get('order-for-courier', [AdminController::class, 'courier_order'])->name
 //payment
 // In web.php
 
-// Define a route for updating the payment status
+
 // Define a route for updating the payment status with POST method
 Route::post('/bookings/{booking}/update-order-status', [BookingController::class, 'updateOrderStatus'])->name('update.order.status');
 // routes/web.php
 Route::post('/submit-order-amount/{booking}', [BookingController::class, 'updateOrderAmount'])
     ->name('orderamount.update');
+//plate number
+// web.php or api.php
+Route::post('/save-plate-number', [BookingController::class, 'storePlateNumber'])->name('save.plate.number');
+
+//location update
+// In web.php or your routes file
+Route::post('/bookings/{booking}/update-location-status', [BookingController::class, 'updateLocationStatus'])->name('update.location.status');
+
+
+
+
+
 
 
 
