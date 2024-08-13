@@ -1,7 +1,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CourierLab - Dashboard</title>
+    <title>GPC - Dashboard</title>
 
     <link rel="shortcut icon" type="image/png" href="https://script.viserlab.com/courierlab/demo/assets/images/logo_icon/favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">

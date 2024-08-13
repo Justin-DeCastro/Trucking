@@ -33,9 +33,6 @@ Route::get('blog', [HomeController::class, 'blog'])->name('blog');
 Route::get('contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('appointment', [HomeController::class, 'appointment'])->name('appointment');
 
-//accounting
-// Route::get('accountingdash', [AdminController::class, 'accounting_dash'])->name('accountingdash');
-Route::get('accountingDash', [AccountingController::class, 'accounting_dash'])->name('accountingdash');
 //admin
 Route::get('admindash', [AdminController::class, 'dashboard'])->name('admindash');
 Route::get('adminside', [AdminController::class, 'adminside'])->name('adminside');

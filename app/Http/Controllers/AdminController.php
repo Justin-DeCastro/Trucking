@@ -58,7 +58,9 @@ class AdminController extends Controller
     public function courier_dash(){
         return view('Admin.Courierdash');
     }
-  
+    public function accounting_dash(){
+        return view('Accounting.Accountingdash');
+    }
     public function add_driver(){
         $bookings = Booking::all(); 
         $couriers = User::where('role', 'courier')->get();
