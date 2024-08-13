@@ -153,36 +153,39 @@ public function updatePaymentStatus(Request $request, Booking $booking)
 
 
 public function updateLocationStatus(Request $request, Booking $booking)
-    {
-        // Validate the input
-        $request->validate([
-            'location' => 'required|in:Manila,Laguna,Batangas,Other',
-            'other_location' => 'required_if:location,Other|string|max:255',
-        ]);
+{
+    
+    // dd($request->all());
 
-        // Ensure the user is authorized to perform this action
-        if (Auth::id() !== $booking->driver_id) {
-            abort(403, 'Unauthorized action.');
-        }
+    // Validate the input
+    $request->validate([
+        'location' => 'required|in:Manila,Laguna,Batangas,Other',
+       
+    ]);
 
-        // Prepare data for updating
-        $data = [
-            'location' => $request->input('location'),
-        ];
-
-        // If location is 'Other', include 'other_location'
-        if ($request->input('location') === 'Other') {
-            $data['other_location'] = $request->input('other_location');
-        } else {
-            $data['other_location'] = null; // Clear 'other_location' if not needed
-        }
-
-        // Update the booking
-        $booking->update($data);
-
-        // Redirect back with success message
-        return redirect()->back()->with('success', 'Location status updated successfully.');
+    // Ensure the user is authorized to perform this action
+    if (Auth::id() !== $booking->driver_id) {
+        abort(403, 'Unauthorized action.');
     }
+
+    // Prepare data for updating
+    $data = [
+        'location' => $request->input('location'),
+    ];
+
+    // If location is 'Other', include 'other_location'
+    if ($request->input('location') === 'Other') {
+        $data['other_location'] = $request->input('other_location');
+    } else {
+        $data['other_location'] = null; // Clear 'other_location' if not needed
+    }
+
+    // Update the booking
+    $booking->update($data);
+
+    // Redirect back with success message
+    return redirect()->back()->with('success', 'Location status updated successfully.');
+}
 
 
 

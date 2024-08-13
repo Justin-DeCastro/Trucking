@@ -269,9 +269,9 @@
                             <option value="Manila" {{ $booking->location == 'Manila' ? 'selected' : '' }}>Manila</option>
                             <option value="Laguna" {{ $booking->location == 'Laguna' ? 'selected' : '' }}>Laguna</option>
                             <option value="Batangas" {{ $booking->location == 'Batangas' ? 'selected' : '' }}>Batangas</option>
-                            <option value="Other" {{ $booking->location == 'Other' ? 'selected' : '' }}>Other</option>
+                           
                         </select>
-                        <input type="text" name="other_location" id="other_location-{{ $booking->id }}" class="form-control form-control-sm mt-2" placeholder="Specify location" style="display: none;" value="{{ $booking->location == 'Other' ? $booking->other_location : '' }}" />
+                       
                     </div>
                     <button type="submit" class="btn btn-primary btn-sm">Update Status</button>
                 </form>
