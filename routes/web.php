@@ -114,6 +114,10 @@ Route::post('/save-plate-number', [BookingController::class, 'storePlateNumber']
 //location update
 // In web.php or your routes file
 Route::post('/bookings/{booking}/update-location-status', [BookingController::class, 'updateLocationStatus'])->name('update.location.status');
+//payment status
+// web.php
+Route::put('/bookings/{booking}/update-payment-status', [BookingController::class, 'updatePaymentStatus'])->name('update.payment.status');
+
 
 
 

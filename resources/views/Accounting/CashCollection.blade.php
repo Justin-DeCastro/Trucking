@@ -92,6 +92,8 @@
             <th>Rider Responsible</th>
             <th>Date</th>
             <th>Income</th>
+            <th>Payment Status</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -101,10 +103,29 @@
             <td>{{ $booking->driver ? $booking->driver->name : 'Not Assigned' }}</td>
             <td>{{ \Carbon\Carbon::parse($booking->pickup_date)->format('d M Y') }}</td>
             <td>₱{{ number_format((float) $booking->order_amount, 2) }}</td>
+            <td>
+                <!-- Display the payment status -->
+                {{ $booking->payment_status }}
+            </td>
+            <td>
+                <!-- Action form for updating payment status -->
+                <form action="{{ route('update.payment.status', $booking->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <select name="payment_status">
+                        <option value="Not Yet Paid" {{ $booking->payment_status === 'Not Yet Paid' ? 'selected' : '' }}>Not Yet Paid</option>
+                        <option value="Paid" {{ $booking->payment_status === 'Paid' ? 'selected' : '' }}>Paid</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Update Status</button>
+                </form>
+            </td>
         </tr>
         @endforeach
     </tbody>
 </table>
+
+
+
 
                                     </div>
                                 </div>

@@ -131,6 +131,27 @@ public function updateOrderStatus(Request $request, Booking $booking)
     // Redirect back with success message
     return redirect()->back()->with('success', 'Order status updated successfully.');
 }
+public function updatePaymentStatus(Request $request, Booking $booking)
+{
+    // Validate the payment status input
+    $request->validate([
+        'payment_status' => 'required|in:Not Yet Paid,Paid',
+    ]);
+
+    // Optionally, ensure the user is authorized (if necessary)
+    // if (Auth::id() !== $booking->driver_id) {
+    //     abort(403, 'Unauthorized action.');
+    // }
+
+    // Update the payment status
+    $booking->update(['payment_status' => $request->input('payment_status')]);
+
+    // Redirect back with success message
+    return redirect()->back()->with('success', 'Payment status updated successfully.');
+}
+
+
+
 public function updateLocationStatus(Request $request, Booking $booking)
     {
         // Validate the input

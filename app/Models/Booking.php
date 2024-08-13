@@ -17,6 +17,7 @@ class Booking extends Model
         'full_name',
         'receiver_name',
         'order_status',
+        'payment_status',
         'order_amount',
         'plate_number',
         'location',
