@@ -130,39 +130,32 @@
                             <div class="card">
                                 <div class="card-body p-0">
                                     <div class="table-responsive--sm table-responsive">
-                                        <table class="table table--light style--two">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name-Address</th>
-                                                    <th>Email-Phone</th>
-                                                    <th>Status</th>
-                                                    <th>Creations Date</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-            @foreach ($branches as $branch)
+                                    <table class="table table--light style--two">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Contact</th>
+                <th>Email</th>
+                <th>License Number</th>
+                <th>Plate Number</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($drivers as $driver)
                 <tr>
-                    <td>{{ $branch->name }}<br>{{ $branch->address }}</td>
-                    <td>{{ $branch->email }}<br>{{ $branch->phone }}</td>
-                    <td>
-                        <!-- Assuming you have a status field or logic to determine status -->
-                        @if ($branch->status)
-                            <span class="badge bg-success">Active</span>
-                        @else
-                            <span class="badge bg-danger">Inactive</span>
-                        @endif
-                    </td>
-                    <td>{{ $branch->created_at->format('d M Y') }}</td>
-                    <td>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#branchModal">
-        Edit Branch
-    </button>
-                    </td>
+                    <td>{{ $driver->name }}</td>
+                    <td>{{ $driver->address }}</td>
+                    <td>{{ $driver->contact }}</td>
+                    <td>{{ $driver->email }}</td>
+                    <td>{{ $driver->license_number }}</td>
+                    <td>{{ $driver->plate_number }}</td>
+                  
                 </tr>
             @endforeach
         </tbody>
-                                        </table><!-- table end -->
+    </table>
                                     </div>
                                 </div>
                             </div><!-- card end -->
@@ -173,12 +166,11 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Create New Branch</h5>
+                                    <h5 class="modal-title">Add New Driver</h5>
                                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                         <i class="las la-times"></i> </button>
                                 </div>
-                                <form action="{{ route('managebranches.store') }}"
-                                    class="resetForm" method="POST">
+                                <form action="{{ route('drivers.store') }}" method="POST" class="resetForm">
                                     @csrf
                                     
 
@@ -189,20 +181,29 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label>Email Address</label>
-                                            <input type="email" class="form-control" name="email" required>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>Phone</label>
-                                            <input type="text" class="form-control" name="phone" required>
-                                        </div>
-
-
-                                        <div class="form-group">
                                             <label>Address</label>
                                             <input type="text" class="form-control" name="address" required>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label>Contact</label>
+                                            <input type="text" class="form-control" name="contact" required>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="email" class="form-control" name="email" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>License Number</label>
+                                            <input type="text" class="form-control" name="license_number" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Plate Number</label>
+                                            <input type="text" class="form-control" name="plate_number" required>
+                                        </div>
+
                                     </div>
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn--primary w-100 h-45">Submit</button>
@@ -235,47 +236,7 @@
                         </div>
                     </div>
 
-                    <div id="branchModal" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Branch</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="las la-times"></i>
-                    </button>
-                </div>
-                <form action="{{ route('managebranches.update', $branch) }}" method="POST">
-                    @csrf
-                    @method('PUT') <!-- Use PUT method for updating -->
-                    
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" class="form-control" name="name" value="{{ old('name', $branch->name) }}" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Email Address</label>
-                            <input type="email" class="form-control" name="email" value="{{ old('email', $branch->email) }}" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Phone</label>
-                            <input type="text" class="form-control" name="phone" value="{{ old('phone', $branch->phone) }}" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Address</label>
-                            <input type="text" class="form-control" name="address" value="{{ old('address', $branch->address) }}" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn--primary w-100 h-45">Update</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+     
 </div>
                 </div>
             </div>

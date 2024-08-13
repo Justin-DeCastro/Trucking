@@ -106,180 +106,106 @@
 
 
         <div class="container-fluid px-3 px-sm-0">
-            <div class="body-wrapper">
-                <div class="bodywrapper__inner">
+    <div class="body-wrapper">
+        <div class="bodywrapper__inner">
 
-                    <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                        <h6 class="page-title">Manage Branch</h6>
-                        <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                            <form class="d-flex flex-wrap gap-2">
-                                <div class="input-group w-auto flex-fill">
-                                    <input type="search" name="search" class="form-control bg--white"
-                                        placeholder="Search here..." value="">
-                                    <button class="btn btn--primary" type="submit"><i class="la la-search"></i></button>
-                                </div>
-
-                            </form>
-                            <button class="btn  btn-outline--primary h-45 addNewBranch"><i class="las la-plus"></i>Add
-                                New</button>
+            <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
+                <h6 class="page-title">Manage Branch</h6>
+                <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
+                    <form class="d-flex flex-wrap gap-2">
+                        <div class="input-group w-auto flex-fill">
+                            <input type="search" name="search" class="form-control bg--white" placeholder="Search here..." value="">
+                            <button class="btn btn--primary" type="submit"><i class="la la-search"></i></button>
                         </div>
-                    </div>
+                    </form>
+                </div>
+            </div>
 
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card">
-                                <div class="card-body p-0">
-                                    <div class="table-responsive--sm table-responsive">
-                                        <table class="table table--light style--two">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name-Address</th>
-                                                    <th>Email-Phone</th>
-                                                    <th>Status</th>
-                                                    <th>Creations Date</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-            @foreach ($branches as $branch)
-                <tr>
-                    <td>{{ $branch->name }}<br>{{ $branch->address }}</td>
-                    <td>{{ $branch->email }}<br>{{ $branch->phone }}</td>
-                    <td>
-                        <!-- Assuming you have a status field or logic to determine status -->
-                        @if ($branch->status)
-                            <span class="badge bg-success">Active</span>
-                        @else
-                            <span class="badge bg-danger">Inactive</span>
-                        @endif
-                    </td>
-                    <td>{{ $branch->created_at->format('d M Y') }}</td>
-                    <td>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#branchModal">
-        Edit Branch
-    </button>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-                                        </table><!-- table end -->
-                                    </div>
-                                </div>
-                            </div><!-- card end -->
-                        </div>
-                    </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <div class="table-responsive--sm table-responsive">
+                           <!-- Your existing table -->
+<table class="table table--light style--two">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Pick-up Date</th>
+            <th>Pick-up Address</th>
+            <th>Drop-off Address</th>
+            <th>Item List</th>
+            <th>Comments</th>
+            <th>Tracking Number</th>
+            <th>Assigned Driver</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($bookings as $booking)
+            <tr>
+                <td>{{ $booking->full_name }}</td>
+                <td>{{ $booking->email }}</td>
+                <td>{{ $booking->phone }}</td>
+                <td>{{ \Carbon\Carbon::parse($booking->pickup_date)->format('d M Y') }}</td>
+                <td>{{ $booking->pickup_address }}</td>
+                <td>{{ $booking->dropoff_address }}</td>
+                <td>{{ $booking->item_list }}</td>
+                <td>{{ $booking->comments }}</td>
+                <td>{{ $booking->tracking_number }}</td>
+                <td>{{ $booking->assigned_driver ? $booking->assigned_driver->name : 'Not Assigned' }}</td>
+                <td>
+                    <!-- Button to open the modal or navigate to assign driver page -->
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#assignDriverModal{{ $booking->id }}">Assign Driver</button>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
 
-                    <div id="branchModel" class="modal fade" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Create New Branch</h5>
-                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                        <i class="las la-times"></i> </button>
-                                </div>
-                                <form action="{{ route('managebranches.store') }}"
-                                    class="resetForm" method="POST">
-                                    @csrf
-                                    
-
-                                    <div class="modal-body">
-                                        <div class="form-group">
-                                            <label>Name</label>
-                                            <input type="text" class="form-control" name="name" required>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>Email Address</label>
-                                            <input type="email" class="form-control" name="email" required>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>Phone</label>
-                                            <input type="text" class="form-control" name="phone" required>
-                                        </div>
-
-
-                                        <div class="form-group">
-                                            <label>Address</label>
-                                            <input type="text" class="form-control" name="address" required>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn--primary w-100 h-45">Submit</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="confirmationModal" class="modal fade" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Confirmation Alert!</h5>
-                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                        <i class="las la-times"></i>
-                                    </button>
-                                </div>
-                                <form method="POST">
-                                    <input type="hidden" name="_token" value="qCBWlbNxa5THzJiZQHtGIyHBhtJwhhLoG8TwosWw"
-                                        autocomplete="off">
-                                    <div class="modal-body">
-                                        <p class="question"></p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn--dark" data-bs-dismiss="modal">No</button>
-                                        <button type="submit" class="btn btn--primary">Yes</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="branchModal" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+<!-- Modal for assigning driver -->
+@foreach($bookings as $booking)
+    <div class="modal fade" id="assignDriverModal{{ $booking->id }}" tabindex="-1" aria-labelledby="assignDriverModalLabel{{ $booking->id }}" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Branch</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="las la-times"></i>
-                    </button>
+                    <h5 class="modal-title" id="assignDriverModalLabel{{ $booking->id }}">Assign Driver</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('managebranches.update', $branch) }}" method="POST">
+                <form action="{{ route('bookings.assignDriver', $booking->id) }}" method="POST">
                     @csrf
-                    @method('PUT') <!-- Use PUT method for updating -->
-                    
+                    @method('PATCH')
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" class="form-control" name="name" value="{{ old('name', $branch->name) }}" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Email Address</label>
-                            <input type="email" class="form-control" name="email" value="{{ old('email', $branch->email) }}" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Phone</label>
-                            <input type="text" class="form-control" name="phone" value="{{ old('phone', $branch->phone) }}" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Address</label>
-                            <input type="text" class="form-control" name="address" value="{{ old('address', $branch->address) }}" required>
+                        <div class="mb-3">
+                            <label for="driver_id" class="form-label">Select Driver</label>
+                            <select id="driver_id" name="driver_id" class="form-select">
+                                @foreach($drivers as $driver)
+                                    <option value="{{ $driver->id }}">{{ $driver->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn--primary w-100 h-45">Update</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Assign Driver</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-</div>
+@endforeach
+
+                            </div>
+                        </div>
+                    </div><!-- card end -->
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
     </div>
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>

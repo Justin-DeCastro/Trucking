@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -21,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -42,4 +42,45 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Check if the user has a specific role.
+     *
+     * @param  string  $role
+     * @return bool
+     */
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
+
+    /**
+     * Check if the user is an admin.
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->hasRole('admin');
+    }
+
+    /**
+     * Check if the user is a courier.
+     *
+     * @return bool
+     */
+    public function isCourier()
+    {
+        return $this->hasRole('courier');
+    }
+
+    /**
+     * Check if the user is accounting.
+     *
+     * @return bool
+     */
+    public function isAccounting()
+    {
+        return $this->hasRole('accounting');
+    }
 }

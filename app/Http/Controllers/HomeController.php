@@ -30,4 +30,7 @@ class HomeController extends Controller
     public function contact(){
         return view('Home.Contact');
     }
+    public function appointment(){
+        return view('Home.Appointment');
+    }
 }
