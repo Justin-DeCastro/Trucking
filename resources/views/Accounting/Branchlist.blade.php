@@ -3,27 +3,7 @@
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="iQdGnQclGHVc4Uhh3RU4s02p3rw6e9bJ14kpKP1W">
-
-    <title>CourierLab - Branch List</title>
-
-    <link rel="shortcut icon" type="image/png" href="https://script.viserlab.com/courierlab/demo/assets/images/logo_icon/favicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://script.viserlab.com/courierlab/demo/assets/global/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://script.viserlab.com/courierlab/demo/assets/viseradmin/css/vendor/bootstrap-toggle.min.css">
-    <link rel="stylesheet" href="https://script.viserlab.com/courierlab/demo/assets/global/css/all.min.css">
-    <link rel="stylesheet" href="https://script.viserlab.com/courierlab/demo/assets/global/css/line-awesome.min.css">
-
-    
-    <link rel="stylesheet" href="https://script.viserlab.com/courierlab/demo/assets/global/css/select2.min.css">
-    <link rel="stylesheet" href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast_custom.css">
-    <link rel="stylesheet" href="https://script.viserlab.com/courierlab/demo/assets/viseradmin/css/app.css?v=3">
-
-    </head>
+@include('Components.Admin.Header')
 
 <body>
 
