@@ -131,6 +131,7 @@
     <thead>
         <tr>
             <th>Full Name</th>
+            <th>Receiver Name</th>
             <th>Email</th>
             <th>Phone Number</th>
             <th>Pick-up Date</th>
@@ -139,6 +140,7 @@
             <th>Item List</th>
             <th>Comments</th>
             <th>Tracking Number</th>
+            <th>Amount</th>
             <th>Assigned Driver</th>
             <th>Action</th>
         </tr>
@@ -147,6 +149,7 @@
         @foreach($bookings as $booking)
             <tr>
                 <td>{{ $booking->full_name }}</td>
+                <td>{{ $booking->receiver_name }}</td>
                 <td>{{ $booking->email }}</td>
                 <td>{{ $booking->phone }}</td>
                 <td>{{ \Carbon\Carbon::parse($booking->pickup_date)->format('d M Y') }}</td>
@@ -155,11 +158,24 @@
                 <td>{{ $booking->item_list }}</td>
                 <td>{{ $booking->comments }}</td>
                 <td>{{ $booking->tracking_number }}</td>
-                <td>{{ $booking->assigned_driver ? $booking->assigned_driver->name : 'Not Assigned' }}</td>
-                <td>
-                    <!-- Button to open the modal or navigate to assign driver page -->
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#assignDriverModal{{ $booking->id }}">Assign Driver</button>
-                </td>
+                <td>₱{{ number_format((float)$booking->order_amount, 2, '.', ',') }}</td>
+
+
+                <td>{{ $booking->driver ? $booking->driver->name : 'Not Assigned' }}</td>
+
+    <!-- Button to open the modal -->
+    <td>
+    <!-- Button to open the modal for assigning a driver -->
+    <button type="button" data-bs-toggle="modal" data-bs-target="#assignDriverModal{{ $booking->id }}">Assign Driver</button>
+
+    <!-- Button to open the modal for setting the order amount -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setOrderAmountModal123">
+                            Set Order Amount
+                        </button>
+</td>
+
+    
+
             </tr>
         @endforeach
     </tbody>
@@ -197,6 +213,35 @@
     </div>
 @endforeach
 
+<!-- Modal for setting order amount -->
+<div class="modal fade" id="setOrderAmountModal123" tabindex="-1" aria-labelledby="setOrderAmountModalLabel123" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="setOrderAmountModalLabel123">Set Order Amount</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Form for setting the order amount -->
+                                        <form action="{{ route('orderamount.update', $booking->id) }}" method="POST" style="display: inline;">
+    @csrf
+    <div class="form-group">
+        <label for="order_amount">Order Amount</label>
+        <input type="text" name="order_amount" id="order_amount" class="form-control form-control-sm" value="{{ old('order_amount', $booking->order_amount) }}" required>
+    </div>
+    <button type="submit" class="btn btn-primary btn-sm">Update Amount</button>
+</form>
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                             </div>
                         </div>
                     </div><!-- card end -->
@@ -207,7 +252,20 @@
 </div>
 
     </div>
-
+    <script>
+        function formatCurrency(input) {
+            // Remove non-numeric characters except for the decimal point
+            let value = input.value.replace(/[^0-9.]/g, '');
+            
+            // Convert to a number and format with commas
+            if (value) {
+                value = parseFloat(value).toFixed(2); // Ensure two decimal places
+                const parts = value.split('.');
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Add commas
+                input.value = `₱${parts.join('.')}`; // Add peso sign
+            }
+        }
+    </script>
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/jquery-3.7.1.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
@@ -396,6 +454,7 @@
             </li>`
         }
     </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

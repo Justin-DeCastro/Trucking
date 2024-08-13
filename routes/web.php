@@ -80,8 +80,24 @@ Route::get('add-driver', [AdminController::class, 'Add_driver'])->name('add-driv
 
 Route::post('/booking', [BookingController::class, 'submitForm'])->name('booking.submit');
 
-// routes/web.php
 Route::patch('/bookings/{booking}/assign-driver', [BookingController::class, 'assignDriver'])->name('bookings.assignDriver');
 
 
-Route::post('/drivers-store', [DriverController::class, 'store'])->name('drivers.store');
+Route::post('/drivers-store', [RegisterController::class, 'register'])->name('drivers.store');
+
+//manage courier order
+Route::get('order-for-courier', [AdminController::class, 'courier_order'])->name('order-for-courier');
+//payment
+// In web.php
+
+// Define a route for updating the payment status
+// Define a route for updating the payment status with POST method
+Route::post('/bookings/{booking}/update-order-status', [BookingController::class, 'updateOrderStatus'])->name('update.order.status');
+// routes/web.php
+Route::post('/submit-order-amount/{booking}', [BookingController::class, 'updateOrderAmount'])
+    ->name('orderamount.update');
+
+
+
+
+

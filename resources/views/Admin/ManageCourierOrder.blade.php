@@ -8,8 +8,48 @@
 
 
     <div class="page-wrapper default-version">
+    <div class="page-wrapper default-version">
 
-        @include('Components.Admin.Sidebar')
+<div class="sidebar bg--dark">
+    <button class="res-sidebar-close-btn"><i class="las la-times"></i></button>
+    <div class="sidebar__inner">
+        <div class="sidebar__logo">
+            <a href="https://script.viserlab.com/courierlab/demo/admin/dashboard" class="sidebar__main-logo">
+                <img src="https://script.viserlab.com/courierlab/demo/assets/images/logo_icon/logo.png"
+                    alt="image"></a>
+        </div>
+        <div class="sidebar__menu-wrapper">
+            <ul class="sidebar__menu">
+                <li class="sidebar-menu-item active">
+                    <a href="admindash" class="nav-link ">
+                        <i class="menu-icon las la-home"></i>
+                        <span class="menu-title">Dashboard</span>
+                    </a>
+                </li>
+               
+               
+                <li class="sidebar-menu-item ">
+                    <a href="order-for-courier" class="nav-link ">
+                        <i class="menu-icon las la-fax"></i>
+                        <span class="menu-title">Manage Order</span>
+                    </a>
+                </li>
+               
+               
+             
+              
+              
+              
+                
+            </ul>
+        </div>
+        <div class="version-info text-center text-uppercase">
+            <span class="text--primary">courierlab</span>
+            <span class="text--success">V3.0 </span>
+        </div>
+    </div>
+</div>
+
         <!-- sidebar end -->
 
         <!-- navbar-wrapper start -->
@@ -45,13 +85,13 @@
                             </div>
                             <div class="dropdown-menu__body  d-flex justify-content-center align-items-center ">
                                 <div class="empty-notification text-center">
-                                    <img src=""
+                                    <img src="https://script.viserlab.com/courierlab/demo/assets/images/empty_list.png"
                                         alt="empty">
                                     <p class="mt-3">No unread notification found</p>
                                 </div>
                             </div>
                             <div class="dropdown-menu__footer">
-                                <a href=""
+                                <a href="https://script.viserlab.com/courierlab/demo/admin/notifications"
                                     class="view-all-message">View all notifications</a>
                             </div>
                         </div>
@@ -59,7 +99,7 @@
                     <li>
                         <button type="button" class="primary--layer" data-bs-toggle="tooltip" data-bs-placement="bottom"
                             title="System Setting">
-                            <a href=""><i
+                            <a href="https://script.viserlab.com/courierlab/demo/admin/system-setting"><i
                                     class="las la-wrench"></i></a>
                         </button>
                     </li>
@@ -77,13 +117,13 @@
                             </span>
                         </button>
                         <div class="dropdown-menu dropdown-menu--sm p-0 border-0 box--shadow1 dropdown-menu-right">
-                            <a href=""
+                            <a href="https://script.viserlab.com/courierlab/demo/admin/profile"
                                 class="dropdown-menu__item d-flex align-items-center px-3 py-2">
                                 <i class="dropdown-menu__icon las la-user-circle"></i>
                                 <span class="dropdown-menu__caption">Profile</span>
                             </a>
 
-                            <a href=""
+                            <a href="https://script.viserlab.com/courierlab/demo/admin/password"
                                 class="dropdown-menu__item d-flex align-items-center px-3 py-2">
                                 <i class="dropdown-menu__icon las la-key"></i>
                                 <span class="dropdown-menu__caption">Password</span>
@@ -110,162 +150,161 @@
                 <div class="bodywrapper__inner">
 
                     <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                        <h6 class="page-title">Manage Driver</h6>
+                        <h6 class="page-title">Courier Information</h6>
                         <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                            <form class="d-flex flex-wrap gap-2">
-                                <div class="input-group w-auto flex-fill">
-                                    <input type="search" name="search" class="form-control bg--white"
-                                        placeholder="Search here..." value="">
-                                    <button class="btn btn--primary" type="submit"><i class="la la-search"></i></button>
-                                </div>
-
-                            </form>
-                            <button class="btn  btn-outline--primary h-45 addNewBranch"><i class="las la-plus"></i>Add
-                                New</button>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-lg-12">
+                            <div class="show-filter mb-3 text-end">
+                                <button type="button" class="btn btn-outline--primary showFilterBtn btn-sm">
+                                    <i class="las la-filter"></i>
+                                    Filter </button>
+                            </div>
+                            <div class="card responsive-filter-card mb-3">
+                                <div class="card-body">
+                                    <form>
+                                        <div class="d-flex flex-wrap gap-4">
+                                            <div class="flex-grow-1">
+                                                <label>Search</label>
+                                                <input type="text" name="search" value="" class="form-control">
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <label>Status</label>
+                                                <select class="form-control select2"
+                                                    data-minimum-results-for-search="-1" name="status">
+                                                    <option value="">All</option>
+                                                    <option value="0">Queue</option>
+                                                    <option value="1">Dispatch</option>
+                                                    <option value="1">Upcoming</option>
+                                                    <option value="2">Received</option>
+                                                    <option value="3">Delivered</option>
+                                                </select>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <label>Payment Status</label>
+                                                <select class="form-control select2"
+                                                    data-minimum-results-for-search="-1" name="payment_status">
+                                                    <option value="" selected>All</option>
+                                                    <option value="1">Paid</option>
+                                                    <option value="0">Unpaid</option>
+                                                </select>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <label>Date</label>
+                                                <input name="date" type="search"
+                                                    class="datepicker-here form-control bg--white pe-2 date-range"
+                                                    placeholder="Start Date - End Date" autocomplete="off" value="">
+                                            </div>
+                                            <div class="flex-grow-1 align-self-end">
+                                                <button class="btn btn--primary w-100 h-45">
+                                                    <i class="fas fa-filter"></i>
+                                                    Filter </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                             <div class="card">
                                 <div class="card-body p-0">
                                     <div class="table-responsive--sm table-responsive">
                                     <table class="table table--light style--two">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Address</th>
-                <th>Contact Number</th>
-                <th>Email</th>
-                <th>Driver License</th>
-                <th>License Number</th>
-                <!-- <th>Plate Number</th> -->
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach($couriers as $driver)
-    <tr>
-        <td>{{ $driver->name }}</td>
-        <td>{{ $driver->address }}</td>
-        <td>{{ $driver->contact_number }}</td>
-        <td>{{ $driver->email }}</td>
-        <td>
-            @if($driver->driver_license)
-                <a href="{{ asset('driver_licenses/' . basename($driver->driver_license)) }}" target="_blank">View License</a>
-            @else
-                No License
-            @endif
-        </td>
-        <td>{{ $driver->license_number }}</td>
-        <td>{{ $driver->plate_number }}</td>
-        <!-- Optionally display the driver's license file path or a link to the file -->
-      
-    </tr>
-@endforeach
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Receiver Name</th>
+            <th>Amount</th>
+            <th>Creation Date</th>
+            <th>Order Status</th>
+           
+            <th>Tracking Number</th>
+            <th>Assigned Driver</th>
+            <th>Set Order Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($bookings as $booking)
+        <tr>
+            <td>{{ $booking->full_name }}</td>
+            <td>{{ $booking->receiver_name }}</td>
+            <td>₱{{ number_format((float)$booking->order_amount, 2, '.', ',') }}</td>
+            <td>{{ $booking->created_at->format('Y-m-d') }}</td>
+            <td>{{ $booking->order_status }}</td> <!-- Display current payment status -->
+            
+            <td>{{ $booking->tracking_number }}</td>
+            <td>
+                @if($booking->driver)
+                    {{ $booking->driver->name }} <!-- Assuming the driver's name is stored in the 'name' field -->
+                @else
+                    Not Assigned
+                @endif
+            </td>
+            <td>
+                <form action="{{ route('update.order.status', $booking->id) }}" method="POST" style="display: inline;">
+                    @csrf
+                    <div class="form-group">
+                    <select name="order_status" class="form-control form-control-sm" required>
+    <option value="Pickup" {{ $booking->order_status == 'Pickup' ? 'selected' : '' }}>Pickup</option>
+    <option value="Out For Delivery" {{ $booking->order_status == 'Out For Delivery' ? 'selected' : '' }}>Out For Delivery</option>
+    <option value="Shipped" {{ $booking->order_status == 'Shipped' ? 'selected' : '' }}>Shipped</option>
+    <option value="Delivered" {{ $booking->order_status == 'Delivered' ? 'selected' : '' }}>Delivered</option>
+    <option value="Returned" {{ $booking->order_status == 'Returned' ? 'selected' : '' }}>Returned</option>
+    <option value="Cancel" {{ $booking->order_status == 'Cancel' ? 'selected' : '' }}>Cancel</option>
+</select>
 
-        </tbody>
-    </table>
-                                    </div>
-                                </div>
-                            </div><!-- card end -->
-                        </div>
                     </div>
+                    <button type="submit" class="btn btn-primary btn-sm">Update Status</button>
+                </form>
+            </td>
+            <td>
+                <!-- Actions such as Edit, Delete or Assign Driver -->
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 
-                    <div id="branchModel" class="modal fade" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Add New Driver</h5>
-                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                        <i class="las la-times"></i> </button>
+
+
+                                    </div>
                                 </div>
-                                <form action="{{ route('drivers.store') }}" method="POST" class="resetForm">
-                                    @csrf
-                                    
+                                <div class="card-footer py-4">
+                                    <nav class="d-flex justify-items-center justify-content-between">
+                                        <div class="d-flex justify-content-between flex-fill d-sm-none">
+                                            <ul class="pagination">
 
-                                    <div class="modal-body">
-                                        <div class="form-group">
-                                            <label>Name</label>
-                                            <input type="text" class="form-control" name="name" required>
+                                                <li class="page-item disabled" aria-disabled="true">
+                                                    <span class="page-link">‹</span>
+                                                </li>
+
+
+                                                <li class="page-item">
+                                                    <a class="page-link"
+                                                        href="https://script.viserlab.com/courierlab/demo/admin/courier/list?page=2"
+                                                        rel="next">›</a>
+                                                </li>
+                                            </ul>
                                         </div>
 
-                                        <div class="form-group">
-                                            <label>Address</label>
-                                            <input type="text" class="form-control" name="address" required>
-                                        </div>
+                                        <div
+                                            class="d-none flex-sm-fill d-sm-flex align-items-sm-center justify-content-sm-between">
+                                           
 
-                                        <div class="form-group">
-                                            <label>Contact</label>
-                                            <input type="text" class="form-control" name="contact_number" required>
                                         </div>
+                                    </nav>
 
-
-                                        <div class="form-group">
-                                            <label>Email</label>
-                                            <input type="email" class="form-control" name="email" required>
-                                        </div>
-                                     
-                            <div class="form-outline">
-                                <input type="text" id="form1Example6" name="license_number" class="form-control form-control-lg" />
-                                <label class="form-label" for="form1Example6">Driver's License Number</label>
-                                @error('license_number')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                                        
-                            <div class="form-outline">
-                                <input type="file" id="form1Example5" name="driver_license" class="form-control form-control-lg" />
-                                <label class="form-label" for="form1Example5">Upload Driver's License</label>
-                                @error('driver_license')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                                        <div class="form-group">
-                                            <label>Plate Number</label>
-                                            <input type="text" class="form-control" name="plate_number" required>
-                                        </div>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn--primary w-100 h-45">Submit</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="confirmationModal" class="modal fade" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Confirmation Alert!</h5>
-                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                        <i class="las la-times"></i>
-                                    </button>
                                 </div>
-                                <form method="POST">
-                                    <input type="hidden" name="_token" value="qCBWlbNxa5THzJiZQHtGIyHBhtJwhhLoG8TwosWw"
-                                        autocomplete="off">
-                                    <div class="modal-body">
-                                        <p class="question"></p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn--dark" data-bs-dismiss="modal">No</button>
-                                        <button type="submit" class="btn btn--primary">Yes</button>
-                                    </div>
-                                </form>
                             </div>
                         </div>
                     </div>
 
-     
-</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/jquery-3.7.1.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
     <script
@@ -332,6 +371,8 @@
             }
         }
     </script>
+    <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/moment.min.js"></script>
+    <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/daterangepicker.min.js"></script>
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/nicEdit.js"></script>
 
@@ -386,44 +427,55 @@
         })(jQuery);
     </script>
 
-
     <script>
         (function ($) {
             "use strict";
-            $(document).on('click', '.confirmationBtn', function () {
-                var modal = $('#confirmationModal');
-                let data = $(this).data();
-                modal.find('.question').text(`${data.question}`);
-                modal.find('form').attr('action', `${data.action}`);
-                modal.modal('show');
-            });
-        })(jQuery);
-    </script>
-    <script>
-        (function ($) {
-            "use strict";
-            $('.addNewBranch').on('click', function () {
-                $('.resetForm').trigger('reset');
-                $('#branchModel').modal('show');
-            });
-            $('.editBranch').on('click', function () {
-                let title = "Update Branch";
-                var modal = $('#branchModel');
-                let id = $(this).data('id');
-                let name = $(this).data('name');
-                let email = $(this).data('email');
-                let phone = $(this).data('phone');
-                let address = $(this).data('address');
-                modal.find('.modal-title').text(title)
-                modal.find('input[name=id]').val(id);
-                modal.find('input[name=name]').val(name);
-                modal.find('input[name=email]').val(email);
-                modal.find('input[name=phone]').val(phone);
-                modal.find('input[name=address]').val(address);
-                modal.modal('show');
-            });
 
-        })(jQuery);
+            const datePicker = $('.date-range').daterangepicker({
+                autoUpdateInput: false,
+                locale: {
+                    cancelLabel: 'Clear'
+                },
+                showDropdowns: true,
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 15 Days': [moment().subtract(14, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(30, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month')
+                        .endOf('month')
+                    ],
+                    'Last 6 Months': [moment().subtract(6, 'months').startOf('month'), moment().endOf('month')],
+                    'This Year': [moment().startOf('year'), moment().endOf('year')],
+                },
+                maxDate: moment()
+            });
+            const changeDatePickerText = (event, startDate, endDate) => {
+                $(event.target).val(startDate.format('MMMM DD, YYYY') + ' - ' + endDate.format('MMMM DD, YYYY'));
+            }
+
+
+            $('.date-range').on('apply.daterangepicker', (event, picker) => changeDatePickerText(event, picker
+                .startDate, picker.endDate));
+
+
+            if ($('.date-range').val()) {
+                let dateRange = $('.date-range').val().split(' - ');
+                $('.date-range').data('daterangepicker').setStartDate(new Date(dateRange[0]));
+                $('.date-range').data('daterangepicker').setEndDate(new Date(dateRange[1]));
+            }
+
+            let url = new URL(window.location).searchParams;
+            if (url.get('status') != undefined && url.get('status') != '') {
+                $('select[name=status]').find(`option[value=${url.get('status')}]`).attr('selected', true).change();
+            }
+            if (url.get('payment_status') != undefined && url.get('payment_status') != '') {
+                $('select[name=payment_status]').find(`option[value=${url.get('payment_status')}]`).attr('selected',
+                    true).change();
+            }
+        })(jQuery)
     </script>
     <script>
         if ($('li').hasClass('active')) {

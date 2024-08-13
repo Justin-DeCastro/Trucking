@@ -60,6 +60,9 @@
             max-width: 100%;
             height: auto;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -71,7 +74,7 @@
                         class="img-fluid" alt="Phone image">
                 </div>
                 <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                         @csrf
 
                         <!-- Name input -->
@@ -121,6 +124,44 @@
                             @enderror
                         </div>
 
+                        <!-- Conditional fields for couriers -->
+                        <div id="courierFields" class="hidden">
+                            <!-- Driver's License upload -->
+                            <div class="form-outline">
+                                <input type="file" id="form1Example5" name="driver_license" class="form-control form-control-lg" />
+                                <label class="form-label" for="form1Example5">Upload Driver's License</label>
+                                @error('driver_license')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-outline">
+                                <input type="text" id="form1Example6" name="license_number" class="form-control form-control-lg" />
+                                <label class="form-label" for="form1Example6">Driver's License Number</label>
+                                @error('license_number')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Contact Number -->
+                            <div class="form-outline">
+                                <input type="text" id="form1Example7" name="contact_number" class="form-control form-control-lg" />
+                                <label class="form-label" for="form1Example7">Contact Number</label>
+                                @error('contact_number')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Address -->
+                            <div class="form-outline">
+                                <input type="text" id="form1Example8" name="address" class="form-control form-control-lg" />
+                                <label class="form-label" for="form1Example8">Address</label>
+                                @error('address')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
                         <!-- Submit button -->
                         <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
 
@@ -135,5 +176,17 @@
     </section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
+    <script>
+        document.getElementById('formRole').addEventListener('change', function() {
+            var role = this.value;
+            var courierFields = document.getElementById('courierFields');
+            
+            if (role === 'courier') {
+                courierFields.classList.remove('hidden');
+            } else {
+                courierFields.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 </html>

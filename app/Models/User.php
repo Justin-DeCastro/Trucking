@@ -21,6 +21,11 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'driver_license',   // Added field
+        'license_number',   // Added field
+        'contact_number',   // New field
+        'address',  
+        'plate_number',        // New field
     ];
 
     /**
@@ -82,5 +87,13 @@ class User extends Authenticatable
     public function isAccounting()
     {
         return $this->hasRole('accounting');
+    }
+
+    /**
+     * Get the bookings for the user (if they are a courier).
+     */
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'driver_id');
     }
 }

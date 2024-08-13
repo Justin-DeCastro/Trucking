@@ -15,6 +15,9 @@ class Booking extends Model
     // Specify which attributes are mass assignable
     protected $fillable = [
         'full_name',
+        'receiver_name',
+        'order_status',
+        'order_amount',
         'email',
         'phone',
         'pickup_date',
@@ -23,15 +26,13 @@ class Booking extends Model
         'item_list',
         'comments',
         'tracking_number',
-        'assigned_driver_id', // Add this line
-        'driver_id',
+        'driver_id', // Correct field name
     ];
-  
-    public function assigned_driver()
-    {
-        return $this->belongsTo(Driver::class, 'driver_id');
-    }
-
-
     
+
+    // Relationship with the User model for the driver
+    public function driver()
+    {
+        return $this->belongsTo(User::class, 'driver_id');
+    }
 }

@@ -27,46 +27,14 @@
                        
                        
                         <li class="sidebar-menu-item ">
-                            <a href="managecourier" class="nav-link ">
+                            <a href="order-for-courier" class="nav-link ">
                                 <i class="menu-icon las la-fax"></i>
-                                <span class="menu-title">Manage Courier</span>
+                                <span class="menu-title">Manage Order</span>
                             </a>
                         </li>
-                        <li class="sidebar-menu-item ">
-                            <a href="stafflist" class="nav-link ">
-                                <i class="menu-icon las la-users-cog"></i>
-                                <span class="menu-title">Staff List</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-menu-item ">
-                            <a href="customerlist" class="nav-link ">
-                                <i class="menu-icon las la-user-friends"></i>
-                                <span class="menu-title">Customer List</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-menu-item sidebar-dropdown">
-                            <a href="javascript:void(0)" class="">
-                                <i class="menu-icon la la-tasks"></i>
-                                <span class="menu-title">Unit &amp; Type Settings</span>
-                            </a>
-                            <div class="sidebar-submenu  ">
-                                <ul>
-                                    <li class="sidebar-menu-item  ">
-                                        <a href="manageunit" class="nav-link">
-                                            <i class="menu-icon las la-dot-circle"></i>
-                                            <span class="menu-title">Manage Unit</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-menu-item  ">
-                                        <a href="managetype" class="nav-link">
-                                            <i class="menu-icon las la-dot-circle"></i>
-                                            <span class="menu-title">Manage Type</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                      
+                       
+                       
+                     
                       
                       
                       

@@ -102,10 +102,9 @@
     <!-- Personal Information -->
     <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
         <div style="flex: 1; min-width: 220px;">
-            <label for="first-name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Full Name</label>
-            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="first-name" name="full_name" type="text" placeholder="Enter Full Name">
+            <label for="full-name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Full Name</label>
+            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="full-name" name="full_name" type="text" placeholder="Enter Full Name">
         </div>
-       
     </div>
 
     <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
@@ -116,6 +115,14 @@
         <div style="flex: 1; min-width: 220px;">
             <label for="phone" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Phone Number</label>
             <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="phone" name="phone" type="tel" placeholder="Enter Phone Number">
+        </div>
+    </div>
+
+    <!-- Receiver Information -->
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
+        <div style="flex: 1; min-width: 220px;">
+            <label for="receiver-name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Receiver's Name</label>
+            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="receiver-name" name="receiver_name" type="text" placeholder="Enter Receiver's Name">
         </div>
     </div>
 

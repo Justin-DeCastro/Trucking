@@ -5,6 +5,8 @@ use App\Models\ManageBranch;
 use App\Models\BranchManager;
 use App\Models\Booking;
 use App\Models\Driver;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -60,13 +62,33 @@ class AdminController extends Controller
         return view('Admin.Accountingdash');
     }
     public function add_driver(){
-        $drivers = Driver::all();
-        return view('Admin.AddDriver',compact('drivers'));
+      
+        $couriers = User::where('role', 'courier')->get();
+        return view('Admin.AddDriver',compact('couriers'));
     }
     public function manage_appointment(){
-        $drivers = Driver::all();
+        $drivers = User::where('role', 'courier')->get(); // Get only couriers
         $bookings = Booking::all(); 
         return view('Admin.ManageAppointment',compact('bookings','drivers'));
     }
+//     public function manage_appointment()
+// {
+//     $drivers = User::where('role', 'courier')->get(); // Get only couriers
+//     $bookings = Booking::with('driver')->get(); // Eager load the driver relationship
+//     return view('Admin.ManageAppointment', compact('bookings', 'drivers'));
+// }
+
+public function courier_order()
+{
+    $drivers = User::where('role', 'courier')->get(); // Get all couriers (if needed elsewhere)
+
+    // Get the logged-in user
+    $currentCourier = Auth::user(); // Ensure that user is logged in and has 'courier' role
+
+    // Fetch bookings assigned to the logged-in courier
+    $bookings = Booking::where('driver_id', $currentCourier->id)->get();
+
+    return view('Admin.ManageCourierOrder', compact('bookings', 'drivers'));
+}
 }
 
