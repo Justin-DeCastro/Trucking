@@ -160,5 +160,45 @@ class AccountingController extends Controller
         'remainingBalance' => $remainingBalance,
     ]);
 }
+public function update(Request $request, Transaction $transaction)
+    {
+        $request->validate([
+            'date' => 'required|date',
+            'particulars' => 'required|string|max:255',
+            'deposit_amount' => 'nullable|numeric',
+            'withdraw_amount' => 'nullable|numeric',
+            'expense_amount' => 'nullable|numeric',
+            'notes' => 'nullable|string',
+        ]);
+
+        $transaction->update($request->all());
+
+        return redirect()->back()->with('success', 'Transaction updated successfully.');
+    }
+
+    // Remove a transaction
+    public function destroy(Transaction $transaction)
+    {
+        $transaction->delete();
+        return redirect()->route('transactions.index')->with('success', 'Transaction deleted successfully.');
+    }
+    public function updateDirectly(Request $request, Transaction $transaction)
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'date' => 'required|date',
+            'particulars' => 'required|string|max:255',
+            'deposit_amount' => 'nullable|numeric',
+            'withdraw_amount' => 'nullable|numeric',
+            'expense_amount' => 'nullable|numeric',
+            'notes' => 'nullable|string',
+        ]);
+
+        // Update the transaction with the new data
+        $transaction->update($request->all());
+
+        // Redirect with a success message
+        return redirect()->back()->with('success', 'Transaction updated successfully.');
+    }
 
 }

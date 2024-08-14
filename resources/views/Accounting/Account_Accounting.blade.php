@@ -178,7 +178,6 @@
                         </div>
                     </div>
                 </div>
-
                 <table class="jobOffersTable">
                     <thead>
                         <tr>
@@ -195,15 +194,32 @@
                         @forelse($transactions as $transaction)
                             <tr>
                                 <td>{{ date('F d Y', strtotime($transaction->date)) }}</td>
-
-
                                 <td>{{ $transaction->particulars }}</td>
                                 <td>₱{{ number_format($transaction->deposit_amount, 2, '.', ',') }}</td>
                                 <td>₱{{ number_format($transaction->withdraw_amount, 2, '.', ',') }}</td>
                                 <td>₱{{ number_format($transaction->expense_amount, 2, '.', ',') }}</td>
-
                                 <td>{{ $transaction->notes }}</td>
-                                <td><button class='btn btn-sm btn-primary'>Edit</button></td>
+                                <td>
+                                    <!-- Update Action -->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal"
+    data-id="{{ $transaction->id }}"
+    data-date="{{ $transaction->date }}"
+    data-particulars="{{ $transaction->particulars }}"
+    data-deposit="{{ $transaction->deposit_amount }}"
+    data-withdraw="{{ $transaction->withdraw_amount }}"
+    data-expense="{{ $transaction->expense_amount }}"
+    data-notes="{{ $transaction->notes }}">
+    Update
+</button>
+
+
+                                    <!-- Delete Action -->
+                                    <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
                         @empty
                             <tr>
@@ -212,6 +228,52 @@
                         @endforelse
                     </tbody>
                 </table>
+
+                <!-- Modal Structure -->
+                <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateModalLabel">Update Transaction</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form id="updateForm" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="date" class="form-label">Date</label>
+                                        <input type="date" class="form-control" id="date" name="date" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="particulars" class="form-label">Particulars</label>
+                                        <input type="text" class="form-control" id="particulars" name="particulars" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="deposit_amount" class="form-label">Deposit Amount</label>
+                                        <input type="number" step="0.01" class="form-control" id="deposit_amount" name="deposit_amount" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="withdraw_amount" class="form-label">Withdrawal Amount</label>
+                                        <input type="number" step="0.01" class="form-control" id="withdraw_amount" name="withdraw_amount" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="expense_amount" class="form-label">Expense Amount</label>
+                                        <input type="number" step="0.01" class="form-control" id="expense_amount" name="expense_amount" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="notes" class="form-label">Notes</label>
+                                        <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
 
                 <!-- Add Account Modal -->
@@ -438,6 +500,39 @@
         });
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        $('#updateModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var id = button.data('id'); // Extract the ID
+            var date = button.data('date');
+            var particulars = button.data('particulars');
+            var deposit = button.data('deposit');
+            var withdraw = button.data('withdraw');
+            var expense = button.data('expense');
+            var notes = button.data('notes');
+
+            // Update the modal's content
+            var modal = $(this);
+            modal.find('#date').val(date);
+            modal.find('#particulars').val(particulars);
+            modal.find('#deposit_amount').val(deposit);
+            modal.find('#withdraw_amount').val(withdraw);
+            modal.find('#expense_amount').val(expense);
+            modal.find('#notes').val(notes);
+
+            // Make fields read-only or editable based on their values
+            modal.find('#deposit_amount').prop('readonly', deposit == 0);
+            modal.find('#withdraw_amount').prop('readonly', withdraw == 0);
+            modal.find('#expense_amount').prop('readonly', expense == 0);
+
+            // Set the form's action URL to include the transaction ID
+            modal.find('#updateForm').attr('action', '/transactions/' + id);
+        });
+    });
+</script>
+
+
 <script>
 $(document).ready(function() {
     $('.jobOffersTable').DataTable({

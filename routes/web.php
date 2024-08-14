@@ -169,6 +169,13 @@ Route::post('deposit', [InController::class, 'store'])->name('deposit.store');
 Route::post('withdraw', [OutController::class, 'store'])->name('withdraw.store');
 Route::get('account-accounting', [AccountingController::class, 'account'])->name('account-accounting');
 Route::get('/filter-transactions', [AccountingController::class, 'filter'])->name('filter.transactions');
+// web.php
+Route::put('/transactions/{transaction}', [AccountingController::class, 'update'])->name('transactions.update');
+
+// Route to delete a transaction
+Route::delete('/transactions/{transaction}', [AccountingController::class, 'destroy'])->name('transactions.destroy');
+
+
 
 
 
