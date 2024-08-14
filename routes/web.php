@@ -107,6 +107,9 @@ Route::post('/bookings/{booking}/update-order-status', [BookingController::class
 // routes/web.php
 Route::post('/submit-order-amount/{booking}', [BookingController::class, 'updateOrderAmount'])
     ->name('orderamount.update');
+
+
+
 //plate number
 // web.php or api.php
 Route::post('/save-plate-number', [BookingController::class, 'storePlateNumber'])->name('save.plate.number');

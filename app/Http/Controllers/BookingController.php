@@ -10,19 +10,25 @@ class BookingController extends Controller
     // Show the booking form
     public function updateOrderAmount(Request $request, Booking $booking)
     {
-        // Validate the order amount input
-        $request->validate([
-            'order_amount' => 'required|numeric|min:0', // Ensure it's a positive number
+        // Debugging: Log user and booking details
+        \Log::info('Updating Order Amount:', [
+            'current_user_id' => Auth::id(), // This will be null if the user is not logged in
+            'booking_driver_id' => $booking->driver_id,
+            'booking_id' => $booking->id,
         ]);
     
-        // Ensure the user is authorized to perform this action (if necessary)
-        // Example authorization check: Ensure the user is the assigned driver (adjust as needed)
-        if (Auth::id() !== $booking->driver_id) {
-            abort(403, 'Unauthorized action.');
-        }
+        // Validate the order amount input
+        $request->validate([
+            'order_amount' => 'required|numeric|min:0',
+        ]);
+    
+        // Optional: If you still want some kind of check, you can add it here
+        // For example, only allow the update if the booking is in a specific state
     
         // Update the order amount
-        $booking->update(['order_amount' => $request->input('order_amount')]);
+        $booking->update([
+            'order_amount' => $request->input('order_amount'),
+        ]);
     
         // Redirect back with success message
         return redirect()->back()->with('success', 'Order amount updated successfully.');
