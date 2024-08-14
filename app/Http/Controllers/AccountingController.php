@@ -180,7 +180,7 @@ public function update(Request $request, Transaction $transaction)
     public function destroy(Transaction $transaction)
     {
         $transaction->delete();
-        return redirect()->route('transactions.index')->with('success', 'Transaction deleted successfully.');
+        return redirect()->back()->with('success', 'Transaction updated successfully.');
     }
     public function updateDirectly(Request $request, Transaction $transaction)
     {
