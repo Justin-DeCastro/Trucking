@@ -223,14 +223,28 @@
                                     </div>
                                     <div class="modal-body">
                                         <!-- Form for setting the order amount -->
-                                        <form action="{{ route('orderamount.update', $booking->id) }}" method="POST" style="display: inline;">
-    @csrf
-    <div class="form-group">
-        <label for="order_amount">Order Amount</label>
-        <input type="text" name="order_amount" id="order_amount" class="form-control form-control-sm" value="{{ old('order_amount', $booking->order_amount) }}" required>
+                                        @@foreach($bookings as $booking)
+    <div id="booking-form-{{ $booking->id }}" class="booking-form" style="display: none; margin-bottom: 20px;">
+        <form action="{{ route('orderamount.updateSingle') }}" method="POST">
+            @csrf
+            <input type="hidden" name="booking_id" value="{{ $booking->id }}">
+            <div class="form-group">
+                <label for="order_amount_{{ $booking->id }}">Order Amount for Booking {{ $booking->id }}</label>
+                <input type="number" name="order_amount" id="order_amount_{{ $booking->id }}" class="form-control" value="{{ old('order_amount.' . $booking->id, $booking->order_amount) }}" step="0.01" required>
+                @error('order_amount')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <button type="submit" class="btn btn-primary">Update Amount</button>
+        </form>
     </div>
-    <button type="submit" class="btn btn-primary btn-sm">Update Amount</button>
-</form>
+@endforeach
+
+
+
+
+
+
 
 
 
@@ -253,6 +267,7 @@
 </div>
 
     </div>
+    
     <script>
         function formatCurrency(input) {
             // Remove non-numeric characters except for the decimal point

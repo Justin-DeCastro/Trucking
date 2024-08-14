@@ -114,6 +114,7 @@
             <div class="status">
                 <p><strong>Location:</strong> {{ $location }}</p>
                 <p><strong>Order Status:</strong> {{ $order_status }}</p>
+                
             </div>
         @else
             <p class="error">{{ $error ?? 'Tracking number not found.' }}</p>

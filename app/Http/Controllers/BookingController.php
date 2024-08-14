@@ -8,32 +8,22 @@ use App\Models\User;
 class BookingController extends Controller
 {
     // Show the booking form
-    public function updateOrderAmount(Request $request, Booking $booking)
+    public function updateSingleOrderAmount(Request $request)
     {
-        // Debugging: Log user and booking details
-        \Log::info('Updating Order Amount:', [
-            'current_user_id' => Auth::id(), // This will be null if the user is not logged in
-            'booking_driver_id' => $booking->driver_id,
-            'booking_id' => $booking->id,
-        ]);
-    
-        // Validate the order amount input
         $request->validate([
+            'booking_id' => 'required|exists:bookings,id',
             'order_amount' => 'required|numeric|min:0',
         ]);
     
-        // Optional: If you still want some kind of check, you can add it here
-        // For example, only allow the update if the booking is in a specific state
-    
-        // Update the order amount
+        $booking = Booking::findOrFail($request->input('booking_id'));
         $booking->update([
             'order_amount' => $request->input('order_amount'),
         ]);
     
-        // Redirect back with success message
         return redirect()->back()->with('success', 'Order amount updated successfully.');
     }
     
+
     
     public function storePlateNumber(Request $request, Booking $booking)
     {

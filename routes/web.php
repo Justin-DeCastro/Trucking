@@ -107,8 +107,11 @@ Route::get('order-for-courier', [AdminController::class, 'courier_order'])->name
 // Define a route for updating the payment status with POST method
 Route::post('/bookings/{booking}/update-order-status', [BookingController::class, 'updateOrderStatus'])->name('update.order.status');
 // routes/web.php
-Route::post('/submit-order-amount/{booking}', [BookingController::class, 'updateOrderAmount'])
-    ->name('orderamount.update');
+Route::post('/update-order-amount', [BookingController::class, 'updateSingleOrderAmount'])
+    ->name('orderamount.updateSingle');
+
+
+
 
 
 
