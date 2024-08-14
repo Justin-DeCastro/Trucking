@@ -16,6 +16,9 @@ use App\Http\Controllers\SubcontractorController;
 use App\Http\Controllers\DepositController;
 use App\Http\Controllers\WithdrawController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\InController;
+use App\Http\Controllers\OutController;
+use App\Http\Controllers\AccountController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -160,6 +163,12 @@ Route::post('subcontractors', [SubcontractorController::class, 'store'])->name('
 //expense store
 Route::post('Expenses', [ExpenseController::class, 'store'])->name('expense.store');
 
+//account
+Route::post('accounts', [AccountController::class, 'store'])->name('account.store');
+Route::post('deposit', [InController::class, 'store'])->name('deposit.store');
+Route::post('withdraw', [OutController::class, 'store'])->name('withdraw.store');
+Route::get('account-accounting', [AccountingController::class, 'account'])->name('account-accounting');
+Route::get('/filter-transactions', [AccountingController::class, 'filter'])->name('filter.transactions');
 
 
 

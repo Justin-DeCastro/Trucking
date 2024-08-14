@@ -1,30 +1,27 @@
 <?php
-// app/Models/Expense.php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Expense extends Model
+class Transaction extends Model
 {
     use HasFactory;
 
-    // Define the table associated with the model
-    protected $table = 'expenses';
-
-    // Define the fillable attributes
     protected $fillable = [
         'account_id',
         'date',
         'particulars',
+        'deposit_amount',
+        'withdraw_amount',
         'expense_amount',
         'notes',
     ];
 
-    // Define relationships if necessary (e.g., account)
-    public function account()
+    public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
     }
 }
-

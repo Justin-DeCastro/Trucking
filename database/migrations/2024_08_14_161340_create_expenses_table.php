@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            $table->string('fuel_cost');
-            $table->string('maintenance_repair');
-            $table->string('tolls_fees');
-            $table->string('driver_expenses');
+            $table->foreignId('account_id')->constrained()->onDelete('cascade');
+            $table->date('date');
+            $table->string('particulars');
+            $table->decimal('expense_amount', 15, 2);
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
-       
     }
 
     /**

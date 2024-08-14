@@ -8,6 +8,8 @@ use App\Models\Booking;
 use App\Models\Expense;
 use App\Models\Deposit;
 use App\Models\Withdraw;
+use App\Models\Account;
+use App\Models\Transaction;
 class AccountingController extends Controller
 {
     public function accounting_dash(){
@@ -53,7 +55,7 @@ class AccountingController extends Controller
         // Pass the data to the view
         return view('Accounting.Deposit', compact('deposits', 'withdraws', 'outstandingBalance'));
     }
-    
+
     public function send_courier(){
         return view('Accounting.SendCourier');
     }
@@ -62,7 +64,7 @@ class AccountingController extends Controller
     }
     public function cash_collection(){
         $drivers = User::where('role', 'courier')->get(); // Get only couriers
-        $bookings = Booking::all(); 
+        $bookings = Booking::all();
         return view('Accounting.CashCollection',compact('drivers','bookings'));
     }
     public function delivery_queue(){
@@ -80,4 +82,83 @@ class AccountingController extends Controller
     public function total_sent(){
         return view('Accounting.TotalSent');
     }
+    public function account()
+{
+    // Fetch all transactions initially
+    $transactions = Transaction::all();
+
+    // Calculate balances
+    $outstandingBalance = $transactions->sum('deposit_amount');
+    $totalWithdraw = $transactions->sum('withdraw_amount');
+    $totalExpense = $transactions->sum('expense_amount');
+    $remainingBalance = $outstandingBalance - ($totalWithdraw + $totalExpense);
+
+    // Fetch all accounts
+    $accounts = Account::all();
+
+    // Return view with data
+    return view('Accounting.Account_Accounting', [
+        'accounts' => $accounts,
+        'transactions' => $transactions,
+        'outstandingBalance' => $outstandingBalance,
+        'remainingBalance' => $remainingBalance,
+    ]);
+}
+
+    // Method to display transactions based on account selection
+    public function showTransactions(Request $request)
+{
+    $accountId = $request->input('account');
+
+    // Fetch all accounts for the dropdown
+    $accounts = Account::all();
+
+    // Fetch transactions based on the selected account
+    $transactions = $accountId
+        ? Transaction::where('account_id', $accountId)->get()
+        : Transaction::all();
+
+    // Calculate balances
+    $outstandingBalance = $transactions->sum('deposit_amount');
+    $totalWithdraw = $transactions->sum('withdraw_amount');
+    $totalExpense = $transactions->sum('expense_amount');
+    $remainingBalance = $outstandingBalance - ($totalWithdraw + $totalExpense);
+
+    // Return view with data
+    return view('Accounting.Account_Accounting', [
+        'accounts' => $accounts,
+        'transactions' => $transactions,
+        'outstandingBalance' => $outstandingBalance,
+        'remainingBalance' => $remainingBalance,
+    ]);
+}
+
+    // Method to filter transactions based on account selection
+    public function filter(Request $request)
+{
+    $accountId = $request->input('account');
+
+    // Fetch all accounts for the dropdown
+    $accounts = Account::all();
+
+    // Fetch transactions based on the selected account
+    $transactions = $accountId
+        ? Transaction::where('account_id', $accountId)->get()
+        : Transaction::all();
+
+    // Calculate balances
+    $outstandingBalance = $transactions->sum('deposit_amount');
+    $totalWithdraw = $transactions->sum('withdraw_amount');
+    $totalExpense = $transactions->sum('expense_amount');
+    $remainingBalance = $outstandingBalance - ($totalWithdraw + $totalExpense);
+
+    // Return view with data
+    return view('Accounting.Account_Accounting', [
+        'accounts' => $accounts,
+        'transactions' => $transactions,
+        'outstandingBalance' => $outstandingBalance,
+        'remainingBalance' => $remainingBalance,
+    ]);
+}
+
 }
