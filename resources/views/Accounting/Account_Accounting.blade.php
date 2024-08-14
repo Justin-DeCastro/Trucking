@@ -194,11 +194,14 @@
                     <tbody>
                         @forelse($transactions as $transaction)
                             <tr>
-                                <td>{{ $transaction->date }}</td>
+                                <td>{{ date('F d Y', strtotime($transaction->date)) }}</td>
+
+
                                 <td>{{ $transaction->particulars }}</td>
-                                <td>{{ $transaction->deposit_amount }}</td>
-                                <td>{{ $transaction->withdraw_amount }}</td>
-                                <td>{{ $transaction->expense_amount }}</td>
+                                <td>₱{{ number_format($transaction->deposit_amount, 2, '.', ',') }}</td>
+                                <td>₱{{ number_format($transaction->withdraw_amount, 2, '.', ',') }}</td>
+                                <td>₱{{ number_format($transaction->expense_amount, 2, '.', ',') }}</td>
+
                                 <td>{{ $transaction->notes }}</td>
                                 <td><button class='btn btn-sm btn-primary'>Edit</button></td>
                             </tr>
