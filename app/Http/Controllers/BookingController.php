@@ -85,6 +85,25 @@ class BookingController extends Controller
         // Redirect or respond as needed
         return redirect()->back()->with('success', 'Booking submitted successfully! Tracking Number: ' . $trackingNumber);
     }
+    public function trackBooking(Request $request)
+    {
+        $trackingNumber = strtoupper($request->query('trackingNumber'));
+    
+        $booking = Booking::where('tracking_number', $trackingNumber)->first(['location', 'order_status']);
+    
+        if ($booking) {
+            return view('Home.TrackBooking', [
+                'location' => $booking->location,
+                'order_status' => $booking->order_status
+            ]);
+        } else {
+            return view('track', [
+                'error' => 'Tracking number not found for the provided tracking number.'
+            ]);
+        }
+    }
+    
+
     // app/Http/Controllers/BookingController.php
     public function assignDriver(Request $request, $bookingId)
 {

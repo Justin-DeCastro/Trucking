@@ -2,8 +2,8 @@
     <div class="container">
         <div class="col-12">
             <nav class="navbar navbar-expand-lg navbar-light">
-                <a class="navbar-brand logo" href="https://script.viserlab.com/courierlab/demo">
-                    <img src="https://script.viserlab.com/courierlab/demo/assets/images/logo_icon/logo.png"
+                <a class="navbar-brand logo" href="/">
+                    <img src="Home/images-removebg-preview.png"
                         alt="logo image">
                 </a>
                 <button class="navbar-toggler header-button" data-bs-toggle="collapse"

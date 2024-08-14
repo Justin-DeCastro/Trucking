@@ -26,6 +26,8 @@ use App\Http\Controllers\AccountingController;
 // });
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('ordertracking', [HomeController::class, 'ordertracking'])->name('ordertracking');
+Route::get('/track', [BookingController::class, 'trackBooking'])->name('track.booking');
+
 Route::get('about', [HomeController::class, 'about'])->name('about');
 Route::get('faq', [HomeController::class, 'faq'])->name('faq');
 Route::get('service', [HomeController::class, 'service'])->name('service');

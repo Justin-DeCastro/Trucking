@@ -2,7 +2,55 @@
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
 
 @include('Components.Home.Header')
+<style>
+    .tracking {
+        background: linear-gradient(to right, #f7f7f7, #e0e0e0);
+        padding: 60px 0;
+        color: #333;
+        font-family: Arial, sans-serif;
+    }
 
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .status {
+        background: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 20px 0;
+    }
+
+    .status p {
+        font-size: 1.125rem;
+        margin: 10px 0;
+        color: #555;
+    }
+
+    .status p strong {
+        color: #333;
+    }
+
+    .error {
+        color: #e74c3c;
+        font-size: 1.125rem;
+        background: #fbe9e7;
+        border: 1px solid #f5c6c6;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 20px 0;
+    }
+</style>
 <body>
 
     <div class="preloader">
@@ -59,29 +107,19 @@
     </section>
 
     <section class="tracking py-120">
-        <div class="container">
-            <div class="section-heading">
-                <h3 class="section-heading__title">Order Tracking</h3>
-                <p class="section-heading__desc">
-                    Provides specialized delivery services for packages, documents, and other items from one location to
-                    another.
-                </p>
+    <div class="container">
+        <h1>Track Booking Result</h1>
+
+        @if(isset($location) && isset($order_status))
+            <div class="status">
+                <p><strong>Location:</strong> {{ $location }}</p>
+                <p><strong>Order Status:</strong> {{ $order_status }}</p>
             </div>
-            <div class="track-form">
-            <form action="{{ route('track.booking') }}" method="get">
-    <div class="input-group form-group flex-align mb-0">
-        <input class="form-control form--control" name="trackingNumber" type="text" placeholder="Enter Your Tracking Number" required>
-        <button class="input-group-text btn btn--base" type="submit">
-            <span class="btn--icon"> <i class="icon-Product-Box"> </i> </span>
-            Track Now
-        </button>
+        @else
+            <p class="error">{{ $error ?? 'Tracking number not found.' }}</p>
+        @endif
     </div>
-</form>
-
-</div>
-
-        </div>
-    </section>
+</section>
 
 
 

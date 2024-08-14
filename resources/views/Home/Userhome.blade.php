@@ -81,14 +81,14 @@
     
     
     <section class="banner-section bg-img mb-60"
-    data-background-image="https://script.viserlab.com/courierlab/demo/assets/images/frontend/banner/666d57628d7b71718441826.jpg">
+    data-background-image="Home/remove.png">
     <div class="h-100 container">
         <div class="row h-100">
             <div class="col-xl-5 col-lg-6">
                 <div class="banner-content">
                     <h1 class="banner-content__title">We Provide Best Dispatch &amp; Parcel Service</h1>
                     <div class="banner-content__button d-flex align-items-center gap-3">
-                        <a class="btn btn--base" href="order/tracking">
+                        <a class="btn btn--base" href="ordertracking">
                             <span class="btn--icon"><i class="icon-View-More"></i></span>
                             Track Your Order
                         </a>
@@ -124,11 +124,13 @@
                 </div>
             </div>
             <div class="col-xl-7 col-lg-6">
-                <div class="banner-thumb h-100">
-                    <span class="img">
-                        <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/banner/666d5762dc38a1718441826.png" alt="banner-thumb">
-                    </span>
-                </div>
+            <div class="">
+    <span class="img">
+        <img src="Home/remove.png" alt="banner-thumb" style="height: 500px; width: 1500px;">
+    </span>
+</div>
+
+
             </div>
         </div>
     </div>
