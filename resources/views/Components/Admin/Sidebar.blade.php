@@ -56,6 +56,12 @@
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">
+                        <a href="addtruck" class="nav-link ">
+                            <i class="menu-icon las la-fax"></i>
+                            <span class="menu-title">Add Vehicle</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item ">
                         <a href="managecourier" class="nav-link ">
                             <i class="menu-icon las la-fax"></i>
                             <span class="menu-title">Manage Courier</span>
@@ -162,54 +168,54 @@
                         </div>
                     </li>
                     <li class="sidebar-menu-item ">
-                        <a href="generalsetting" class="nav-link ">
+                        <!-- <a href="generalsetting" class="nav-link ">
                             <i class="menu-icon las la-life-ring"></i>
                             <span class="menu-title">System Setting</span>
-                        </a>
+                        </a> -->
                     </li>
                     <li class="sidebar-menu-item sidebar-dropdown">
-                        <a href="javascript:void(0)" class="">
+                        <!-- <a href="javascript:void(0)" class="">
                             <i class="menu-icon la la-server"></i>
                             <span class="menu-title">Extra</span>
-                        </a>
+                        </a> -->
                         <div class="sidebar-submenu  ">
                             <ul>
                                 <li class="sidebar-menu-item  ">
-                                    <a href="https://script.viserlab.com/courierlab/demo/admin/system/info"
+                                    <!-- <a href="https://script.viserlab.com/courierlab/demo/admin/system/info"
                                         class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
                                         <span class="menu-title">Application</span>
-                                    </a>
+                                    </a> -->
                                 </li>
                                 <li class="sidebar-menu-item  ">
-                                    <a href="https://script.viserlab.com/courierlab/demo/admin/system/server-info"
+                                    <!-- <a href="https://script.viserlab.com/courierlab/demo/admin/system/server-info"
                                         class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
                                         <span class="menu-title">Server</span>
-                                    </a>
+                                    </a> -->
                                 </li>
                                 <li class="sidebar-menu-item  ">
-                                    <a href="https://script.viserlab.com/courierlab/demo/admin/system/optimize"
+                                    <!-- <a href="https://script.viserlab.com/courierlab/demo/admin/system/optimize"
                                         class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
                                         <span class="menu-title">Cache</span>
-                                    </a>
+                                    </a> -->
                                 </li>
                                 <li class="sidebar-menu-item  ">
-                                    <a href="https://script.viserlab.com/courierlab/demo/admin/system/system-update"
+                                    <!-- <a href="https://script.viserlab.com/courierlab/demo/admin/system/system-update"
                                         class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
                                         <span class="menu-title">Update</span>
-                                    </a>
+                                    </a> -->
                                 </li>
                             </ul>
                         </div>
                     </li>
                     <li class="sidebar-menu-item ">
-                        <a href="https://script.viserlab.com/courierlab/demo/admin/request-report" class="nav-link ">
+                        <!-- <a href="https://script.viserlab.com/courierlab/demo/admin/request-report" class="nav-link ">
                             <i class="menu-icon las la-bug"></i>
                             <span class="menu-title">Report &amp; Request</span>
-                        </a>
+                        </a> -->
                     </li>
                 </ul>
             </div>

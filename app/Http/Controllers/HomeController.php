@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Vehicle;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -30,7 +30,11 @@ class HomeController extends Controller
     public function contact(){
         return view('Home.Contact');
     }
-    public function appointment(){
-        return view('Home.Appointment');
+    public function appointment()
+    {
+        $vehicles = Vehicle::where('truck_status', 'Available')->get();
+        
+        return view('Home.Appointment', compact('vehicles'));
     }
+    
 }

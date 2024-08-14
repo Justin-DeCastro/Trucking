@@ -6,6 +6,7 @@ use App\Models\BranchManager;
 use App\Models\Booking;
 use App\Models\Driver;
 use App\Models\User;
+use App\Models\Vehicle;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -89,6 +90,10 @@ public function courier_order()
     $bookings = Booking::where('driver_id', $currentCourier->id)->get();
 
     return view('Admin.ManageCourierOrder', compact('bookings', 'drivers'));
+}
+public function addtruck(){
+    $vehicles = Vehicle::all(); 
+    return view('Admin.Addtruck',compact('vehicles'));
 }
 }
 

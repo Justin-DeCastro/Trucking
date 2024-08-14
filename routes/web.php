@@ -10,6 +10,7 @@ use App\Http\Controllers\BranchManagerController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\AccountingController;
+use App\Http\Controllers\VehicleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -64,6 +65,7 @@ Route::get('allticket', [AdminController::class, 'all_ticket'])->name('allticket
 Route::get('loginhistory', [AdminController::class, 'login_history'])->name('loginhistory');
 Route::get('notificationhistory', [AdminController::class, 'notification_history'])->name('notificationhistory');
 Route::get('manageappointment', [AdminController::class, 'manage_appointment'])->name('manageappointment');
+Route::get('addtruck', [AdminController::class, 'addtruck'])->name('addtruck');
 
 //login and register
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -126,6 +128,18 @@ Route::post('/bookings/{booking}/update-location-status', [BookingController::cl
 //payment status
 // web.php
 Route::put('/bookings/{booking}/update-payment-status', [BookingController::class, 'updatePaymentStatus'])->name('update.payment.status');
+
+//vehicle store
+Route::post('/vehicles', [VehicleController::class, 'store'])->name('vehicles.store');
+Route::get('vehicles/{vehicle}/edit', [VehicleController::class, 'edit'])->name('vehicles.edit');
+
+// Route for updating an existing vehicle
+Route::put('/vehicles/{id}', [VehicleController::class, 'update'])->name('vehicles.update');
+
+
+// Route for deleting a vehicle
+Route::delete('vehicles/{vehicle}', [VehicleController::class, 'destroy'])->name('vehicles.destroy');
+Route::post('/update-actual-weight/{id}', [BookingController::class, 'updateActualWeight'])->name('update.actual.weight');
 
 
 

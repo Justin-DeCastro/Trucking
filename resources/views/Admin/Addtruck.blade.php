@@ -1,317 +1,266 @@
 <!-- meta tags and other links -->
 <!DOCTYPE html>
 <html lang="en">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Include SweetAlert2 CSS (optional) -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <!-- Include jQuery -->
 
 @include('Components.Admin.Header')
 
 <body>
 
 
-    <div class="page-wrapper default-version">
+    @include('Components.Admin.Sidebar')
+    <!-- sidebar end -->
 
-        @include('Components.Admin.Sidebar')
-        <!-- sidebar end -->
-
-        <!-- navbar-wrapper start -->
-        <nav class="navbar-wrapper bg--dark d-flex flex-wrap">
-            <div class="navbar__left">
-                <button type="button" class="res-sidebar-open-btn me-3"><i class="las la-bars"></i></button>
-                <form class="navbar-search">
-                    <input type="search" name="#0" class="navbar-search-field" id="searchInput" autocomplete="off"
-                        placeholder="Search here...">
-                    <i class="las la-search"></i>
-                    <ul class="search-list"></ul>
-                </form>
-            </div>
-            <div class="navbar__right">
-                <ul class="navbar__action-list">
-                    <li>
-                        <button type="button" class="primary--layer" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                            title="Visit Website">
-                            <a href="https://script.viserlab.com/courierlab/demo" target="_blank"><i
-                                    class="las la-globe"></i></a>
-                        </button>
-                    </li>
-                    <li class="dropdown">
-                        <button type="button" class="primary--layer notification-bell" data-bs-toggle="dropdown"
-                            data-display="static" aria-haspopup="true" aria-expanded="false">
-                            <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unread Notifications">
-                                <i class="las la-bell "></i>
-                            </span>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu--md p-0 border-0 box--shadow1 dropdown-menu-right">
-                            <div class="dropdown-menu__header">
-                                <span class="caption">Notification</span>
-                            </div>
-                            <div class="dropdown-menu__body  d-flex justify-content-center align-items-center ">
-                                <div class="empty-notification text-center">
-                                    <img src="" alt="empty">
-                                    <p class="mt-3">No unread notification found</p>
-                                </div>
-                            </div>
-                            <div class="dropdown-menu__footer">
-                                <a href="" class="view-all-message">View all notifications</a>
+    <!-- navbar-wrapper start -->
+    <nav class="navbar-wrapper bg--dark d-flex flex-wrap">
+        <div class="navbar__left">
+            <button type="button" class="res-sidebar-open-btn me-3"><i class="las la-bars"></i></button>
+            <form class="navbar-search">
+                <input type="search" name="#0" class="navbar-search-field" id="searchInput" autocomplete="off"
+                    placeholder="Search here...">
+                <i class="las la-search"></i>
+                <ul class="search-list"></ul>
+            </form>
+        </div>
+        <div class="navbar__right">
+            <ul class="navbar__action-list">
+                <li>
+                    <button type="button" class="primary--layer" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                        title="Visit Website">
+                        <a href="https://script.viserlab.com/courierlab/demo" target="_blank"><i
+                                class="las la-globe"></i></a>
+                    </button>
+                </li>
+                <li class="dropdown">
+                    <button type="button" class="primary--layer notification-bell" data-bs-toggle="dropdown"
+                        data-display="static" aria-haspopup="true" aria-expanded="false">
+                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unread Notifications">
+                            <i class="las la-bell "></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu--md p-0 border-0 box--shadow1 dropdown-menu-right">
+                        <div class="dropdown-menu__header">
+                            <span class="caption">Notification</span>
+                        </div>
+                        <div class="dropdown-menu__body  d-flex justify-content-center align-items-center ">
+                            <div class="empty-notification text-center">
+                                <img src="https://script.viserlab.com/courierlab/demo/assets/images/empty_list.png"
+                                    alt="empty">
+                                <p class="mt-3">No unread notification found</p>
                             </div>
                         </div>
-                    </li>
-                    <li>
-                        <button type="button" class="primary--layer" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                            title="System Setting">
-                            <a href=""><i class="las la-wrench"></i></a>
-                        </button>
-                    </li>
-                    <li class="dropdown d-flex profile-dropdown">
-                        <button type="button" data-bs-toggle="dropdown" data-display="static" aria-haspopup="true"
-                            aria-expanded="false">
-                            <span class="navbar-user">
-                                <span class="navbar-user__thumb"><img
-                                        src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/images/profile/667c14b5145fd1719407797.png"
-                                        alt="image"></span>
-                                <span class="navbar-user__info">
-                                    <span class="navbar-user__name">admin</span>
-                                </span>
-                                <span class="icon"><i class="las la-chevron-circle-down"></i></span>
-                            </span>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu--sm p-0 border-0 box--shadow1 dropdown-menu-right">
-                            <a href="" class="dropdown-menu__item d-flex align-items-center px-3 py-2">
-                                <i class="dropdown-menu__icon las la-user-circle"></i>
-                                <span class="dropdown-menu__caption">Profile</span>
-                            </a>
-
-                            <a href="" class="dropdown-menu__item d-flex align-items-center px-3 py-2">
-                                <i class="dropdown-menu__icon las la-key"></i>
-                                <span class="dropdown-menu__caption">Password</span>
-                            </a>
-
-                            <a href="https://script.viserlab.com/courierlab/demo/admin/logout"
-                                class="dropdown-menu__item d-flex align-items-center px-3 py-2">
-                                <i class="dropdown-menu__icon las la-sign-out-alt"></i>
-                                <span class="dropdown-menu__caption">Logout</span>
-                            </a>
-                        </div>
-                        <button type="button" class="breadcrumb-nav-open ms-2 d-none">
-                            <i class="las la-sliders-h"></i>
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <!-- navbar-wrapper end -->
-
-
-        <div class="container-fluid px-3 px-sm-0">
-            <div class="body-wrapper">
-                <div class="bodywrapper__inner">
-
-                    <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                        <h6 class="page-title">Manage Appointment</h6>
-                        <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                            <form class="d-flex flex-wrap gap-2">
-                                <div class="input-group w-auto flex-fill">
-                                    <input type="search" name="search" class="form-control bg--white"
-                                        placeholder="Search here..." value="">
-                                    <button class="btn btn--primary" type="submit"><i class="la la-search"></i></button>
-                                </div>
-                            </form>
+                        <div class="dropdown-menu__footer">
+                            <a href="https://script.viserlab.com/courierlab/demo/admin/notifications"
+                                class="view-all-message">View all notifications</a>
                         </div>
                     </div>
+                </li>
+                <li>
+                    <button type="button" class="primary--layer" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                        title="System Setting">
+                        <a href="https://script.viserlab.com/courierlab/demo/admin/system-setting"><i
+                                class="las la-wrench"></i></a>
+                    </button>
+                </li>
+                <li class="dropdown d-flex profile-dropdown">
+                    <button type="button" data-bs-toggle="dropdown" data-display="static" aria-haspopup="true"
+                        aria-expanded="false">
+                        <span class="navbar-user">
+                            <span class="navbar-user__thumb"><img
+                                    src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/images/profile/667c14b5145fd1719407797.png"
+                                    alt="image"></span>
+                            <span class="navbar-user__info">
+                                <span class="navbar-user__name">admin</span>
+                            </span>
+                            <span class="icon"><i class="las la-chevron-circle-down"></i></span>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu--sm p-0 border-0 box--shadow1 dropdown-menu-right">
+                        <a href="https://script.viserlab.com/courierlab/demo/admin/profile"
+                            class="dropdown-menu__item d-flex align-items-center px-3 py-2">
+                            <i class="dropdown-menu__icon las la-user-circle"></i>
+                            <span class="dropdown-menu__caption">Profile</span>
+                        </a>
 
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card">
-                                <div class="card-body p-0">
-                                    <div class="table-responsive--sm table-responsive">
-                                        <!-- Your existing table -->
-                                        <table class="table table--light style--two">
-                                            <thead>
-                                                <tr>
-                                                    <th>Sender Name</th>
-                                                    <th>Pick-up Address</th>
-                                                    <th>Sender Phone Number</th>
+                        <a href="https://script.viserlab.com/courierlab/demo/admin/password"
+                            class="dropdown-menu__item d-flex align-items-center px-3 py-2">
+                            <i class="dropdown-menu__icon las la-key"></i>
+                            <span class="dropdown-menu__caption">Password</span>
+                        </a>
 
-                                                    <th>Receiver Name</th>
-                                                    <th>Receiver Email</th>
-                                                    <th>Receiver Phone</th>                                           
-                                                    <th>Drop-off Address</th>
-                                                    <th>Truck Type</th>
-                                                    <th>Item List</th>
-                                                    
-                                                    <th>Tracking Number</th>
-                                                    <th>Amount</th>
-                                                    <th>Assigned Driver</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($bookings as $booking)
-                                                    <tr>
-                                                        <td>{{ $booking->sender_name }}</td>
-                                                        <td>{{ $booking->pickup_address }}</td>
-                                                        <td>{{ $booking->sender_phone }}</td>
-                                                        <td>{{ $booking->receiver_name }}</td>
-                                                        <td>{{ $booking->receiver_email }}</td>
-                                                        <td>{{ $booking->receiver_phone }}</td>
-                                                        <!-- <td>{{ \Carbon\Carbon::parse($booking->pickup_date)->format('d M Y') }} -->
-                                                     
-                                                     
-                                                        <td>{{ $booking->dropoff_address }}</td>
-                                                        <td>{{ $booking->truck_type }}</td>
-                                                        <td>
-    @if ($booking->item_list)
-        <img src="{{ asset($booking->item_list) }}" alt="Item List" style="max-width: 100px; max-height: 100px;">
-    @else
-        No image available
-    @endif
-</td>
-
-                                                  
-                                                        <td>{{ $booking->tracking_number }}</td>
-                                                        <td>₱{{ number_format((float) $booking->order_amount, 2, '.', ',') }}
-                                                        </td>
+                        <a href="https://script.viserlab.com/courierlab/demo/admin/logout"
+                            class="dropdown-menu__item d-flex align-items-center px-3 py-2">
+                            <i class="dropdown-menu__icon las la-sign-out-alt"></i>
+                            <span class="dropdown-menu__caption">Logout</span>
+                        </a>
+                    </div>
+                    <button type="button" class="breadcrumb-nav-open ms-2 d-none">
+                        <i class="las la-sliders-h"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- navbar-wrapper end -->
 
 
-                                                        <td>{{ $booking->driver ? $booking->driver->name : 'Not Assigned' }}
-                                                        </td>
+    <div class="container-fluid px-3 px-sm-0">
+        <div class="body-wrapper">
+            <div class="bodywrapper__inner">
 
-                                                        <!-- Button to open the modal -->
-                                                        <td>
-                                                            <!-- Button to open the modal for assigning a driver -->
-                                                            <button type="button" data-bs-toggle="modal"
-                                                                data-bs-target="#assignDriverModal{{ $booking->id }}">Assign
-                                                                Driver</button>
-
-                                                            <!-- Button to open the modal for setting the order amount -->
-                                                            <button type="button" class="btn btn-primary"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#setOrderAmountModal{{ $booking->id }}">
-                                                                Set Order Amount
-                                                            </button>
-                                                        </td>
-
-
-
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                        <!-- Modal for assigning driver -->
-                                        @foreach($bookings as $booking)
-                                            <div class="modal fade" id="assignDriverModal{{ $booking->id }}" tabindex="-1"
-                                                aria-labelledby="assignDriverModalLabel{{ $booking->id }}"
-                                                aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title"
-                                                                id="assignDriverModalLabel{{ $booking->id }}">Assign Driver
-                                                            </h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                        </div>
-                                                        <form action="{{ route('bookings.assignDriver', $booking->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('PATCH')
-                                                            <div class="modal-body">
-                                                                <div class="mb-3">
-                                                                    <label for="driver_id" class="form-label">Select
-                                                                        Driver</label>
-                                                                    <select id="driver_id" name="driver_id"
-                                                                        class="form-select">
-                                                                        @foreach($drivers as $driver)
-                                                                            <option value="{{ $driver->id }}">
-                                                                                {{ $driver->name }}
-                                                                            </option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-bs-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary">Assign
-                                                                    Driver</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-
-
-                                        @foreach($bookings as $booking)
-                                            <!-- Modal for setting order amount -->
-                                            <div class="modal fade" id="setOrderAmountModal{{ $booking->id }}" tabindex="-1"
-                                                aria-labelledby="setOrderAmountModalLabel{{ $booking->id }}"
-                                                aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title"
-                                                                id="setOrderAmountModalLabel{{ $booking->id }}">Set Order
-                                                                Amount</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <!-- Form for setting the order amount -->
-                                                            <form action="{{ route('orderamount.updateSingle') }}"
-                                                                method="POST" style="margin-bottom: 20px;">
-                                                                @csrf
-                                                                <input type="hidden" name="booking_id"
-                                                                    value="{{ $booking->id }}">
-                                                                <div class="form-group">
-                                                                    <label for="order_amount_{{ $booking->id }}">Order
-                                                                        Amount for Booking {{ $booking->id }}</label>
-                                                                    <input type="number" name="order_amount"
-                                                                        id="order_amount_{{ $booking->id }}"
-                                                                        class="form-control"
-                                                                        value="{{ old('order_amount.' . $booking->id, $booking->order_amount) }}"
-                                                                        step="0.01" required>
-                                                                    @error('order_amount')
-                                                                        <div class="text-danger">{{ $message }}</div>
-                                                                    @enderror
-                                                                </div>
-                                                                <button type="submit" class="btn btn-primary">Update
-                                                                    Amount</button>
-                                                            </form>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-
-
-
-                                    </div>
-                                </div>
-                            </div><!-- card end -->
-                        </div>
+                <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
+                    <h6 class="page-title">All Admin</h6>
+                    <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
+                    <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal" data-bs-target="#manageAdmin">
+    <i class="las la-plus"></i> Add New
+</button>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body p-0">
+                                <div class="table-responsive--md table-responsive">
+                                <table class="table--light style--two table">
+                                <thead>
+                        <tr>
+                            <th>Vehicle Name</th>
+                            <th>Vehicle Capacity</th>
+                            <th>Vehicle Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($vehicles as $vehicle)
+                            <tr>
+                                <td>{{ $vehicle->truck_name }}</td>
+                                <td>{{ $vehicle->truck_capacity }}</td>
+                                <td>{{ $vehicle->truck_status }}</td>
+                                <td>
+                                    <!-- Edit Button -->
+                                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editJobModal{{ $vehicle->id }}" data-id="{{ $vehicle->id }}" data-truck-name="{{ $vehicle->truck_name }}" data-truck-capacity="{{ $vehicle->truck_capacity }}" data-truck-status="{{ $vehicle->truck_status }}">Edit</button>
+
+
+                                    <!-- Delete Button -->
+                                    <button type="button" class="btn btn-danger btn-delete"
+        data-bs-toggle="modal" data-bs-target="#confirmationModal"
+        data-url="{{ route('vehicles.destroy', $vehicle->id) }}">
+    Delete
+</button>
+
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
-
     </div>
-    <script>
-        function formatCurrency(input) {
-            // Remove non-numeric characters except for the decimal point
-            let value = input.value.replace(/[^0-9.]/g, '');
 
-            // Convert to a number and format with commas
-            if (value) {
-                value = parseFloat(value).toFixed(2); // Ensure two decimal places
-                const parts = value.split('.');
-                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Add commas
-                input.value = `₱${parts.join('.')}`; // Add peso sign
-            }
-        }
-    </script>
+    <!-- Create Vehicle Modal -->
+    <div class="modal fade" id="manageAdmin" tabindex="-1" aria-labelledby="manageAdminLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="manageAdminLabel">Create Vehicle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('vehicles.store') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="new_truck_name" class="form-label">Vehicle Name</label>
+                        <input type="text" id="new_truck_name" name="truck_name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_truck_capacity" class="form-label">Vehicle Capacity</label>
+                        <input type="text" id="new_truck_capacity" name="truck_capacity" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_truck_status" class="form-label">Vehicle Status</label>
+                        <input type="text" id="new_truck_status" name="truck_status" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <!-- Update Vehicle Modal -->
+    @foreach($vehicles as $vehicle)
+<div class="modal fade" id="editJobModal{{ $vehicle->id }}" tabindex="-1" aria-labelledby="editJobModalLabel{{ $vehicle->id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editJobForm{{ $vehicle->id }}" method="POST" action="{{ route('vehicles.update', $vehicle->id) }}">
+                @csrf
+                @method('PUT')
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editJobModalLabel{{ $vehicle->id }}">Edit Vehicle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editLocation{{ $vehicle->id }}" class="form-label">Vehicle Name</label>
+                        <input type="text" class="form-control" id="editLocation{{ $vehicle->id }}" name="truck_name" value="{{ $vehicle->truck_name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editJobTitle{{ $vehicle->id }}" class="form-label">Vehicle Capacity</label>
+                        <input type="text" class="form-control" id="editJobTitle{{ $vehicle->id }}" name="truck_capacity" value="{{ $vehicle->truck_capacity }}" required>
+                    </div>
+                    <div class="mb-3">
+    <label for="editJobStatus{{ $vehicle->id }}" class="form-label">Vehicle Status</label>
+    <select class="form-control" id="editJobStatus{{ $vehicle->id }}" name="truck_status" required>
+        <option value="Available" {{ $vehicle->truck_status === 'Available' ? 'selected' : '' }}>Available</option>
+        <option value="Not Available" {{ $vehicle->truck_status === 'Not Available' ? 'selected' : '' }}>Not Available</option>
+    </select>
+</div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
+
+    <!-- Confirmation Modal -->
+    <!-- Confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this vehicle?
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" method="POST" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/jquery-3.7.1.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
@@ -321,7 +270,64 @@
     <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast.min.css" rel="stylesheet">
     <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast_custom.css" rel="stylesheet">
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/iziToast.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var deleteButtons = document.querySelectorAll('.btn-delete');
+        var deleteForm = document.getElementById('deleteForm');
 
+        deleteButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                var url = button.getAttribute('data-url');
+                deleteForm.setAttribute('action', url);
+            });
+        });
+    });
+</script>
+
+<script>
+    $('form[id^="editJobForm"]').on('submit', function(e) {
+    e.preventDefault();
+
+    var form = $(this);
+    var formData = new FormData(form[0]);
+    var jobId = form.attr('id').replace('editJobForm', '');
+
+    $.ajax({
+        url: form.attr('action'),
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: response.message,
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            }).then(() => {
+                $('#editJobModal' + jobId).modal('hide');
+                location.reload(); // Reload page or update table row
+            });
+        },
+        error: function(xhr, status, error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to update vehicle. Please try again.',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: true
+            });
+        }
+    });
+});
+
+</script>
     <script>
         "use strict";
         const colors = {
@@ -387,19 +393,6 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Example: Handle dynamic data or form submission
-            document.querySelectorAll('.btn-primary[data-bs-toggle="modal"]').forEach(button => {
-                button.addEventListener('click', function () {
-                    var bookingId = this.getAttribute('data-bs-target').replace('#setOrderAmountModal', '');
-                    // Optionally, you can perform actions here, such as setting initial values in the form.
-                    console.log('Opening modal for booking ID:', bookingId);
-                });
-            });
-        });
-    </script>
-
-    <script>
         "use strict";
         bkLib.onDomLoaded(function () {
             $(".nicEdit").each(function (index) {
@@ -462,27 +455,34 @@
     <script>
         (function ($) {
             "use strict";
-            $('.addNewBranch').on('click', function () {
-                $('.resetForm').trigger('reset');
-                $('#branchModel').modal('show');
-            });
-            $('.editBranch').on('click', function () {
-                let title = "Update Branch";
-                var modal = $('#branchModel');
-                let id = $(this).data('id');
+
+            $('.editBtn').on('click', function () {
+                let title = 'Update Admin'
                 let name = $(this).data('name');
+                let id = $(this).data('id');
+                let username = $(this).data('username');
                 let email = $(this).data('email');
-                let phone = $(this).data('phone');
-                let address = $(this).data('address');
+                let modal = $('#manageAdmin');
                 modal.find('.modal-title').text(title)
-                modal.find('input[name=id]').val(id);
                 modal.find('input[name=name]').val(name);
+                modal.find('input[name=id]').val(id);
+                modal.find('input[name=username]').val(username);
                 modal.find('input[name=email]').val(email);
-                modal.find('input[name=phone]').val(phone);
-                modal.find('input[name=address]').val(address);
+                modal.find('input[name="password"]').attr('required', false);
+                modal.find('input[name="password_confirmation"]').attr('required', false);
+                modal.find('.pass').addClass('d-none');
+                modal.find('.confirmPassword').addClass('d-none');
                 modal.modal('show');
             });
 
+            $('.addAdmin').on('click', function () {
+                let modal = $('#manageAdmin');
+                $('.resetForm').trigger('reset');
+                $(`input[name=id]`).val(0);
+                modal.find('.pass').removeClass('d-none');
+                modal.find('.confirmPassword').removeClass('d-none');
+                modal.modal('show')
+            });
         })(jQuery);
     </script>
     <script>
@@ -513,7 +513,13 @@
             </li>`
         }
     </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+<!-- Include SweetAlert2 JS (optional) -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 </body>
 
 </html>

@@ -88,7 +88,7 @@
                                     <table class="table table--light style--two">
     <thead>
         <tr>
-            <th>Customer Name</th>
+            <th>Sender Name</th>
             <th>Rider Responsible</th>
             <th>Date</th>
             <th>Income</th>
@@ -99,7 +99,7 @@
     <tbody>
         @foreach($bookings as $booking)
         <tr>
-            <td>{{ $booking->full_name }}</td>
+            <td>{{ $booking->sender_name }}</td>
             <td>{{ $booking->driver ? $booking->driver->name : 'Not Assigned' }}</td>
             <td>{{ \Carbon\Carbon::parse($booking->pickup_date)->format('d M Y') }}</td>
             <td>₱{{ number_format((float) $booking->order_amount, 2) }}</td>

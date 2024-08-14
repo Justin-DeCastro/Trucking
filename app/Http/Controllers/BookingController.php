@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\User;
+use App\Models\Vehicle;
 class BookingController extends Controller
 {
     // Show the booking form
@@ -49,32 +50,57 @@ class BookingController extends Controller
 
     // Handle form submission
     public function submitForm(Request $request)
-    {
-        // Validate the request
-        $validatedData = $request->validate([
-            'full_name' => 'required|string|max:255',
-            'receiver_name'=> 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
-            'pickup_date' => 'required|date',
-            'pickup_address' => 'required|string|max:255',
-            'dropoff_address' => 'required|string|max:255',
-            'item_list' => 'required|string',
-            'comments' => 'nullable|string',
-        ]);
-    
-        // Generate a unique tracking number
-        $trackingNumber = 'GPC-' . strtoupper(uniqid(mt_rand(), true));
-    
-        // Add the tracking number to the validated data
-        $validatedData['tracking_number'] = $trackingNumber;
-    
-        // Create a new booking
-        Booking::create($validatedData);
-    
-        // Redirect or respond as needed
-        return redirect()->back()->with('success', 'Booking submitted successfully! Tracking Number: ' . $trackingNumber);
+{
+    // Validate the request
+    $validatedData = $request->validate([
+        'sender_name' => 'required|string|max:255',
+        'pickup_address' => 'required|string|max:255',
+        'sender_phone' => 'required|string|max:255',
+        'item_list' => 'required|file|mimes:jpeg,png,jpg|max:2048',
+        'weight' => 'required|numeric',
+        'receiver_name' => 'required|string|max:255',
+        'receiver_email' => 'required|email|max:255',
+        'receiver_phone' => 'required|string|max:255',
+        'dropoff_address' => 'required|string|max:255',
+        'truck_type' => 'required|string|exists:vehicles,truck_name', // Validate as a string and ensure it exists
+    ]);
+
+    // Handle file upload for item_list
+    if ($request->hasFile('item_list')) {
+        $file = $request->file('item_list');
+        // Generate a unique filename
+        $filename = time() . '-' . $file->getClientOriginalName();
+        // Move the file to the public directory
+        $file->move(public_path('item_pictures'), $filename);
+        // Save the file path to the validated data
+        $validatedData['item_list'] = 'item_pictures/' . $filename; // Save relative path
     }
+
+    // Generate a unique tracking number
+    $trackingNumber = 'GPC-' . strtoupper(uniqid(mt_rand(), true));
+
+    // Add the tracking number to the validated data
+    $validatedData['tracking_number'] = $trackingNumber;
+
+    // Create a new booking
+    $booking = Booking::create($validatedData);
+
+    // Update the truck status
+    $truckName = $request->truck_type;
+    $truck = Vehicle::where('truck_name', $truckName)->first();
+
+    if ($truck) {
+        $truck->update([
+            'truck_status' => 'Not Available',
+        ]);
+    }
+
+    // Redirect or respond as needed
+    return redirect()->back()->with('success', 'Booking submitted successfully! Tracking Number: ' . $trackingNumber);
+}
+
+    
+    
     public function trackBooking(Request $request)
     {
         $trackingNumber = strtoupper($request->query('trackingNumber'));
@@ -131,7 +157,7 @@ public function updateOrderStatus(Request $request, Booking $booking)
 {
     // Validate the order status input
     $request->validate([
-        'order_status' => 'required|in:Pickup,Out For Delivery,Shipped,Delivered,Cancel,Waiting for Courier',
+        'order_status' => 'required|in:To Pick-up,Picked-up,In Transit,For Delivery,Delivered',
     ]);
 
     // Ensure the user is authorized to perform this action (if necessary)
@@ -163,6 +189,18 @@ public function updatePaymentStatus(Request $request, Booking $booking)
 
     // Redirect back with success message
     return redirect()->back()->with('success', 'Payment status updated successfully.');
+}
+public function updateActualWeight(Request $request, $id)
+{
+    $request->validate([
+        'actual_weight' => 'required|numeric|min:0',
+    ]);
+
+    $booking = Booking::findOrFail($id);
+    $booking->actual_weight = $request->input('actual_weight');
+    $booking->save();
+
+    return redirect()->back()->with('success', 'Actual weight updated successfully.');
 }
 
 
