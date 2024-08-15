@@ -15,6 +15,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\SubcontractorController;
 use App\Http\Controllers\DepositController;
 use App\Http\Controllers\WithdrawController;
+use App\Http\Controllers\LoanController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -77,6 +78,8 @@ Route::get('addproofpayment', [AccountingController::class, 'addproofpayment'])-
 Route::get('depositamount', [AccountingController::class, 'depositamount'])->name('depositamount');
 Route::post('depositamounts', [DepositController::class, 'store'])->name('deposit.store');
 Route::post('withdrawamounts', [WithdrawController::class, 'store'])->name('withdraw.store');
+Route::get('loanamount', [LoanController::class, 'loanamount'])->name('loanamount');
+Route::post('loanamount-store', [LoanController::class, 'store'])->name('loan.store');
 //login and register
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);

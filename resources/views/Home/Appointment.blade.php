@@ -97,80 +97,87 @@
             <p style="color: #666; font-size: 16px;">Fill out the form below to arrange for the transportation of your goods.</p>
         </div>
         <form action="{{ route('booking.submit') }}" method="post" enctype="multipart/form-data">
-            @csrf
+    @csrf
 
-            <!-- Sender Information -->
-            <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
-                <div style="flex: 1; min-width: 220px;">
-                    <label for="sender-name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Sender Name</label>
-                    <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="sender-name" name="sender_name" type="text" placeholder="Enter Sender's Name" required>
-                </div>
-                <div style="flex: 1; min-width: 220px;">
-                    <label for="pickup-address" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Pickup Address</label>
-                    <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="pickup-address" name="pickup_address" type="text" placeholder="Enter Pickup Address" required>
-                </div>
-                <div style="flex: 1; min-width: 220px;">
-                    <label for="sender-phone" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Sender Phone Number</label>
-                    <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="sender-phone" name="sender_phone" type="tel" placeholder="Enter Sender's Phone Number" required>
-                </div>
-            </div>
+    <!-- Sender Information -->
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
+        <div style="flex: 1; min-width: 220px;">
+            <label for="sender-name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Sender Name</label>
+            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="sender-name" name="sender_name" type="text" placeholder="Enter Sender's Name" required>
+        </div>
+        <div style="flex: 1; min-width: 220px;">
+            <label for="pickup-address" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Pickup Address</label>
+            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="pickup-address" name="pickup_address" type="text" placeholder="Enter Pickup Address" required>
+        </div>
+        <div style="flex: 1; min-width: 220px;">
+            <label for="sender-phone" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Sender Phone Number</label>
+            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="sender-phone" name="sender_phone" type="tel" placeholder="Enter Sender's Phone Number" required>
+        </div>
+    </div>
 
-            <!-- Item List and Weight -->
-            <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
-                <div style="flex: 1; min-width: 220px;">
-                    <label for="item-list" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Item List (Picture)</label>
-                    <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="item-list" name="item_list" type="file" accept="image/*" required>
-                </div>
-                <div style="flex: 1; min-width: 220px;">
-                    <label for="weight" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Est. Weight</label>
-                    <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="weight" name="weight" type="number" step="0.01" placeholder="Enter Weight (kg)" required>
-                </div>
-            </div>
+    <!-- Item List and Weight -->
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
+        <div style="flex: 1; min-width: 220px;">
+            <label for="item-list" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Item List (Picture)</label>
+            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="item-list" name="item_list" type="file" accept="image/*" required>
+        </div>
+        <div style="flex: 1; min-width: 220px;">
+            <label for="weight" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Est. Weight</label>
+            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="weight" name="weight" type="number" step="0.01" placeholder="Enter Weight (kg)" required>
+        </div>
+    </div>
 
-            <!-- Receiver Information -->
-            <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
-                <div style="flex: 1; min-width: 220px;">
-                    <label for="receiver-name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Receiver Name</label>
-                    <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="receiver-name" name="receiver_name" type="text" placeholder="Enter Receiver's Name" required>
-                </div>
-                <div style="flex: 1; min-width: 220px;">
-                    <label for="receiver-email" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Receiver Email</label>
-                    <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="receiver-email" name="receiver_email" type="email" placeholder="Enter Receiver's Email" required>
-                </div>
-                <div style="flex: 1; min-width: 220px;">
-                    <label for="receiver-phone" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Receiver Phone Number</label>
-                    <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="receiver-phone" name="receiver_phone" type="tel" placeholder="Enter Receiver's Phone Number" required>
-                </div>
-            </div>
+    <!-- List of Products -->
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
+        <div style="flex: 1; min-width: 220px;">
+            <label for="list-of-products" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">List of Products</label>
+            <textarea style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="list-of-products" name="list_of_products" placeholder="Enter List of Products" rows="4" required></textarea>
+        </div>
+    </div>
 
-            <!-- Drop-off Address -->
-            <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
-                <div style="flex: 1; min-width: 220px;">
-                    <label for="dropoff-address" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Drop-off Address</label>
-                    <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="dropoff-address" name="dropoff_address" type="text" placeholder="Enter Drop-off Address" required>
-                </div>
-            </div>
+    <!-- Receiver Information -->
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
+        <div style="flex: 1; min-width: 220px;">
+            <label for="receiver-name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Receiver Name</label>
+            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="receiver-name" name="receiver_name" type="text" placeholder="Enter Receiver's Name" required>
+        </div>
+        <div style="flex: 1; min-width: 220px;">
+            <label for="receiver-email" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Receiver Email</label>
+            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="receiver-email" name="receiver_email" type="email" placeholder="Enter Receiver's Email" required>
+        </div>
+        <div style="flex: 1; min-width: 220px;">
+            <label for="receiver-phone" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Receiver Phone Number</label>
+            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="receiver-phone" name="receiver_phone" type="tel" placeholder="Enter Receiver's Phone Number" required>
+        </div>
+    </div>
 
-            <!-- Truck Type -->
-            <div style="margin-bottom: 30px;">
-    <label for="truck-type" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Truck Type</label>
-    <select style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="truck-type" name="truck_type" required>
-        <option value="" disabled selected>Select Truck Type</option>
-        @foreach($vehicles as $vehicle)
-            <option value="{{ $vehicle->truck_name }}">{{ $vehicle->truck_name }} {{ $vehicle->truck_capacity }}</option>
-        @endforeach
-    </select>
-</div>
+    <!-- Drop-off Address -->
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
+        <div style="flex: 1; min-width: 220px;">
+            <label for="dropoff-address" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Drop-off Address</label>
+            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="dropoff-address" name="dropoff_address" type="text" placeholder="Enter Drop-off Address" required>
+        </div>
+    </div>
 
+    <!-- Truck Type -->
+    <div style="margin-bottom: 30px;">
+        <label for="truck-type" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Truck Type</label>
+        <select style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="truck-type" name="truck_type" required>
+            <option value="" disabled selected>Select Truck Type</option>
+            @foreach($vehicles as $vehicle)
+                <option value="{{ $vehicle->truck_name }}">{{ $vehicle->truck_name }} {{ $vehicle->truck_capacity }}</option>
+            @endforeach
+        </select>
+    </div>
 
+    <!-- Submit Button -->
+    <div style="text-align: center;">
+        <button style="padding: 12px 24px; background-color: #007bff; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background-color 0.3s ease;" type="submit">
+            Submit Booking
+        </button>
+    </div>
+</form>
 
-            <!-- Submit Button -->
-            <div style="text-align: center;">
-                <button style="padding: 12px 24px; background-color: #007bff; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background-color 0.3s ease;" type="submit">
-                    Submit Booking
-                </button>
-            </div>
-        </form>
     </div>
 </section>
 

@@ -34,6 +34,12 @@
                             </a>
                         </li>
                         <li class="sidebar-menu-item ">
+                            <a href="loanamount" class="nav-link ">
+                                <i class="menu-icon las la-shipping-fast"></i>
+                                <span class="menu-title">Loan</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item ">
                             <a href="sendcourier" class="nav-link ">
                                 <i class="menu-icon las la-shipping-fast"></i>
                                 <span class="menu-title">Send Courier</span>

@@ -125,12 +125,7 @@
 
                     </div>
                 </div>
-<!-- Display the overall Outstanding Balance -->
-<div class="overall-balance" >
-    <h4 style="color: #0000ff;">Outstanding Balance: {{ '₱' . number_format($outstandingBalance, 2) }}</h4>
-    
-    
-</div>
+
 <div class="dt-buttons btn-group d-flex justify-content-end gap-2 ">
 										<div class="dropdown">
 											<button type="button" class="btn btn-primary dropdown-toggle"
@@ -152,45 +147,86 @@
 
 </div>
 									 </div>
-<table class="jobOffersTable">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Particulars</th>
-                            <th>Deposit Amount</th>
-                            <th>Withdrawal Amount</th>
-                            <th>Notes</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($deposits as $deposit)
-                            <tr>
-                                <td>{{ $deposit->date }}</td>
-                                <td>{{ $deposit->particulars }}</td>
-                                <td>{{ '₱' . number_format($deposit->deposit_amount, 2) }}</td>
-                                <td>{{ $deposit->withdraw_amount }}</td>
-                                <td>{{ $deposit->notes }}</td>
-                                <td>
-                                    <!-- Actions for deposits -->
-                                </td>
-                            </tr>
-                        @endforeach
+                                     <table class="jobOffersTable">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Borrower</th>
+            <th>Initial Amount</th>
+            <th>Interest Rate (%)</th>
+            <th>Installment Payment (Per Month)</th>
+            <th>Payment Terms</th>
+            <th>Total Payment</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($loans as $loan)
+        @php
+    // Default values
+    $initialAmount = $loan->initial_amount;
+    $paymentTerms = $loan->payment_terms;
+    $interestRate = $loan->interest;
 
-                        @foreach($withdraws as $withdraw)
-                            <tr>
-                                <td>{{ $withdraw->date }}</td>
-                                <td>{{ $withdraw->particulars }}</td>
-                                <td></td>
-                                <td>{{ '₱' . number_format($withdraw->withdraw_amount, 2) }}</td>
-                                <td>{{ $withdraw->notes }}</td>
-                                <td>
-                                    <!-- Actions for withdrawals -->
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+    // Calculate monthly interest rate and number of payments
+    $monthlyInterestRate = $interestRate / 100 / 12;
+    $numberOfPayments = $paymentTerms;
+
+    // Initialize default values
+    $installmentPayment = 0;
+    $totalPayment = 0;
+
+    if ($numberOfPayments > 0 && $monthlyInterestRate > 0) {
+        // Calculate monthly payment using compound interest formula
+        $installmentPayment = ($initialAmount * $monthlyInterestRate * pow(1 + $monthlyInterestRate, $numberOfPayments)) / (pow(1 + $monthlyInterestRate, $numberOfPayments) - 1);
+        $totalPayment = $installmentPayment * $numberOfPayments;
+    } elseif ($numberOfPayments > 0) {
+        // Calculate simple payment if interest rate is 0
+        $installmentPayment = $initialAmount / $numberOfPayments;
+        $totalPayment = $initialAmount;
+    }
+
+    // Format values with commas as thousands separators
+    $formattedInitialAmount = number_format($initialAmount, 2, '.', ',');
+    $formattedInstallmentPayment = number_format($installmentPayment, 2, '.', ',');
+    $formattedTotalPayment = number_format($totalPayment, 2, '.', ',');
+@endphp
+
+            <tr>
+            <td>{{ $loan->date->format('F d, Y') }}</td>
+
+                <td>{{ $loan->borrower }}</td>
+                <td>₱{{ $formattedInitialAmount }}</td>
+                <td>
+                    <input type="number" class="form-control interest-input" 
+                           data-loan-id="{{ $loan->id }}" 
+                           data-initial-amount="{{ $initialAmount }}" 
+                           data-payment-terms="{{ $paymentTerms }}" 
+                           value="{{ $interestRate }}" 
+                           step="0.01" 
+                           min="0">
+                </td>
+                <td id="installment-{{ $loan->id }}">₱{{ $formattedInstallmentPayment }}</td>
+                <td>
+                    <select class="form-control payment-terms-dropdown" 
+                            data-loan-id="{{ $loan->id }}" 
+                            data-initial-amount="{{ $initialAmount }}" 
+                            data-interest="{{ $interestRate }}">
+                        @for($i = 1; $i <= 12; $i++)
+                            <option value="{{ $i }}" {{ $i == $paymentTerms ? 'selected' : '' }}>
+                                {{ $i }} month{{ $i > 1 ? 's' : '' }}
+                            </option>
+                        @endfor
+                    </select>
+                </td>
+                <td id="total-{{ $loan->id }}">₱{{ $formattedTotalPayment }}</td>
+                <td>
+                    <!-- Add action buttons (Edit, Delete, etc.) here -->
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
 
 
 
@@ -204,30 +240,24 @@
                 <h5 class="modal-title" id="manageSubcontractorLabel">Deposit</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('deposit.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('loan.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="modal-body">
         <div class="row mb-3">
             <div class="col-md-6">
-                <label for="amount" class="form-label">Date</label>
+                <label for="date" class="form-label">Date</label>
                 <input type="date" id="date" name="date" class="form-control" required>
             </div>
             <div class="col-md-6">
-                <label for="particulars" class="form-label">Particulars</label>
-                <input type="text" id="particulars" name="particulars" class="form-control" required>
+                <label for="borrower" class="form-label">Borrower</label>
+                <input type="text" id="borrower" name="borrower" class="form-control" required>
             </div>
             <div class="col-md-6">
-                <label for="deposit_amount" class="form-label">Deposit Amount</label>
-                <input type="number" id="deposit_amount" name="deposit_amount" class="form-control" placeholder="Enter Amount"required>
+                <label for="initial_amount" class="form-label">Initial Amount</label>
+                <input type="number" id="initial_amount" name="initial_amount" class="form-control" placeholder="Enter Amount" required>
             </div>
-            <div class="col-md-6">
-                <label for="withdraw_amount" class="form-label">Withdraw Amount</label>
-                <input type="text" id="withdraw_amount"  class="form-control" required readonly>
-            </div>
-            <div class="col-md-6">
-                <label for="notes" class="form-label">Notes</label>
-                <input type="text" id="notes" name="notes" class="form-control" required>
-            </div>
+            
+
             
         </div>
     </div>
@@ -236,6 +266,7 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
     </div>
 </form>
+
 
         </div>
     </div>
@@ -336,6 +367,41 @@
                 deleteForm.setAttribute('action', url);
             });
         });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function updateCalculations() {
+            document.querySelectorAll('.interest-input, .payment-terms-dropdown').forEach(function (element) {
+                const loanId = element.getAttribute('data-loan-id');
+                const initialAmount = parseFloat(element.getAttribute('data-initial-amount'));
+                const paymentTermsDropdown = document.querySelector(`.payment-terms-dropdown[data-loan-id="${loanId}"]`);
+                const paymentTerms = parseInt(paymentTermsDropdown.value, 10);
+                const interestInput = document.querySelector(`.interest-input[data-loan-id="${loanId}"]`);
+                const interestRate = parseFloat(interestInput.value) || 0; // Handle empty or invalid input
+                
+                if (paymentTerms > 0) {
+                    const totalInterest = initialAmount * (interestRate / 100) * paymentTerms;
+                    const totalPayment = initialAmount + totalInterest;
+                    const installmentPayment = totalPayment / paymentTerms;
+                    
+                    document.getElementById('total-' + loanId).textContent = '₱' + totalPayment.toFixed(2);
+                    document.getElementById('installment-' + loanId).textContent = '₱' + installmentPayment.toFixed(2);
+                } else {
+                    document.getElementById('total-' + loanId).textContent = '₱' + initialAmount.toFixed(2);
+                    document.getElementById('installment-' + loanId).textContent = '₱0.00';
+                }
+            });
+        }
+
+        document.querySelectorAll('.interest-input, .payment-terms-dropdown').forEach(function (element) {
+            element.addEventListener('input', function () {
+                updateCalculations();
+            });
+        });
+
+        // Initialize calculations for all rows on page load
+        updateCalculations();
     });
 </script>
 <script>

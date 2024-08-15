@@ -54,6 +54,7 @@ class BookingController extends Controller
     // Validate the request
     $validatedData = $request->validate([
         'sender_name' => 'required|string|max:255',
+        'list_of_products' => 'required|string|max:255',
         'pickup_address' => 'required|string|max:255',
         'sender_phone' => 'required|string|max:255',
         'item_list' => 'required|file|mimes:jpeg,png,jpg|max:2048',

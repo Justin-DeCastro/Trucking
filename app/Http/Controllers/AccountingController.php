@@ -14,8 +14,20 @@ class AccountingController extends Controller
         return view('Accounting.Accountingdash');
     }
     public function addexpense(){
-        $expense = Expense::all(); 
-        return view('Accounting.AddExpense',compact('expense'));
+        $deposits = Deposit::all();
+        $withdraws = Withdraw::all();
+
+        // Calculate total deposit amount
+        $totalDeposits = $deposits->sum('deposit_amount');
+
+        // Calculate total withdrawal amount
+        $totalWithdrawals = $withdraws->sum('withdraw_amount');
+
+        // Calculate outstanding balance
+        $outstandingBalance = $totalDeposits - $totalWithdrawals;
+
+        // Pass the data to the view
+        return view('Accounting.AddExpense', compact('deposits', 'withdraws', 'outstandingBalance'));
     }
     public function all_courier(){
         return view('Accounting.AllCourier');
