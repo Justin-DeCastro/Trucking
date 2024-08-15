@@ -107,20 +107,48 @@
     </section>
 
     <section class="tracking py-120">
-    <div class="container">
-        <h1>Track Booking Result</h1>
+        <div class="container">
+            <h1>Track Booking Result</h1>
 
-        @if(isset($location) && isset($order_status))
-            <div class="status">
-                <p><strong>Location:</strong> {{ $location }}</p>
-                <p><strong>Order Status:</strong> {{ $order_status }}</p>
-                
-            </div>
-        @else
-            <p class="error">{{ $error ?? 'Tracking number not found.' }}</p>
-        @endif
-    </div>
-</section>
+            @if(isset($location) && isset($order_status))
+                <div class="status">
+                    <p><strong>Location:</strong> {{ $location }}</p>
+                    <p><strong>Order Status:</strong> {{ $order_status }}</p>
+
+                    <!-- Map Container -->
+                    <div id="map"></div>
+                </div>
+            @else
+                <p class="error">{{ $error ?? 'Tracking number not found.' }}</p>
+            @endif
+        </div>
+    </section>
+
+    <!-- Include Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-IhA4pI1twy7MJQbTy8wO2V7MA81QzF4zGFRO9jv7sYk=" crossorigin=""></script>
+
+    <script>
+        function initMap() {
+            @if(isset($location))
+                var location = '{{ $location }}'; // e.g., "37.7749,-122.4194"
+                var latLng = location.split(',');
+
+                var map = L.map('map').setView([parseFloat(latLng[0]), parseFloat(latLng[1])], 14);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                L.marker([parseFloat(latLng[0]), parseFloat(latLng[1])])
+                    .addTo(map)
+                    .bindPopup('Booking Location')
+                    .openPopup();
+            @endif
+        }
+
+        // Initialize map after window loads
+        window.onload = initMap;
+    </script>
 
 
 

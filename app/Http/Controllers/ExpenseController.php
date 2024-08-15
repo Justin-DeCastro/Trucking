@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use App\Models\Expense;
 use App\Models\Account;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -39,6 +40,32 @@ class ExpenseController extends Controller
     }
 
     // Optionally, you can add methods for editing and deleting expenses
+     public function submit(Request $request)
+    {
+        // Validate the request
+        $validator = Validator::make($request->all(), [
     
+            'date' => 'required|date',
+            'particulars' => 'required|string|max:255',
+            'expense_amount' => 'required|numeric|min:0',
+            'notes' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Create a new expense record
+        Expense::create([
+           
+            'date' => $request->input('date'),
+            'particulars' => $request->input('particulars'),
+            'expense_amount' => $request->input('expense_amount'),
+            'notes' => $request->input('notes'),
+        ]);
+
+        // Redirect or return response
+        return redirect()->back()->with('success', 'Expense recorded successfully!');
+    }
 }
 

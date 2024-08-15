@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="https://cdn.lineicons.com/2.0/LineIcons.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Other CSS files -->
 <div class="page-wrapper default-version">
 
     <div class="sidebar bg--dark">
@@ -11,38 +15,38 @@
                 <ul class="sidebar__menu">
                     <li class="sidebar-menu-item active">
                         <a href="admindash" class="nav-link ">
-                            <i class="menu-icon las la-home"></i>
+                        <i class="fa fa-home menu-icon"></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">
                         <a href="adminside" class="nav-link ">
-                            <i class="menu-icon las la-users"></i>
+                        <i class="fa fa-users menu-icon"></i>
                             <span class="menu-title">Admin</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item sidebar-dropdown">
                         <a href="javascript:void(0)" class="">
-                            <i class="menu-icon las la-code-branch"></i>
+                        <i class="fa fa-code-branch menu-icon"></i>
                             <span class="menu-title">Branch Control</span>
                         </a>
                         <div class="sidebar-submenu  ">
                             <ul>
                                 <li class="sidebar-menu-item  ">
                                     <a href="managebranch" class="nav-link">
-                                        <i class="menu-icon las la-dot-circle"></i>
+                                    <i class="fa fa-dot-circle menu-icon"></i>
                                         <span class="menu-title">Manage Branch</span>
                                     </a>
                                 </li>
                                 <li class="sidebar-menu-item  ">
                                     <a href="branchmanager" class="nav-link">
-                                        <i class="menu-icon las la-dot-circle"></i>
+                                    <i class="fa fa-dot-circle menu-icon"></i>
                                         <span class="menu-title">Branch Manager</span>
                                     </a>
                                 </li>
                                 <li class="sidebar-menu-item  ">
                                     <a href="branchincome" class="nav-link">
-                                        <i class="menu-icon las la-dot-circle"></i>
+                                    <i class="fa fa-dot-circle menu-icon"></i>
                                         <span class="menu-title">Branch Income</span>
                                     </a>
                                 </li>
@@ -51,43 +55,43 @@
                     </li>
                     <li class="sidebar-menu-item ">
                         <a href="addsubcon" class="nav-link ">
-                            <i class="menu-icon las la-fax"></i>
+                        <i class="fa fa-fax menu-icon"></i>
                             <span class="menu-title">Add Subcontractor</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">
                         <a href="add-driver" class="nav-link ">
-                            <i class="menu-icon las la-fax"></i>
+                        <i class="fa fa-fax menu-icon"></i>
                             <span class="menu-title">Add Driver</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">
                         <a href="addtruck" class="nav-link ">
-                            <i class="menu-icon las la-fax"></i>
+                        <i class="fa fa-fax menu-icon"></i>
                             <span class="menu-title">Add Vehicle</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">
                         <a href="managecourier" class="nav-link ">
-                            <i class="menu-icon las la-fax"></i>
+                        <i class="fa fa-fax menu-icon"></i>
                             <span class="menu-title">Manage Courier</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">
                         <a href="manageappointment" class="nav-link ">
-                            <i class="menu-icon las la-fax"></i>
+                        <i class="fa fa-fax menu-icon"></i>
                             <span class="menu-title">Manage Appointment</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">
                         <a href="stafflist" class="nav-link ">
-                            <i class="menu-icon las la-users-cog"></i>
+                        <i class="fa fa-users-cog menu-icon"></i>
                             <span class="menu-title">Staff List</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">
                         <a href="customerlist" class="nav-link ">
-                            <i class="menu-icon las la-user-friends"></i>
+                        <i class="fa fa-user-friends menu-icon"></i>
                             <span class="menu-title">Customer List</span>
                         </a>
                     </li>

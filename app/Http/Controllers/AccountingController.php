@@ -153,7 +153,10 @@ class AccountingController extends Controller
         $startingBalance = $accountId 
             ? StartingBalance::where('account_id', $accountId)->value('amount') 
             : 0;
-    
+            // $startingBalance = $accountId 
+            // ? StartingBalance::where('account_id', $accountId)->sum('amount') 
+            // : 0;
+        
         // Fetch transactions based on the selected account
         $transactions = $accountId
             ? Transaction::where('account_id', $accountId)->get()

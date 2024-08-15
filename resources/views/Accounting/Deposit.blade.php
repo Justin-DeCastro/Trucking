@@ -130,7 +130,10 @@
                 </div>
 <!-- Display the overall Outstanding Balance -->
 <div class="overall-balance" >
-    <h4 style="color: #0000ff;">Outstanding Balance: {{ '₱' . number_format($outstandingBalance, 2) }}</h4>
+    <h4 style="color: #0000ff;">Outstanding Balance: {{ '₱' . number_format($outstandingBalance, 2) }}</h4> 
+</div>
+<div class="overall-balance" >
+    <h4 style="color: #0000ff;">Total Expense: {{ '₱' . number_format($totalExpenses, 2) }}</h4>
     
     
 </div>

@@ -32,6 +32,7 @@ class HomeController extends Controller
     }
     public function appointment()
     {
+        
         $vehicles = Vehicle::where('truck_status', 'Available')->get();
         
         return view('Home.Appointment', compact('vehicles'));

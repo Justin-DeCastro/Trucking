@@ -14,7 +14,7 @@ class Expense extends Model
 
     // Define the fillable attributes
     protected $fillable = [
-        'account_id',
+    
         'date',
         'particulars',
         'expense_amount',
