@@ -105,6 +105,7 @@ class AccountingController extends Controller
     ? StartingBalance::where('account_id', $accountId)->value('amount') 
     : 0;
     // Fetch all accounts
+    $netIncome = $outstandingBalance - $totalWithdraw;
     $accounts = Account::all();
 
     // Return view with data
@@ -115,6 +116,7 @@ class AccountingController extends Controller
         'remainingBalance' => $remainingBalance,
         'startingBalance' => $startingBalance,
         'totalExpense' => $totalExpense,
+        'netIncome' => $netIncome,
    
     ]);
 }
@@ -139,7 +141,7 @@ class AccountingController extends Controller
     $totalWithdraw = $transactions->sum('withdraw_amount');
     $totalExpense = $transactions->sum('expense_amount');
     $remainingBalance = $outstandingBalance - ($totalWithdraw + $totalExpense);
-
+    $netIncome = $outstandingBalance - $totalWithdraw;
     // Return view with data
     return view('Accounting.Account_Accounting', [
         'accounts' => $accounts,
@@ -148,7 +150,7 @@ class AccountingController extends Controller
         'remainingBalance' => $remainingBalance,
         'startingBalance' => $startingBalance,
         'totalExpense' => $totalExpense,
-
+        'netIncome' => $netIncome,
     ]);
 }
 
