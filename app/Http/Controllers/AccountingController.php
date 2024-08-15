@@ -90,8 +90,9 @@ class AccountingController extends Controller
     public function total_sent(){
         return view('Accounting.TotalSent');
     }
-    public function account()
+    public function account(Request $request)
 {
+    $accountId = $request->input('account');
     // Fetch all transactions initially
     $transactions = Transaction::all();
 
@@ -100,7 +101,9 @@ class AccountingController extends Controller
     $totalWithdraw = $transactions->sum('withdraw_amount');
     $totalExpense = $transactions->sum('expense_amount');
     $remainingBalance = $outstandingBalance - ($totalWithdraw + $totalExpense);
-
+    $startingBalance = $accountId 
+    ? StartingBalance::where('account_id', $accountId)->value('amount') 
+    : 0;
     // Fetch all accounts
     $accounts = Account::all();
 
@@ -110,6 +113,9 @@ class AccountingController extends Controller
         'transactions' => $transactions,
         'outstandingBalance' => $outstandingBalance,
         'remainingBalance' => $remainingBalance,
+        'startingBalance' => $startingBalance,
+        'totalExpense' => $totalExpense,
+   
     ]);
 }
 
@@ -125,7 +131,9 @@ class AccountingController extends Controller
     $transactions = $accountId
         ? Transaction::where('account_id', $accountId)->get()
         : Transaction::all();
-
+        $startingBalance = $accountId 
+        ? StartingBalance::where('account_id', $accountId)->value('amount') 
+        : 0;
     // Calculate balances
     $outstandingBalance = $transactions->sum('deposit_amount');
     $totalWithdraw = $transactions->sum('withdraw_amount');
@@ -138,6 +146,9 @@ class AccountingController extends Controller
         'transactions' => $transactions,
         'outstandingBalance' => $outstandingBalance,
         'remainingBalance' => $remainingBalance,
+        'startingBalance' => $startingBalance,
+        'totalExpense' => $totalExpense,
+
     ]);
 }
 
