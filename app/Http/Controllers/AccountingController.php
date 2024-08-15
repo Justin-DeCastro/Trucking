@@ -143,39 +143,38 @@ class AccountingController extends Controller
 
     // Method to filter transactions based on account selection
     public function filter(Request $request)
-{
-    $accountId = $request->input('account');
-
-    // Fetch all accounts for the dropdown
-    $accounts = Account::all();
-
-    // Fetch the starting balance for the selected account
-    $startingBalance = $accountId 
-        ? StartingBalance::where('account_id', $accountId)->value('amount') 
-        : 0;
-
-    // Fetch transactions based on the selected account
-    $transactions = $accountId
-        ? Transaction::where('account_id', $accountId)->get()
-        : Transaction::all();
-
-    // Calculate balances
-    $outstandingBalance = $transactions->sum('deposit_amount') + $startingBalance;
-    $totalWithdraw = $transactions->sum('withdraw_amount');
-    $totalExpense = $transactions->sum('expense_amount');
-    $remainingBalance = $outstandingBalance - ($totalWithdraw + $totalExpense);
-
-    // Return view with data
-    return view('Accounting.Account_Accounting', [
-        'accounts' => $accounts,
-        'transactions' => $transactions,
-        'outstandingBalance' => $outstandingBalance,
-        'remainingBalance' => $remainingBalance,
-        'startingBalance' => $startingBalance,
-        'totalExpense' => $totalExpense,
-    ]);
-}
-
+    {
+        $accountId = $request->input('account');
+    
+        // Fetch all accounts for the dropdown
+        $accounts = Account::all();
+    
+        // Fetch the starting balance for the selected account
+        $startingBalance = $accountId 
+            ? StartingBalance::where('account_id', $accountId)->value('amount') 
+            : 0;
+    
+        // Fetch transactions based on the selected account
+        $transactions = $accountId
+            ? Transaction::where('account_id', $accountId)->get()
+            : Transaction::all();
+    
+        // Calculate balances
+        $outstandingBalance = $transactions->sum('deposit_amount') + $startingBalance;
+        $totalWithdraw = $transactions->sum('withdraw_amount');
+        $totalExpense = $transactions->sum('expense_amount');
+        $remainingBalance = $outstandingBalance - ($totalWithdraw + $totalExpense);
+    
+        // Return view with data
+        return view('Accounting.Account_Accounting', [
+            'accounts' => $accounts,
+            'transactions' => $transactions,
+            'outstandingBalance' => $outstandingBalance,
+            'remainingBalance' => $remainingBalance,
+            'totalExpense' => $totalExpense,
+            'startingBalance' => $startingBalance,
+        ]);
+    }
     
 public function update(Request $request, Transaction $transaction)
     {

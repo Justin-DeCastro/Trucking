@@ -39,5 +39,6 @@ class ExpenseController extends Controller
     }
 
     // Optionally, you can add methods for editing and deleting expenses
+    
 }
 

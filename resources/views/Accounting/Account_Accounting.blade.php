@@ -164,8 +164,9 @@
                 <div class="row mb-3">
                     <div class="col-md-4">
                     <div class="alert alert-info">
-                        <strong>Starting Balance:</strong> {{ number_format($startingBalance, 2) }}
-                    </div>
+    <strong>Starting Balance:</strong> {{ number_format($startingBalance, 2) }}
+</div>
+
                         <div class="alert alert-info">
                             <strong>Outstanding Balance:</strong> {{ number_format($outstandingBalance, 2) }}
                         </div>
