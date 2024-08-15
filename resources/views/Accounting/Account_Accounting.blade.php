@@ -163,9 +163,15 @@
                 <!-- Display the overall Outstanding Balance and Remaining Balance -->
                 <div class="row mb-3">
                     <div class="col-md-4">
+                    <div class="alert alert-info">
+                        <strong>Starting Balance:</strong> {{ number_format($startingBalance, 2) }}
+                    </div>
                         <div class="alert alert-info">
                             <strong>Outstanding Balance:</strong> {{ number_format($outstandingBalance, 2) }}
                         </div>
+                        <div class="alert alert-warning">
+                        <strong>Total Expense:</strong> {{ number_format($totalExpense, 2) }}
+                    </div>
                         <div class="alert alert-success">
                             <strong>Remaining Balance:</strong> {{ number_format($remainingBalance, 2) }}
                         </div>
@@ -514,46 +520,43 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" id="manageStartingBalance" tabindex="-1" aria-labelledby="manageExpenseLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="manageExpenseLabel">Expense</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <form action="{{ route('startingbalance.store') }}" method="POST">
-                                @csrf
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label for="account_id" class="form-label">Account</label>
-                                        <select id="account_id" name="account_id" class="form-select" required>
-                                            <option value="">Select Account</option>
-                                            @foreach($accounts as $account)
-                                                <option value="{{ $account->id }}">{{ $account->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('account_id')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                   
-                                    <div class="mb-3">
-                                        <label for="starting_balance" class="form-label">Starting Amount</label>
-                                        <input type="number" id="starting_balance" name="starting_balance" class="form-control" required>
-                                    </div>
-                                  
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                </div>
-                            </form>
-                        </div>
+              <!-- Starting Balance Modal -->
+<div class="modal fade" id="manageStartingBalance" tabindex="-1" aria-labelledby="manageStartingBalanceLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="manageStartingBalanceLabel">Add Starting Balance</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('startingbalance.store') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="account_id" class="form-label">Account</label>
+                        <select id="account_id" name="account_id" class="form-select" required>
+                            <option value="">Select Account</option>
+                            @foreach($accounts as $account)
+                                <option value="{{ $account->id }}">{{ $account->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('account_id')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="starting_balance" class="form-label">Starting Amount</label>
+                        <input type="number" id="starting_balance" name="starting_balance" class="form-control" required>
                     </div>
                 </div>
-            </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
+
 
 
 

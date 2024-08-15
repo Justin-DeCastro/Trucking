@@ -10,6 +10,7 @@ use App\Models\Deposit;
 use App\Models\Withdraw;
 use App\Models\Account;
 use App\Models\Transaction;
+use App\Models\StartingBalance;
 class AccountingController extends Controller
 {
     public function accounting_dash(){
@@ -44,13 +45,15 @@ class AccountingController extends Controller
     $withdraws = Withdraw::all();
     $expenses = Expense::all();
     $proofOfPayment = Transaction::all();
-    
+  // Fetching all starting balances
+
+
 
     // Calculate totals
     $totalDeposits = $deposits->sum('deposit_amount');
     $totalWithdrawals = $withdraws->sum('withdraw_amount');
     $totalExpenses = $expenses->sum('expense_amount');
-
+ 
     // Calculate outstanding balance
     
     $outstandingBalance = $totalDeposits - $totalWithdrawals;
@@ -146,13 +149,18 @@ class AccountingController extends Controller
     // Fetch all accounts for the dropdown
     $accounts = Account::all();
 
+    // Fetch the starting balance for the selected account
+    $startingBalance = $accountId 
+        ? StartingBalance::where('account_id', $accountId)->value('amount') 
+        : 0;
+
     // Fetch transactions based on the selected account
     $transactions = $accountId
         ? Transaction::where('account_id', $accountId)->get()
         : Transaction::all();
 
     // Calculate balances
-    $outstandingBalance = $transactions->sum('deposit_amount');
+    $outstandingBalance = $transactions->sum('deposit_amount') + $startingBalance;
     $totalWithdraw = $transactions->sum('withdraw_amount');
     $totalExpense = $transactions->sum('expense_amount');
     $remainingBalance = $outstandingBalance - ($totalWithdraw + $totalExpense);
@@ -163,8 +171,12 @@ class AccountingController extends Controller
         'transactions' => $transactions,
         'outstandingBalance' => $outstandingBalance,
         'remainingBalance' => $remainingBalance,
+        'startingBalance' => $startingBalance,
+        'totalExpense' => $totalExpense,
     ]);
 }
+
+    
 public function update(Request $request, Transaction $transaction)
     {
         $request->validate([
@@ -205,5 +217,23 @@ public function update(Request $request, Transaction $transaction)
         // Redirect with a success message
         return redirect()->back()->with('success', 'Transaction updated successfully.');
     }
-
+    public function startingbalance(Request $request)
+    {
+        $request->validate([
+            'account_id' => 'required|exists:accounts,id',
+            'starting_balance' => 'required|numeric|min:0',
+        ]);
+    
+        $accountId = $request->input('account_id');
+        $startingBalance = $request->input('starting_balance');
+    
+        // Assuming you have a StartingBalance model
+        StartingBalance::create([
+            'account_id' => $accountId,
+            'amount' => $startingBalance,
+        ]);
+    
+        return redirect()->route('filter.transactions')->with('success', 'Starting balance added successfully.');
+    }
+    
 }
