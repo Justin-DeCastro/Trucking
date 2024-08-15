@@ -19,6 +19,7 @@ use App\Http\Controllers\LoanController;
 use App\Http\Controllers\InController;
 use App\Http\Controllers\OutController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ProofPaymentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -162,7 +163,10 @@ Route::post('subcontractors', [SubcontractorController::class, 'store'])->name('
 
 //expense store
 Route::post('Expenses', [ExpenseController::class, 'store'])->name('expense.store');
+Route::post('totalExpenses', [ExpenseController::class, 'submit'])->name('totalexpense.store');
 
+//payment
+Route::post('uploadPayment', [ProofPaymentController::class, 'store'])->name('uploadpayment.store');
 //account
 Route::post('accounts', [AccountController::class, 'store'])->name('account.store');
 Route::post('deposit', [InController::class, 'store'])->name('deposit.store');
@@ -175,6 +179,8 @@ Route::put('/transactions/{transaction}', [AccountingController::class, 'update'
 // Route to delete a transaction
 Route::delete('/transactions/{transaction}', [AccountingController::class, 'destroy'])->name('transactions.destroy');
 
+//starting balance
+Route::post('/startingbalance', [AccountingController::class, 'startingbalance'])->name('startingbalance.store');
 
 
 

@@ -38,23 +38,28 @@ class AccountingController extends Controller
         return view('Accounting.ProofOfPayment');
     }
     public function depositamount()
-    {
-        // Fetch all deposits and withdrawals
-        $deposits = Deposit::all();
-        $withdraws = Withdraw::all();
+{
+    // Fetch all deposits, withdrawals, and expenses
+    $deposits = Deposit::all();
+    $withdraws = Withdraw::all();
+    $expenses = Expense::all();
+    $proofOfPayment = Transaction::all();
+    
 
-        // Calculate total deposit amount
-        $totalDeposits = $deposits->sum('deposit_amount');
+    // Calculate totals
+    $totalDeposits = $deposits->sum('deposit_amount');
+    $totalWithdrawals = $withdraws->sum('withdraw_amount');
+    $totalExpenses = $expenses->sum('expense_amount');
 
-        // Calculate total withdrawal amount
-        $totalWithdrawals = $withdraws->sum('withdraw_amount');
+    // Calculate outstanding balance
+    
+    $outstandingBalance = $totalDeposits - $totalWithdrawals;
+    $remainingBalance = $outstandingBalance - $totalExpenses;
 
-        // Calculate outstanding balance
-        $outstandingBalance = $totalDeposits - $totalWithdrawals;
+    // Pass the data to the view
+    return view('Accounting.Deposit', compact('deposits', 'withdraws', 'totalDeposits', 'totalWithdrawals', 'totalExpenses', 'remainingBalance', 'expenses' ,'outstandingBalance','proofOfPayment'));
+}
 
-        // Pass the data to the view
-        return view('Accounting.Deposit', compact('deposits', 'withdraws', 'outstandingBalance'));
-    }
 
     public function send_courier(){
         return view('Accounting.SendCourier');

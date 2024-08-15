@@ -18,6 +18,8 @@ class Transaction extends Model
         'withdraw_amount',
         'expense_amount',
         'notes',
+        'starting_balance',
+        'proof_of_payment',
     ];
 
     public function account(): BelongsTo

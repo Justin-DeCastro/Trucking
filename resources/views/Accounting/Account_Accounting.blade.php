@@ -5,6 +5,8 @@
 
     <!-- Include SweetAlert2 CSS (optional) -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+<!-- Fancybox CSS -->
+
 
     <!-- Include jQuery -->
 
@@ -134,6 +136,12 @@
                         <button class="btn btn-sm btn-outline--primary" type="button" data-bs-toggle="modal" data-bs-target="#manageExpense">
                             <i class="las la-minus"></i> Expense
                         </button>
+                        <button class="btn btn-sm btn-outline--primary" type="button" data-bs-toggle="modal" data-bs-target="#managePayment">
+                            <i class="las la-minus"></i> Proof of Payment
+                        </button>
+                        <button class="btn btn-sm btn-outline--primary" type="button" data-bs-toggle="modal" data-bs-target="#manageStartingBalance">
+                            <i class="las la-minus"></i> Add Starting Balance
+                        </button>
                     </div>
                 </div>
 
@@ -178,56 +186,67 @@
                         </div>
                     </div>
                 </div>
-                <table class="jobOffersTable">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Particulars</th>
-                            <th>Deposit Amount</th>
-                            <th>Withdrawal Amount</th>
-                            <th>Expense Amount</th>
-                            <th>Notes</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($transactions as $transaction)
-                            <tr>
-                                <td>{{ date('F d Y', strtotime($transaction->date)) }}</td>
-                                <td>{{ $transaction->particulars }}</td>
-                                <td>₱{{ number_format($transaction->deposit_amount, 2, '.', ',') }}</td>
-                                <td>₱{{ number_format($transaction->withdraw_amount, 2, '.', ',') }}</td>
-                                <td>₱{{ number_format($transaction->expense_amount, 2, '.', ',') }}</td>
-                                <td>{{ $transaction->notes }}</td>
-                                <td>
-                                    <!-- Update Action -->
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal"
-    data-id="{{ $transaction->id }}"
-    data-date="{{ $transaction->date }}"
-    data-particulars="{{ $transaction->particulars }}"
-    data-deposit="{{ $transaction->deposit_amount }}"
-    data-withdraw="{{ $transaction->withdraw_amount }}"
-    data-expense="{{ $transaction->expense_amount }}"
-    data-notes="{{ $transaction->notes }}">
-    Update
-</button>
+           <table class="jobOffersTable">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Particulars</th>
+            <th>Deposit Amount</th>
+            <th>Withdrawal Amount</th>
+            <th>Expense Amount</th>
+            <th>Proof of Payment</th>
+            <th>Notes</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse($transactions as $transaction)
+            <tr>
+                <td>{{ date('F d Y', strtotime($transaction->date)) }}</td>
+                <td>{{ $transaction->particulars }}</td>
+                <td>₱{{ number_format($transaction->deposit_amount, 2, '.', ',') }}</td>
+                <td>₱{{ number_format($transaction->withdraw_amount, 2, '.', ',') }}</td>
+                <td>₱{{ number_format($transaction->expense_amount, 2, '.', ',') }}</td>
+                <td>
+    @if($transaction->proof_of_payment)
+        <a href="{{ asset($transaction->proof_of_payment) }}" data-fancybox="gallery" data-caption="Proof of Payment">
+            <img src="{{ asset($transaction->proof_of_payment) }}" alt="Company Image" style="max-width: 100px;">
+        </a>
+    @else
+        No Proof Uploaded
+    @endif
+</td>
 
+                <td>{{ $transaction->notes }}</td>
+                <td>
+                    <!-- Update Action -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal"
+                        data-id="{{ $transaction->id }}"
+                        data-date="{{ $transaction->date }}"
+                        data-particulars="{{ $transaction->particulars }}"
+                        data-deposit="{{ $transaction->deposit_amount }}"
+                        data-withdraw="{{ $transaction->withdraw_amount }}"
+                        data-expense="{{ $transaction->expense_amount }}"
+                        data-notes="{{ $transaction->notes }}">
+                        Update
+                    </button>
 
-                                    <!-- Delete Action -->
-                                    <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7">No records found</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                    <!-- Delete Action -->
+                    <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="8">No records found</td>
+            </tr>
+        @endforelse
+    </tbody>
+</table>
+
 
                 <!-- Modal Structure -->
                 <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
@@ -398,6 +417,54 @@
                         </div>
                     </div>
                 </div>
+                <div class="modal fade" id="managePayment" tabindex="-1" aria-labelledby="manageWithdrawLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="manageWithdrawLabel">Proof of Payment   </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="{{ route('uploadpayment.store') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <div class="modal-body">
+        <div class="mb-3">
+            <label for="account_id" class="form-label">Account</label>
+            <select id="account_id" name="account_id" class="form-select" required>
+                <option value="">Select Account</option>
+                @foreach($accounts as $account)
+                    <option value="{{ $account->id }}">{{ $account->name }}</option>
+                @endforeach
+            </select>
+            @error('account_id')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <input type="date" id="date" name="date" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="particulars" class="form-label">Particulars</label>
+            <input type="text" id="particulars" name="particulars" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="notes" class="form-label">Notes</label>
+            <input type="text" id="notes" name="notes" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="proof_of_payment" class="form-label">Proof of Payment</label>
+            <input type="file" id="proof_of_payment" name="proof_of_payment" class="form-control" required>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    </div>
+</form>
+
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Expense Modal -->
                 <div class="modal fade" id="manageExpense" tabindex="-1" aria-labelledby="manageExpenseLabel" aria-hidden="true">
@@ -438,6 +505,43 @@
                                         <label for="notes" class="form-label">Notes</label>
                                         <input type="text" id="notes" name="notes" class="form-control">
                                     </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="manageStartingBalance" tabindex="-1" aria-labelledby="manageExpenseLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="manageExpenseLabel">Expense</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="{{ route('startingbalance.store') }}" method="POST">
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="account_id" class="form-label">Account</label>
+                                        <select id="account_id" name="account_id" class="form-select" required>
+                                            <option value="">Select Account</option>
+                                            @foreach($accounts as $account)
+                                                <option value="{{ $account->id }}">{{ $account->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('account_id')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                   
+                                    <div class="mb-3">
+                                        <label for="starting_balance" class="form-label">Starting Amount</label>
+                                        <input type="number" id="starting_balance" name="starting_balance" class="form-control" required>
+                                    </div>
+                                  
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -742,6 +846,11 @@ $(document).ready(function() {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.7.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.7.2/js/buttons.print.min.js"></script>
+    <!-- jQuery (required for Fancybox) -->
+
+<!-- Fancybox JS -->
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/fancybox.min.js"></script>
+
 </body>
 
 </html>

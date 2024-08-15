@@ -110,9 +110,20 @@
             <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="pickup-address" name="pickup_address" type="text" placeholder="Enter Pickup Address" required>
         </div>
         <div style="flex: 1; min-width: 220px;">
-            <label for="sender-phone" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Sender Phone Number</label>
-            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="sender-phone" name="sender_phone" type="tel" placeholder="Enter Sender's Phone Number" required>
-        </div>
+    <label for="sender-phone" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Sender Phone Number</label>
+    <input
+        style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+        id="sender-phone"
+        name="sender_phone"
+        type="number"
+        placeholder="Enter Sender's Phone Number"
+        required
+        maxlength="11"
+        pattern="\d{11}"
+        title="Please enter exactly 11 digits."
+    >
+</div>
+
     </div>
 
     <!-- Item List and Weight -->
@@ -124,6 +135,10 @@
         <div style="flex: 1; min-width: 220px;">
             <label for="weight" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Est. Weight</label>
             <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="weight" name="weight" type="number" step="0.01" placeholder="Enter Weight (kg)" required>
+        </div>
+        <div style="flex: 1; min-width: 220px;">
+            <label for="weight" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Quantity</label>
+            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="quantity" name="quantity" type="number" step="0.01" placeholder="Enter Quantity" required>
         </div>
     </div>
 
@@ -147,7 +162,19 @@
         </div>
         <div style="flex: 1; min-width: 220px;">
             <label for="receiver-phone" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Receiver Phone Number</label>
-            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="receiver-phone" name="receiver_phone" type="tel" placeholder="Enter Receiver's Phone Number" required>
+            <input
+        style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+        id="receiver-phone"
+        name="receiver_phone"
+        type="number"
+        placeholder="Enter Receiver's Phone Number"
+        required
+        maxlength="11"
+        pattern="\d{11}"
+        title="Please enter exactly 11 digits."
+    >
+
+
         </div>
     </div>
 

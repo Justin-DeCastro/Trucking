@@ -19,6 +19,7 @@ class Booking extends Model
         'pickup_address',
         'sender_phone',
         'item_list',
+        'quantity',
         'weight',
         'receiver_name',
         'receiver_email',

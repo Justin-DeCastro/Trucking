@@ -122,6 +122,9 @@
 <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal" data-bs-target="#manageWithdraw">
     <i class="las la-plus"></i> OUT
 </button>
+<button class="btn btn-sm btn-outline--primary" type="button" data-bs-toggle="modal" data-bs-target="#manageExpense">
+                            <i class="las la-minus"></i> Expense
+                        </button>
 
                     </div>
                 </div>
@@ -159,6 +162,7 @@
                             <th>Particulars</th>
                             <th>Deposit Amount</th>
                             <th>Withdrawal Amount</th>
+                            
                             <th>Notes</th>
                             <th>Actions</th>
                         </tr>
@@ -243,7 +247,42 @@
     </div>
 </div>
 
-
+<div class="modal fade" id="manageExpense" tabindex="-1" aria-labelledby="manageExpenseLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="manageExpenseLabel">Expense</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="{{ route('totalexpense.store') }}" method="POST">
+                                @csrf
+                                <div class="modal-body">
+                                    
+                                    <div class="mb-3">
+                                        <label for="date" class="form-label">Date</label>
+                                        <input type="date" id="date" name="date" class="form-control" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="particulars" class="form-label">Particulars</label>
+                                        <input type="text" id="particulars" name="particulars" class="form-control" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="expense_amount" class="form-label">Expense Amount</label>
+                                        <input type="number" id="expense_amount" name="expense_amount" class="form-control" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="notes" class="form-label">Notes</label>
+                                        <input type="text" id="notes" name="notes" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 <!-- withdrawal -->
 <div class="modal fade" id="manageWithdraw" tabindex="-1" aria-labelledby="manageSubcontractorLabel" aria-hidden="true">
     <div class="modal-dialog">

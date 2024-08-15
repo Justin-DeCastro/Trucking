@@ -59,6 +59,7 @@ class BookingController extends Controller
         'sender_phone' => 'required|string|max:255',
         'item_list' => 'required|file|mimes:jpeg,png,jpg|max:2048',
         'weight' => 'required|numeric',
+        'quantity' => 'required|numeric',
         'receiver_name' => 'required|string|max:255',
         'receiver_email' => 'required|email|max:255',
         'receiver_phone' => 'required|string|max:255',
