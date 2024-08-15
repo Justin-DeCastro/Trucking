@@ -372,7 +372,7 @@
                                         </span>
                                         <div class="widget-seven__description">
                                             <p class="widget-seven__content-title">All Courier</p>
-                                            <h3 class="widget-seven__content-amount">434</h3>
+                                            <h3 class="widget-seven__content-amount">4334</h3>
                                         </div>
                                     </div>
 

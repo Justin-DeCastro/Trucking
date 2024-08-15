@@ -198,9 +198,9 @@
         <tr>
             <th>Date</th>
             <th>Particulars</th>
-            <th>Deposit Amount</th>
-            <th>Withdrawal Amount</th>
-            <th>Expense Amount</th>
+            <th>Payment Received</th>
+            <th>Expense</th>
+            <th>Net Income</th>
             <th>Proof of Payment</th>
             <th>Notes</th>
             <th>Actions</th>
@@ -213,7 +213,8 @@
                 <td>{{ $transaction->particulars }}</td>
                 <td>₱{{ number_format($transaction->deposit_amount, 2, '.', ',') }}</td>
                 <td>₱{{ number_format($transaction->withdraw_amount, 2, '.', ',') }}</td>
-                <td>₱{{ number_format($transaction->expense_amount, 2, '.', ',') }}</td>
+                <td>₱{{ number_format($netIncome, 2, '.', ',') }}</td>
+
                 <td>
     @if($transaction->proof_of_payment)
         <a href="{{ asset($transaction->proof_of_payment) }}" data-fancybox="gallery" data-caption="Proof of Payment">
@@ -276,15 +277,15 @@
                                         <input type="text" class="form-control" id="particulars" name="particulars" required>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="deposit_amount" class="form-label">Deposit Amount</label>
+                                        <label for="deposit_amount" class="form-label">Payment Received</label>
                                         <input type="number" step="0.01" class="form-control" id="deposit_amount" name="deposit_amount" required>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="withdraw_amount" class="form-label">Withdrawal Amount</label>
+                                        <label for="withdraw_amount" class="form-label">Expense</label>
                                         <input type="number" step="0.01" class="form-control" id="withdraw_amount" name="withdraw_amount" required>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="expense_amount" class="form-label">Expense Amount</label>
+                                        <label for="expense_amount" class="form-label">Net Income</label>
                                         <input type="number" step="0.01" class="form-control" id="expense_amount" name="expense_amount" required>
                                     </div>
                                     <div class="mb-3">

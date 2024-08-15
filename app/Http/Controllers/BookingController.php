@@ -50,57 +50,49 @@ class BookingController extends Controller
 
     // Handle form submission
     public function submitForm(Request $request)
-{
-    // Validate the request
-    $validatedData = $request->validate([
-        'sender_name' => 'required|string|max:255',
-        'list_of_products' => 'required|string|max:255',
-        'pickup_address' => 'required|string|max:255',
-        'sender_phone' => 'required|string|max:255',
-        'item_list' => 'required|file|mimes:jpeg,png,jpg|max:2048',
-        'weight' => 'required|numeric',
-        'quantity' => 'required|numeric',
-        'receiver_name' => 'required|string|max:255',
-        'receiver_email' => 'required|email|max:255',
-        'receiver_phone' => 'required|string|max:255',
-        'dropoff_address' => 'required|string|max:255',
-        'truck_type' => 'required|string|exists:vehicles,truck_name', // Validate as a string and ensure it exists
-    ]);
-
-    // Handle file upload for item_list
-    if ($request->hasFile('item_list')) {
-        $file = $request->file('item_list');
-        // Generate a unique filename
-        $filename = time() . '-' . $file->getClientOriginalName();
-        // Move the file to the public directory
-        $file->move(public_path('item_pictures'), $filename);
-        // Save the file path to the validated data
-        $validatedData['item_list'] = 'item_pictures/' . $filename; // Save relative path
-    }
-
-    // Generate a unique tracking number
-    $trackingNumber = 'GPC-' . strtoupper(uniqid(mt_rand(), true));
-
-    // Add the tracking number to the validated data
-    $validatedData['tracking_number'] = $trackingNumber;
-
-    // Create a new booking
-    $booking = Booking::create($validatedData);
-
-    // Update the truck status
-    $truckName = $request->truck_type;
-    $truck = Vehicle::where('truck_name', $truckName)->first();
-
-    if ($truck) {
-        $truck->update([
-            'truck_status' => 'Not Available',
+    {
+        // Validate the request
+        $validatedData = $request->validate([
+            'sender_name' => 'required|string|max:255',
+            'list_of_products' => 'required|string|max:255',
+            'pickup_address' => 'required|string|max:255',
+            'sender_phone' => 'required|string|max:255',
+            'item_list' => 'required|file|mimes:jpeg,png,jpg|max:2048',
+            'weight' => 'required|numeric',
+            'quantity' => 'required|numeric',
+            'receiver_name' => 'required|string|max:255',
+            'receiver_email' => 'required|email|max:255',
+            'receiver_phone' => 'required|string|max:255',
+            'dropoff_address' => 'required|string|max:255',
+            'truck_type' => 'required|exists:vehicles,id', // Validate as an existing vehicle ID
         ]);
+    
+        // Handle file upload for item_list
+        if ($request->hasFile('item_list')) {
+            $file = $request->file('item_list');
+            $filename = time() . '-' . $file->getClientOriginalName();
+            $file->move(public_path('item_pictures'), $filename);
+            $validatedData['item_list'] = 'item_pictures/' . $filename;
+        }
+    
+        $trackingNumber = 'GPC-' . strtoupper(uniqid(mt_rand(), true));
+        $validatedData['tracking_number'] = $trackingNumber;
+    
+        $booking = Booking::create($validatedData);
+    
+        // Update the truck status
+        $truckId = $request->truck_type;
+        $truck = Vehicle::find($truckId);
+    
+        if ($truck) {
+            $truck->update([
+                'truck_status' => 'Not Available',
+            ]);
+        }
+    
+        return redirect()->back()->with('success', 'Booking submitted successfully! Tracking Number: ' . $trackingNumber);
     }
-
-    // Redirect or respond as needed
-    return redirect()->back()->with('success', 'Booking submitted successfully! Tracking Number: ' . $trackingNumber);
-}
-
+    
     
     
    public function trackBooking(Request $request)

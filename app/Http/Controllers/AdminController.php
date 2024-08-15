@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\Driver;
 use App\Models\User;
 use App\Models\Vehicle;
+use App\Models\Transaction;
 use App\Models\Subcontractor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -65,7 +66,14 @@ class AdminController extends Controller
         return view('Admin.Courierdash');
     }
     public function accounting_dash(){
-        return view('Accounting.Accountingdash');
+        
+        $transactions = Transaction::all();
+        $totalDeposit = Transaction::all();
+        $totalWithdraw = $transactions->sum('withdraw_amount');
+        $outstandingBalance = $transactions->sum('deposit_amount');
+        $totalExpense = $transactions->sum('expense_amount');
+        $netIncome = $totalDeposit - $totalWithdraw;
+        return view('Accounting.Accountingdash',compact('outstandingBalance','totalWithdraw','totalExpense','netIncome'));
     }
   
     public function add_driver(){

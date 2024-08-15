@@ -177,6 +177,7 @@ class AccountingController extends Controller
         $outstandingBalance = $transactions->sum('deposit_amount') + $startingBalance;
         $totalWithdraw = $transactions->sum('withdraw_amount');
         $totalExpense = $transactions->sum('expense_amount');
+        $netIncome = $outstandingBalance - $totalWithdraw;
         $remainingBalance = $outstandingBalance - ($totalWithdraw + $totalExpense);
     
         // Return view with data
@@ -187,6 +188,7 @@ class AccountingController extends Controller
             'remainingBalance' => $remainingBalance,
             'totalExpense' => $totalExpense,
             'startingBalance' => $startingBalance,
+            'netIncome' => $netIncome,
         ]);
     }
     

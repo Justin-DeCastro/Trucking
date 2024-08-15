@@ -91,59 +91,60 @@
                                     <div class="widget-seven__content">
                                         <span class="widget-seven__content-icon">
                                             <span class="icon">
-                                                <i class="las la-hourglass-start"></i>
+                                            <i class="fas fa-money-bill-wave"></i>
                                             </span>
                                         </span>
                                         <div class="widget-seven__description">
-                                            <p class="widget-seven__content-title">Send in Queue</p>
-                                            <h3 class="widget-seven__content-amount">0</h3>
-                                        </div>
+    <p class="widget-seven__content-title">Total Cash on Deposit</p>
+    <h3 class="widget-seven__content-amount">{{ number_format($outstandingBalance, 2) }}</h3>
+</div>
+
                                     </div>
 
                                     <span class="widget-seven__arrow">
-                                        <i class="fas fa-chevron-right"></i>
+                                    <i class="fas fa-money-bill-wave"></i>
                                     </span>
                                 </div>
                             </a>
                         </div>
                         <div class="col-xxl-4 col-sm-6">
-                            <a href="https://script.viserlab.com/courierlab/demo/staff/courier/upcoming">
+                            <a href="g">
                                 <div class="widget-seven bg--cyan ">
                                     <div class="widget-seven__content">
                                         <span class="widget-seven__content-icon">
                                             <span class="icon">
-                                                <i class="las la-history"></i>
+                                            <i class="fas fa-money-bill-wave"></i>
                                             </span>
                                         </span>
                                         <div class="widget-seven__description">
-                                            <p class="widget-seven__content-title">Upcoming Courier</p>
-                                            <h3 class="widget-seven__content-amount">0</h3>
-                                        </div>
+    <p class="widget-seven__content-title">Total Withdrawal Cash</p>
+    <h3 class="widget-seven__content-amount">{{ number_format($totalWithdraw, 2) }}</h3>
+</div>
                                     </div>
 
                                     <span class="widget-seven__arrow">
-                                        <i class="fas fa-chevron-right"></i>
+                                    <i class="fas fa-money-bill-wave"></i>
                                     </span>
                                 </div>
                             </a>
                         </div>
                         <div class="col-xxl-4 col-sm-6">
-                            <a href="https://script.viserlab.com/courierlab/demo/staff/courier/dispatch">
+                            <a href="">
                                 <div class="widget-seven bg--primary ">
                                     <div class="widget-seven__content">
                                         <span class="widget-seven__content-icon">
                                             <span class="icon">
-                                                <i class="las la-dolly"></i>
+                                            <i class="fas fa-calculator"></i>
                                             </span>
                                         </span>
                                         <div class="widget-seven__description">
-                                            <p class="widget-seven__content-title">Total Shipping Courier</p>
-                                            <h3 class="widget-seven__content-amount">313</h3>
-                                        </div>
+    <p class="widget-seven__content-title">Total Expenses</p>
+    <h3 class="widget-seven__content-amount">{{ number_format($totalExpense, 2) }}</h3>
+</div>
                                     </div>
 
                                     <span class="widget-seven__arrow">
-                                        <i class="fas fa-chevron-right"></i>
+                                    <i class="fas fa-calculator"></i>
                                     </span>
                                 </div>
                             </a>

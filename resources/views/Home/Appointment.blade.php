@@ -1,6 +1,8 @@
 
 <!doctype html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 
 @include('Components.Home.Header')
 
@@ -187,15 +189,26 @@
     </div>
 
     <!-- Truck Type -->
-    <div style="margin-bottom: 30px;">
-        <label for="truck-type" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Truck Type</label>
-        <select style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="truck-type" name="truck_type" required>
-            <option value="" disabled selected>Select Truck Type</option>
-            @foreach($vehicles as $vehicle)
-                <option value="{{ $vehicle->truck_name }}">{{ $vehicle->truck_name }} {{ $vehicle->truck_capacity }}</option>
-            @endforeach
-        </select>
-    </div>
+    <!-- Truck Type -->
+<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px;">
+    @foreach($vehicles as $vehicle)
+        <div style="background-color: #fff; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 20px; width: calc(33.333% - 20px); box-sizing: border-box; text-align: center; position: relative;">
+            <!-- Checkbox Input -->
+            <input type="radio" id="truck-{{ $vehicle->id }}" name="truck_type" value="{{ $vehicle->id }}" style="position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; cursor: pointer;" required>
+
+            <!-- Card Content -->
+            <label for="truck-{{ $vehicle->id }}" style="display: block; cursor: pointer; padding-right: 30px;">
+                <!-- Font Awesome Icon -->
+                <img src="Home/icons8-truck-48.png" alt="Truck Moving" style="width: 48px; height: 48px; margin-bottom: 10px;">
+
+                <!-- Truck Details -->
+                <h3 style="font-size: 1.2em; margin-bottom: 10px; color: #333;">{{ $vehicle->truck_name }}</h3>
+                <p style="font-size: 1em; color: #666;">{{ $vehicle->truck_capacity }}</p>
+            </label>
+        </div>
+    @endforeach
+</div>
+
 
     <!-- Submit Button -->
     <div style="text-align: center;">
