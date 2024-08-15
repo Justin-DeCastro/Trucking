@@ -92,6 +92,9 @@
             <th>Rider Responsible</th>
             <th>Date</th>
             <th>Income</th>
+            <th>Expected Weight</th>
+            
+            <th>Price per Kilo</th>
             <th>Payment Status</th>
             <th>Actions</th>
         </tr>
@@ -103,6 +106,8 @@
             <td>{{ $booking->driver ? $booking->driver->name : 'Not Assigned' }}</td>
             <td>{{ \Carbon\Carbon::parse($booking->pickup_date)->format('d M Y') }}</td>
             <td>₱{{ number_format((float) $booking->order_amount, 2) }}</td>
+            <td>{{ $booking->weight }}</td>
+            <td>{{ $booking->price_per_kilo }}</td>
             <td>
                 <!-- Display the payment status -->
                 {{ $booking->payment_status }}

@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\Driver;
 use App\Models\User;
 use App\Models\Vehicle;
+use App\Models\Subcontractor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -41,6 +42,10 @@ class AdminController extends Controller
     public function manage_unit(){
         return view('Admin.ManageUnit');
     }
+    public function addsubcon(){
+        $subcon = Subcontractor::all(); 
+        return view('Admin.AddSubCon',compact('subcon'));
+    }
     public function manage_type(){
         return view('Admin.Managetype');
     }
@@ -62,6 +67,7 @@ class AdminController extends Controller
     public function accounting_dash(){
         return view('Accounting.Accountingdash');
     }
+  
     public function add_driver(){
         $bookings = Booking::all(); 
         $couriers = User::where('role', 'courier')->get();

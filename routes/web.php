@@ -11,6 +11,10 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\AccountingController;
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\SubcontractorController;
+use App\Http\Controllers\DepositController;
+use App\Http\Controllers\WithdrawController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -66,7 +70,13 @@ Route::get('loginhistory', [AdminController::class, 'login_history'])->name('log
 Route::get('notificationhistory', [AdminController::class, 'notification_history'])->name('notificationhistory');
 Route::get('manageappointment', [AdminController::class, 'manage_appointment'])->name('manageappointment');
 Route::get('addtruck', [AdminController::class, 'addtruck'])->name('addtruck');
-
+Route::get('addsubcon', [AdminController::class, 'addsubcon'])->name('addsubcon');
+Route::get('addexpense', [AccountingController::class, 'addexpense'])->name('addexpense');
+Route::get('paymentproof', [AccountingController::class, 'paymentproof'])->name('paymentproof');
+Route::get('addproofpayment', [AccountingController::class, 'addproofpayment'])->name('addpayment.store');
+Route::get('depositamount', [AccountingController::class, 'depositamount'])->name('depositamount');
+Route::post('depositamounts', [DepositController::class, 'store'])->name('deposit.store');
+Route::post('withdrawamounts', [WithdrawController::class, 'store'])->name('withdraw.store');
 //login and register
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
@@ -141,7 +151,11 @@ Route::put('/vehicles/{id}', [VehicleController::class, 'update'])->name('vehicl
 Route::delete('vehicles/{vehicle}', [VehicleController::class, 'destroy'])->name('vehicles.destroy');
 Route::post('/update-actual-weight/{id}', [BookingController::class, 'updateActualWeight'])->name('update.actual.weight');
 
+//subcon
+Route::post('subcontractors', [SubcontractorController::class, 'store'])->name('subcontractors.store');
 
+//expense store
+Route::post('Expenses', [ExpenseController::class, 'store'])->name('expense.store');
 
 
 

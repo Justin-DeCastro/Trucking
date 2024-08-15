@@ -50,6 +50,12 @@
                         </div>
                     </li>
                     <li class="sidebar-menu-item ">
+                        <a href="addsubcon" class="nav-link ">
+                            <i class="menu-icon las la-fax"></i>
+                            <span class="menu-title">Add Subcontractor</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item ">
                         <a href="add-driver" class="nav-link ">
                             <i class="menu-icon las la-fax"></i>
                             <span class="menu-title">Add Driver</span>
@@ -86,37 +92,37 @@
                         </a>
                     </li>
                     <li class="sidebar-menu-item sidebar-dropdown">
-                        <a href="javascript:void(0)" class="">
+                        <!-- <a href="javascript:void(0)" class="">
                             <i class="menu-icon la la-tasks"></i>
                             <span class="menu-title">Unit &amp; Type Settings</span>
-                        </a>
+                        </a> -->
                         <div class="sidebar-submenu  ">
                             <ul>
                                 <li class="sidebar-menu-item  ">
-                                    <a href="manageunit" class="nav-link">
+                                    <!-- <a href="manageunit" class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
                                         <span class="menu-title">Manage Unit</span>
-                                    </a>
+                                    </a> -->
                                 </li>
                                 <li class="sidebar-menu-item  ">
-                                    <a href="managetype" class="nav-link">
+                                    <!-- <a href="managetype" class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
                                         <span class="menu-title">Manage Type</span>
-                                    </a>
+                                    </a> -->
                                 </li>
                             </ul>
                         </div>
                     </li>
                     <li class="sidebar-menu-item sidebar-dropdown">
-                        <a href="javascript:void(0)" class="">
+                        <!-- <a href="javascript:void(0)" class="">
                             <i class="menu-icon la la-ticket"></i>
                             <span class="menu-title">Support Ticket</span>
                             <span class="menu-badge menu-badge-level-one bg--warning ms-auto">
                                 <i class="fas fa-exclamation"></i>
                             </span>
-                        </a>
+                        </a> -->
                         <div class="sidebar-submenu  ">
-                            <ul>
+                            <!-- <ul>
                                 <li class="sidebar-menu-item  ">
                                     <a href="pendingticket" class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
@@ -142,14 +148,14 @@
                                         <span class="menu-title">All Ticket</span>
                                     </a>
                                 </li>
-                            </ul>
+                            </ul> -->
                         </div>
                     </li>
                     <li class="sidebar-menu-item sidebar-dropdown">
-                        <a href="javascript:void(0)" class="">
+                        <!-- <a href="javascript:void(0)" class="">
                             <i class="menu-icon la la-list"></i>
                             <span class="menu-title">Report</span>
-                        </a>
+                        </a> -->
                         <div class="sidebar-submenu  ">
                             <ul>
                                 <li class="sidebar-menu-item  ">

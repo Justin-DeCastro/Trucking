@@ -88,14 +88,22 @@
                         <li class="nav-item ">
                             <a class="nav-link" href="contact">Contact</a>
                         </li>
+                     
                         <li class="nav-item ">
                             <a class="nav-link" href="appointment">Book Now</a>
                         </li>
+                       
                         <li class="nav-item d-lg-block d-none">
                             <a class="nav-button flex-align btn btn--base" href="ordertracking" aria-current="page">
                                 <span class="icon"><i class="icon-Product-Box"></i></span>
                                 Order Tracking </a>
                         </li>
+                        <li class="nav-item d-lg-block d-none">
+                            <a class="nav-button flex-align btn btn--base" href="" aria-current="page">
+                                <span class="icon"><i class="icon-Product-Box"></i></span>
+                               Download App </a>
+                        </li>
+                        
                      
                     </ul>
 

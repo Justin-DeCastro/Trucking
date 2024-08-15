@@ -16,6 +16,24 @@
                             </a>
                         </li>
                         <li class="sidebar-menu-item ">
+                            <a href="addexpense" class="nav-link ">
+                                <i class="menu-icon las la-shipping-fast"></i>
+                                <span class="menu-title">Expense</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item ">
+                            <a href="paymentproof" class="nav-link ">
+                                <i class="menu-icon las la-shipping-fast"></i>
+                                <span class="menu-title">Proof of Payment</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item ">
+                            <a href="depositamount" class="nav-link ">
+                                <i class="menu-icon las la-shipping-fast"></i>
+                                <span class="menu-title">IN/OUT</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item ">
                             <a href="sendcourier" class="nav-link ">
                                 <i class="menu-icon las la-shipping-fast"></i>
                                 <span class="menu-title">Send Courier</span>
