@@ -17,17 +17,17 @@ class BookingController extends Controller
             'booking_id' => 'required|exists:bookings,id',
             'order_amount' => 'required|numeric|min:0',
         ]);
-    
+
         $booking = Booking::findOrFail($request->input('booking_id'));
         $booking->update([
             'order_amount' => $request->input('order_amount'),
         ]);
-    
+
         return redirect()->back()->with('success', 'Order amount updated successfully.');
     }
-    
 
-    
+
+
     public function storePlateNumber(Request $request, Booking $booking)
     {
         // Validate the plate number input
@@ -46,8 +46,8 @@ class BookingController extends Controller
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Plate number saved successfully.');
     }
-    
-    
+
+
 
 
     // Handle form submission
@@ -74,36 +74,37 @@ class BookingController extends Controller
             'merchant_mobile' => 'required|string|max:255',
             'merchant_city' => 'required|string|max:255',
             'merchant_province' => 'required|string|max:255',
-            // 'driver_id' => 'required|exists:users,id',
+            'driver_name' => 'required|string|max:255',
+            'plate_number' => 'required|string|max:255',
             // Assuming 'truck_type' is a field in your form that needs validation
             // 'truck_type' => 'required|exists:vehicles,id',
         ]);
-    
+
         // Generate tracking number
-        $trackingNumber = 'GPC-' . strtoupper(uniqid(mt_rand(), true));
+        $trackingNumber = 'GDR-' . strtoupper(uniqid(mt_rand(), true));
         $validatedData['tracking_number'] = $trackingNumber;
-    
+
         // Create the booking
         $booking = Booking::create($validatedData);
-    
+
         // Generate QR code
         $filename = time() . '-' . $trackingNumber . '.svg';
         $qrCodePath = 'qrcodes/' . $filename;
         $qrCodeImage = QrCode::size(300)->generate($trackingNumber);
         file_put_contents(public_path($qrCodePath), $qrCodeImage);
-    
+
         // Save QR code path to the booking
         $booking->update(['qr_code' => $qrCodePath]);
-    
+
         // Update the truck status if truck_type is provided
         $truckId = $request->input('truck_type'); // Ensure 'truck_type' field exists in the form
         if ($truckId) {
             $truck = Vehicle::find($truckId);
-    
+
             if ($truck) {
                 // Decrement the quantity of the truck
                 $truck->decrement('quantity');
-    
+
                 // Update truck status if quantity is 0
                 if ($truck->quantity <= 0) {
                     $truck->update([
@@ -112,20 +113,20 @@ class BookingController extends Controller
                 }
             }
         }
-    
+
         // Generate the URL to the QR code image
         $qrCodeUrl = asset($qrCodePath);
-    
+
         // Redirect to the confirmation view with data
         return view('Home.confirmation', [
             'trackingNumber' => $trackingNumber,
             'qrCodeUrl' => $qrCodeUrl,
         ]);
     }
-    
-    
 
-    
+
+
+
     public function store(Request $request)
     {
         $request->validate([
@@ -148,12 +149,12 @@ class BookingController extends Controller
             'merchant_mobile' => 'required|string|max:255',
             'merchant_city' => 'required|string|max:255',
             'merchant_province' => 'required|string|max:255',
-       
+
         ]);
-    
+
         // Validate the request
-     
-    
+
+
         // Create a new Rubix record
         Rubix::create([
             'sender_name' => $request->sender_name,
@@ -175,15 +176,15 @@ class BookingController extends Controller
           'merchant_mobile' => $request->merchant_mobile,
           'merchant_city' => $request->merchant_city,
           'merchant_province' => $request->merchant_province,
-         
+
         ]);
-    
-    
+
+
         // Redirect back with a success message
         return redirect()->back()->with('message', 'Booking successfully created!');
     }
-    
-    
+
+
    public function trackBooking(Request $request)
 {
     $trackingNumber = strtoupper($request->query('trackingNumber'));
@@ -203,7 +204,7 @@ class BookingController extends Controller
     }
 }
 
-    
+
 
     // app/Http/Controllers/BookingController.php
     public function assignDriver(Request $request, $bookingId)
@@ -292,13 +293,13 @@ public function updateActualWeight(Request $request, $id)
 
 public function updateLocationStatus(Request $request, Booking $booking)
 {
-    
+
     // dd($request->all());
 
     // Validate the input
     $request->validate([
         'location' => 'required|in:Manila,Laguna,Batangas,Other',
-       
+
     ]);
 
     // Ensure the user is authorized to perform this action
@@ -328,9 +329,9 @@ public function updateLocationStatus(Request $request, Booking $booking)
 
 
 
-    
-    
-    
-    
+
+
+
+
 
 }

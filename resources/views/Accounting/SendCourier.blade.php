@@ -141,7 +141,7 @@
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
                     <h6 class="page-title">Status</h6>
                 </div>
-
+                @foreach($references as $code)
                 <div class="container">
                     <div class="row">
                         <!-- First Table Column -->
@@ -152,74 +152,74 @@
                                     <col class="table-colgroup">
                                     <col>
                                 </colgroup>
-                               
+
                                 <tr>
                                     <td>Tracking Number</td>
-                                    <td>123456789</td>
+                                    <td>{{ $code->tracking_number }}</td>
                                 </tr>
                                 <tr>
                                     <td>Created At</td>
-                                    <td>2024-08-15</td>
+                                    <td>{{ $code->created_at->format('Y-m-d') }}</td>
                                 </tr>
                                 <tr>
                                     <td>Status</td>
-                                    <td>Shipped</td>
+                                    <td>{{ $code->tracking_status }}</td>
                                 </tr>
                                 <tr>
                                     <td>Client</td>
-                                    <td>John Doe</td>
+                                    <td>{{ $code->sender_name }}</td>
                                 </tr>
                                 <tr>
                                     <td>Branch Code</td>
-                                    <td>ABC123</td>
+                                    <td>{{ $code->branch_code }}</td>
                                 </tr>
                                 <tr>
                                     <td>Package ID</td>
-                                    <td>PCKG987654</td>
+                                    <td>{{ $code->package_id }}</td>
                                 </tr>
                                 <tr>
                                     <td>Group ID</td>
-                                    <td>GRP5678</td>
+                                    <td>{{ $code->group_id }}</td>
                                 </tr>
                                 <tr>
                                     <td>Order Number</td>
-                                    <td>ORD123456</td>
+                                    <td>{{ $code->group_id }}</td>
                                 </tr>
                                 <tr>
                                     <td>Reference 1</td>
-                                    <td>REF001</td>
+                                    <td>{{ $code->reference_one }}</td>
                                 </tr>
                                 <tr>
                                     <td>Reference 2</td>
-                                    <td>REF002</td>
+                                    <td>{{ $code->reference_two }}</td>
                                 </tr>
                                 <tr>
                                     <td>Reference 3</td>
-                                    <td>REF003</td>
+                                    <td>{{ $code->reference_three }}</td>
                                 </tr>
                                 <tr>
                                     <td>Reference 4</td>
-                                    <td>REF004</td>
+                                    <td>{{ $code->reference_four }}</td>
                                 </tr>
                                 <tr>
                                     <td>Reference 5</td>
-                                    <td>REF005</td>
+                                    <td>{{ $code->reference_five }}</td>
                                 </tr>
                                 <tr>
                                     <td>Transport Mode</td>
-                                    <td>Air</td>
+                                    <td>{{ $code->transport_mode }}</td>
                                 </tr>
                                 <tr>
                                     <td>Delivery Type</td>
-                                    <td>Express</td>
+                                    <td>{{ $code->delivery_type }}</td>
                                 </tr>
                                 <tr>
                                     <td>Shipping Type</td>
-                                    <td>Standard</td>
+                                    <td>{{ $code->shipping_type }}</td>
                                 </tr>
                                 <tr>
                                     <td>Journey Type</td>
-                                    <td>One-Way</td>
+                                    <td>{{ $code->journey_type }}</td>
                                 </tr>
                             </table>
                         </div>
@@ -232,38 +232,38 @@
                                     <col class="table-colgroup">
                                     <col>
                                 </colgroup>
-                               
+
                                 <tr>
                                     <td>Consignee Name</td>
-                                    <td>Jane Smith</td>
+                                    <td>{{ $code->consignee_name }}</td>
                                 </tr>
                                 <tr>
                                     <td>Address</td>
-                                    <td>123 Main St</td>
+                                    <td>{{ $code->consignee_address }}</td>
                                 </tr>
                                 <tr>
                                     <td>Consignee Email</td>
-                                    <td>jane.smith@example.com</td>
+                                    <td>{{ $code->consignee_email}}</td>
                                 </tr>
                                 <tr>
                                     <td>Consignee Mobile</td>
-                                    <td>(555) 987-6543</td>
+                                    <td>{{ $code->consignee_mobile }}</td>
                                 </tr>
                                 <tr>
                                     <td>City</td>
-                                    <td>XYZ789</td>
+                                    <td>{{ $code->consignee_city }}</td>
                                 </tr>
                                 <tr>
                                     <td>Province</td>
-                                    <td>PCKG123456</td>
+                                    <td>{{ $code->consignee_province }}</td>
                                 </tr>
                                 <tr>
                                     <td>Barangay</td>
-                                    <td>GRP9876</td>
+                                    <td>{{ $code->consignee_barangay }}</td>
                                 </tr>
                                 <tr>
                                     <td>Building Type</td>
-                                    <td>ORD654321</td>
+                                    <td>{{ $code->consignee_building_type }}</td>
                                 </tr>
                             </table>
 
@@ -273,36 +273,36 @@
                                     <col class="table-colgroup">
                                     <col>
                                 </colgroup>
-                               
+
                                 <tr>
                                     <td>Merchant Name</td>
-                                    <td>ABC Corp</td>
+                                    <td>{{ $code->merchant_name }}</td>
                                 </tr>
                                 <tr>
                                     <td>Address</td>
-                                    <td>123 Market Street</td>
+                                    <td>{{ $code->merchant_address }}</td>
                                 </tr>
                                 <tr>
                                     <td>Merchant Email</td>
-                                    <td>contact@abccorp.com</td>
+                                    <td>{{ $code->merchant_email }}</td>
                                 </tr>
                                 <tr>
                                     <td>Merchant Mobile</td>
-                                    <td>(555) 123-4567</td>
+                                    <td>{{ $code->merchant_mobile }}</td>
                                 </tr>
                                 <tr>
                                     <td>City</td>
-                                    <td>M123456</td>
+                                    <td>{{ $code->merchant_city }}</td>
                                 </tr>
                                 <tr>
                                     <td>Province</td>
-                                    <td>M123456</td>
+                                    <td>{{ $code->merchant_province }}</td>
                                 </tr>
                             </table>
                         </div>
                     </div>
                 </div>
-
+@endforeach
             </div>
         </div>
     </div>

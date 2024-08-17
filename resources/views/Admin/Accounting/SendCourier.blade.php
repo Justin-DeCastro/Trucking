@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="iQdGnQclGHVc4Uhh3RU4s02p3rw6e9bJ14kpKP1W">
 
-    <title>Courier Send</title>
+    <title>Reference</title>
 
     <link rel="shortcut icon" type="image/png" href="https://script.viserlab.com/courierlab/demo/assets/images/logo_icon/favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -226,7 +226,7 @@
             <div class="body-wrapper">
                 <div class="bodywrapper__inner">
 
-                    
+
                     <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
     <h6 class="page-title">Courier Send</h6>
     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
@@ -493,7 +493,7 @@
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/select2.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
 
-    
+
     <script>
         "use strict";
         bkLib.onDomLoaded(function() {
@@ -725,7 +725,7 @@
                 }
             });
 
-            
+
         })(jQuery);
     </script>
 <script>

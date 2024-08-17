@@ -18,8 +18,18 @@ class AdminController extends Controller
         return view('Admin.dashboard');
     }
     public function waybill(){
-        $vehicles = Vehicle::all(); 
+        $vehicles = Vehicle::all();
         return view('Admin.Waybill',compact('vehicles'));
+    }
+    public function showDetails($id)
+    {
+        $detail = Booking::findOrFail($id); // Fetch the record based on the ID
+
+        return view('Admin.show', compact('detail'));
+    }
+    public function  rubix_details(){
+        $rubixdetails = Booking::all();
+        return view('Admin.rubix_details',compact('rubixdetails'));
     }
     public function adminside(){
         return view('Admin.Admin');
@@ -28,11 +38,11 @@ class AdminController extends Controller
         return view('Admin.ReferenceForm');
     }
     public function managebranch(){
-        $branches = ManageBranch::all(); 
+        $branches = ManageBranch::all();
         return view('Admin.Managebranch',compact('branches'));
     }
     public function branchmanager(){
-        $branchmanager = BranchManager::all(); 
+        $branchmanager = BranchManager::all();
         return view('Admin.Branchmanager',compact('branchmanager'));
     }
     public function branch_income(){
@@ -51,7 +61,7 @@ class AdminController extends Controller
         return view('Admin.ManageUnit');
     }
     public function addsubcon(){
-        $subcon = Subcontractor::all(); 
+        $subcon = Subcontractor::all();
         return view('Admin.AddSubCon',compact('subcon'));
     }
     public function manage_type(){
@@ -73,7 +83,7 @@ class AdminController extends Controller
         return view('Admin.Courierdash');
     }
     public function accounting_dash(){
-        
+
         $transactions = Transaction::all();
         $totalDeposit = Transaction::all();
         $totalWithdraw = $transactions->sum('withdraw_amount');
@@ -82,15 +92,15 @@ class AdminController extends Controller
         $netIncome = $outstandingBalance - $totalWithdraw;
         return view('Accounting.Accountingdash',compact('outstandingBalance','totalWithdraw','totalExpense','netIncome'));
     }
-  
+
     public function add_driver(){
-        $bookings = Booking::all(); 
+        $bookings = Booking::all();
         $couriers = User::where('role', 'courier')->get();
         return view('Admin.AddDriver',compact('couriers','bookings'));
     }
     public function manage_appointment(){
         $drivers = User::where('role', 'courier')->get(); // Get only couriers
-        $bookings = Booking::all(); 
+        $bookings = Booking::all();
         return view('Admin.ManageAppointment',compact('bookings','drivers'));
     }
 //     public function manage_appointment()
@@ -113,7 +123,7 @@ public function courier_order()
     return view('Admin.ManageCourierOrder', compact('bookings', 'drivers'));
 }
 public function addtruck(){
-    $vehicles = Vehicle::all(); 
+    $vehicles = Vehicle::all();
     return view('Admin.Addtruck',compact('vehicles'));
 }
 }

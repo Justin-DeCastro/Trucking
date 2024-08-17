@@ -34,7 +34,13 @@
                     <li class="sidebar-menu-item ">
                         <a href="reference" class="nav-link ">
                         <i class="fa fa-users menu-icon"></i>
-                            <span class="menu-title">Rubix</span>
+                            <span class="menu-title">Rubix Form</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item ">
+                        <a href="rubix_details" class="nav-link ">
+                        <i class="fa fa-users menu-icon"></i>
+                            <span class="menu-title">Rubix Details</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item sidebar-dropdown">
@@ -72,9 +78,9 @@
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">
-                        <a href="sendcourier" class="nav-link ">
+                        <a href="package" class="nav-link ">
                         <i class="fa fa-fax menu-icon"></i>
-                            <span class="menu-title">send courier</span>
+                            <span class="menu-title">Package</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">

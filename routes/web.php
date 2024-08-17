@@ -54,6 +54,9 @@ Route::get('branchlist', [AccountingController::class, 'branch_list'])->name('br
 Route::get('cashcollection', [AccountingController::class, 'cash_collection'])->name('cashcollection');
 Route::get('deliveryqueue', [AccountingController::class, 'delivery_queue'])->name('deliveryqueue');
 Route::get('package', [AccountingController::class, 'send_courier'])->name('sendcourier');
+Route::get('rubix_details', [AdminController::class, 'rubix_details'])->name('rubixdetails');
+// routes/web.php
+Route::get('/details/{id}', [AdminController::class, 'showDetails'])->name('rubixdetails.show');
 
 Route::get('sentInQueue', [AccountingController::class, 'sentin_queue'])->name('sentInQueue');
 Route::get('shippingcourier', [AccountingController::class, 'shipping_courier'])->name('shippingcourier');

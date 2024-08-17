@@ -75,14 +75,14 @@
             <div class="body-wrapper">
                 <div class="bodywrapper__inner">
 
-                    
+
                     <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
     <h6 class="page-title">Courier Send</h6>
     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
             </div>
 </div>
 
-                      
+
                 <section style="padding: 60px 0; background: #f9f9f9;">
     <div style="max-width: 900px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
         <div style="text-align: center; margin-bottom: 40px;">
@@ -93,22 +93,36 @@
     @csrf
 
     <!-- Sender Information -->
-    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
-        <div style="flex: 1; min-width: 220px;">
-            <label for="sender-name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Client Name</label>
-            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="sender-name" name="sender_name" type="text" placeholder="Enter Sender's Name" required>
+    <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px;">
+        <!-- Top Section: Driver Name and Plate Number -->
+        <div style="display: flex; gap: 20px;">
+            <div style="flex: 1; min-width: 220px;">
+                <label for="driver_name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Driver Name</label>
+                <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="driver_name" name="driver_name" type="text" placeholder="Enter driver name" required>
+            </div>
+            <div style="flex: 1; min-width: 220px;">
+                <label for="plate_number" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Plate Number</label>
+                <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="plate_number" name="plate_number" type="text" placeholder="Enter Plate Number" required>
+            </div>
         </div>
-        <div style="flex: 1; min-width: 220px;">
-            <label for="pickup-address" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Transport Mode</label>
-            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="transport_mode" name="transport_mode" type="text" placeholder="Enter transport mode " required>
+
+        <!-- Bottom Section: Client Name, Transport Mode, Shipping Type -->
+        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 220px;">
+                <label for="sender_name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Client Name</label>
+                <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="sender_name" name="sender_name" type="text" placeholder="Enter Sender's Name" required>
+            </div>
+            <div style="flex: 1; min-width: 220px;">
+                <label for="transport_mode" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Transport Mode</label>
+                <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="transport_mode" name="transport_mode" type="text" placeholder="Enter transport mode" required>
+            </div>
+            <div style="flex: 1; min-width: 220px;">
+                <label for="shipping_type" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Shipping Type</label>
+                <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="shipping_type" name="shipping_type" type="text" placeholder="Enter shipping type" required>
+            </div>
         </div>
-        <div style="flex: 1; min-width: 220px;">
-            <label for="pickup-address" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Shipping Type</label>
-            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="shipping_type" name="shipping_type" type="text" placeholder="Enter shipping type " required>
-        </div>
-     
-        
     </div>
+
 
     <!-- Item List and Weight -->
     <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
@@ -116,7 +130,7 @@
             <label for="pickup-address" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Delivery Type</label>
             <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="delivery_type" name="delivery_type" type="text" placeholder="Enter delivery type" required>
         </div>
-        
+
         <div style="flex: 1; min-width: 220px;">
             <label for="quantity" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Journey Type</label>
             <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="journey_type" name="journey_type" type="text" placeholder="Enter journey type" required>
@@ -285,7 +299,7 @@
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/select2.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
 
-    
+
     <script>
         "use strict";
         bkLib.onDomLoaded(function() {
@@ -517,7 +531,7 @@
                 }
             });
 
-            
+
         })(jQuery);
     </script>
 <script>

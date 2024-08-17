@@ -53,9 +53,9 @@ class AccountingController extends Controller
     $totalDeposits = $deposits->sum('deposit_amount');
     $totalWithdrawals = $withdraws->sum('withdraw_amount');
     $totalExpenses = $expenses->sum('expense_amount');
- 
+
     // Calculate outstanding balance
-    
+
     $outstandingBalance = $totalDeposits - $totalWithdrawals;
     $remainingBalance = $outstandingBalance - $totalExpenses;
 
@@ -65,7 +65,8 @@ class AccountingController extends Controller
 
 
     public function send_courier(){
-        return view('Accounting.SendCourier');
+        $references = Booking::all();
+        return view('Accounting.SendCourier',compact('references'));
     }
     public function branch_list(){
         return view('Accounting.BranchList');
@@ -101,8 +102,8 @@ class AccountingController extends Controller
     $totalWithdraw = $transactions->sum('withdraw_amount');
     $totalExpense = $transactions->sum('expense_amount');
     $remainingBalance = $outstandingBalance - ($totalWithdraw + $totalExpense);
-    $startingBalance = $accountId 
-    ? StartingBalance::where('account_id', $accountId)->value('amount') 
+    $startingBalance = $accountId
+    ? StartingBalance::where('account_id', $accountId)->value('amount')
     : 0;
     // Fetch all accounts
     $netIncome = $outstandingBalance - $totalWithdraw;
@@ -117,7 +118,7 @@ class AccountingController extends Controller
         'startingBalance' => $startingBalance,
         'totalExpense' => $totalExpense,
         'netIncome' => $netIncome,
-   
+
     ]);
 }
 
@@ -133,8 +134,8 @@ class AccountingController extends Controller
     $transactions = $accountId
         ? Transaction::where('account_id', $accountId)->get()
         : Transaction::all();
-        $startingBalance = $accountId 
-        ? StartingBalance::where('account_id', $accountId)->value('amount') 
+        $startingBalance = $accountId
+        ? StartingBalance::where('account_id', $accountId)->value('amount')
         : 0;
     // Calculate balances
     $outstandingBalance = $transactions->sum('deposit_amount');
@@ -158,30 +159,30 @@ class AccountingController extends Controller
     public function filter(Request $request)
     {
         $accountId = $request->input('account');
-    
+
         // Fetch all accounts for the dropdown
         $accounts = Account::all();
-    
+
         // Fetch the starting balance for the selected account
-        $startingBalance = $accountId 
-            ? StartingBalance::where('account_id', $accountId)->value('amount') 
+        $startingBalance = $accountId
+            ? StartingBalance::where('account_id', $accountId)->value('amount')
             : 0;
-            // $startingBalance = $accountId 
-            // ? StartingBalance::where('account_id', $accountId)->sum('amount') 
+            // $startingBalance = $accountId
+            // ? StartingBalance::where('account_id', $accountId)->sum('amount')
             // : 0;
-        
+
         // Fetch transactions based on the selected account
         $transactions = $accountId
             ? Transaction::where('account_id', $accountId)->get()
             : Transaction::all();
-    
+
         // Calculate balances
         $outstandingBalance = $transactions->sum('deposit_amount') + $startingBalance;
         $totalWithdraw = $transactions->sum('withdraw_amount');
         $totalExpense = $transactions->sum('expense_amount');
         $netIncome = $outstandingBalance - $totalWithdraw;
         $remainingBalance = $outstandingBalance - ($totalWithdraw + $totalExpense);
-    
+
         // Return view with data
         return view('Accounting.Account_Accounting', [
             'accounts' => $accounts,
@@ -193,7 +194,7 @@ class AccountingController extends Controller
             'netIncome' => $netIncome,
         ]);
     }
-    
+
 public function update(Request $request, Transaction $transaction)
     {
         $request->validate([
@@ -240,17 +241,17 @@ public function update(Request $request, Transaction $transaction)
             'account_id' => 'required|exists:accounts,id',
             'starting_balance' => 'required|numeric|min:0',
         ]);
-    
+
         $accountId = $request->input('account_id');
         $startingBalance = $request->input('starting_balance');
-    
+
         // Assuming you have a StartingBalance model
         StartingBalance::create([
             'account_id' => $accountId,
             'amount' => $startingBalance,
         ]);
-    
+
         return redirect()->route('filter.transactions')->with('success', 'Starting balance added successfully.');
     }
-    
+
 }

@@ -33,8 +33,10 @@ class Booking extends Model
         'merchant_mobile',
         'merchant_city',
         'merchant_province',
+        'driver_name',
+        'plate_number',
         'tracking_number',
-        
+
         // 'driver_id', // Add this if you have a driver_id field
     ];
 
@@ -43,7 +45,7 @@ class Booking extends Model
     {
         return $this->belongsTo(User::class, 'driver_id');
     }
-    
+
     public function vehicle()
 {
     return $this->belongsTo(Vehicle::class, 'vehicle_id'); // Adjust 'vehicle_id' to the actual foreign key if needed
