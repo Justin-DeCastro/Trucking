@@ -169,7 +169,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Date</th>
-                                                <th>Driver Name</th>
+                                                <th>Tracking Number</th>
                                                 <th>Truck Plate Number</th>
                                                 <th>Destination</th>
                                                 <th>Actions</th>
@@ -179,7 +179,8 @@
                                             @foreach ($rubixdetails as $detail)
                                             <tr>
                                                 <td>{{ \Carbon\Carbon::parse($detail->created_at)->format('F d, Y') }}</td>
-                                                <td>{{ $detail->driver_name }}</td>
+                                                <td>{{ $detail->tracking_number }}</td>
+
                                                 <td>{{ $detail->plate_number }}</td>
                                                 <td>{{ $detail->consignee_address }}</td>
                                                 <td>
@@ -200,18 +201,12 @@
                     </div>
                 </div>
                 @foreach ($rubixdetails as $detail)
-                <div class="modal fade" id="modal{{ $detail->id }}" tabindex="-1"
-                    aria-labelledby="modalLabel{{ $detail->id }}" aria-hidden="true">
+                <div class="modal fade" id="modal{{ $detail->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $detail->id }}" aria-hidden="true">
                     <div class="modal-dialog modal-lg" style="width: 90%; max-width: 1200px; height: 80%;">
-                        <!-- Modal content here -->
-
-
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="modalLabel{{ $detail->id }}">Details for Plate Number
-                                    {{ $detail->plate_number }}</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
+                                <h5 class="modal-title" id="modalLabel{{ $detail->id }}">Details for Plate Number {{ $detail->plate_number }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="container">
@@ -220,75 +215,23 @@
                                         <div class="col-md-6">
                                             <h2>Package Reference</h2>
                                             <table class="table">
-                                                <tr>
-                                                    <td>Tracking Number</td>
-                                                    <td>{{ $detail->tracking_number }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Created At</td>
-                                                    <td>{{ \Carbon\Carbon::parse($detail->created_at)->format('Y-m-d') }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Status</td>
-                                                    <td>{{ $detail->tracking_status }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Client</td>
-                                                    <td>{{ $detail->sender_name }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Branch Code</td>
-                                                    <td>{{ $detail->branch_code }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Package ID</td>
-                                                    <td>{{ $detail->package_id }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Group ID</td>
-                                                    <td>{{ $detail->group_id }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Order Number</td>
-                                                    <td>{{ $detail->order_number }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Reference 1</td>
-                                                    <td>{{ $detail->reference_one }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Reference 2</td>
-                                                    <td>{{ $detail->reference_two }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Reference 3</td>
-                                                    <td>{{ $detail->reference_three }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Reference 4</td>
-                                                    <td>{{ $detail->reference_four }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Reference 5</td>
-                                                    <td>{{ $detail->reference_five }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Transport Mode</td>
-                                                    <td>{{ $detail->transport_mode }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Delivery Type</td>
-                                                    <td>{{ $detail->delivery_type }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Shipping Type</td>
-                                                    <td>{{ $detail->shipping_type }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Journey Type</td>
-                                                    <td>{{ $detail->journey_type }}</td>
-                                                </tr>
+                                                <tr><td>Tracking Number</td><td>{{ $detail->tracking_number }}</td></tr>
+                                                <tr><td>Created At</td><td>{{ \Carbon\Carbon::parse($detail->created_at)->format('Y-m-d') }}</td></tr>
+                                                <tr><td>Status</td><td>{{ $detail->tracking_status }}</td></tr>
+                                                <tr><td>Client</td><td>{{ $detail->sender_name }}</td></tr>
+                                                <tr><td>Branch Code</td><td>{{ $detail->branch_code }}</td></tr>
+                                                <tr><td>Package ID</td><td>{{ $detail->package_id }}</td></tr>
+                                                <tr><td>Group ID</td><td>{{ $detail->group_id }}</td></tr>
+                                                <tr><td>Order Number</td><td>{{ $detail->order_number }}</td></tr>
+                                                <tr><td>Reference 1</td><td>{{ $detail->reference_one }}</td></tr>
+                                                <tr><td>Reference 2</td><td>{{ $detail->reference_two }}</td></tr>
+                                                <tr><td>Reference 3</td><td>{{ $detail->reference_three }}</td></tr>
+                                                <tr><td>Reference 4</td><td>{{ $detail->reference_four }}</td></tr>
+                                                <tr><td>Reference 5</td><td>{{ $detail->reference_five }}</td></tr>
+                                                <tr><td>Transport Mode</td><td>{{ $detail->transport_mode }}</td></tr>
+                                                <tr><td>Delivery Type</td><td>{{ $detail->delivery_type }}</td></tr>
+                                                <tr><td>Shipping Type</td><td>{{ $detail->shipping_type }}</td></tr>
+                                                <tr><td>Journey Type</td><td>{{ $detail->journey_type }}</td></tr>
                                             </table>
                                         </div>
 
@@ -296,81 +239,68 @@
                                         <div class="col-md-6">
                                             <h2>Consignee Information</h2>
                                             <table class="table">
-                                                <tr>
-                                                    <td>Consignee Name</td>
-                                                    <td>{{ $detail->consignee_name }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Address</td>
-                                                    <td>{{ $detail->consignee_address }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Consignee Email</td>
-                                                    <td>{{ $detail->consignee_email }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Consignee Mobile</td>
-                                                    <td>{{ $detail->consignee_mobile }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>City</td>
-                                                    <td>{{ $detail->consignee_city }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Province</td>
-                                                    <td>{{ $detail->consignee_province }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Barangay</td>
-                                                    <td>{{ $detail->consignee_barangay }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Building Type</td>
-                                                    <td>{{ $detail->consignee_building_type }}</td>
-                                                </tr>
+                                                <tr><td>Consignee Name</td><td>{{ $detail->consignee_name }}</td></tr>
+                                                <tr><td>Address</td><td>{{ $detail->consignee_address }}</td></tr>
+                                                <tr><td>Consignee Email</td><td>{{ $detail->consignee_email }}</td></tr>
+                                                <tr><td>Consignee Mobile</td><td>{{ $detail->consignee_mobile }}</td></tr>
+                                                <tr><td>City</td><td>{{ $detail->consignee_city }}</td></tr>
+                                                <tr><td>Province</td><td>{{ $detail->consignee_province }}</td></tr>
+                                                <tr><td>Barangay</td><td>{{ $detail->consignee_barangay }}</td></tr>
+                                                <tr><td>Building Type</td><td>{{ $detail->consignee_building_type }}</td></tr>
                                             </table>
 
                                             <h2>Merchant Information</h2>
                                             <table class="table">
-                                                <tr>
-                                                    <td>Merchant Name</td>
-                                                    <td>{{ $detail->merchant_name }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Address</td>
-                                                    <td>{{ $detail->merchant_address }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Merchant Email</td>
-                                                    <td>{{ $detail->merchant_email }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Merchant Mobile</td>
-                                                    <td>{{ $detail->merchant_mobile }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>City</td>
-                                                    <td>{{ $detail->merchant_city }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Province</td>
-                                                    <td>{{ $detail->merchant_province }}</td>
-                                                </tr>
+                                                <tr><td>Merchant Name</td><td>{{ $detail->merchant_name }}</td></tr>
+                                                <tr><td>Address</td><td>{{ $detail->merchant_address }}</td></tr>
+                                                <tr><td>Merchant Email</td><td>{{ $detail->merchant_email }}</td></tr>
+                                                <tr><td>Merchant Mobile</td><td>{{ $detail->merchant_mobile }}</td></tr>
+                                                <tr><td>City</td><td>{{ $detail->merchant_city }}</td></tr>
+                                                <tr><td>Province</td><td>{{ $detail->merchant_province }}</td></tr>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="printModal('modal{{ $detail->id }}')">Print</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                @endforeach
+            @endforeach
+            <style>
+                @media print {
+                    .modal-footer button {
+                        display: none; /* Hide the Close and Print buttons when printing */
+                    }
+                }
+                </style>
+<script>
+    function printModal(modalId) {
+        var printContent = document.getElementById(modalId).innerHTML;
+        var originalContent = document.body.innerHTML;
+        var printWindow = window.open('', '', 'height=600,width=800');
 
+        // Write content to the new window
+        printWindow.document.open();
+        printWindow.document.write('<html><head><title>Print</title>');
+        printWindow.document.write('<style>body { margin: 20px; } table { width: 100%; border-collapse: collapse; } table, th, td { border: 1px solid black; } th, td { padding: 8px; text-align: left; } @media print { .modal-footer { display: none; } }</style>'); // Add any necessary styles here
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(printContent);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
 
+        // Print the content
+        printWindow.print();
+
+        // Close the print window after printing
+        printWindow.onafterprint = function() {
+            printWindow.close();
+        };
+    }
+    </script>
                 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
                 <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/jquery-3.7.1.min.js"></script>
                 <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>

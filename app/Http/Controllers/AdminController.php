@@ -35,7 +35,8 @@ class AdminController extends Controller
         return view('Admin.Admin');
     }
     public function reference(){
-        return view('Admin.ReferenceForm');
+        $users = User::where('role', 'courier')->get();
+        return view('Admin.ReferenceForm',compact('users'));
     }
     public function managebranch(){
         $branches = ManageBranch::all();
@@ -118,7 +119,7 @@ public function courier_order()
     $currentCourier = Auth::user(); // Ensure that user is logged in and has 'courier' role
 
     // Fetch bookings assigned to the logged-in courier
-    $bookings = Booking::where('driver_id', $currentCourier->id)->get();
+    $bookings = Booking::where('driver_name', $currentCourier->id)->get();
 
     return view('Admin.ManageCourierOrder', compact('bookings', 'drivers'));
 }

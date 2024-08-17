@@ -26,21 +26,21 @@
                         <span class="menu-title">Dashboard</span>
                     </a>
                 </li>
-               
-               
+
+
                 <li class="sidebar-menu-item ">
                     <a href="order-for-courier" class="nav-link ">
                         <i class="menu-icon las la-fax"></i>
                         <span class="menu-title">Manage Order</span>
                     </a>
                 </li>
-               
-               
-             
-              
-              
-              
-                
+
+
+
+
+
+
+
             </ul>
         </div>
         <div class="version-info text-center text-uppercase">
@@ -209,119 +209,34 @@
                             <div class="card">
                                 <div class="card-body p-0">
                                     <div class="table-responsive--sm table-responsive">
-                                    <table class="table table--light style--two">
-    <thead>
-        <tr>
-             <th>Item List</th>
-             <th>Estimated Weight</th>
-            <th>Sender Name</th>
-            <th>Sender Phone</th>
-            <th>Pickup Address</th>
-            <th>Receiver Name</th>
-            <th>Receiver Email</th>
-            <th>Receiver Phone</th>
-            <th>Amount</th>
-            <th>Creation Date</th>
-          
-            <th>Truck Type</th>
-            <th>Tracking Number</th>
-            <th>Assigned Driver</th>
-            <th>Order Status</th>
-            <th>Set Order Status</th>
-            <th>Location Status</th>
-            <th>Update Location</th>
-            <th>Updated Actual Weight</th>
-            <th>Update Weight</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($bookings as $booking)
-        <tr>
-        <td>
-    @if ($booking->item_list)
-        <img src="{{ asset($booking->item_list) }}" alt="Item List" style="max-width: 100px; max-height: 100px;">
-    @else
-        No image available
-    @endif
-</td>
-<td>{{ $booking->weight }}</td>
-            <td>{{ $booking->sender_name }}</td>
-            <td>{{ $booking->sender_phone }}</td>
-            <td>{{ $booking->pickup_address }}</td>
-            <td>{{ $booking->receiver_name }}</td>
-            <td>{{ $booking->receiver_email }}</td>
-            <td>{{ $booking->receiver_phone }}</td>
-            <td>₱{{ number_format((float)$booking->order_amount, 2, '.', ',') }}</td>
-            <td>{{ $booking->created_at->format('F d, Y') }}</td>
+                                        <table class="table table--light style--two">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Tracking Number</th>
+                                                    <th>Truck Plate Number</th>
+                                                    <th>Destination</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($bookings as $detail)
+                                                <tr>
+                                                    <td>{{ \Carbon\Carbon::parse($detail->created_at)->format('F d, Y') }}</td>
+                                                    <td>{{ $detail->tracking_number }}</td>
+                                                    <td>{{ $detail->plate_number }}</td>
+                                                    <td>{{ $detail->consignee_address }}</td>
+                                                    <td>
 
-          
-            <td>{{ $booking->truck_type}}</td>
-            <td>{{ $booking->tracking_number }}</td>
-            <td>
-                @if($booking->driver)
-                    {{ $booking->driver->name }}
-                @else
-                    Not Assigned
-                @endif
-            </td>
-            <td>{{ $booking->order_status }}</td>
-            <td>
-                <form action="{{ route('update.order.status', $booking->id) }}" method="POST" style="display: inline;">
-                    @csrf
-                    <div class="form-group">
-                        <select name="order_status" class="form-control form-control-sm" required>
-                        <option value="To Pick-up" {{ $booking->order_status == 'To Pick-up' ? 'selected' : '' }}>To Pick-up</option>
-                            <option value="Picked-up" {{ $booking->order_status == 'Picked-up' ? 'selected' : '' }}>Picked-up</option>
-                            <option value="In Transit" {{ $booking->order_status == 'In Transit' ? 'selected' : '' }}>In Transit</option>
-                            <option value="For Delivery" {{ $booking->order_status == 'For Delivery' ? 'selected' : '' }}>For delivery</option>
-                            <option value="Delivered" {{ $booking->order_status == 'Delivered' ? 'selected' : '' }}>Delivered</option>
-                         
-                           
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-sm">Update Status</button>
-                </form>
-            </td>
-            <td>
-                {{ $booking->location }} @if($booking->location == 'Other') - {{ $booking->other_location }} @endif
-            </td>
-            <td>
-                <form action="{{ route('update.location.status', $booking->id) }}" method="POST" style="display: inline;">
-                    @csrf
-                    <div class="form-group">
-                        <label for="location">Location</label>
-                        <select name="location" id="location-{{ $booking->id }}" class="form-control form-control-sm" required onchange="handleLocationChange(this)">
-                            <option value="Manila" {{ $booking->location == 'Manila' ? 'selected' : '' }}>Manila</option>
-                            <option value="Laguna" {{ $booking->location == 'Laguna' ? 'selected' : '' }}>Laguna</option>
-                            <option value="Batangas" {{ $booking->location == 'Batangas' ? 'selected' : '' }}>Batangas</option>
-                           
-                        </select>
-                       
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-sm">Update Status</button>
-                </form>
-            </td>
-            <td>
-    {{ $booking->actual_weight % 1 === 0 
-        ? number_format($booking->actual_weight, 0) 
-        : number_format($booking->actual_weight, 2) }} kg
-</td>
-
-
-            <td>
-                <form action="{{ route('update.actual.weight', $booking->id) }}" method="POST" style="display: inline;">
-                    @csrf
-                    <div class="form-group mb-0">
-                        <label for="actual_weight">Actual Weight in kgs</label>
-                        <input type="number" step="0.01" name="actual_weight" id="actual_weight-{{ $booking->id }}" class="form-control form-control-sm" value="{{ old('actual_weight', $booking->actual_weight) }}" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-sm mt-2">Update Weight</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+                                                    </td>
+                                                </tr>
+                                                @empty
+                                                <tr>
+                                                    <td colspan="5">No bookings found.</td>
+                                                </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
 
 
 
@@ -347,7 +262,7 @@
 
                                         <div
                                             class="d-none flex-sm-fill d-sm-flex align-items-sm-center justify-content-sm-between">
-                                           
+
 
                                         </div>
                                     </nav>

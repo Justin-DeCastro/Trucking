@@ -98,8 +98,13 @@
         <div style="display: flex; gap: 20px;">
             <div style="flex: 1; min-width: 220px;">
                 <label for="driver_name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Driver Name</label>
-                <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="driver_name" name="driver_name" type="text" placeholder="Enter driver name" required>
+                <select id="driver_name" name="driver_name" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);">
+                    @foreach($users as $user)
+                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    @endforeach
+                </select>
             </div>
+
             <div style="flex: 1; min-width: 220px;">
                 <label for="plate_number" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Plate Number</label>
                 <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="plate_number" name="plate_number" type="text" placeholder="Enter Plate Number" required>

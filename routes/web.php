@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MapController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -210,4 +211,4 @@ Route::get('/qrcode', [QrCodeController::class, 'generate']);
 
 
 
-
+Route::get('/map', [MapController::class, 'showMap']);

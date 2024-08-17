@@ -24,7 +24,7 @@ class User extends Authenticatable
         'driver_license',   // Added field
         'license_number',   // Added field
         'contact_number',   // New field
-        'address',  
+        'address',
         'plate_number',        // New field
     ];
 
@@ -96,4 +96,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Booking::class, 'driver_id');
     }
+    public function courier()
+    {
+        return $this->belongsTo(User::class, 'driver_id');
+    }
+
 }

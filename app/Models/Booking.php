@@ -37,7 +37,7 @@ class Booking extends Model
         'plate_number',
         'tracking_number',
 
-        // 'driver_id', // Add this if you have a driver_id field
+        'driver_id', // Add this if you have a driver_id field
     ];
 
     // Relationship with the User model for the driver

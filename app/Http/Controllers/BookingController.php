@@ -76,6 +76,7 @@ class BookingController extends Controller
             'merchant_province' => 'required|string|max:255',
             'driver_name' => 'required|string|max:255',
             'plate_number' => 'required|string|max:255',
+
             // Assuming 'truck_type' is a field in your form that needs validation
             // 'truck_type' => 'required|exists:vehicles,id',
         ]);
