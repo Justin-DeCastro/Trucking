@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\User;
 use App\Models\Vehicle;
+use App\Models\Rubix;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class BookingController extends Controller
 {
     // Show the booking form
@@ -54,45 +56,132 @@ class BookingController extends Controller
         // Validate the request
         $validatedData = $request->validate([
             'sender_name' => 'required|string|max:255',
-            'list_of_products' => 'required|string|max:255',
-            'pickup_address' => 'required|string|max:255',
-            'sender_phone' => 'required|string|max:255',
-            'item_list' => 'required|file|mimes:jpeg,png,jpg|max:2048',
-            'weight' => 'required|numeric',
-            'quantity' => 'required|numeric',
-            'receiver_name' => 'required|string|max:255',
-            'receiver_email' => 'required|email|max:255',
-            'receiver_phone' => 'required|string|max:255',
-            'dropoff_address' => 'required|string|max:255',
-            'truck_type' => 'required|exists:vehicles,id', // Validate as an existing vehicle ID
+            'transport_mode' => 'required|string|max:255',
+            'shipping_type' => 'required|string|max:255',
+            'delivery_type' => 'required|string|max:255',
+            'journey_type' => 'required|string|max:255',
+            'consignee_name' => 'required|string|max:255',
+            'consignee_address' => 'required|string|max:255',
+            'consignee_email' => 'required|email|max:255',
+            'consignee_mobile' => 'required|string|max:255',
+            'consignee_city' => 'required|string|max:255',
+            'consignee_province' => 'required|string|max:255',
+            'consignee_barangay' => 'required|string|max:255',
+            'consignee_building_type' => 'required|string|max:255',
+            'merchant_name' => 'required|string|max:255',
+            'merchant_address' => 'required|string|max:255',
+            'merchant_email' => 'required|email|max:255',
+            'merchant_mobile' => 'required|string|max:255',
+            'merchant_city' => 'required|string|max:255',
+            'merchant_province' => 'required|string|max:255',
+            // 'driver_id' => 'required|exists:users,id',
+            // Assuming 'truck_type' is a field in your form that needs validation
+            // 'truck_type' => 'required|exists:vehicles,id',
         ]);
     
-        // Handle file upload for item_list
-        if ($request->hasFile('item_list')) {
-            $file = $request->file('item_list');
-            $filename = time() . '-' . $file->getClientOriginalName();
-            $file->move(public_path('item_pictures'), $filename);
-            $validatedData['item_list'] = 'item_pictures/' . $filename;
-        }
-    
+        // Generate tracking number
         $trackingNumber = 'GPC-' . strtoupper(uniqid(mt_rand(), true));
         $validatedData['tracking_number'] = $trackingNumber;
     
+        // Create the booking
         $booking = Booking::create($validatedData);
     
-        // Update the truck status
-        $truckId = $request->truck_type;
-        $truck = Vehicle::find($truckId);
+        // Generate QR code
+        $filename = time() . '-' . $trackingNumber . '.svg';
+        $qrCodePath = 'qrcodes/' . $filename;
+        $qrCodeImage = QrCode::size(300)->generate($trackingNumber);
+        file_put_contents(public_path($qrCodePath), $qrCodeImage);
     
-        if ($truck) {
-            $truck->update([
-                'truck_status' => 'Not Available',
-            ]);
+        // Save QR code path to the booking
+        $booking->update(['qr_code' => $qrCodePath]);
+    
+        // Update the truck status if truck_type is provided
+        $truckId = $request->input('truck_type'); // Ensure 'truck_type' field exists in the form
+        if ($truckId) {
+            $truck = Vehicle::find($truckId);
+    
+            if ($truck) {
+                // Decrement the quantity of the truck
+                $truck->decrement('quantity');
+    
+                // Update truck status if quantity is 0
+                if ($truck->quantity <= 0) {
+                    $truck->update([
+                        'truck_status' => 'Not Available',
+                    ]);
+                }
+            }
         }
     
-        return redirect()->back()->with('success', 'Booking submitted successfully! Tracking Number: ' . $trackingNumber);
+        // Generate the URL to the QR code image
+        $qrCodeUrl = asset($qrCodePath);
+    
+        // Redirect to the confirmation view with data
+        return view('Home.confirmation', [
+            'trackingNumber' => $trackingNumber,
+            'qrCodeUrl' => $qrCodeUrl,
+        ]);
     }
     
+    
+
+    
+    public function store(Request $request)
+    {
+        $request->validate([
+            'sender_name' => 'required|string|max:255',
+            'transport_mode' => 'required|string|max:255',
+            'shipping_type' => 'required|string|max:255',
+            'delivery_type' => 'required|string|max:255',
+            'journey_type' => 'required|string|max:255',
+            'consignee_name' => 'required|string|max:255',
+            'consignee_address' => 'required|string|max:255',
+            'consignee_email' => 'required|email|max:255',
+            'consignee_mobile' => 'required|string|max:255',
+            'consignee_city' => 'required|string|max:255',
+            'consignee_province' => 'required|string|max:255',
+            'consignee_barangay' => 'required|string|max:255',
+            'consignee_building_type' => 'required|string|max:255',
+            'merchant_name' => 'required|string|max:255',
+            'merchant_address' => 'required|string|max:255',
+            'merchant_email' => 'required|email|max:255',
+            'merchant_mobile' => 'required|string|max:255',
+            'merchant_city' => 'required|string|max:255',
+            'merchant_province' => 'required|string|max:255',
+       
+        ]);
+    
+        // Validate the request
+     
+    
+        // Create a new Rubix record
+        Rubix::create([
+            'sender_name' => $request->sender_name,
+            'transport_mode' => $request->transport_mode,
+            'shipping_type' => $request->shipping_type,
+            'delivery_type' => $request->delivery_type,
+            'journey_type' => $request->journey_type,
+            'consignee_name' => $request->consignee_name,
+            'consignee_address' => $request->consignee_address,
+          'consignee_email' => $request->consignee_email,
+          'consignee_mobile' => $request->consignee_mobile,
+          'consignee_city' => $request->consignee_city,
+          'consignee_province' => $request->consignee_province,
+          'consignee_barangay' => $request->consignee_barangay,
+          'consignee_building_type' => $request->consignee_building_type,
+          'merchant_name' => $request->merchant_name,
+          'merchant_address' => $request->merchant_address,
+          'merchant_email' => $request->merchant_email,
+          'merchant_mobile' => $request->merchant_mobile,
+          'merchant_city' => $request->merchant_city,
+          'merchant_province' => $request->merchant_province,
+         
+        ]);
+    
+    
+        // Redirect back with a success message
+        return redirect()->back()->with('message', 'Booking successfully created!');
+    }
     
     
    public function trackBooking(Request $request)

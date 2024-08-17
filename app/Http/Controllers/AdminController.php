@@ -17,8 +17,15 @@ class AdminController extends Controller
     public function dashboard(){
         return view('Admin.dashboard');
     }
+    public function waybill(){
+        $vehicles = Vehicle::all(); 
+        return view('Admin.Waybill',compact('vehicles'));
+    }
     public function adminside(){
         return view('Admin.Admin');
+    }
+    public function reference(){
+        return view('Admin.ReferenceForm');
     }
     public function managebranch(){
         $branches = ManageBranch::all(); 
@@ -72,7 +79,7 @@ class AdminController extends Controller
         $totalWithdraw = $transactions->sum('withdraw_amount');
         $outstandingBalance = $transactions->sum('deposit_amount');
         $totalExpense = $transactions->sum('expense_amount');
-        $netIncome = $totalDeposit - $totalWithdraw;
+        $netIncome = $outstandingBalance - $totalWithdraw;
         return view('Accounting.Accountingdash',compact('outstandingBalance','totalWithdraw','totalExpense','netIncome'));
     }
   

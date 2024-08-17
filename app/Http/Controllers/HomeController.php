@@ -12,6 +12,9 @@ class HomeController extends Controller
     public function ordertracking(){
         return view('Home.Ordertracking');
     }
+    public function qrcode(){
+        return view('Home.QRCode');
+    }
     public function about(){
         return view('Home.About');
     }

@@ -3,7 +3,7 @@
         <div class="col-12">
             <nav class="navbar navbar-expand-lg navbar-light">
                 <a class="navbar-brand logo" href="/">
-                    <img src="Home/images-removebg-preview.png"
+                    <img src="Home/GDR-removebg-preview.png"
                         alt="logo image">
                 </a>
                 <button class="navbar-toggler header-button" data-bs-toggle="collapse"
@@ -23,30 +23,12 @@
                                                     <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50"
                                                         alt="image">
                                                 </div>
-                                                <span class="text">English</span>
+                                                
                                             </div>
                                             <ul class="dropdown-list">
-                                                <li class="dropdown-list__item langSel" data-value="hn">
-                                                    <div class="thumb">
-                                                        <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50"
-                                                            alt="image">
-                                                    </div>
-                                                    <span class="text">Hindi</span>
-                                                </li>
-                                                <li class="dropdown-list__item langSel" data-value="bn">
-                                                    <div class="thumb">
-                                                        <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50"
-                                                            alt="image">
-                                                    </div>
-                                                    <span class="text">Bangla</span>
-                                                </li>
-                                                <li class="dropdown-list__item langSel" data-value="sp">
-                                                    <div class="thumb">
-                                                        <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50"
-                                                            alt="image">
-                                                    </div>
-                                                    <span class="text">Spanish</span>
-                                                </li>
+                                                
+                                               
+                                                
                                             </ul>
                                         </div>
                                     </div>
@@ -67,11 +49,7 @@
                                 About
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="faq" aria-current="page">
-                                FAQ
-                            </a>
-                        </li>
+                       
                         <li class="nav-item ">
                             <a class="nav-link" href="service" aria-current="page">
                                 Service

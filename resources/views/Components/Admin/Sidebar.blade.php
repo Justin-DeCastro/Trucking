@@ -25,6 +25,18 @@
                             <span class="menu-title">Admin</span>
                         </a>
                     </li>
+                    <li class="sidebar-menu-item ">
+                        <a href="waybill" class="nav-link ">
+                        <i class="fa fa-users menu-icon"></i>
+                            <span class="menu-title">Waybill</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item ">
+                        <a href="reference" class="nav-link ">
+                        <i class="fa fa-users menu-icon"></i>
+                            <span class="menu-title">Rubix</span>
+                        </a>
+                    </li>
                     <li class="sidebar-menu-item sidebar-dropdown">
                         <a href="javascript:void(0)" class="">
                         <i class="fa fa-code-branch menu-icon"></i>
@@ -57,6 +69,18 @@
                         <a href="addsubcon" class="nav-link ">
                         <i class="fa fa-fax menu-icon"></i>
                             <span class="menu-title">Add Subcontractor</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item ">
+                        <a href="sendcourier" class="nav-link ">
+                        <i class="fa fa-fax menu-icon"></i>
+                            <span class="menu-title">send courier</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item ">
+                        <a href="reference" class="nav-link ">
+                        <i class="fa fa-fax menu-icon"></i>
+                            <span class="menu-title">Add booking</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">

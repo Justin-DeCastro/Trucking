@@ -133,6 +133,7 @@
                             <th>Vehicle Name</th>
                             <th>Vehicle Capacity</th>
                             <th>Vehicle Status</th>
+                            <th>Vehicle Quantity</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -142,9 +143,18 @@
                                 <td>{{ $vehicle->truck_name }}</td>
                                 <td>{{ $vehicle->truck_capacity }}</td>
                                 <td>{{ $vehicle->truck_status }}</td>
+                                <td>{{ $vehicle->quantity }}</td>
                                 <td>
                                     <!-- Edit Button -->
-                                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editJobModal{{ $vehicle->id }}" data-id="{{ $vehicle->id }}" data-truck-name="{{ $vehicle->truck_name }}" data-truck-capacity="{{ $vehicle->truck_capacity }}" data-truck-status="{{ $vehicle->truck_status }}">Edit</button>
+                                    <button type="button" class="btn btn-warning btn-sm"
+    data-bs-toggle="modal"
+    data-bs-target="#editJobModal{{ $vehicle->id }}"
+    data-id="{{ $vehicle->id }}"
+    data-truck-name="{{ $vehicle->truck_name }}"
+    data-truck-capacity="{{ $vehicle->truck_capacity }}"
+    data-truck-status="{{ $vehicle->truck_status }}"
+    data-quantity="{{ $vehicle->quantity }}">Edit
+</button>
 
 
                                     <!-- Delete Button -->
@@ -198,42 +208,57 @@
 
     <!-- Update Vehicle Modal -->
     @foreach($vehicles as $vehicle)
+<!-- Modal -->
 <div class="modal fade" id="editJobModal{{ $vehicle->id }}" tabindex="-1" aria-labelledby="editJobModalLabel{{ $vehicle->id }}" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="editJobForm{{ $vehicle->id }}" method="POST" action="{{ route('vehicles.update', $vehicle->id) }}">
-                @csrf
-                @method('PUT')
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editJobModalLabel{{ $vehicle->id }}">Edit Vehicle</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="editLocation{{ $vehicle->id }}" class="form-label">Vehicle Name</label>
-                        <input type="text" class="form-control" id="editLocation{{ $vehicle->id }}" name="truck_name" value="{{ $vehicle->truck_name }}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editJobTitle{{ $vehicle->id }}" class="form-label">Vehicle Capacity</label>
-                        <input type="text" class="form-control" id="editJobTitle{{ $vehicle->id }}" name="truck_capacity" value="{{ $vehicle->truck_capacity }}" required>
-                    </div>
-                    <div class="mb-3">
-    <label for="editJobStatus{{ $vehicle->id }}" class="form-label">Vehicle Status</label>
-    <select class="form-control" id="editJobStatus{{ $vehicle->id }}" name="truck_status" required>
-        <option value="Available" {{ $vehicle->truck_status === 'Available' ? 'selected' : '' }}>Available</option>
-        <option value="Not Available" {{ $vehicle->truck_status === 'Not Available' ? 'selected' : '' }}>Not Available</option>
-    </select>
-</div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="editJobModalLabel{{ $vehicle->id }}">Edit Vehicle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('vehicles.update', $vehicle->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
+                    <!-- Vehicle ID (hidden) -->
+                    <input type="hidden" name="id" id="vehicle-id{{ $vehicle->id }}" value="{{ $vehicle->id }}">
+
+                    <!-- Truck Name -->
+                    <div class="mb-3">
+                        <label for="truck-name{{ $vehicle->id }}" class="form-label">Truck Name</label>
+                        <input type="text" class="form-control" id="truck-name{{ $vehicle->id }}" name="truck_name" value="{{ $vehicle->truck_name }}" required>
+                    </div>
+
+                    <!-- Truck Capacity -->
+                    <div class="mb-3">
+                        <label for="truck-capacity{{ $vehicle->id }}" class="form-label">Truck Capacity</label>
+                        <input type="text" class="form-control" id="truck-capacity{{ $vehicle->id }}" name="truck_capacity" value="{{ $vehicle->truck_capacity }}" required>
+                    </div>
+
+                    <!-- Truck Status -->
+                    <div class="mb-3">
+                        <label for="truck-status{{ $vehicle->id }}" class="form-label">Truck Status</label>
+                        <input type="text" class="form-control" id="truck-status{{ $vehicle->id }}" name="truck_status" value="{{ $vehicle->truck_status }}" required>
+                    </div>
+
+                    <!-- Quantity -->
+                    <div class="mb-3">
+                        <label for="quantity{{ $vehicle->id }}" class="form-label">Quantity</label>
+                        <input type="number" class="form-control" id="quantity{{ $vehicle->id }}" name="quantity" value="{{ $vehicle->quantity }}" required min="0">
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
 @endforeach
 
 

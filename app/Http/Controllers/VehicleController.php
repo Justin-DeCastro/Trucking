@@ -29,6 +29,7 @@ class VehicleController extends Controller
                'truck_name' => 'required|string|max:255',
                'truck_capacity' => 'required|string|max:255',
                'truck_status' => 'required|string|max:255',
+               'quantity' => 'required|integer|min:0', // Add validation for quantity
            ]);
    
            // Find the vehicle by ID
@@ -38,17 +39,19 @@ class VehicleController extends Controller
            $vehicle->truck_name = $request->input('truck_name');
            $vehicle->truck_capacity = $request->input('truck_capacity');
            $vehicle->truck_status = $request->input('truck_status');
+           $vehicle->quantity = $request->input('quantity'); // Update the quantity field
    
            // Save the updated vehicle
            $vehicle->save();
    
-           // Return a success response
-           return response()->json(['message' => 'Vehicle updated successfully.'], 200);
+           // Redirect back with a success message
+           return redirect()->back()->with('success', 'Vehicle updated successfully.');
        } catch (\Exception $e) {
-           // Return an error response
-           return response()->json(['message' => 'Failed to update vehicle.'], 500);
+           // Redirect back with an error message
+           return redirect()->back()->with('error', 'Failed to update vehicle.');
        }
    }
+   
    
 
 
@@ -63,19 +66,37 @@ class VehicleController extends Controller
 
     // Store the vehicle data
     public function store(Request $request)
-    {
-        $request->validate([
-            'truck_name' => 'required|string|max:255',
-            'truck_capacity' => 'required|string|max:255',
-            'truck_status' => 'required|string|max:255',
-        ]);
+{
+    $request->validate([
+        'truck_name' => 'required|string|max:255',
+        'truck_capacity' => 'required|string|max:255',
+        'truck_status' => 'required|string|max:255',
+        'quantity' => 'required|integer|min:0', // Add validation for quantity
+    ]);
 
-        Vehicle::create([
-            'truck_name' => $request->truck_name,
-            'truck_capacity' => $request->truck_capacity,
-            'truck_status' => $request->truck_status,
-        ]);
+    Vehicle::create([
+        'truck_name' => $request->truck_name,
+        'truck_capacity' => $request->truck_capacity,
+        'truck_status' => $request->truck_status,
+        'quantity' => $request->quantity,
+    ]);
 
-        return redirect()->back()->with('success', 'Vehicle created successfully!');
+    return redirect()->back()->with('success', 'Vehicle created successfully!');
+}
+public function useVehicle($id)
+{
+    $vehicle = Vehicle::find($id);
+
+    if (!$vehicle) {
+        return redirect()->back()->with('error', 'Vehicle not found!');
     }
+
+    if ($vehicle->quantity > 0) {
+        $vehicle->decrement('quantity');
+        return redirect()->back()->with('success', 'Vehicle used successfully!');
+    } else {
+        return redirect()->back()->with('error', 'No available vehicle to use!');
+    }
+}
+
 }

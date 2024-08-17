@@ -15,23 +15,27 @@ class Booking extends Model
     // Specify which attributes are mass assignable
     protected $fillable = [
         'sender_name',
-        'list_of_products',
-        'pickup_address',
-        'sender_phone',
-        'item_list',
-        'quantity',
-        'weight',
-        'receiver_name',
-        'receiver_email',
-        'receiver_phone',
-        'dropoff_address',
-        'location',
-        'truck_type',
-        'order_status',
-        'payment_status',
-        'order_amount',
+        'transport_mode',
+        'shipping_type',
+        'delivery_type',
+        'journey_type',
+        'consignee_name',
+        'consignee_address',
+        'consignee_email',
+        'consignee_mobile',
+        'consignee_city',
+        'consignee_province',
+        'consignee_barangay',
+        'consignee_building_type',
+        'merchant_name',
+        'merchant_address',
+        'merchant_email',
+        'merchant_mobile',
+        'merchant_city',
+        'merchant_province',
         'tracking_number',
-        'driver_id', // Ensure this field exists in the database
+        
+        // 'driver_id', // Add this if you have a driver_id field
     ];
 
     // Relationship with the User model for the driver
@@ -39,6 +43,7 @@ class Booking extends Model
     {
         return $this->belongsTo(User::class, 'driver_id');
     }
+    
     public function vehicle()
 {
     return $this->belongsTo(Vehicle::class, 'vehicle_id'); // Adjust 'vehicle_id' to the actual foreign key if needed

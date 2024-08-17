@@ -56,8 +56,9 @@
   --base-l-800: var(--base-h) calc(var(--base-s)) calc(var(--base-l) + (100% - var(--base-l)) * 0.8);
   --base-l-900: var(--base-h) calc(var(--base-s)) calc(var(--base-l) + (100% - var(--base-l)) * 0.9);
   --background-gradient: linear-gradient(267deg,
-      #213390 45.08%,
-      #033e8cd4 87.31%);
+  #033e8cd4 
+  45.08%,
+  #ff2c2c 87.31%);
   /* ========================= Base Two Color ============================= */
   --base-two-h: 230;
   --base-two-s: 36%;

@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
 
@@ -6,7 +5,7 @@
 
 
 <body>
-    
+
     <div class="preloader">
         <div class="loader-p"></div>
     </div>
@@ -17,276 +16,270 @@
 
     <a class="scroll-top"><i class="fas fa-angle-double-up"></i></a>
 
-        <div class="header-top d-lg-block d-none">
-    <div class="container">
-        <div class="top-header-wrapper d-flex justify-content-between align-items-center flex-wrap">
-            <div class="top-contact">
-                <ul class="contact-list">
-                    <li class="contact-list__item flex-align">
-                        <span class="contact-list__item-icon flex-center">
-                            <i class="las la-envelope-open"></i>                        </span>
+    <div class="header-top d-lg-block d-none">
+        <div class="container">
+            <div class="top-header-wrapper d-flex justify-content-between align-items-center flex-wrap">
+                <div class="top-contact">
+                    <ul class="contact-list">
+                        <li class="contact-list__item flex-align">
+                            <span class="contact-list__item-icon flex-center">
+                                <i class="las la-envelope-open"></i> </span>
                             <a class="contact-list__link" href="mailto:example@gmail.com">
-    <span>example@gmail.com</span>
-</a>
-                    </li>
-                    <li class="contact-list__item flex-align">
-                        <span class="contact-list__item-icon flex-center">
-                            <i class="las la-phone"></i>                        </span>
-                        <a class="contact-list__link" href="tel:+44 123 1217">
-                          +639123456789
-                        </a>
-                    </li>
-                </ul>
-            </div>
-                            <div class="top-button d-flex justify-content-between align-items-center flex-wrap">
+                                <span>example@gmail.com</span>
+                            </a>
+                        </li>
+                        <li class="contact-list__item flex-align">
+                            <span class="contact-list__item-icon flex-center">
+                                <i class="las la-phone"></i> </span>
+                            <a class="contact-list__link" href="tel:+44 123 1217">
+                                +639123456789
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="top-button d-flex justify-content-between align-items-center flex-wrap">
                     <div class="top-button d-flex justify-content-between align-items-center flex-wrap">
                         <div class="language-box">
-    <div class="custom--dropdown">
-        <div class="custom--dropdown__selected dropdown-list__item">
-                                                <div class="thumb">
-                        <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50" alt="image">
-                    </div>
-                    <span class="text">English</span>
-  i                                                                                                                  </div>
-        <ul class="dropdown-list">
-                                                                            <li class="dropdown-list__item langSel" data-value="hn">
-                        <div class="thumb">
-                            <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50" alt="image">
-                        </div>
-                        <span class="text">Hindi</span>
-                    </li>
-                                                                <li class="dropdown-list__item langSel" data-value="bn">
-                        <div class="thumb">
-                            <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50" alt="image">
-                        </div>
-                        <span class="text">Bangla</span>
-                    </li>
-                                                                <li class="dropdown-list__item langSel" data-value="sp">
-                        <div class="thumb">
-                            <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50" alt="image">
-                        </div>
-                        <span class="text">Spanish</span>
-                    </li>
-                                    </ul>
-    </div>
-</div>
-                    </div>
-                </div>
-                    </div>
-    </div>
-</div>
-
-@include('Components.Home.Navbar')
-
-
-            <section class="breadcrumb bg-img mb-0"
-    data-background-image="https://script.viserlab.com/courierlab/demo/assets/images/frontend/breadcrumb/6652bfd4ad66b1716699092.jpg">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="breadcrumb__wrapper">
-                    <h2 class="breadcrumb__title">About</h2>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-    
-                            <section class="about-section py-60">
-    <div class="container">
-        <div class="row gx-4 gy-4">
-            <div class="col-lg-7">
-                <div class="row gy-3">
-                    <div class="col-sm-7 col-xsm-6">
-                        <div class="about-img-overlay position-relative h-100">
-                            <div class="about-card-content flex-align position-absolute">
-                                <div class="overlay-card">
-                                    <h3 class="overlay-card__title">
-                                        28K
-                                    </h3>
-                                    <p class="overlay-card__desc">
-                                        Satisfied Clients
-                                    </p>
+                            <div class="custom--dropdown">
+                                <div class="custom--dropdown__selected dropdown-list__item">
+                                    <div class="thumb">
+                                        <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50"
+                                            alt="image">
+                                    </div>
+                                    <span class="text">English</span>
+                                    i
                                 </div>
-                                <div class="overlay-card">
-                                    <h3 class="overlay-card__title">
-                                        500
-                                    </h3>
-                                    <p class="overlay-card__desc">
-                                        Delivery Man
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="section-thumb h-100">
-                                <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/about/6652bdd4420ea1716698580.jpg" alt="about image">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-5 col-xsm-6">
-                        <div class="about-img-overlay-alt h-100">
-                            <div class="about-card-content">
-                                <div class="overlay-card w-100">
-                                    <h3 class="overlay-card__title d-inline">
-                                        30+
-                                    </h3>
-                                    <p class="overlay-card__desc d-inline">
-                                        Years Experiences in Courier Service
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="section-thumb h-100">
-                                <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/about/6652bdd53f83f1716698581.png" alt="about image">
+                                <ul class="dropdown-list">
+                                    <li class="dropdown-list__item langSel" data-value="hn">
+                                        <div class="thumb">
+                                            <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50"
+                                                alt="image">
+                                        </div>
+                                        <span class="text">Hindi</span>
+                                    </li>
+                                    <li class="dropdown-list__item langSel" data-value="bn">
+                                        <div class="thumb">
+                                            <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50"
+                                                alt="image">
+                                        </div>
+                                        <span class="text">Bangla</span>
+                                    </li>
+                                    <li class="dropdown-list__item langSel" data-value="sp">
+                                        <div class="thumb">
+                                            <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50"
+                                                alt="image">
+                                        </div>
+                                        <span class="text">Spanish</span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-5">
-                <div class="section-heading style-left">
-                    <h3 class="section-heading__title">30+ Years Experiences in Courier Service</h3>
-                    <p class="section-heading__desc">
-                        Doloribus debitis dolores amet, minus qui eaque itaque, doloremque at ipsa ab reiciendis assumenda et labore asperiores, cumque impedit! Corrupti, alias laboriosam!
-                    </p>
-                </div>
-                                    <ul class="about-services">
-                                                    <li class="about-services__item">
-                                <div class="about-services__thumb">
-                                    <span class="icon">
-                                        <i class="lab la-delicious"></i>                                    </span>
-                                </div>
-                                <div class="about-services__content">
-                                    <h6 class="about-services__title">
-                                        Fast Delivery
-                                    </h6>
-                                    <p class="about-services__desc">
-                                        Ut recusandae non veniam obcaecati, sunt earum atque cumque, alias quae molestiae quo, ad debitis saepe.
-                                    </p>
-                                </div>
-                            </li>
-                                                    <li class="about-services__item">
-                                <div class="about-services__thumb">
-                                    <span class="icon">
-                                        <i class="fas fa-money-check-alt"></i>                                    </span>
-                                </div>
-                                <div class="about-services__content">
-                                    <h6 class="about-services__title">
-                                        Lowest Cost
-                                    </h6>
-                                    <p class="about-services__desc">
-                                        Ut recusandae non veniam obcaecati, sunt earum atque cumque, alias quae molestiae quo, ad debitis saepe.
-                                    </p>
-                                </div>
-                            </li>
-                                                    <li class="about-services__item">
-                                <div class="about-services__thumb">
-                                    <span class="icon">
-                                        <i class="lab la-servicestack"></i>                                    </span>
-                                </div>
-                                <div class="about-services__content">
-                                    <h6 class="about-services__title">
-                                        Secured Services
-                                    </h6>
-                                    <p class="about-services__desc">
-                                        Ut recusandae non veniam obcaecati, sunt earum atque cumque, alias quae molestiae quo, ad debitis saepe.
-                                    </p>
-                                </div>
-                            </li>
-                                            </ul>
-                            </div>
         </div>
     </div>
-</section>
-                    <section class="our-services py-60">
+
+    @include('Components.Home.Navbar')
+
+
+    <section class="breadcrumb bg-img mb-0" data-background-image="Home/logistics.jpg">
         <div class="container">
-            <div class="row gy-5">
-                                    <div class="col-md-3 col-6 col-xsm-6">
-                        <div class="our-service-card flex-align counterup-item">
-                            <div class="our-service-card__thumb">
-                                <div class="border-vertical"></div>
-                                <div class="border-horizontal"></div>
-                                <span class="icon">
-                                    <i class="las la-users"></i>                                </span>
-                            </div>
-                            <div class="our-service-card__content">
-                                <p class="our-service-card__subtitle">
-                                    Satisfied Client
-                                </p>
-                                <h4 class="our-service-card__title flex-align">
-                                    <span class="odometer" data-odometer-final="323"></span>
-                                </h4>
-                            </div>
-                        </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="breadcrumb__wrapper">
+                        <h2 class="breadcrumb__title">About</h2>
                     </div>
-                                    <div class="col-md-3 col-6 col-xsm-6">
-                        <div class="our-service-card flex-align counterup-item">
-                            <div class="our-service-card__thumb">
-                                <div class="border-vertical"></div>
-                                <div class="border-horizontal"></div>
-                                <span class="icon">
-                                    <i class="las la-store-alt"></i>                                </span>
-                            </div>
-                            <div class="our-service-card__content">
-                                <p class="our-service-card__subtitle">
-                                    Total Branches
-                                </p>
-                                <h4 class="our-service-card__title flex-align">
-                                    <span class="odometer" data-odometer-final="100"></span>
-                                </h4>
-                            </div>
-                        </div>
-                    </div>
-                                    <div class="col-md-3 col-6 col-xsm-6">
-                        <div class="our-service-card flex-align counterup-item">
-                            <div class="our-service-card__thumb">
-                                <div class="border-vertical"></div>
-                                <div class="border-horizontal"></div>
-                                <span class="icon">
-                                    <i class="las la-user-friends"></i>                                </span>
-                            </div>
-                            <div class="our-service-card__content">
-                                <p class="our-service-card__subtitle">
-                                    Total Staffs
-                                </p>
-                                <h4 class="our-service-card__title flex-align">
-                                    <span class="odometer" data-odometer-final="865"></span>
-                                </h4>
-                            </div>
-                        </div>
-                    </div>
-                                    <div class="col-md-3 col-6 col-xsm-6">
-                        <div class="our-service-card flex-align counterup-item">
-                            <div class="our-service-card__thumb">
-                                <div class="border-vertical"></div>
-                                <div class="border-horizontal"></div>
-                                <span class="icon">
-                                    <i class="las la-people-carry"></i>                                </span>
-                            </div>
-                            <div class="our-service-card__content">
-                                <p class="our-service-card__subtitle">
-                                    Total Member
-                                </p>
-                                <h4 class="our-service-card__title flex-align">
-                                    <span class="odometer" data-odometer-final="387534"></span>
-                                </h4>
-                            </div>
-                        </div>
-                    </div>
-                            </div>
+                </div>
+            </div>
         </div>
     </section>
-                    <section class="branches-section py-120 section-bg">
-    <div class="branches-animation">
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
-    </div>
-    <div class="container">
-        <div class="section-heading">
-            <h3 class="section-heading__title">Our Top Branches</h3>
-            <p class="section-heading__desc">Here is more information about our courier company branches, Where we are belong</p>
+    <section class="about-section py-60">
+        <div class="container">
+            <div class="row gx-4 gy-4">
+                <div class="col-lg-7">
+                    <div class="row gy-3">
+                        <div class="col-sm-7 col-xsm-6">
+                            <div class="about-img-overlay position-relative h-100">
+                                <div class="about-card-content flex-align position-absolute">
+                                    <div class="overlay-card">
+                                        <h3 class="overlay-card__title">
+                                            28K
+                                        </h3>
+                                        <p class="overlay-card__desc">
+                                            Satisfied Clients
+                                        </p>
+                                    </div>
+                                    <div class="overlay-card">
+                                        <h3 class="overlay-card__title">
+                                            500
+                                        </h3>
+                                        <p class="overlay-card__desc">
+                                            Delivery Man
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="section-thumb h-100">
+                                    <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/about/6652bdd4420ea1716698580.jpg"
+                                        alt="about image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5 col-xsm-6">
+                            <div class="about-img-overlay-alt h-100">
+                                <div class="about-card-content">
+                                    <div class="overlay-card w-100">
+                                        <h3 class="overlay-card__title d-inline">
+                                            30+
+                                        </h3>
+                                        <p class="overlay-card__desc d-inline">
+                                            Years Experiences in Courier Service
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="section-thumb h-100">
+                                    <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/about/6652bdd53f83f1716698581.png"
+                                        alt="about image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="section-heading style-left">
+                        <h3 class="section-heading__title">30+ Years Experiences in Courier Service</h3>
+                        <p class="section-heading__desc">
+                        GDR LOGISTICS INC. was founded through the collaborative efforts, experiences, and expertise of its owners: Mr. Gilbert Cporcuera of GPC Express, Mr. Dennis Jamir of DNJ Trucking, and Mr. Roberto Jamir Jr. of TR3 Logistics.
+                        </p>
+                        <p class="section-heading__desc">
+                        Our company is dedicated to providing timely, secure, and dependable distribution services to any location in the Philippines. We are committed to building strong relationships with our clients to ensure they receive reliable service.
+                        </p>
+                    </div>
+                    <ul class="about-services">
+                        <li class="about-services__item">
+                            <div class="about-services__thumb">
+                                <span class="icon">
+                                <i class="fas fa-eye"></i> </span>
+                            </div>
+                            <div class="about-services__content">
+                                <h6 class="about-services__title">
+                                   Our Vision
+                                </h6>
+                                <p class="about-services__desc">
+                                   GDR Logistics Inc. vision itself as top option in the logistics industry setting standards of low cost logistic solution while prodiving excellent service.
+                                </p>
+                            </div>
+                        </li>
+                        <li class="about-services__item">
+                            <div class="about-services__thumb">
+                                <span class="icon">
+                                <i class="fas fa-bullseye"></i> </span>
+                            </div>
+                            <div class="about-services__content">
+                                <h6 class="about-services__title">
+                                    Our Mission
+                                </h6>
+                                <p class="about-services__desc">
+                                   GDR Logistics Inc. aims to provide worry-free, personalized and professional services to our clients. We aim to provide our client with efficient, reliable and innovative solutions that will contribute to the success of their busienss.
+                                </p>
+                            </div>
+                        </li>
+                       
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="row gy-3 gx-5">
-                            <div class="col-lg-3 col-sm-6 col-xsm-6">
+    </section>
+
+    <section class="our-services py-60">
+    <div class="container">
+        <div class="row gy-5">
+            <div class="col-md-3 col-6 col-xsm-6">
+                <div class="our-service-card flex-align counterup-item">
+                    <div class="our-service-card__thumb">
+                        <div class="border-vertical"></div>
+                        <div class="border-horizontal"></div>
+                        <span class="icon">
+                            <i class="fas fa-users"></i> <!-- Changed to Font Awesome users icon -->
+                        </span>
+                    </div>
+                    <div class="our-service-card__content">
+                        <p class="our-service-card__subtitle">Satisfied Client</p>
+                        <h4 class="our-service-card__title flex-align">
+                            <span class="odometer" data-odometer-final="323">323</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 col-xsm-6">
+                <div class="our-service-card flex-align counterup-item">
+                    <div class="our-service-card__thumb">
+                        <div class="border-vertical"></div>
+                        <div class="border-horizontal"></div>
+                        <span class="icon">
+                            <i class="fas fa-store"></i> <!-- Changed to Font Awesome store icon -->
+                        </span>
+                    </div>
+                    <div class="our-service-card__content">
+                        <p class="our-service-card__subtitle">Total Branches</p>
+                        <h4 class="our-service-card__title flex-align">
+                            <span class="odometer" data-odometer-final="100">100</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 col-xsm-6">
+                <div class="our-service-card flex-align counterup-item">
+                    <div class="our-service-card__thumb">
+                        <div class="border-vertical"></div>
+                        <div class="border-horizontal"></div>
+                        <span class="icon">
+                            <i class="fas fa-users-cog"></i> <!-- Changed to Font Awesome users cog icon -->
+                        </span>
+                    </div>
+                    <div class="our-service-card__content">
+                        <p class="our-service-card__subtitle">Total Staffs</p>
+                        <h4 class="our-service-card__title flex-align">
+                            <span class="odometer" data-odometer-final="865">865</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 col-xsm-6">
+                <div class="our-service-card flex-align counterup-item">
+                    <div class="our-service-card__thumb">
+                        <div class="border-vertical"></div>
+                        <div class="border-horizontal"></div>
+                        <span class="icon">
+                            <i class="fas fa-users"></i> <!-- Changed to Font Awesome users icon for members -->
+                        </span>
+                    </div>
+                    <div class="our-service-card__content">
+                        <p class="our-service-card__subtitle">Total Member</p>
+                        <h4 class="our-service-card__title flex-align">
+                            <span class="odometer" data-odometer-final="387534">387534</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section class="branches-section py-120 section-bg">
+        <div class="branches-animation">
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+        </div>
+        <div class="container">
+            <div class="section-heading">
+                <h3 class="section-heading__title">Our Top Branches</h3>
+                <p class="section-heading__desc">Here is more information about our courier company branches, Where we
+                    are belong</p>
+            </div>
+            <div class="row gy-3 gx-5">
+                <div class="col-lg-3 col-sm-6 col-xsm-6">
                     <div class="branch-card">
                         <h6 class="branch-card__title">India</h6>
                         <div class="branch-card__content">
@@ -314,15 +307,15 @@
                                     <div class="content">
                                         <p class="title">Email</p>
                                         <a class="contact-list__link" href="mailto:example@gmail.com">
-    <span>example@gmail.com</span>
-</a>
+                                            <span>example@gmail.com</span>
+                                        </a>
                                     </div>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                            <div class="col-lg-3 col-sm-6 col-xsm-6">
+                <div class="col-lg-3 col-sm-6 col-xsm-6">
                     <div class="branch-card">
                         <h6 class="branch-card__title">United Kingdom</h6>
                         <div class="branch-card__content">
@@ -349,8 +342,10 @@
                                     <span class="icon"><i class="icon-email"></i></span>
                                     <div class="content">
                                         <p class="title">Email</p>
-                                        <a class="desc d-block" href="/cdn-cgi/l/email-protection#0e6b766f637e626b4e206d6163">
-                                            <span class="__cf_email__" data-cfemail="93f6ebf2fee3fff6d3bdf0fcfe">[email&#160;protected]</span>
+                                        <a class="desc d-block"
+                                            href="/cdn-cgi/l/email-protection#0e6b766f637e626b4e206d6163">
+                                            <span class="__cf_email__"
+                                                data-cfemail="93f6ebf2fee3fff6d3bdf0fcfe">[email&#160;protected]</span>
                                         </a>
                                     </div>
                                 </li>
@@ -358,7 +353,7 @@
                         </div>
                     </div>
                 </div>
-                            <div class="col-lg-3 col-sm-6 col-xsm-6">
+                <div class="col-lg-3 col-sm-6 col-xsm-6">
                     <div class="branch-card">
                         <h6 class="branch-card__title">South Africa</h6>
                         <div class="branch-card__content">
@@ -385,8 +380,10 @@
                                     <span class="icon"><i class="icon-email"></i></span>
                                     <div class="content">
                                         <p class="title">Email</p>
-                                        <a class="desc d-block" href="/cdn-cgi/l/email-protection#caafb2aba7baa6af8ae4a9a5a7">
-                                            <span class="__cf_email__" data-cfemail="26435e474b564a43660845494b">[email&#160;protected]</span>
+                                        <a class="desc d-block"
+                                            href="/cdn-cgi/l/email-protection#caafb2aba7baa6af8ae4a9a5a7">
+                                            <span class="__cf_email__"
+                                                data-cfemail="26435e474b564a43660845494b">[email&#160;protected]</span>
                                         </a>
                                     </div>
                                 </li>
@@ -394,7 +391,7 @@
                         </div>
                     </div>
                 </div>
-                            <div class="col-lg-3 col-sm-6 col-xsm-6">
+                <div class="col-lg-3 col-sm-6 col-xsm-6">
                     <div class="branch-card">
                         <h6 class="branch-card__title">Pakistan</h6>
                         <div class="branch-card__content">
@@ -421,8 +418,10 @@
                                     <span class="icon"><i class="icon-email"></i></span>
                                     <div class="content">
                                         <p class="title">Email</p>
-                                        <a class="desc d-block" href="/cdn-cgi/l/email-protection#bbdec3dad6cbd7defb95d8d4d6">
-                                            <span class="__cf_email__" data-cfemail="402538212d302c25006e232f2d">[email&#160;protected]</span>
+                                        <a class="desc d-block"
+                                            href="/cdn-cgi/l/email-protection#bbdec3dad6cbd7defb95d8d4d6">
+                                            <span class="__cf_email__"
+                                                data-cfemail="402538212d302c25006e232f2d">[email&#160;protected]</span>
                                         </a>
                                     </div>
                                 </li>
@@ -430,22 +429,24 @@
                         </div>
                     </div>
                 </div>
-                    </div>
-    </div>
-</section>
-                    <section class="team-section py-120">
-    <div class="container">
-        <div class="section-heading">
-            <h3 class="section-heading__title"> Our Expert Team </h3>
-            <p class="section-heading__desc">
-                Our expert team efficient and reliable delivery of packages, documents, and goods as part of a courier service.
-            </p>
+            </div>
         </div>
-        <div class="row gy-5">
-                            <div class="col-xl-3 col-sm-6 col-xsm-6">
+    </section>
+    <section class="team-section py-120">
+        <div class="container">
+            <div class="section-heading">
+                <h3 class="section-heading__title"> Our Expert Team </h3>
+                <p class="section-heading__desc">
+                    Our expert team efficient and reliable delivery of packages, documents, and goods as part of a
+                    courier service.
+                </p>
+            </div>
+            <div class="row gy-5">
+                <div class="col-xl-3 col-sm-6 col-xsm-6">
                     <div class="team-card">
                         <div class="team-card__thumb">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/team/6652c6c0d62a01716700864.png" alt="team member">
+                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/team/6652c6c0d62a01716700864.png"
+                                alt="team member">
                         </div>
                         <div class="team-card__content">
                             <h6 class="team-card__title"> Liana Harris </h6>
@@ -455,17 +456,18 @@
                             <div class="team-card__footer">
                                 <p class="work-success">Complete Delivery :</p>
                                 <span class="work-count"><span class="icon">
-                                        <i class="fas fa-box"></i>                                    </span>
+                                        <i class="fas fa-box"></i> </span>
                                     2549
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
-                            <div class="col-xl-3 col-sm-6 col-xsm-6">
+                <div class="col-xl-3 col-sm-6 col-xsm-6">
                     <div class="team-card">
                         <div class="team-card__thumb">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/team/6652c6ca6935b1716700874.png" alt="team member">
+                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/team/6652c6ca6935b1716700874.png"
+                                alt="team member">
                         </div>
                         <div class="team-card__content">
                             <h6 class="team-card__title"> Dew Brisk </h6>
@@ -475,17 +477,18 @@
                             <div class="team-card__footer">
                                 <p class="work-success">Complete Delivery :</p>
                                 <span class="work-count"><span class="icon">
-                                        <i class="fas fa-box"></i>                                    </span>
+                                        <i class="fas fa-box"></i> </span>
                                     44856
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
-                            <div class="col-xl-3 col-sm-6 col-xsm-6">
+                <div class="col-xl-3 col-sm-6 col-xsm-6">
                     <div class="team-card">
                         <div class="team-card__thumb">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/team/6652c6d2180d11716700882.png" alt="team member">
+                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/team/6652c6d2180d11716700882.png"
+                                alt="team member">
                         </div>
                         <div class="team-card__content">
                             <h6 class="team-card__title"> Harry Hardson </h6>
@@ -495,17 +498,18 @@
                             <div class="team-card__footer">
                                 <p class="work-success">Complete Delivery :</p>
                                 <span class="work-count"><span class="icon">
-                                        <i class="fas fa-box"></i>                                    </span>
+                                        <i class="fas fa-box"></i> </span>
                                     5454
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
-                            <div class="col-xl-3 col-sm-6 col-xsm-6">
+                <div class="col-xl-3 col-sm-6 col-xsm-6">
                     <div class="team-card">
                         <div class="team-card__thumb">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/team/6652c6d94d3711716700889.png" alt="team member">
+                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/team/6652c6d94d3711716700889.png"
+                                alt="team member">
                         </div>
                         <div class="team-card__content">
                             <h6 class="team-card__title"> John Dew </h6>
@@ -515,43 +519,45 @@
                             <div class="team-card__footer">
                                 <p class="work-success">Complete Delivery :</p>
                                 <span class="work-count"><span class="icon">
-                                        <i class="fas fa-box"></i>                                    </span>
+                                        <i class="fas fa-box"></i> </span>
                                     3563
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+    <section class="testimonials py-120 section-bg">
+        <div class="container-fluid">
+            <div class="section-overlay">
+                <div class="row g-0 h-100">
+                    <div class="col-xl-7 col-lg-8">
+                        <div class="left-thumb">
+                            <img src="Home/logistics.jpg"
+                                alt="client">
+                        </div>
                     </div>
-    </div>
-</section>
-                    <section class="testimonials py-120 section-bg">
-    <div class="container-fluid">
-        <div class="section-overlay">
-            <div class="row g-0 h-100">
-                <div class="col-xl-7 col-lg-8">
-                    <div class="left-thumb">
-                        <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/client/666d5752d39bb1718441810.png" alt="client">
-                    </div>
-                </div>
-                <div class="col-xl-5 col-lg-4 d-lg-block d-none">
-                    <div class="right-thumb">
-                        <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/client/6652c01ba36121716699163.png" alt="client">
+                    <div class="col-xl-5 col-lg-4 d-lg-block d-none">
+                        <div class="right-thumb">
+                            <img src="Home/trucker.jpg"
+                                alt="client">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="testimonial-slider">
-                                                    <div class="testimonails-card">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="testimonial-slider">
+                            <div class="testimonails-card">
                                 <div class="testimonial-item">
                                     <div class="testimonial-item__content">
                                         <div class="testimonial-item__info">
                                             <div class="testimonial-item__thumb">
                                                 <img class="fit-image"
-                                                    src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/client/6652c06fba7c91716699247.png"
+                                                    src="Home/trucker.jpgg"
                                                     alt="client">
                                             </div>
                                             <div class="testimonial-item__details">
@@ -560,24 +566,26 @@
                                                 <span class="testimonial-item__designation">
                                                     Backend Developer
                                                 </span>
-                                                                                                <div class="testimonial-item__rating">
+                                                <div class="testimonial-item__rating">
                                                     <ul class="rating-list">
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                                                                    </ul>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <p class="testimonial-item__desc">
-                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa neque dignissimos tempore id sed iste odit optio natus deleniti assumenda qui labore totam nam? Impedit, doloribus odit. Quo?
+                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa neque
+                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui labore
+                                        totam nam? Impedit, doloribus odit. Quo?
                                     </p>
                                 </div>
                             </div>
-                                                    <div class="testimonails-card">
+                            <div class="testimonails-card">
                                 <div class="testimonial-item">
                                     <div class="testimonial-item__content">
                                         <div class="testimonial-item__info">
@@ -592,24 +600,26 @@
                                                 <span class="testimonial-item__designation">
                                                     Delivery Boy
                                                 </span>
-                                                                                                <div class="testimonial-item__rating">
+                                                <div class="testimonial-item__rating">
                                                     <ul class="rating-list">
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                                                                            <li class="rating-list__item"><i class="far fa-star"></i></li>
-                                                                                                            </ul>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="far fa-star"></i></li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <p class="testimonial-item__desc">
-                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa neque dignissimos tempore id sed iste odit optio natus deleniti assumenda qui labore totam nam? Impedit, doloribus odit. Quo?
+                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa neque
+                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui labore
+                                        totam nam? Impedit, doloribus odit. Quo?
                                     </p>
                                 </div>
                             </div>
-                                                    <div class="testimonails-card">
+                            <div class="testimonails-card">
                                 <div class="testimonial-item">
                                     <div class="testimonial-item__content">
                                         <div class="testimonial-item__info">
@@ -624,24 +634,26 @@
                                                 <span class="testimonial-item__designation">
                                                     Courier Customer
                                                 </span>
-                                                                                                <div class="testimonial-item__rating">
+                                                <div class="testimonial-item__rating">
                                                     <ul class="rating-list">
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                                                                    </ul>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <p class="testimonial-item__desc">
-                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa neque dignissimos tempore id sed iste odit optio natus deleniti assumenda qui labore totam nam? Impedit, doloribus odit. Quo?
+                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa neque
+                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui labore
+                                        totam nam? Impedit, doloribus odit. Quo?
                                     </p>
                                 </div>
                             </div>
-                                                    <div class="testimonails-card">
+                            <div class="testimonails-card">
                                 <div class="testimonial-item">
                                     <div class="testimonial-item__content">
                                         <div class="testimonial-item__info">
@@ -656,24 +668,26 @@
                                                 <span class="testimonial-item__designation">
                                                     Merchant
                                                 </span>
-                                                                                                <div class="testimonial-item__rating">
+                                                <div class="testimonial-item__rating">
                                                     <ul class="rating-list">
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                                                                            <li class="rating-list__item"><i class="far fa-star"></i></li>
-                                                                                                            </ul>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="far fa-star"></i></li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <p class="testimonial-item__desc">
-                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa neque dignissimos tempore id sed iste odit optio natus deleniti assumenda qui labore totam nam? Impedit, doloribus odit. Quo?
+                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa neque
+                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui labore
+                                        totam nam? Impedit, doloribus odit. Quo?
                                     </p>
                                 </div>
                             </div>
-                                                    <div class="testimonails-card">
+                            <div class="testimonails-card">
                                 <div class="testimonial-item">
                                     <div class="testimonial-item__content">
                                         <div class="testimonial-item__info">
@@ -688,483 +702,146 @@
                                                 <span class="testimonial-item__designation">
                                                     Business Owner
                                                 </span>
-                                                                                                <div class="testimonial-item__rating">
+                                                <div class="testimonial-item__rating">
                                                     <ul class="rating-list">
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                                                                                                                                            <li class="rating-list__item"><i class="far fa-star"></i></li>
-                                                                                                                    <li class="rating-list__item"><i class="far fa-star"></i></li>
-                                                                                                            </ul>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="far fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="far fa-star"></i></li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <p class="testimonial-item__desc">
-                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa neque dignissimos tempore id sed iste odit optio natus deleniti assumenda qui labore totam nam? Impedit, doloribus odit. Quo?
-                                    </p>
-                                </div>
-                            </div>
-                                            </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-                    <section class="faq py-120 section-bg">
-    <div class="container">
-        <div class="row gy-4">
-            <div class="col-md-6">
-                <div class="section-heading style-left">
-                    <h3 class="section-heading__title">
-                        Explore Our Services and Solutions
-                    </h3>
-                    <p class="section-heading__desc">
-                        Voluptatem, fugit, facilis iure eligendi doloremque nisi minima ipsam corrupti vero eaque quo aut voluptatibus! Necessitatibus minima
-                    </p>
-                </div>
-                <a class="btn btn--base" href="contact">
-                    <span class="btn--icon"><i class="icon-View-More"></i></span>
-                    Contact Us
-                </a>
-            </div>
-            <div class="col-md-6">
-                <div class="accordion custom--accordion" id="faqList">
-                                            <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#faq0"
-                                    type="button" aria-expanded="true" aria-controls="faq0">
-                                    Explore Our Services and Solutions
-                                </button>
-                            </h2>
-                            <div class="accordion-collapse show collapse" id="faq0"
-                                data-bs-parent="#faqList">
-                                <div class="accordion-body">
-                                    <p class="text">
-                                        Voluptatem, fugit, facilis iure eligendi doloremque nisi minima ipsam corrupti vero eaque quo aut voluptatibus! Necessitatibus minima
+                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa neque
+                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui labore
+                                        totam nam? Impedit, doloribus odit. Quo?
                                     </p>
                                 </div>
                             </div>
                         </div>
-                                            <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#faq1"
-                                    type="button" aria-expanded="false" aria-controls="faq1">
-                                    Cum molestias sequi dignissimos nemo?
-                                </button>
-                            </h2>
-                            <div class="accordion-collapse  collapse" id="faq1"
-                                data-bs-parent="#faqList">
-                                <div class="accordion-body">
-                                    <p class="text">
-                                        Quibusdam reprehenderit blanditiis adipisci facilis fugit, harum ab iste temporibus eveniet dolore porro ex excepturi consequatur.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                                            <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#faq2"
-                                    type="button" aria-expanded="false" aria-controls="faq2">
-                                    Cum molestias sequi dignissimos nemo?
-                                </button>
-                            </h2>
-                            <div class="accordion-collapse  collapse" id="faq2"
-                                data-bs-parent="#faqList">
-                                <div class="accordion-body">
-                                    <p class="text">
-                                        Alias ducimus autem, laudantium rerum quas libero dolorem? Inventore, corrupti, nihil iste distinctio asperiores
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                                            <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#faq3"
-                                    type="button" aria-expanded="false" aria-controls="faq3">
-                                    harum ab iste temporibus eveniet dolore porro
-                                </button>
-                            </h2>
-                            <div class="accordion-collapse  collapse" id="faq3"
-                                data-bs-parent="#faqList">
-                                <div class="accordion-body">
-                                    <p class="text">
-                                        Alias ducimus autem, laudantium rerum quas libero dolorem? Inventore, corrupti, nihil iste distinctio asperiores
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                                    </div>
-            </div>
-        </div>
-    </div>
-</section>
-                    <div class="client py-60 section-bg">
-    <div class="container">
-        <div class="client-logos client-slider">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/partner/6652c1cc48d8f1716699596.png" alt="partner">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/partner/6652c1c593a4a1716699589.png" alt="partner">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/partner/6652c1bfadc831716699583.png" alt="partner">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/partner/6652c1b96108d1716699577.png" alt="partner">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/partner/6652c1b2ec8a01716699570.png" alt="partner">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/partner/6652c1ac468801716699564.png" alt="partner">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/partner/6652c1a5ccbb01716699557.png" alt="partner">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/partner/6652c19fc34d11716699551.png" alt="partner">
                     </div>
-    </div>
-</div>
-            
-    <footer class="footer-area">
-    <div class="main-footer pt-120 bg-img pb-60"
-        data-background-image="https://script.viserlab.com/courierlab/demo/assets/images/frontend/footer/6652c13f31df61716699455.png">
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="faq py-120 section-bg">
         <div class="container">
-            <div class="row justify-content-center gy-5">
-                <div class="col-xl-3 col-sm-6 col-xsm-6">
-                    <div class="footer-item">
-                        <div class="footer-item__logo">
-                            <a href="https://script.viserlab.com/courierlab/demo">
-                                <img src="https://script.viserlab.com/courierlab/demo/assets/images/logo_icon/logo.png" alt="Logo">
-                            </a>
-                        </div>
-                        <p class="footer-item__desc fs-18">
-                            We are world biggest courier company. We provides fast &amp; secure delivery services. Any where in the world.
+            <div class="row gy-4">
+                <div class="col-md-6">
+                    <div class="section-heading style-left">
+                        <h3 class="section-heading__title">
+                            Explore Our Services and Solutions
+                        </h3>
+                        <p class="section-heading__desc">
+                            To provide our clients with security GDR Logistics Inc. fleets have 10M coverage inland
+                            marince insurance and GPS tracking device. The trucks are also individually iinsured.
+                            We also have an ongoing application to PEZA and PHILGEPS.
                         </p>
-                        <ul class="social-list">
-                                                            <li class="social-list__item">
-                                    <a class="social-list__link flex-center" href="https://www.facebook.com/" target="__blank">
-                                        <i class="fab fa-facebook-f"></i>                                    </a>
-                                </li>
-                                                            <li class="social-list__item">
-                                    <a class="social-list__link flex-center" href="https://www.twitter.com/" target="__blank">
-                                        <i class="fa-brands fa-x-twitter"></i>                                    </a>
-                                </li>
-                                                            <li class="social-list__item">
-                                    <a class="social-list__link flex-center" href="https://www.linkedin.com/" target="__blank">
-                                        <i class="fab fa-linkedin-in"></i>                                    </a>
-                                </li>
-                                                            <li class="social-list__item">
-                                    <a class="social-list__link flex-center" href="https://www.instagram.com/" target="__blank">
-                                        <i class="fab fa-instagram"></i>                                    </a>
-                                </li>
-                                                    </ul>
                     </div>
+                    <a class="btn btn--base" href="contact">
+                        <span class="btn--icon"><i class="icon-View-More"></i></span>
+                        Contact Us
+                    </a>
                 </div>
-                <div class="col-xl-3 col-sm-6 col-xsm-6">
-                    <div class="footer-item">
-                        <h5 class="footer-item__title">Site Link</h5>
-                        <ul class="footer-menu">
-                            <li class="footer-menu__item">
-                                <a class="footer-menu__link" href="https://script.viserlab.com/courierlab/demo">
-                                    Home                                </a>
-                            </li>
-                                                            <li class="footer-menu__item">
-                                    <a class="footer-menu__link" href="https://script.viserlab.com/courierlab/demo/about-us">
-                                        About
-                                    </a>
-                                </li>
-                                                            <li class="footer-menu__item">
-                                    <a class="footer-menu__link" href="https://script.viserlab.com/courierlab/demo/faq">
-                                        FAQ
-                                    </a>
-                                </li>
-                                                            <li class="footer-menu__item">
-                                    <a class="footer-menu__link" href="https://script.viserlab.com/courierlab/demo/service">
-                                        Service
-                                    </a>
-                                </li>
-                                                            <li class="footer-menu__item">
-                                    <a class="footer-menu__link" href="https://script.viserlab.com/courierlab/demo/team">
-                                        Team
-                                    </a>
-                                </li>
-                                                    </ul>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6 col-xsm-6">
-                    <div class="footer-item">
-                        <h5 class="footer-item__title">Useful Link</h5>
-                        <ul class="footer-menu">
-                            <li class="footer-menu__item">
-                                <a class="footer-menu__link" href="https://script.viserlab.com/courierlab/demo/order-tracking">
-                                    Order Tracking                                </a>
-                            </li>
-                                                            <li class="footer-menu__item">
-                                    <a class="footer-menu__link" href="https://script.viserlab.com/courierlab/demo/policy/privacy-policy">
-                                        Privacy Policy
-                                    </a>
-                                </li>
-                                                            <li class="footer-menu__item">
-                                    <a class="footer-menu__link" href="https://script.viserlab.com/courierlab/demo/policy/terms-of-service">
-                                        Terms of Service
-                                    </a>
-                                </li>
-                                                            <li class="footer-menu__item">
-                                    <a class="footer-menu__link" href="https://script.viserlab.com/courierlab/demo/policy/refund-policy">
-                                        Refund Policy
-                                    </a>
-                                </li>
-                                                        <li class="footer-menu__item">
-                                <a class="footer-menu__link" href="https://script.viserlab.com/courierlab/demo/contact">
-                                    Contact                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6 col-xsm-6">
-                    <div class="footer-item">
-                        <h5 class="footer-item__title"> Contact With Us </h5>
-                        <ul class="footer-contact-menu">
-                            <li class="footer-contact-menu__item">
-                                <div class="footer-contact-menu__item-icon">
-                                    <i class="las la-map-marker"></i>                                </div>
-                                <div class="footer-contact-menu__item-content">
-                                    <p class="title">Address </p>
-                                    <span class="desc fs-14 d-block">London, UK</span>
+                <div class="col-md-6">
+                    <div class="accordion custom--accordion" id="faqList">
+                        <div class="accordion-item">
+                            <div class="accordion" id="faqList">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#faq0" aria-expanded="true"
+                                            aria-controls="faq0">
+                                            Explore Our Services and Solutions
+                                        </button>
+                                    </h2>
+                                    <div id="faq0" class="accordion-collapse collapse show" data-bs-parent="#faqList">
+                                        <div class="accordion-body">
+                                            <p class="text">
+                                                We offer a fleet of 40 units of 10-wheeler aluminum wing vans, designed
+                                                for maximum durability and load capacity, perfect for transporting large
+                                                and heavy goods securely.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </li>
-                            <li class="footer-contact-menu__item">
-                                <div class="footer-contact-menu__item-icon">
-                                    <i class="las la-phone"></i>                                </div>
-                                <div class="footer-contact-menu__item-content">
-                                    <p class="title">Mobile</p>
-                                    <a class="desc fs-14 d-block" href="tel:+44 123 1217">
-                                        +44 123 1217
-                                    </a>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="false"
+                                            aria-controls="faq1">
+                                            9 Units of 6-Wheeler Closed Vans
+                                        </button>
+                                    </h2>
+                                    <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqList">
+                                        <div class="accordion-body">
+                                            <p class="text">
+                                                Our 6-wheeler closed vans are available in 9 units, ideal for secure and
+                                                weatherproof transportation of goods. These vans are equipped with
+                                                advanced locking mechanisms and padded interiors to protect your cargo.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </li>
-                            <li class="footer-contact-menu__item">
-                                <div class="footer-contact-menu__item-icon">
-                                    <i class="las la-envelope-open"></i>                                </div>
-                                <div class="footer-contact-menu__item-content">
-                                    <p class="title">Email</p>
-                                    <a class="desc fs-14 d-block" href="/cdn-cgi/l/email-protection#e2919792928d9096a2818d97908b87908e8380cc818d8f">
-                                        <span class="__cf_email__" data-cfemail="a6d5d3d6d6c9d4d2e6c5c9d3d4cfc3d4cac7c488c5c9cb">[email&#160;protected]</span>
-                                    </a>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false"
+                                            aria-controls="faq2">
+                                            3 Units of 6-Wheeler Tractor Heads
+                                        </button>
+                                    </h2>
+                                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqList">
+                                        <div class="accordion-body">
+                                            <p class="text">
+                                                We also provide 3 units of 6-wheeler tractor heads, which are versatile
+                                                and reliable for towing various types of trailers. These tractor heads
+                                                are equipped with powerful engines and advanced driving systems to
+                                                ensure efficient and safe transport.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </li>
-                        </ul>
+                            </div>
+
+
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="bottom-footer py-3">
+    </section>
+    <div class="client py-60 section-bg">
         <div class="container">
-            <div class="row gy-3">
-                <div class="col-md-12 text-center">
-                    <div class="bottom-footer-text text-white">
-                        Copyright &copy; 2024.
-                        All Rights Reserved                    </div>
-                </div>
+            <div class="client-logos client-slider">
+                <img src="Home/apcargo.png"
+                    alt="clients">
+                <img src="Home/flash.png"
+                    alt="clients">
+                <img src="Home/growsari.png"
+                    alt="clients">
+                <img src="Home/suysing.png"
+                    alt="clients">
+                <img src="Home/vcargo.png"
+                    alt="clients">
+                <img src="Home/xde.png"
+                    alt="clients">
+                <img src="Home/jandt.png"
+                    alt="clients">
+                
             </div>
         </div>
     </div>
-</footer>
 
-    
-    
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://script.viserlab.com/courierlab/demo/assets/global/js/jquery-3.7.1.min.js"></script>
-    <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
-
-    <script src="https://script.viserlab.com/courierlab/demo/assets/templates/sleek_craft/js/slick.min.js"></script>
-    <script src="https://script.viserlab.com/courierlab/demo/assets/templates/sleek_craft/js/odometer.min.js"></script>
-    <script src="https://script.viserlab.com/courierlab/demo/assets/templates/sleek_craft/js/viewport.jquery.js"></script>
-    <script src="https://script.viserlab.com/courierlab/demo/assets/templates/sleek_craft/js/main.js"></script>
-
-    
-    
-    <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast.min.css" rel="stylesheet">
-<link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast_custom.css" rel="stylesheet">
-<script src="https://script.viserlab.com/courierlab/demo/assets/global/js/iziToast.min.js"></script>
-
-<script>
-    "use strict";
-    const colors = {
-        success: '#28c76f',
-        error: '#eb2222',
-        warning: '#ff9f43',
-        info: '#1e9ff2',
-    }
-
-    const icons = {
-        success: 'fas fa-check-circle',
-        error: 'fas fa-times-circle',
-        warning: 'fas fa-exclamation-triangle',
-        info: 'fas fa-exclamation-circle',
-    }
-
-    const notifications = [];
-    const errors = [];
+@include('Components.Home.Footer')
 
 
-    const triggerToaster = (status, message) => {
-        iziToast[status]({
-            title: status.charAt(0).toUpperCase() + status.slice(1),
-            message: message,
-            position: "topRight",
-            backgroundColor: '#fff',
-            icon: icons[status],
-            iconColor: colors[status],
-            progressBarColor: colors[status],
-            titleSize: '1rem',
-            messageSize: '1rem',
-            titleColor: '#474747',
-            messageColor: '#a2a2a2',
-            transitionIn: 'obunceInLeft'
-        });
-    }
 
-    if (notifications.length) {
-        notifications.forEach(element => {
-            triggerToaster(element[0], element[1]);
-        });
-    }
-
-    if (errors.length) {
-        errors.forEach(error => {
-            triggerToaster('error', error);
-        });
-    }
-
-    function notify(status, message) {
-        if (typeof message == 'string') {
-            triggerToaster(status, message);
-        } else {
-            $.each(message, (i, val) => triggerToaster(status, val));
-        }
-    }
-</script>
-
-        <script>
-        /*==================== custom dropdown select js ====================*/
-        (function($) {
-            ("use strict");
-            $('.custom--dropdown > .custom--dropdown__selected').on('click', function() {
-                $(this).parent().toggleClass('open');
-            });
-
-            $('.custom--dropdown > .dropdown-list > .dropdown-list__item').on('click', function() {
-                $('.custom--dropdown > .dropdown-list > .dropdown-list__item').removeClass('selected');
-                $(this).addClass('selected').parent().parent().removeClass('open').children(
-                    '.custom--dropdown__selected').html($(this).html());
-            });
-
-            $(document).on('keyup', function(evt) {
-                if ((evt.keyCode || evt.which) === 27) {
-                    $('.custom--dropdown').removeClass('open');
-                }
-            });
-            $(document).on('click', function(evt) {
-                if ($(evt.target).closest(".custom--dropdown > .custom--dropdown__selected").length === 0) {
-                    $('.custom--dropdown').removeClass('open');
-                }
-            });
-        })(jQuery);
-
-        /*==================== custom dropdown select js end  ====================*/
-    </script>
-
-    <script>
-        (function($) {
-            "use strict";
-
-                            $(".langSel").on("click", function() {
-                    window.location.href = "https://script.viserlab.com/courierlab/demo/change/" + $(this).data('value');
-                });
-            
-            $('.policy').on('click', function() {
-                $.get(`https://script.viserlab.com/courierlab/demo/cookie/accept`, function(response) {
-                    $('.cookies-card').addClass('d-none');
-                });
-            });
-
-            setTimeout(function() {
-                $('.cookies-card').removeClass('hide')
-            }, 2000);
-
-            var inputElements = $('[type=text],select,textarea');
-            $.each(inputElements, function(index, element) {
-                element = $(element);
-                element.closest('.form-group').find('label').attr('for', element.attr('name'));
-                element.attr('id', element.attr('name'))
-            });
-
-            $.each($('input, select, textarea'), function(i, element) {
-                var elementType = $(element);
-                if (elementType.attr('type') != 'checkbox') {
-                    if (element.hasAttribute('required')) {
-                        $(element).closest('.form-group').find('label').addClass('required');
-                    }
-                }
-            });
-
-            let disableSubmission = false;
-            $('.disableSubmission').on('submit', function(e) {
-                if (disableSubmission) {
-                    e.preventDefault()
-                } else {
-                    disableSubmission = true;
-                }
-            });
-        })(jQuery);
-    </script>
-
-
-<script>
-  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-  (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/5fe0b9b2a8a254155ab5421d/1eq2tap1m';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-  })();
-</script>
-
-<script>
-if (window.top != window.self) {
-    document.body.innerHTML += '<div style="position:fixed;top:0;width:100%;z-index:9999999;background:#f8d7da;color:#721c24;text-align:center; padding: 20px;"><p style="font-size:20px; font-weight: bold;">You are using this website under an external iframe!!</p><p style="font-size:16px; margin-top: 20px;">for a better experience, please browse directly instead of an external iframe.</p><a href="'+window.self.location+'" target="_blank" style=" margin-top:20px; color: #fff;background-color: #dc3545; padding: 5px 10px; border-radius: 5px; text-decoration: none;">Browse Directly</a></div>';
-}
-</script>
-
-
-<script>
-    adroll_adv_id = "YXRNNTO7ZBAMFBH67UUE5M";
-    adroll_pix_id = "MMQQDWGN25EXPHGRPA3NLR";
-    adroll_version = "2.0";
-    (function(w, d, e, o, a) {
-        w.__adroll_loaded = true;
-        w.adroll  = w.adroll  || [];
-        w.adroll.f = [ 'setProperties', 'identify', 'track' ];
-        var roundtripUrl = "https://s.adroll.com/j/" + adroll_adv_id
-                + "/roundtrip.js";
-        for (a = 0; a < w.adroll.f.length; a++) {
-            w.adroll[w.adroll.f[a]] = w.adroll[w.adroll.f[a]] || (function(n) {
-                return function() {
-                    w.adroll.push([ n, arguments ])
-                }
-            })(w.adroll.f[a])
-        }
-        e = d.createElement('script');
-        o = d.getElementsByTagName('script')[0];
-        e.async  = 1;
-        e.src  = roundtripUrl;
-        o.parentNode.insertBefore(e, o);
-    })(window, document);
-    adroll.track("pageView");
-</script>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1ME4K0RD7K"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-1ME4K0RD7K');
-</script>
+    @include('Components.Home.Script')
 </body>
 
 </html>

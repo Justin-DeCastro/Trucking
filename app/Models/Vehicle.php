@@ -12,6 +12,7 @@ class Vehicle extends Model
         'truck_name',
         'truck_capacity',
         'truck_status',
+        'quantity',
     ];
     public function bookings()
 {

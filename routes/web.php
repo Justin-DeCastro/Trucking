@@ -20,6 +20,9 @@ use App\Http\Controllers\InController;
 use App\Http\Controllers\OutController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProofPaymentController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\QrCodeController;
+use App\Http\Controllers\RubixController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -50,13 +53,20 @@ Route::get('allcourier', [AccountingController::class, 'all_courier'])->name('al
 Route::get('branchlist', [AccountingController::class, 'branch_list'])->name('branchlist');
 Route::get('cashcollection', [AccountingController::class, 'cash_collection'])->name('cashcollection');
 Route::get('deliveryqueue', [AccountingController::class, 'delivery_queue'])->name('deliveryqueue');
-Route::get('sendcourier', [AccountingController::class, 'send_courier'])->name('sendcourier');
+Route::get('package', [AccountingController::class, 'send_courier'])->name('sendcourier');
+
 Route::get('sentInQueue', [AccountingController::class, 'sentin_queue'])->name('sentInQueue');
 Route::get('shippingcourier', [AccountingController::class, 'shipping_courier'])->name('shippingcourier');
 Route::get('totaldelivered', [AccountingController::class, 'total_delivered'])->name('totaldelivered');
 Route::get('totalsent', [AccountingController::class, 'total_sent'])->name('totalsent');
 
-//admin
+//admin post
+Route::post('/rubix', [RubixController::class, 'submit'])->name('rubix.submit');
+
+
+
+//admin get
+Route::get('reference', [AdminController::class, 'reference'])->name('reference');
 Route::get('admindash', [AdminController::class, 'dashboard'])->name('admindash');
 Route::get('adminside', [AdminController::class, 'adminside'])->name('adminside');
 Route::get('managebranch', [AdminController::class, 'managebranch'])->name('managebranch');
@@ -83,6 +93,7 @@ Route::get('depositamount', [AccountingController::class, 'depositamount'])->nam
 Route::post('depositamounts', [DepositController::class, 'store'])->name('deposit.store');
 Route::post('withdrawamounts', [WithdrawController::class, 'store'])->name('withdraw.store');
 Route::get('loanamount', [LoanController::class, 'loanamount'])->name('loanamount');
+Route::get('waybill', [AdminController::class, 'waybill'])->name('waybill');
 Route::post('loanamount-store', [LoanController::class, 'store'])->name('loan.store');
 //login and register
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -110,7 +121,11 @@ Route::post('/managerbranches/{branch}/update', [BranchManagerController::class,
 //driver
 Route::get('add-driver', [AdminController::class, 'Add_driver'])->name('add-driver');
 
-Route::post('/booking', [BookingController::class, 'submitForm'])->name('booking.submit');
+// Route::post('/booking', [BookingController::class, 'submitForm'])->name('booking.submit');
+
+// In routes/web.php
+Route::post('/booking/submit', [BookingController::class, 'submitForm'])->name('booking.submit');
+Route::post('/appointment', [RubixController::class, 'submit'])->name('appointment.submit');
 
 Route::patch('/bookings/{booking}/assign-driver', [BookingController::class, 'assignDriver'])->name('bookings.assignDriver');
 
@@ -148,6 +163,7 @@ Route::put('/bookings/{booking}/update-payment-status', [BookingController::clas
 
 //vehicle store
 Route::post('/vehicles', [VehicleController::class, 'store'])->name('vehicles.store');
+Route::post('/vehicles/use/{id}', [VehicleController::class, 'useVehicle']);
 Route::get('vehicles/{vehicle}/edit', [VehicleController::class, 'edit'])->name('vehicles.edit');
 
 // Route for updating an existing vehicle
@@ -182,10 +198,11 @@ Route::delete('/transactions/{transaction}', [AccountingController::class, 'dest
 //starting balance
 Route::post('/startingbalance', [AccountingController::class, 'startingbalance'])->name('startingbalance.store');
 
+//contact
+Route::post('/contact-store', [ContactController::class, 'store'])->name('contact.store');
 
-
-
-
+//qr
+Route::get('/qrcode', [QrCodeController::class, 'generate']);
 
 
 
