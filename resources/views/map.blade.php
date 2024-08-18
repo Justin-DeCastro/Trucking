@@ -8,8 +8,13 @@
         let truckMarker;
         let directionsService;
         let directionsRenderer;
-        let routeIndex = 0;
         let intervalId;
+        let destinationLatLng;
+        let pathLength;
+
+        // Receives the addresses from the server
+        const merchantAddress = @json($merchantAddress);
+        const consigneeAddress = @json($consigneeAddress);
 
         function initMap() {
             if (navigator.geolocation) {
@@ -27,7 +32,13 @@
                     truckMarker = new google.maps.Marker({
                         position: userLatLng,
                         map: map,
-                        icon: 'https://maps.google.com/mapfiles/kml/shapes/truck.png', // Example truck icon
+                        icon: 'https://maps.google.com/mapfiles/kml/shapes/truck.png', // Default truck icon
+                        label: {
+                            text: 'GDR Trucking',
+                            color: 'black',
+                            fontSize: '14px',
+                            fontWeight: 'bold'
+                        },
                         title: 'Moving Truck'
                     });
 
@@ -35,7 +46,28 @@
                     directionsRenderer = new google.maps.DirectionsRenderer();
                     directionsRenderer.setMap(map);
 
-                    calculateAndDisplayRoute(userLatLng, { lat: 14.5833, lng: 121.0333 }); // Mandaluyong coordinates
+                    // Add traffic layer
+                    const trafficLayer = new google.maps.TrafficLayer();
+                    trafficLayer.setMap(map);
+
+                    // Geocode the merchant and consignee addresses to get their coordinates
+                    const geocoder = new google.maps.Geocoder();
+
+                    geocoder.geocode({ address: merchantAddress }, function(results, status) {
+                        if (status === 'OK') {
+                            const startLatLng = results[0].geometry.location;
+                            geocoder.geocode({ address: consigneeAddress }, function(results, status) {
+                                if (status === 'OK') {
+                                    destinationLatLng = results[0].geometry.location;
+                                    calculateAndDisplayRoute(startLatLng, destinationLatLng);
+                                } else {
+                                    window.alert('Geocode for consignee address failed due to: ' + status);
+                                }
+                            });
+                        } else {
+                            window.alert('Geocode for merchant address failed due to: ' + status);
+                        }
+                    });
 
                 }, function() {
                     handleLocationError(true);
@@ -53,6 +85,7 @@
             }, function(response, status) {
                 if (status === 'OK') {
                     directionsRenderer.setDirections(response);
+                    pathLength = response.routes[0].overview_path.length;
                     animateTruck(response.routes[0].overview_path);
                 } else {
                     window.alert('Directions request failed due to ' + status);
@@ -66,10 +99,12 @@
             }
 
             let pathIndex = 0;
+            const totalPoints = path.length;
 
             function updatePosition() {
-                if (pathIndex >= path.length) {
+                if (pathIndex >= totalPoints) {
                     clearInterval(intervalId);
+                    showArrivalMessage();
                     return;
                 }
 
@@ -79,6 +114,14 @@
             }
 
             intervalId = setInterval(updatePosition, 1000); // Move truck every second
+        }
+
+        function showArrivalMessage() {
+            const infoWindow = new google.maps.InfoWindow({
+                content: 'The truck has arrived at the destination!',
+                position: destinationLatLng
+            });
+            infoWindow.open(map);
         }
 
         function handleLocationError(browserHasGeolocation) {

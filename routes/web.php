@@ -211,4 +211,4 @@ Route::get('/qrcode', [QrCodeController::class, 'generate']);
 
 
 
-Route::get('/map', [MapController::class, 'showMap']);
+Route::get('/map', [AdminController::class, 'showMap']);

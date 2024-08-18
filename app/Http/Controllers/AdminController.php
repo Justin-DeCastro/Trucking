@@ -123,6 +123,21 @@ public function courier_order()
 
     return view('Admin.ManageCourierOrder', compact('bookings', 'drivers'));
 }
+public function showMap()
+{
+    // Fetch a specific booking or relevant data
+    $booking = Booking::find(71); // Replace with the appropriate logic to fetch the booking
+
+    // Assuming you have a merchant_address available in your booking model or a different method to fetch it
+    $merchantAddress = $booking->merchant_address;
+    $consigneeAddress = $booking->consignee_address;
+
+    return view('map', [
+        'merchantAddress' => $merchantAddress,
+        'consigneeAddress' => $consigneeAddress
+    ]);
+}
+
 public function addtruck(){
     $vehicles = Vehicle::all();
     return view('Admin.Addtruck',compact('vehicles'));
