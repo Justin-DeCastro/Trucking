@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 14, 2024 at 05:07 PM
+-- Generation Time: Aug 19, 2024 at 12:07 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `accounts` (
   `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -40,7 +40,8 @@ CREATE TABLE `accounts` (
 
 INSERT INTO `accounts` (`id`, `name`, `created_at`, `updated_at`) VALUES
 (1, 'Trading Account', '2024-08-14 07:41:57', '2024-08-14 07:41:57'),
-(2, 'FarmerOld', '2024-08-14 08:04:44', '2024-08-14 08:04:44');
+(2, 'FarmerOld', '2024-08-14 08:04:44', '2024-08-14 08:04:44'),
+(3, 'Infinitrade Corporation', '2024-08-15 21:51:22', '2024-08-15 21:51:22');
 
 -- --------------------------------------------------------
 
@@ -50,38 +51,48 @@ INSERT INTO `accounts` (`id`, `name`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `bookings` (
   `id` bigint UNSIGNED NOT NULL,
-  `sender_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `list_of_products` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `weight` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `actual_weight` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `order_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'On Process',
-  `payment_status` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `order_amount` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `receiver_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `receiver_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `receiver_phone` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `sender_phone` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `pickup_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dropoff_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `location` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `item_list` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `truck_type` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `sender_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `transport_mode` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `shipping_type` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `delivery_type` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `journey_type` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `consignee_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `consignee_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `consignee_email` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `consignee_mobile` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `consignee_city` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `consignee_province` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `consignee_barangay` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `consignee_building_type` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `merchant_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `merchant_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `merchant_email` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `merchant_mobile` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `merchant_city` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `merchant_province` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `tracking_number` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `assigned_driver_id` bigint UNSIGNED DEFAULT NULL,
   `driver_id` bigint UNSIGNED DEFAULT NULL,
-  `vehicle_id` bigint UNSIGNED DEFAULT NULL
+  `vehicle_id` bigint UNSIGNED DEFAULT NULL,
+  `qr_code` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `plate_number` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `driver_name` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `bookings`
 --
 
-INSERT INTO `bookings` (`id`, `sender_name`, `list_of_products`, `weight`, `actual_weight`, `order_status`, `payment_status`, `order_amount`, `receiver_name`, `receiver_email`, `receiver_phone`, `sender_phone`, `pickup_address`, `dropoff_address`, `location`, `item_list`, `truck_type`, `tracking_number`, `created_at`, `updated_at`, `assigned_driver_id`, `driver_id`, `vehicle_id`) VALUES
-(22, 'Justin Mangubat De Castro', NULL, '500', '100', 'On Process', 'Paid', '500000', 'Mangubat Gasoline Station', 'decastrojustin321@gmail.com', '09483877158', '09456754591', 'Santa Mesa, Manila', 'Calapan City Oriental Mindoro', 'Laguna', 'item_pictures/1723669542-250066393_277859911014941_1135660024963402127_n.jpg', 'Volvo FMX', 'GPC-79925588666BD1C263C9F96.36473033', '2024-08-15 04:05:42', '2024-08-15 04:20:39', NULL, 16, NULL),
-(23, 'Airies', NULL, '500', '1000', 'Picked-up', NULL, '500000', 'Mangubat Gasoline Station', 'decastrojustin321@gmail.com', '09483877158', '09456754591', 'makati', 'Calapan City Oriental Mindoro', 'Batangas', 'item_pictures/1723670732-250066393_277859911014941_1135660024963402127_n.jpg', 'Ford F-150,', 'GPC-88459078566BD20CC5BC141.04113136', '2024-08-15 04:25:32', '2024-08-15 04:37:36', NULL, 16, NULL),
-(24, 'Justin Mangubat De Castro', 'Product List', '500', NULL, 'On Process', NULL, NULL, 'Mangubat Gasoline Station', 'decastrojustin321@gmail.com', '09483877158', '09456754591', 'Santa Mesa, Manila', 'Calapan City Oriental Mindoro', NULL, 'item_pictures/1723694737-6185769061598739636.jpg', 'Isuzu NPR', 'GPC-197752594866BD7E91A69243.62348731', '2024-08-15 11:05:37', '2024-08-15 11:05:37', NULL, NULL, NULL);
+INSERT INTO `bookings` (`id`, `sender_name`, `transport_mode`, `shipping_type`, `delivery_type`, `journey_type`, `consignee_name`, `consignee_address`, `consignee_email`, `consignee_mobile`, `consignee_city`, `consignee_province`, `consignee_barangay`, `consignee_building_type`, `merchant_name`, `merchant_address`, `merchant_email`, `merchant_mobile`, `merchant_city`, `merchant_province`, `tracking_number`, `created_at`, `updated_at`, `assigned_driver_id`, `driver_id`, `vehicle_id`, `qr_code`, `plate_number`, `driver_name`) VALUES
+(64, 'qwertyuiop', 'land', 'sea', 'lregular', 'jeep', 'Killer Machine', 'munoz', 'machine@gmail.com', '09456754591', 'qc', 'qc', 'munoz', 'unit', 'alaska', 'alaska', 'alaska@gmail.com', '09456754591', 'asd', 'asd', 'GDR-196933393866C01FBE6CFBA0.04465704', '2024-08-16 19:57:50', '2024-08-16 19:57:50', NULL, NULL, NULL, NULL, 'D05-ABC', 'Justinn Mangubat'),
+(66, 'qwertyuiopAMA', 'AMA', 'AMA', 'AMA', 'AMA', 'AMA', 'AMA', 'AMA@email.com', '09456754591', 'AMA', 'AMA', 'AMA', 'AMA', 'AMA', 'AMA', 'AMA@gmail.com', '09456754591', 'AMA', 'AMA', 'GPC-122542473166C032EED33850.32152340', '2024-08-16 21:19:42', '2024-08-16 21:19:42', NULL, NULL, NULL, NULL, 'D05322', 'AMA'),
+(67, 'Acme Corp', 'Air Freight', 'Standard', 'Door-to-Door', 'International', 'Jane Doe', '123 Maple Street, Apt 4B', 'jane.doe@example.com', '09456754591', 'New York', 'New York', 'Manila', 'Apartment', 'Global Goods Inc.', '456 Elm Street, Suite 300', 'contact@globalgoods.com', '09456754591', 'Los Angeles', 'California', 'GDR-187814407066C04E725003C0.26089920', '2024-08-16 23:17:06', '2024-08-16 23:17:06', NULL, NULL, NULL, NULL, 'D05-ABCDe', '16'),
+(68, 'Acme Corp', 'Air Freight', 'Standard', 'Door-to-Door', 'International', 'Jane Doe', '123 Maple Street, Apt 4B', 'jane.doe@example.com', '09456754591', 'New York', 'New York', 'Manila', 'Apartment', 'Global Goods Inc.', '456 Elm Street, Suite 300', 'contact@globalgoods.com', '09456754591', 'Los Angeles', 'California', 'GDR-160793916566C0573A023BA1.84789084', '2024-08-16 23:54:34', '2024-08-16 23:54:34', NULL, NULL, NULL, NULL, 'D05-ABCDe', '18'),
+(69, 'Acme Corp', 'Air Freight', 'Standard', 'Door-to-Door', 'International', 'Jane Doe', '123 Maple Street, Apt 4B', 'jane.doe@example.com', '09456754591', 'New York', 'New York', 'Manila', 'Apartment', 'Global Goods Inc.', '456 Elm Street, Suite 300', 'contact@globalgoods.com', '09456754591', 'Los Angeles', 'California', 'GDR-187335714766C05920A6E9C4.86376958', '2024-08-17 00:02:40', '2024-08-17 00:02:40', NULL, NULL, NULL, NULL, 'D05-ABCDe', '16'),
+(70, 'weq', 'qwe', 'qwe', 'Door-to-Door', 'International', 'Jane Doe', '123 Maple Street, Apt 4B', 'jane.doe@example.com', '09456754591', 'New York', 'New York', 'Manila', 'Apartment', 'Global Goods Inc.', '456 Elm Street, Suite 300', 'contact@globalgoods.com', '09456754591', 'Los Angeles', 'California', 'GDR-76045114666C05959162143.81492874', '2024-08-17 00:03:37', '2024-08-17 00:03:37', NULL, NULL, NULL, NULL, 'D05322asd', '16'),
+(71, 'Acme Corporations', 'Air Freight', 'Local', 'Door-to-Door', 'International', 'Jane Does', 'Calapan City, Oriental Mindoro', 'jane.doe@example.com', '09456754591', 'New York', 'New York', 'Manila', 'Apartment', 'Global Goods Inc.', 'Davao City', 'contact@globalgoods.com', '09456754591', 'Los Angeles', 'California', 'GDR-58765123566C05AFD424C52.81490047', '2024-08-17 00:10:37', '2024-08-17 00:10:37', NULL, NULL, NULL, NULL, 'ABC132', '16');
 
 -- --------------------------------------------------------
 
@@ -107,6 +118,33 @@ CREATE TABLE `branch_managers` (
 INSERT INTO `branch_managers` (`id`, `branch`, `name`, `email`, `phone`, `date`, `created_at`, `updated_at`) VALUES
 (1, 'Makatio', 'Justin', 'justin@gmail.com', '09456754591', '2024-08-14', '2024-08-13 00:32:53', '2024-08-13 00:32:53'),
 (2, 'Lagunas', 'Test Manager', 'test@manager.com', '09456754591', '2024-08-13', '2024-08-13 00:40:20', '2024-08-13 00:50:34');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contacts`
+--
+
+CREATE TABLE `contacts` (
+  `id` bigint UNSIGNED NOT NULL,
+  `name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subject` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `contacts`
+--
+
+INSERT INTO `contacts` (`id`, `name`, `email`, `subject`, `message`, `created_at`, `updated_at`) VALUES
+(1, 'Calapan Branches', 'admin@manpower.coms', 'Trucking', 'Hi', '2024-08-16 23:53:38', '2024-08-16 23:53:38'),
+(2, 'ABIC Manpower Service Corp', 'adminm@manpower.com', 'Trucking', 'hi', '2024-08-16 23:53:49', '2024-08-16 23:53:49'),
+(3, 'Justin De Castro', 'admin@manpower.com', 'Trucking', 'Hi', '2024-08-16 23:58:40', '2024-08-16 23:58:40'),
+(4, 'Justin De Castro', 'admin@manpower.coms', 'Trucking', 'sad', '2024-08-16 23:59:02', '2024-08-16 23:59:02'),
+(5, 'Justin De Castro', 'admin@manpower.coms', 'Trucking', 'hi', '2024-08-16 23:59:26', '2024-08-16 23:59:26');
 
 -- --------------------------------------------------------
 
@@ -182,11 +220,11 @@ INSERT INTO `drivers` (`id`, `name`, `address`, `contact`, `email`, `license_num
 
 CREATE TABLE `expenses` (
   `id` bigint UNSIGNED NOT NULL,
-  `account_id` bigint UNSIGNED NOT NULL,
+  `account_id` bigint UNSIGNED DEFAULT NULL,
   `date` date NOT NULL,
-  `particulars` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `particulars` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `expense_amount` decimal(15,2) NOT NULL,
-  `notes` text COLLATE utf8mb4_unicode_ci,
+  `notes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -196,7 +234,8 @@ CREATE TABLE `expenses` (
 --
 
 INSERT INTO `expenses` (`id`, `account_id`, `date`, `particulars`, `expense_amount`, `notes`, `created_at`, `updated_at`) VALUES
-(1, 1, '2024-08-24', 'Banana', 20000.00, 'Banana Hinog', '2024-08-14 08:15:33', '2024-08-14 08:15:33');
+(1, 1, '2024-08-24', 'Banana', 20000.00, 'Banana Hinog', '2024-08-14 08:15:33', '2024-08-14 08:15:33'),
+(2, NULL, '2024-08-17', 'radmin.themicly.com/presale/proposal', 25.00, 'Hellos', '2024-08-16 00:58:51', '2024-08-16 00:58:51');
 
 -- --------------------------------------------------------
 
@@ -304,7 +343,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (22, '2024_08_15_031842_create_loans_table', 16),
 (23, '2024_08_14_152526_create_accounts_table', 17),
 (24, '2024_08_14_152658_create_transactions_table', 17),
-(25, '2024_08_14_161340_create_expenses_table', 18);
+(25, '2024_08_14_161340_create_expenses_table', 18),
+(26, '2024_08_15_170248_create_starting_balances_table', 19),
+(27, '2024_08_16_164721_create_contacts_table', 20),
+(28, '2024_08_16_212803_create_rubixes_table', 21);
 
 -- --------------------------------------------------------
 
@@ -352,6 +394,73 @@ CREATE TABLE `proof_payments` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `rubixes`
+--
+
+CREATE TABLE `rubixes` (
+  `id` bigint UNSIGNED NOT NULL,
+  `sender_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `transport_mode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `shipping_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `delivery_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `journey_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `consignee_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `consignee_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `consignee_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `consignee_mobile` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `consignee_city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `consignee_province` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `consignee_barangay` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `consignee_building_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `merchant_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `merchant_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `merchant_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `merchant_mobile` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `merchant_city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `merchant_province` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `tracking_number` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `rubixes`
+--
+
+INSERT INTO `rubixes` (`id`, `sender_name`, `transport_mode`, `shipping_type`, `delivery_type`, `journey_type`, `consignee_name`, `consignee_address`, `consignee_email`, `consignee_mobile`, `consignee_city`, `consignee_province`, `consignee_barangay`, `consignee_building_type`, `merchant_name`, `merchant_address`, `merchant_email`, `merchant_mobile`, `merchant_city`, `merchant_province`, `created_at`, `updated_at`, `tracking_number`) VALUES
+(1, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 04:34:57', '2024-08-17 04:34:57', NULL),
+(2, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 04:35:36', '2024-08-17 04:35:36', NULL),
+(3, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 06:16:12', '2024-08-17 06:16:12', NULL),
+(4, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 06:17:30', '2024-08-17 06:17:30', NULL),
+(5, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 06:18:09', '2024-08-17 06:18:09', 'GPC-34220415766BFDE314B0213.90994180'),
+(6, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 06:31:43', '2024-08-17 06:31:43', 'GPC-156232497766BFE15F3AFE74.96969639');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `starting_balances`
+--
+
+CREATE TABLE `starting_balances` (
+  `id` bigint UNSIGNED NOT NULL,
+  `account_id` bigint UNSIGNED NOT NULL,
+  `amount` decimal(15,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `starting_balances`
+--
+
+INSERT INTO `starting_balances` (`id`, `account_id`, `amount`, `created_at`, `updated_at`) VALUES
+(1, 1, 2500000.00, '2024-08-16 00:04:31', '2024-08-16 00:04:31'),
+(2, 2, 200.00, '2024-08-16 00:24:34', '2024-08-16 00:24:34'),
+(3, 1, 500000.00, '2024-08-16 00:51:53', '2024-08-16 00:51:53');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `subcontractors`
 --
 
@@ -385,11 +494,12 @@ CREATE TABLE `transactions` (
   `id` bigint UNSIGNED NOT NULL,
   `account_id` bigint UNSIGNED NOT NULL,
   `date` date NOT NULL,
-  `particulars` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `deposit_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `withdraw_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `expense_amount` text COLLATE utf8mb4_unicode_ci,
-  `notes` text COLLATE utf8mb4_unicode_ci,
+  `particulars` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `deposit_amount` decimal(10,2) DEFAULT '0.00',
+  `withdraw_amount` decimal(10,2) DEFAULT '0.00',
+  `expense_amount` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `proof_of_payment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `notes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -398,11 +508,15 @@ CREATE TABLE `transactions` (
 -- Dumping data for table `transactions`
 --
 
-INSERT INTO `transactions` (`id`, `account_id`, `date`, `particulars`, `deposit_amount`, `withdraw_amount`, `expense_amount`, `notes`, `created_at`, `updated_at`) VALUES
-(1, 1, '2024-08-23', 'Mango', 50000.00, 0.00, NULL, 'Mango ripe', '2024-08-14 07:44:19', '2024-08-14 07:44:19'),
-(2, 1, '2024-08-17', 'Mangoes', 0.00, 250.00, NULL, 'Mango ripe', '2024-08-14 07:44:49', '2024-08-14 07:44:49'),
-(3, 1, '2024-08-25', 'Bananas', 0.00, 0.00, '43000', 'BananaPajama', '2024-08-14 08:21:18', '2024-08-14 08:21:18'),
-(4, 1, '2024-08-29', 'Guava', 250000.00, 0.00, NULL, 'Guava Ripe', '2024-08-14 08:30:00', '2024-08-14 08:30:00');
+INSERT INTO `transactions` (`id`, `account_id`, `date`, `particulars`, `deposit_amount`, `withdraw_amount`, `expense_amount`, `proof_of_payment`, `notes`, `created_at`, `updated_at`) VALUES
+(1, 1, '2024-08-23', 'Mango', 50000.00, 0.00, NULL, NULL, 'Mango ripe', '2024-08-14 07:44:19', '2024-08-14 07:44:19'),
+(2, 1, '2024-08-17', 'Mangoes', 0.00, 250.00, NULL, NULL, 'Mango ripe', '2024-08-14 07:44:49', '2024-08-14 07:44:49'),
+(3, 1, '2024-08-25', 'Bananas', 0.00, 0.00, '43000', NULL, 'BananaPajama', '2024-08-14 08:21:18', '2024-08-14 08:21:18'),
+(4, 1, '2024-08-29', 'Guava', 250000.00, 0.00, NULL, NULL, 'Guava Ripe', '2024-08-14 08:30:00', '2024-08-14 08:30:00'),
+(5, 1, '2024-08-31', 'add bal', 0.00, 0.00, NULL, 'proofs/1723736016_Screenshot (15).png', 'Hello Gcash', '2024-08-15 22:33:36', '2024-08-15 22:33:36'),
+(9, 2, '2024-08-24', 'qwer', 50000.00, 0.00, NULL, NULL, 'qwer', '2024-08-16 00:25:11', '2024-08-16 00:25:11'),
+(10, 2, '2024-08-25', 'qwer', 0.00, 25000.00, NULL, NULL, 'Hello', '2024-08-16 00:25:35', '2024-08-16 00:25:35'),
+(11, 2, '2024-08-26', 'qwer', 0.00, 0.00, '20000', NULL, 'Hello', '2024-08-16 00:26:53', '2024-08-16 00:26:53');
 
 -- --------------------------------------------------------
 
@@ -451,6 +565,7 @@ CREATE TABLE `vehicles` (
   `truck_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `truck_capacity` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `truck_status` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `quantity` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -459,15 +574,10 @@ CREATE TABLE `vehicles` (
 -- Dumping data for table `vehicles`
 --
 
-INSERT INTO `vehicles` (`id`, `truck_name`, `truck_capacity`, `truck_status`, `created_at`, `updated_at`) VALUES
-(4, 'Ford F-150,', '1,000-2,000 kg', 'Not Available', '2024-08-15 03:13:39', '2024-08-15 04:25:32'),
-(5, 'Ford F-550', '4,000-9,000 kg', 'Available', '2024-08-15 03:16:01', '2024-08-15 04:04:49'),
-(6, 'Freightliner Cascadia', '10,000-15,000 kg', 'Available', '2024-08-15 03:16:15', '2024-08-15 04:04:56'),
-(7, 'Isuzu NPR', '4,500-14,000 kg', 'Not Available', '2024-08-15 03:16:35', '2024-08-15 11:05:37'),
-(8, 'Freightliner M2 112', '15,000-30,000 kg', 'Available', '2024-08-15 03:16:48', '2024-08-15 03:16:48'),
-(9, 'Hino 268A', '4,500-14,000 kg', 'Available', '2024-08-15 03:17:06', '2024-08-15 03:17:06'),
-(10, 'Kenworth T800', '5,000-25,000 kg', 'Available', '2024-08-15 03:17:19', '2024-08-15 04:05:09'),
-(11, 'Volvo FMX', '10,000-20,000 kg', 'Not Available', '2024-08-15 03:17:45', '2024-08-15 04:05:42');
+INSERT INTO `vehicles` (`id`, `truck_name`, `truck_capacity`, `truck_status`, `quantity`, `created_at`, `updated_at`) VALUES
+(4, '10 Wheeler Aluminum wing van', '15,000 to 20,000 kilograms (15 to 20 metric tons).', 'Available', '19', '2024-08-15 03:13:39', '2024-08-17 03:05:15'),
+(7, '6 Wheeler closed vans', '5,000 to 8,000 kilograms (5 to 8 metric tons).', 'Available', '9', '2024-08-15 03:16:35', '2024-08-17 00:19:31'),
+(9, '6 Wheeler tractor heads', '12,000 kg to 26,000 kg (about 26,000 lbs to 57,000 lbs)', 'Available', '3', '2024-08-15 03:17:06', '2024-08-17 00:20:51');
 
 -- --------------------------------------------------------
 
@@ -522,6 +632,12 @@ ALTER TABLE `bookings`
 ALTER TABLE `branch_managers`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `branch_managers_email_unique` (`email`);
+
+--
+-- Indexes for table `contacts`
+--
+ALTER TABLE `contacts`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `courier_sends`
@@ -597,6 +713,19 @@ ALTER TABLE `proof_payments`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `rubixes`
+--
+ALTER TABLE `rubixes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `starting_balances`
+--
+ALTER TABLE `starting_balances`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `starting_balances_account_id_foreign` (`account_id`);
+
+--
 -- Indexes for table `subcontractors`
 --
 ALTER TABLE `subcontractors`
@@ -638,19 +767,25 @@ ALTER TABLE `withdraws`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `branch_managers`
 --
 ALTER TABLE `branch_managers`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `contacts`
+--
+ALTER TABLE `contacts`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `courier_sends`
@@ -674,7 +809,7 @@ ALTER TABLE `drivers`
 -- AUTO_INCREMENT for table `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -698,7 +833,7 @@ ALTER TABLE `manage_branches`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -713,6 +848,18 @@ ALTER TABLE `proof_payments`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `rubixes`
+--
+ALTER TABLE `rubixes`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `starting_balances`
+--
+ALTER TABLE `starting_balances`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `subcontractors`
 --
 ALTER TABLE `subcontractors`
@@ -722,7 +869,7 @@ ALTER TABLE `subcontractors`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -765,6 +912,12 @@ ALTER TABLE `deposits`
 --
 ALTER TABLE `expenses`
   ADD CONSTRAINT `expenses_account_id_foreign` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `starting_balances`
+--
+ALTER TABLE `starting_balances`
+  ADD CONSTRAINT `starting_balances_account_id_foreign` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `transactions`
