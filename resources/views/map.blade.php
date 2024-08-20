@@ -8,31 +8,32 @@
         let truckMarker;
         let directionsService;
         let directionsRenderer;
-        let intervalId;
+        let userLatLng;
         let destinationLatLng;
-        let pathLength;
-
-        // Receives the addresses from the server
-        const merchantAddress = @json($merchantAddress);
-        const consigneeAddress = @json($consigneeAddress);
+        const destinationAddress = @json($merchantAddress); // Ensure this address is correctly passed
 
         function initMap() {
+            // Initialize the map
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 14
+            });
+
+            // Check if geolocation is available
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
-                    const userLatLng = {
+                    userLatLng = {
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
                     };
 
-                    map = new google.maps.Map(document.getElementById('map'), {
-                        center: userLatLng,
-                        zoom: 14
-                    });
+                    console.log('Current Location:', userLatLng); // Debug current location
 
+                    // Center the map and place the truck marker
+                    map.setCenter(userLatLng);
                     truckMarker = new google.maps.Marker({
                         position: userLatLng,
                         map: map,
-                        icon: 'https://maps.google.com/mapfiles/kml/shapes/truck.png', // Default truck icon
+                        icon: 'https://maps.google.com/mapfiles/kml/shapes/truck.png',
                         label: {
                             text: 'GDR Trucking',
                             color: 'black',
@@ -42,6 +43,7 @@
                         title: 'Moving Truck'
                     });
 
+                    // Initialize directions services
                     directionsService = new google.maps.DirectionsService();
                     directionsRenderer = new google.maps.DirectionsRenderer();
                     directionsRenderer.setMap(map);
@@ -50,23 +52,36 @@
                     const trafficLayer = new google.maps.TrafficLayer();
                     trafficLayer.setMap(map);
 
-                    // Geocode the merchant and consignee addresses to get their coordinates
+                    // Geocode the destination address
                     const geocoder = new google.maps.Geocoder();
-
-                    geocoder.geocode({ address: merchantAddress }, function(results, status) {
+                    geocoder.geocode({ address: destinationAddress }, function(results, status) {
                         if (status === 'OK') {
-                            const startLatLng = results[0].geometry.location;
-                            geocoder.geocode({ address: consigneeAddress }, function(results, status) {
-                                if (status === 'OK') {
-                                    destinationLatLng = results[0].geometry.location;
-                                    calculateAndDisplayRoute(startLatLng, destinationLatLng);
-                                } else {
-                                    window.alert('Geocode for consignee address failed due to: ' + status);
-                                }
-                            });
+                            destinationLatLng = results[0].geometry.location;
+                            calculateAndDisplayRoute(userLatLng, destinationLatLng);
                         } else {
-                            window.alert('Geocode for merchant address failed due to: ' + status);
+                            console.error('Geocode for merchant address failed due to: ' + status); // Debug geocode errors
                         }
+                    });
+
+                    // Continuously update user location
+                    navigator.geolocation.watchPosition(function(position) {
+                        userLatLng = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        console.log('Updated Location:', userLatLng); // Debug updated location
+                        truckMarker.setPosition(userLatLng);
+                        map.setCenter(userLatLng);
+                        // Update the route if destination is set
+                        if (destinationLatLng) {
+                            calculateAndDisplayRoute(userLatLng, destinationLatLng);
+                        }
+                    }, function() {
+                        handleLocationError(true);
+                    }, {
+                        enableHighAccuracy: true,
+                        maximumAge: 0,
+                        timeout: 27000
                     });
 
                 }, function() {
@@ -85,43 +100,10 @@
             }, function(response, status) {
                 if (status === 'OK') {
                     directionsRenderer.setDirections(response);
-                    pathLength = response.routes[0].overview_path.length;
-                    animateTruck(response.routes[0].overview_path);
                 } else {
-                    window.alert('Directions request failed due to ' + status);
+                    console.error('Directions request failed due to ' + status); // Debug directions errors
                 }
             });
-        }
-
-        function animateTruck(path) {
-            if (intervalId) {
-                clearInterval(intervalId);
-            }
-
-            let pathIndex = 0;
-            const totalPoints = path.length;
-
-            function updatePosition() {
-                if (pathIndex >= totalPoints) {
-                    clearInterval(intervalId);
-                    showArrivalMessage();
-                    return;
-                }
-
-                truckMarker.setPosition(path[pathIndex]);
-                map.setCenter(path[pathIndex]);
-                pathIndex++;
-            }
-
-            intervalId = setInterval(updatePosition, 1000); // Move truck every second
-        }
-
-        function showArrivalMessage() {
-            const infoWindow = new google.maps.InfoWindow({
-                content: 'The truck has arrived at the destination!',
-                position: destinationLatLng
-            });
-            infoWindow.open(map);
         }
 
         function handleLocationError(browserHasGeolocation) {
@@ -130,8 +112,8 @@
             });
             infoWindow.setPosition(map.getCenter());
             infoWindow.setContent(browserHasGeolocation ?
-                'Error: The Geolocation service failed.' :
-                'Error: Your browser doesn\'t support geolocation.');
+                'Error: The Geolocation service failed. Please ensure your location services are enabled and try again.' :
+                'Error: Your browser doesn\'t support geolocation or location services are not enabled.');
         }
 
         window.onload = initMap;

@@ -9,7 +9,9 @@ use App\Models\User;
 use App\Models\Vehicle;
 use App\Models\Transaction;
 use App\Models\Subcontractor;
+use App\Models\PricingSalary;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -126,21 +128,55 @@ public function courier_order()
 public function showMap()
 {
     // Fetch a specific booking or relevant data
-    $booking = Booking::find(71); // Replace with the appropriate logic to fetch the booking
+    $booking = Booking::find(71); // Adjust as needed to fetch the booking
 
-    // Assuming you have a merchant_address available in your booking model or a different method to fetch it
+    // Get the merchant address from the booking
     $merchantAddress = $booking->merchant_address;
-    $consigneeAddress = $booking->consignee_address;
 
     return view('map', [
-        'merchantAddress' => $merchantAddress,
-        'consigneeAddress' => $consigneeAddress
+        'merchantAddress' => $merchantAddress
     ]);
 }
+
+
 
 public function addtruck(){
     $vehicles = Vehicle::all();
     return view('Admin.Addtruck',compact('vehicles'));
 }
+public function salary()
+{
+    // Retrieve records grouped by ID with salary details
+    $salariesById = DB::table('pricing_salaries')
+        ->select('ID','delivery_routes', 'driver_salary', 'helper_salary')
+        ->get();
+
+    // Initialize an array to hold per-ID salary computations
+    $computedSalaries = [];
+
+    // Iterate through each record and compute as needed
+    foreach ($salariesById as $record) {
+        $id = $record->ID;
+        $deliveryRoutes= $record->delivery_routes;
+        $driverSalary = $record->driver_salary;
+        $helperSalary = $record->helper_salary;
+        
+
+        // Compute total salary or other needed calculations per ID
+        $totalSalary = $driverSalary + $helperSalary;
+
+        // Store computed values in the array
+        $computedSalaries[$id] = [
+            'delivery_routes' => $deliveryRoutes,
+            'driver_salary' => $driverSalary,
+            'helper_salary' => $helperSalary,
+            'total_salary' => $totalSalary
+        ];
+    }
+
+    // Pass the data to the view
+    return view('Admin.Salary', compact('computedSalaries'));
+}
+
 }
 

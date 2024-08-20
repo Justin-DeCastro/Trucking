@@ -20,6 +20,18 @@
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">
+                        <a href="map" class="nav-link ">
+                        <i class="fa fa-map menu-icon"></i>
+                            <span class="menu-title">Map</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item ">
+                        <a href="salary" class="nav-link ">
+                        <i class="fa fa-dollar menu-icon"></i>
+                            <span class="menu-title">Driver Salary</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item ">
                         <a href="adminside" class="nav-link ">
                         <i class="fa fa-users menu-icon"></i>
                             <span class="menu-title">Admin</span>
@@ -27,19 +39,19 @@
                     </li>
                     <li class="sidebar-menu-item ">
                         <a href="waybill" class="nav-link ">
-                        <i class="fa fa-users menu-icon"></i>
+                        <i class="fa fa-receipt menu-icon"></i>
                             <span class="menu-title">Waybill</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">
                         <a href="reference" class="nav-link ">
-                        <i class="fa fa-users menu-icon"></i>
+                        <i class="fa fa-receipt menu-icon"></i>
                             <span class="menu-title">Rubix Form</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">
                         <a href="rubix_details" class="nav-link ">
-                        <i class="fa fa-users menu-icon"></i>
+                        <i class="fa fa-info menu-icon"></i>
                             <span class="menu-title">Rubix Details</span>
                         </a>
                     </li>
@@ -73,13 +85,13 @@
                     </li>
                     <li class="sidebar-menu-item ">
                         <a href="addsubcon" class="nav-link ">
-                        <i class="fa fa-fax menu-icon"></i>
+                        <i class="fa fa-bus menu-icon"></i>
                             <span class="menu-title">Add Subcontractor</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">
                         <a href="package" class="nav-link ">
-                        <i class="fa fa-fax menu-icon"></i>
+                        <i class="fa fa-box menu-icon"></i>
                             <span class="menu-title">Package</span>
                         </a>
                     </li>
@@ -91,19 +103,19 @@
                     </li>
                     <li class="sidebar-menu-item ">
                         <a href="add-driver" class="nav-link ">
-                        <i class="fa fa-fax menu-icon"></i>
+                        <i class="fa fa-user menu-icon"></i>
                             <span class="menu-title">Add Driver</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">
                         <a href="addtruck" class="nav-link ">
-                        <i class="fa fa-fax menu-icon"></i>
+                        <i class="fa fa-bus menu-icon"></i>
                             <span class="menu-title">Add Vehicle</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">
                         <a href="managecourier" class="nav-link ">
-                        <i class="fa fa-fax menu-icon"></i>
+                        <i class="fa fa-motorcycle menu-icon"></i>
                             <span class="menu-title">Manage Courier</span>
                         </a>
                     </li>

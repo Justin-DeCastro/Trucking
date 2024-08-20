@@ -76,36 +76,59 @@ class BookingController extends Controller
             'merchant_province' => 'required|string|max:255',
             'driver_name' => 'required|string|max:255',
             'plate_number' => 'required|string|max:255',
-
-            // Assuming 'truck_type' is a field in your form that needs validation
             // 'truck_type' => 'required|exists:vehicles,id',
         ]);
-
+    
         // Generate tracking number
         $trackingNumber = 'GDR-' . strtoupper(uniqid(mt_rand(), true));
         $validatedData['tracking_number'] = $trackingNumber;
-
+    
+        // Generate order number with the format '2024-(order_number)'
+        $currentYear = date('Y'); // Gets the current year
+    
+        // Retrieve the last booking for the current year
+        $lastBooking = Booking::whereYear('created_at', $currentYear)->orderBy('order_number', 'desc')->first();
+    
+        // Initialize order number
+        if ($lastBooking && strpos($lastBooking->order_number, '-') !== false) {
+            // Split the last order number by '-'
+            $parts = explode('-', $lastBooking->order_number);
+    
+            // Check if the split parts are valid
+            if (isset($parts[1]) && is_numeric($parts[1])) {
+                $orderNumber = intval($parts[1]) + 1;
+            } else {
+                $orderNumber = 1;
+            }
+        } else {
+            $orderNumber = 1;
+        }
+    
+        // Format order number to start from 0001
+        $formattedOrderNumber = str_pad($orderNumber, 4, '0', STR_PAD_LEFT);
+        $validatedData['order_number'] = $currentYear . '-' . $formattedOrderNumber;
+    
         // Create the booking
         $booking = Booking::create($validatedData);
-
+    
         // Generate QR code
         $filename = time() . '-' . $trackingNumber . '.svg';
         $qrCodePath = 'qrcodes/' . $filename;
         $qrCodeImage = QrCode::size(300)->generate($trackingNumber);
         file_put_contents(public_path($qrCodePath), $qrCodeImage);
-
+    
         // Save QR code path to the booking
         $booking->update(['qr_code' => $qrCodePath]);
-
+    
         // Update the truck status if truck_type is provided
         $truckId = $request->input('truck_type'); // Ensure 'truck_type' field exists in the form
         if ($truckId) {
             $truck = Vehicle::find($truckId);
-
+    
             if ($truck) {
                 // Decrement the quantity of the truck
                 $truck->decrement('quantity');
-
+    
                 // Update truck status if quantity is 0
                 if ($truck->quantity <= 0) {
                     $truck->update([
@@ -114,16 +137,18 @@ class BookingController extends Controller
                 }
             }
         }
-
+    
         // Generate the URL to the QR code image
         $qrCodeUrl = asset($qrCodePath);
-
+    
         // Redirect to the confirmation view with data
         return view('Home.confirmation', [
             'trackingNumber' => $trackingNumber,
             'qrCodeUrl' => $qrCodeUrl,
+            'orderNumber' => $validatedData['order_number'],
         ]);
     }
+    
 
 
 

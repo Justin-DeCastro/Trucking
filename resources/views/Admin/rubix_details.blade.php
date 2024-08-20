@@ -220,7 +220,28 @@
                                                 <tr><td>Status</td><td>{{ $detail->tracking_status }}</td></tr>
                                                 <tr><td>Client</td><td>{{ $detail->sender_name }}</td></tr>
                                                 <tr><td>Branch Code</td><td>{{ $detail->branch_code }}</td></tr>
-                                                <tr><td>Package ID</td><td>{{ $detail->package_id }}</td></tr>
+                                                <td>Package ID</td>
+<td>
+    @if($detail->order_number)
+      {{ $detail->order_number }}<br>
+    @else
+        Order Number is not available<br>
+    @endif
+ 
+    @if($detail->consignee_address)
+      {{ $detail->consignee_address }}<br>
+    @else
+        Consignee Address is null<br>
+    @endif
+    -
+    @if($detail->merchant_address)
+       {{ $detail->merchant_address }}<br>
+    @else
+        Merchant Address is null<br>
+    @endif
+</td>
+
+
                                                 <tr><td>Group ID</td><td>{{ $detail->group_id }}</td></tr>
                                                 <tr><td>Order Number</td><td>{{ $detail->order_number }}</td></tr>
                                                 <tr><td>Reference 1</td><td>{{ $detail->reference_one }}</td></tr>

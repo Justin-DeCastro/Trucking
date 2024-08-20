@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PricingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MapController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\ProofPaymentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\QrCodeController;
 use App\Http\Controllers\RubixController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -69,7 +71,10 @@ Route::post('/rubix', [RubixController::class, 'submit'])->name('rubix.submit');
 
 
 
+
 //admin get
+
+Route::get('salary', [AdminController::class, 'salary'])->name('salary');
 Route::get('reference', [AdminController::class, 'reference'])->name('reference');
 Route::get('admindash', [AdminController::class, 'dashboard'])->name('admindash');
 Route::get('adminside', [AdminController::class, 'adminside'])->name('adminside');
@@ -208,7 +213,9 @@ Route::post('/contact-store', [ContactController::class, 'store'])->name('contac
 //qr
 Route::get('/qrcode', [QrCodeController::class, 'generate']);
 
-
-
-
+//map
 Route::get('/map', [AdminController::class, 'showMap']);
+
+//salary store
+Route::post('salary-store', [PricingController::class, 'submit'])->name('salary.store');
+Route::put('salary-update', [PricingController::class, 'update'])->name('salary.update');

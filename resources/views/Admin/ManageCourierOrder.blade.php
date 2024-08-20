@@ -209,34 +209,49 @@
                             <div class="card">
                                 <div class="card-body p-0">
                                     <div class="table-responsive--sm table-responsive">
-                                        <table class="table table--light style--two">
-                                            <thead>
-                                                <tr>
-                                                    <th>Date</th>
-                                                    <th>Tracking Number</th>
-                                                    <th>Truck Plate Number</th>
-                                                    <th>Destination</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @forelse ($bookings as $detail)
-                                                <tr>
-                                                    <td>{{ \Carbon\Carbon::parse($detail->created_at)->format('F d, Y') }}</td>
-                                                    <td>{{ $detail->tracking_number }}</td>
-                                                    <td>{{ $detail->plate_number }}</td>
-                                                    <td>{{ $detail->consignee_address }}</td>
-                                                    <td>
+                                    <table class="table table--light style--two">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Tracking Number</th>
+            <th>Truck Plate Number</th>
+            <th>Destination</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse ($bookings as $detail)
+        <tr>
+            <td>{{ \Carbon\Carbon::parse($detail->created_at)->format('F d, Y') }}</td>
+            <td>{{ $detail->tracking_number }}</td>
+            <td>{{ $detail->plate_number }}</td>
+            <td>{{ $detail->consignee_address }}</td>
+            <td>
+                {{ $detail->status }}
+            </td>
+            <td>
+                <!-- Update Status Form -->
+                <form action="" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <select name="status" required>
+                        <option value="pickup" {{ $detail->status === 'pickup' ? 'selected' : '' }}>Pickup</option>
+                        <option value="delivery" {{ $detail->status === 'delivery' ? 'selected' : '' }}>Delivery</option>
+                        <option value="other" {{ $detail->status === 'other' ? 'selected' : '' }}>Other</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Update Status</button>
+                </form>
+            </td>
+        </tr>
+        @empty
+        <tr>
+            <td colspan="6">No bookings found.</td>
+        </tr>
+        @endforelse
+    </tbody>
+</table>
 
-                                                    </td>
-                                                </tr>
-                                                @empty
-                                                <tr>
-                                                    <td colspan="5">No bookings found.</td>
-                                                </tr>
-                                                @endforelse
-                                            </tbody>
-                                        </table>
 
 
 
