@@ -265,25 +265,41 @@ class BookingController extends Controller
     // Redirect back with a success message including the driver's name
     return redirect()->back()->with('success', 'Driver ' . $driver->name . ' assigned successfully.');
 }
-public function updateOrderStatus(Request $request, Booking $booking)
-{
-    // Validate the order status input
-    $request->validate([
-        'order_status' => 'required|in:To Pick-up,Picked-up,In Transit,For Delivery,Delivered',
-    ]);
+public function updateOrderStatus(Request $request, $id)
+    {
+        // Validate the incoming request
+        $request->validate([
+            'order_status' => 'required|string|in:Pod_returned,Delivery successful,For Pick-up',
+        ]);
 
-    // Ensure the user is authorized to perform this action (if necessary)
-    // Example authorization check: Ensure the user is the assigned driver (adjust as needed)
-    if (Auth::id() !== $booking->driver_id) {
-        abort(403, 'Unauthorized action.');
+        // Find the booking by ID
+        $booking = Booking::findOrFail($id);
+
+        // Update the status
+        $booking->status = $request->input('order_status');
+        $booking->save();
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Order status updated successfully.');
     }
 
-    // Update the order status
-    $booking->update(['order_status' => $request->input('order_status')]);
+    public function updateRemarks(Request $request, $id)
+    {
+        // Validate the request
+        $request->validate([
+         'remarks' => 'required|string',
+        ]);
 
-    // Redirect back with success message
-    return redirect()->back()->with('success', 'Order status updated successfully.');
-}
+        // Find the booking by ID
+        $booking = Booking::findOrFail($id);
+
+        // Update the remarks
+        $booking->remarks = $request->input('remarks');
+        $booking->save();
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Remarks added successfully.');
+    }
 public function updatePaymentStatus(Request $request, Booking $booking)
 {
     // Validate the payment status input

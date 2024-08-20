@@ -172,6 +172,7 @@
                                                 <th>Tracking Number</th>
                                                 <th>Truck Plate Number</th>
                                                 <th>Destination</th>
+                                                <th>Remarks</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -183,6 +184,7 @@
 
                                                 <td>{{ $detail->plate_number }}</td>
                                                 <td>{{ $detail->consignee_address }}</td>
+                                                <td>{{ $detail->remarks }}</td>
                                                 <td>
                                                     <!-- Button to trigger modal -->
                                                     <button type="button" class="btn btn-info" data-bs-toggle="modal"
@@ -216,8 +218,24 @@
                                             <h2>Package Reference</h2>
                                             <table class="table">
                                                 <tr><td>Tracking Number</td><td>{{ $detail->tracking_number }}</td></tr>
-                                                <tr><td>Created At</td><td>{{ \Carbon\Carbon::parse($detail->created_at)->format('Y-m-d') }}</td></tr>
-                                                <tr><td>Status</td><td>{{ $detail->tracking_status }}</td></tr>
+                                                <tr>
+    <td>Created At</td>
+    <td>{{ \Carbon\Carbon::parse($detail->created_at)->format('F d Y') }}</td>
+</tr>
+
+                                                <tr><td>Status</td><td>
+        <span style="
+            color: {{ $detail->status == 'Pod_returned' ? 'white' : ($detail->status == 'Delivery successful' ? 'white' : ($detail->status == 'For Pick-up' ? 'white' : 'black')) }};
+            background-color: {{ $detail->status == 'Pod_returned' ? 'red' : ($detail->status == 'Delivery successful' ? 'green' : ($detail->status == 'For Pick-up' ? 'blue' : 'transparent')) }};
+            padding: 2px 5px; /* Adjust padding as needed */
+            border-radius: 4px; /* Rounded corners for better visual appeal */
+        ">
+            {{ $detail->status }}
+        </span>
+    </td>
+</tr>
+
+
                                                 <tr><td>Client</td><td>{{ $detail->sender_name }}</td></tr>
                                                 <tr><td>Branch Code</td><td>{{ $detail->branch_code }}</td></tr>
                                                 <td>Package ID</td>

@@ -142,13 +142,18 @@ Route::patch('/bookings/{booking}/assign-driver', [BookingController::class, 'as
 Route::post('/drivers-store', [RegisterController::class, 'register'])->name('drivers.store');
 
 //manage courier order
-Route::get('order-for-courier', [AdminController::class, 'courier_order'])->name('order-for-courier');
+// Route::get('order-for-courier', [AdminController::class, 'courier_order'])->name('order-for-courier');
 //payment
 // In web.php
 
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/order-for-courier', [AdminController::class, 'courier_order'])->name('order-for-courier');
+});
 // Define a route for updating the payment status with POST method
-Route::post('/bookings/{booking}/update-order-status', [BookingController::class, 'updateOrderStatus'])->name('update.order.status');
+// Route::patch('/bookings/{booking}/update-order-status', [BookingController::class, 'updateOrderStatus'])->name('update.order.status');
+Route::patch('/bookings/{id}/status', [BookingController::class, 'updateOrderStatus'])->name('update.order.status');
+// Route::patch('/orders/{id}/remarks', [BookingController::class, 'updateRemarks'])->name('update.order.remarks');
+Route::post('/booking/{id}/remarks', [BookingController::class, 'updateRemarks'])->name('update.order.remarks');
 // routes/web.php
 Route::post('/update-order-amount', [BookingController::class, 'updateSingleOrderAmount'])
     ->name('orderamount.updateSingle');
