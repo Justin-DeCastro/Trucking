@@ -2,94 +2,51 @@
 <html>
 <head>
     <title>Google Maps Moving Truck</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4&libraries=places" async defer></script>
     <script>
         let map;
         let truckMarker;
         let directionsService;
         let directionsRenderer;
-        let userLatLng;
-        let destinationLatLng;
-        const destinationAddress = @json($merchantAddress); // Ensure this address is correctly passed
+        let routePath = [];
+        let stepIndex = 0;
+        const destinationAddress = @json($consigneeAddress); // Ensure this address is correctly passed
+        const startingAddress = @json($merchantAddress); // Ensure this address is correctly passed
 
         function initMap() {
-            // Initialize the map
+            // Initialize the map with roadmap type
             map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 14
+                zoom: 14,
+                mapTypeId: 'roadmap' // Set map type to roadmap
             });
 
-            // Check if geolocation is available
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    userLatLng = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setMap(map);
 
-                    console.log('Current Location:', userLatLng); // Debug current location
+            // Add traffic layer
+            const trafficLayer = new google.maps.TrafficLayer();
+            trafficLayer.setMap(map);
 
-                    // Center the map and place the truck marker
-                    map.setCenter(userLatLng);
-                    truckMarker = new google.maps.Marker({
-                        position: userLatLng,
-                        map: map,
-                        icon: 'https://maps.google.com/mapfiles/kml/shapes/truck.png',
-                        label: {
-                            text: 'GDR Trucking',
-                            color: 'black',
-                            fontSize: '14px',
-                            fontWeight: 'bold'
-                        },
-                        title: 'Moving Truck'
-                    });
+            const geocoder = new google.maps.Geocoder();
 
-                    // Initialize directions services
-                    directionsService = new google.maps.DirectionsService();
-                    directionsRenderer = new google.maps.DirectionsRenderer();
-                    directionsRenderer.setMap(map);
+            // Geocode the destination address
+            geocoder.geocode({ address: destinationAddress }, function(results, status) {
+                if (status === 'OK') {
+                    const destinationLatLng = results[0].geometry.location;
 
-                    // Add traffic layer
-                    const trafficLayer = new google.maps.TrafficLayer();
-                    trafficLayer.setMap(map);
-
-                    // Geocode the destination address
-                    const geocoder = new google.maps.Geocoder();
-                    geocoder.geocode({ address: destinationAddress }, function(results, status) {
+                    geocoder.geocode({ address: startingAddress }, function(results, status) {
                         if (status === 'OK') {
-                            destinationLatLng = results[0].geometry.location;
-                            calculateAndDisplayRoute(userLatLng, destinationLatLng);
+                            const startingLatLng = results[0].geometry.location;
+                            calculateAndDisplayRoute(startingLatLng, destinationLatLng);
                         } else {
                             console.error('Geocode for merchant address failed due to: ' + status); // Debug geocode errors
                         }
                     });
-
-                    // Continuously update user location
-                    navigator.geolocation.watchPosition(function(position) {
-                        userLatLng = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        };
-                        console.log('Updated Location:', userLatLng); // Debug updated location
-                        truckMarker.setPosition(userLatLng);
-                        map.setCenter(userLatLng);
-                        // Update the route if destination is set
-                        if (destinationLatLng) {
-                            calculateAndDisplayRoute(userLatLng, destinationLatLng);
-                        }
-                    }, function() {
-                        handleLocationError(true);
-                    }, {
-                        enableHighAccuracy: true,
-                        maximumAge: 0,
-                        timeout: 27000
-                    });
-
-                }, function() {
-                    handleLocationError(true);
-                });
-            } else {
-                handleLocationError(false);
-            }
+                } else {
+                    console.error('Geocode for consignee address failed due to: ' + status); // Debug geocode errors
+                }
+            });
         }
 
         function calculateAndDisplayRoute(start, end) {
@@ -100,20 +57,48 @@
             }, function(response, status) {
                 if (status === 'OK') {
                     directionsRenderer.setDirections(response);
+                    const route = response.routes[0].overview_path; // Get the overview path
+                    routePath = route;
+                    simulateTruckMovement();
                 } else {
                     console.error('Directions request failed due to ' + status); // Debug directions errors
                 }
             });
         }
 
-        function handleLocationError(browserHasGeolocation) {
-            const infoWindow = new google.maps.InfoWindow({
-                map: map
+        function simulateTruckMovement() {
+            const interval = 1000; // Update interval in milliseconds
+            const distance = 0.0002; // Distance to move on each step (latitude/longitude change)
+
+            if (!routePath.length) return;
+
+            truckMarker = new google.maps.Marker({
+                position: routePath[0],
+                map: map,
+                icon: 'https://maps.google.com/mapfiles/kml/shapes/truck.png',
+                label: {
+                    text: 'GDR Trucking',
+                    color: 'black',
+                    fontSize: '14px',
+                    fontWeight: 'bold'
+                },
+                title: 'Moving Truck'
             });
-            infoWindow.setPosition(map.getCenter());
-            infoWindow.setContent(browserHasGeolocation ?
-                'Error: The Geolocation service failed. Please ensure your location services are enabled and try again.' :
-                'Error: Your browser doesn\'t support geolocation or location services are not enabled.');
+
+            function moveTruck() {
+                if (stepIndex >= routePath.length) {
+                    return; // Stop moving if all path steps are completed
+                }
+
+                const nextLatLng = routePath[stepIndex];
+                truckMarker.setPosition(nextLatLng);
+                map.setCenter(nextLatLng);
+                stepIndex++;
+
+                setTimeout(moveTruck, interval);
+            }
+
+            moveTruck();
         }
 
         window.onload = initMap;

@@ -179,7 +179,7 @@
                                         <tbody>
                                             @foreach ($rubixdetails as $detail)
                                             <tr>
-                                                <td>{{ \Carbon\Carbon::parse($detail->created_at)->format('F d, Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($detail->date)->format('F d, Y g:i A') }}</td>
                                                 <td>{{ $detail->tracking_number }}</td>
 
                                                 <td>{{ $detail->plate_number }}</td>
@@ -204,7 +204,7 @@
                 </div>
                 @foreach ($rubixdetails as $detail)
                 <div class="modal fade" id="modal{{ $detail->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $detail->id }}" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" style="width: 90%; max-width: 1200px; height: 80%;">
+                    <div class="modal-dialog modal-lg" style="width: 70%; max-width: 1000px; height: 70%;">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="modalLabel{{ $detail->id }}">Details for Plate Number {{ $detail->plate_number }}</h5>
@@ -220,18 +220,19 @@
                                                 <tr><td>Tracking Number</td><td>{{ $detail->tracking_number }}</td></tr>
                                                 <tr>
     <td>Created At</td>
-    <td>{{ \Carbon\Carbon::parse($detail->created_at)->format('F d Y') }}</td>
+    <td>{{ \Carbon\Carbon::parse($detail->date)->format('F d, Y g:i A') }}</td>
 </tr>
 
                                                 <tr><td>Status</td><td>
-        <span style="
-            color: {{ $detail->status == 'Pod_returned' ? 'white' : ($detail->status == 'Delivery successful' ? 'white' : ($detail->status == 'For Pick-up' ? 'white' : 'black')) }};
-            background-color: {{ $detail->status == 'Pod_returned' ? 'red' : ($detail->status == 'Delivery successful' ? 'green' : ($detail->status == 'For Pick-up' ? 'blue' : 'transparent')) }};
-            padding: 2px 5px; /* Adjust padding as needed */
-            border-radius: 4px; /* Rounded corners for better visual appeal */
-        ">
-            {{ $detail->status }}
-        </span>
+                                                <span style="
+    color: {{ $detail->status == 'Pod_returned' ? 'white' : ($detail->status == 'Delivery successful' ? 'white' : ($detail->status == 'For Pick-up' ? 'white' : ($detail->status == 'First_delivery_attempt' ? 'white' : 'black'))) }};
+    background-color: {{ $detail->status == 'Pod_returned' ? 'red' : ($detail->status == 'Delivery successful' ? 'green' : ($detail->status == 'For Pick-up' ? 'blue' : ($detail->status == 'First_delivery_attempt' ? 'orange' : 'transparent'))) }};
+    padding: 2px 5px; /* Adjust padding as needed */
+    border-radius: 4px; /* Rounded corners for better visual appeal */
+">
+    {{ $detail->status }}
+</span>
+
     </td>
 </tr>
 

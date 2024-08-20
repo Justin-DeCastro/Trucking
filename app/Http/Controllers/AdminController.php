@@ -128,13 +128,15 @@ public function courier_order()
 public function showMap()
 {
     // Fetch a specific booking or relevant data
-    $booking = Booking::find(71); // Adjust as needed to fetch the booking
+    $booking = Booking::find(88); // Adjust as needed to fetch the booking
 
-    // Get the merchant address from the booking
+    // Get the merchant and consignee addresses from the booking
     $merchantAddress = $booking->merchant_address;
+    $consigneeAddress = $booking->consignee_address;
 
     return view('map', [
-        'merchantAddress' => $merchantAddress
+        'merchantAddress' => $merchantAddress,
+        'consigneeAddress' => $consigneeAddress
     ]);
 }
 

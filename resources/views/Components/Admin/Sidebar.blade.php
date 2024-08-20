@@ -89,22 +89,22 @@
                             <span class="menu-title">Add Subcontractor</span>
                         </a>
                     </li>
-                    <li class="sidebar-menu-item ">
+                    <!-- <li class="sidebar-menu-item ">
                         <a href="package" class="nav-link ">
                         <i class="fa fa-box menu-icon"></i>
                             <span class="menu-title">Package</span>
                         </a>
-                    </li>
-                    <li class="sidebar-menu-item ">
+                    </li> -->
+                    <!-- <li class="sidebar-menu-item ">
                         <a href="reference" class="nav-link ">
                         <i class="fa fa-fax menu-icon"></i>
                             <span class="menu-title">Add booking</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="sidebar-menu-item ">
                         <a href="add-driver" class="nav-link ">
                         <i class="fa fa-user menu-icon"></i>
-                            <span class="menu-title">Add Driver</span>
+                            <span class="menu-title">Manage Driver</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item ">
@@ -113,30 +113,30 @@
                             <span class="menu-title">Add Vehicle</span>
                         </a>
                     </li>
-                    <li class="sidebar-menu-item ">
+                    <!-- <li class="sidebar-menu-item ">
                         <a href="managecourier" class="nav-link ">
                         <i class="fa fa-motorcycle menu-icon"></i>
                             <span class="menu-title">Manage Courier</span>
                         </a>
-                    </li>
-                    <li class="sidebar-menu-item ">
+                    </li> -->
+                    <!-- <li class="sidebar-menu-item ">
                         <a href="manageappointment" class="nav-link ">
                         <i class="fa fa-fax menu-icon"></i>
                             <span class="menu-title">Manage Appointment</span>
                         </a>
-                    </li>
-                    <li class="sidebar-menu-item ">
+                    </li> -->
+                    <!-- <li class="sidebar-menu-item ">
                         <a href="stafflist" class="nav-link ">
                         <i class="fa fa-users-cog menu-icon"></i>
                             <span class="menu-title">Staff List</span>
                         </a>
-                    </li>
-                    <li class="sidebar-menu-item ">
+                    </li> -->
+                    <!-- <li class="sidebar-menu-item ">
                         <a href="customerlist" class="nav-link ">
                         <i class="fa fa-user-friends menu-icon"></i>
                             <span class="menu-title">Customer List</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="sidebar-menu-item sidebar-dropdown">
                         <!-- <a href="javascript:void(0)" class="">
                             <i class="menu-icon la la-tasks"></i>

@@ -220,21 +220,19 @@
             <th>Destination</th>
             <th>Status</th>
             <th>Remarks</th>
-            <th>Last Updated</th> <!-- New column for Last Updated -->
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @forelse ($bookings as $detail)
             <tr>
-                <td>{{ \Carbon\Carbon::parse($detail->created_at)->format('F d, Y') }}</td>
+            <td>{{ \Carbon\Carbon::parse($detail->date)->format('F d, Y g:i A') }}</td>
+
                 <td>{{ $detail->tracking_number }}</td>
                 <td>{{ $detail->plate_number }}</td>
                 <td>{{ $detail->consignee_address }}</td>
                 <td>{{ $detail->status }}</td>
                 <td>{{ $detail->remarks }}</td>
-                <td>{{ \Carbon\Carbon::parse($detail->updated_at)->setTimezone('Asia/Manila')->format('F d, Y h:i A') }}</td>
-
                 <td>
                     <!-- Trigger Button for Status Update Modal -->
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateStatusModal{{ $detail->id }}">
@@ -255,13 +253,15 @@
                                         @csrf
                                         @method('PATCH')
                                         <div class="mb-3">
-                                            <label for="order_status{{ $detail->id }}" class="form-label">Order Status</label>
-                                            <select name="order_status" id="order_status{{ $detail->id }}" class="form-select" required>
-                                                <option value="Pod_returned" {{ $detail->order_status === 'Pod_returned' ? 'selected' : '' }}>Pod returned</option>
-                                                <option value="Delivery successful" {{ $detail->order_status === 'Delivery successful' ? 'selected' : '' }}>Delivery successful</option>
-                                                <option value="For Pick-up" {{ $detail->order_status === 'For Pick-up' ? 'selected' : '' }}>For Pick-up</option>
-                                            </select>
-                                        </div>
+    <label for="order_status{{ $detail->id }}" class="form-label">Order Status</label>
+    <select name="order_status" id="order_status{{ $detail->id }}" class="form-select" required>
+        <option value="Pod_returned" {{ $detail->order_status === 'Pod_returned' ? 'selected' : '' }}>Pod returned</option>
+        <option value="Delivery successful" {{ $detail->order_status === 'Delivery successful' ? 'selected' : '' }}>Delivery successful</option>
+        <option value="For Pick-up" {{ $detail->order_status === 'For Pick-up' ? 'selected' : '' }}>For Pick-up</option>
+        <option value="First_delivery_attempt" {{ $detail->order_status === 'First_delivery_attempt' ? 'selected' : '' }}>First Delivery Attempt</option>
+    </select>
+</div>
+
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                             <button type="submit" class="btn btn-primary">Update Status</button>
@@ -306,7 +306,7 @@
             </tr>
         @empty
             <tr>
-                <td colspan="8">No bookings found.</td> <!-- Adjust colspan to 8 -->
+                <td colspan="7">No bookings found.</td>
             </tr>
         @endforelse
     </tbody>

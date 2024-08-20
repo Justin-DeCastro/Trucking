@@ -135,7 +135,7 @@
                                                     <th>Email</th>
                                                     <th>Driver License</th>
                                                     <th>License Number</th>
-                                                    <th>Plate Number</th>
+                                                    <!-- <th>Plate Number</th> -->
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -155,7 +155,7 @@
                                                             @endif
                                                         </td>
                                                         <td>{{ $driver->license_number }}</td>
-                                                        <td>{{ $driver->plate_number }}</td>
+                                                        <!-- <td>{{ $driver->plate_number }}</td> -->
                                                         <!-- Optionally display the driver's license file path or a link to the file -->
 
                                                     </tr>

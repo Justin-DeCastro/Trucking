@@ -109,6 +109,10 @@
                 <label for="plate_number" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Plate Number</label>
                 <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="plate_number" name="plate_number" type="text" placeholder="Enter Plate Number" required>
             </div>
+            <div style="flex: 1; min-width: 220px;">
+                <label for="plate_number" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Date</label>
+                <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="date" name="date" type="datetime-local" placeholder="Enter Date" required>
+            </div>
         </div>
 
         <!-- Bottom Section: Client Name, Transport Mode, Shipping Type -->

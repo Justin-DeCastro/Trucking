@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\User;
 use App\Models\Vehicle;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderStatusUpdated;
 use App\Models\Rubix;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class BookingController extends Controller
@@ -76,6 +78,7 @@ class BookingController extends Controller
             'merchant_province' => 'required|string|max:255',
             'driver_name' => 'required|string|max:255',
             'plate_number' => 'required|string|max:255',
+            'date' => 'required|date',
             // 'truck_type' => 'required|exists:vehicles,id',
         ]);
     
@@ -266,22 +269,28 @@ class BookingController extends Controller
     return redirect()->back()->with('success', 'Driver ' . $driver->name . ' assigned successfully.');
 }
 public function updateOrderStatus(Request $request, $id)
-    {
-        // Validate the incoming request
-        $request->validate([
-            'order_status' => 'required|string|in:Pod_returned,Delivery successful,For Pick-up',
-        ]);
+{
+    // Validate the incoming request
+    $request->validate([
+        'order_status' => 'required|string|in:Pod_returned,Delivery successful,For Pick-up,First_delivery_attempt',
+    ]);
 
-        // Find the booking by ID
-        $booking = Booking::findOrFail($id);
+    // Find the booking by ID
+    $booking = Booking::findOrFail($id);
 
-        // Update the status
-        $booking->status = $request->input('order_status');
-        $booking->save();
+    // Get the consignee email
+    $consigneeEmail = $booking->consignee_email;
 
-        // Redirect back with a success message
-        return redirect()->back()->with('success', 'Order status updated successfully.');
-    }
+    // Update the status
+    $booking->status = $request->input('order_status');
+    $booking->save();
+
+    // Send the email notification
+    Mail::to($consigneeEmail)->send(new OrderStatusUpdated($booking));
+
+    // Redirect back with a success message
+    return redirect()->back()->with('success', 'Order status updated and notification sent successfully.');
+}
 
     public function updateRemarks(Request $request, $id)
     {
