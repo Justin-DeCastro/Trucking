@@ -32,12 +32,12 @@
                             <span class="menu-title">Dashboard</span>
                         </a>
                     </li>
-                    <li class="sidebar-menu-item ">
+                    <!-- <li class="sidebar-menu-item ">
                         <a href="map" class="nav-link ">
                         <i class="fa fa-map menu-icon"></i>
                             <span class="menu-title">Map</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="sidebar-menu-item ">
                         <a href="salary" class="nav-link ">
                         <i class="fa fa-dollar menu-icon"></i>
@@ -50,12 +50,12 @@
                             <span class="menu-title">Admin</span>
                         </a>
                     </li> -->
-                    <li class="sidebar-menu-item ">
+                    <!-- <li class="sidebar-menu-item ">
                         <a href="waybill" class="nav-link ">
                         <i class="fa fa-receipt menu-icon"></i>
                             <span class="menu-title">Waybill</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="sidebar-menu-item ">
                         <a href="reference" class="nav-link ">
                         <i class="fa fa-receipt menu-icon"></i>

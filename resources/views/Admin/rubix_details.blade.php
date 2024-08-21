@@ -413,6 +413,50 @@ function initMap(detailId, startAddress, endAddress) {
         if (status === 'OK') {
             directionsRenderer.setDirections(result);
             map.setCenter(result.routes[0].legs[0].start_location);
+
+            // Define the moving truck marker
+            var truckIcon = 'https://maps.google.com/mapfiles/kml/shapes/truck.png'; // URL to truck icon
+            var truckMarker = new google.maps.Marker({
+                position: result.routes[0].legs[0].start_location,
+                map: map,
+                icon: truckIcon,
+                title: 'Moving Truck'
+            });
+
+            // Animate the truck along the route
+            var steps = result.routes[0].legs[0].steps;
+            var stepIndex = 0;
+            var stepCount = steps.length;
+            var truckPosition = new google.maps.LatLng(
+                steps[stepIndex].start_location.lat(),
+                steps[stepIndex].start_location.lng()
+            );
+
+            function moveTruck() {
+                if (stepIndex < stepCount) {
+                    var step = steps[stepIndex];
+                    var path = step.path;
+                    var pathLength = path.length;
+
+                    var i = 0;
+                    function animate() {
+                        if (i < pathLength) {
+                            truckMarker.setPosition(path[i]);
+                            i++;
+                            setTimeout(animate, 100); // Adjust the speed here
+                        } else {
+                            stepIndex++;
+                            if (stepIndex < stepCount) {
+                                moveTruck(); // Move to the next step
+                            }
+                        }
+                    }
+                    animate();
+                }
+            }
+
+            moveTruck(); // Start the animation
+
         } else {
             console.error('Directions request failed due to ' + status);
         }
