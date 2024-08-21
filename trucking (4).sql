@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 21, 2024 at 03:02 PM
+-- Generation Time: Aug 21, 2024 at 04:20 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -84,21 +84,20 @@ CREATE TABLE `bookings` (
   `status` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `remarks` text COLLATE utf8mb4_unicode_ci,
   `date` datetime DEFAULT NULL,
-  `proof_of_delivery` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+  `proof_of_delivery` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `truck_type` text COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `bookings`
 --
 
-INSERT INTO `bookings` (`id`, `order_number`, `sender_name`, `transport_mode`, `shipping_type`, `delivery_type`, `journey_type`, `consignee_name`, `consignee_address`, `consignee_email`, `consignee_mobile`, `consignee_city`, `consignee_province`, `consignee_barangay`, `consignee_building_type`, `merchant_name`, `merchant_address`, `merchant_email`, `merchant_mobile`, `merchant_city`, `merchant_province`, `tracking_number`, `created_at`, `updated_at`, `assigned_driver_id`, `driver_id`, `vehicle_id`, `qr_code`, `order_status`, `plate_number`, `driver_name`, `status`, `remarks`, `date`, `proof_of_delivery`) VALUES
-(73, '2024-0001', 'Maria Santos', 'Motorcycle', 'Standard Delivery', 'Same Day', 'One-Way', 'Antonio Garcia', 'Calapan', 'infinitech.justin2024@gmail.com', '0917-123-4567', 'Manila', 'Metro Manila', 'Barangay 123', 'Apartment', 'Liza’s Boutique', '5678 Rizal Avenue', 'liza.boutique@example.com', '0927-234-5678', 'Makati', 'Metro Manila', 'GDR-95411664566C3875E024870.24730081', '2024-08-20 00:56:46', '2024-08-21 13:11:06', NULL, NULL, NULL, NULL, 'Waiting For Courier', 'ABC132', '16', 'Pod_returned', NULL, NULL, NULL),
-(87, '2024-0002', 'qwertyui', 'Motorcycle', 'Standard Delivery', 'Same Day', 'One-Way', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Barangay 123', 'Apartment', 'Liza’s Boutique', '5678 Rizal Avenue', 'pola@email.com', '09456754591', 'Makati', 'oriental mindoro', 'GDR-93117225166C4DC13BA9FE7.13153880', '2024-08-21 09:10:27', '2024-08-21 09:34:18', NULL, NULL, NULL, NULL, 'Waiting For Courier', 'CDE-123652', '19', 'Pod_returned', NULL, NULL, NULL),
-(88, '2024-0003', 'Justin Mangubat De Castro', 'Motorcycle', 'Land', 'Same Day', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'Calapan City', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', 'GDR-187681082766C4DD336A9968.47420272', '2024-08-21 09:15:15', '2024-08-21 09:34:24', NULL, NULL, NULL, NULL, 'Waiting For Courier', 'CDE-123652', '19', 'First_delivery_attempt', 'naubusan ng gasolina', '2024-08-20 11:14:00', NULL),
-(89, '2024-0004', 'Justin Mangubat De Castro', 'Motorcycle', 'Standard Delivery', 'Same Day', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'infinitech.justin2024@gmail.com', '09456754591', 'makati', 'Oriental Mindoro', 'Barangay Central', 'Condominium', 'Liza’s Boutique', 'pola oriental mindoro', 'decastrojustin321@gmail.com', '09456754591', 'Calapan', 'oriental mindoro', 'GDR-162792124666C515E0C4F9B2.33315933', '2024-08-21 13:17:04', '2024-08-21 13:18:01', NULL, NULL, NULL, NULL, 'Waiting For Courier', 'DEFG-1234', '19', 'For Pick-up', NULL, '2024-08-23 15:16:00', NULL),
-(90, '2024-0005', 'Justin Mangubat De Castro', 'Motorcycle', 'Standard Delivery', 'Same Day', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'infinitech.justin2024@gmail.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'decastrojustin321@gmail.com', '09456754591', 'makati', 'oriental mindoro', 'GDR-93346761466C517024E16C7.69164326', '2024-08-21 13:21:54', '2024-08-21 13:21:54', NULL, NULL, NULL, NULL, 'Waiting For Courier', '123123asd', '19', NULL, NULL, '2024-08-22 15:21:00', NULL),
-(91, '2024-0006', 'Justin', 'Motorcycle', 'Standard Delivery', 'Same Day', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Condominium', 'Choox', 'Pioneer Mandaluyong', 'decastrojustin321@gmail.com', '09272345678', 'Calapan', 'Metro Manila', 'GDR-204407153966C5203F466584.06829196', '2024-08-21 14:01:19', '2024-08-21 14:42:21', NULL, NULL, NULL, NULL, 'Waiting For Courier', 'ABC-1234asd213', '19', 'For Pick-up', 'flat tire', '2024-08-15 16:00:00', NULL),
-(92, '2024-0007', 'Justin', 'Motorcycle', 'Standard Delivery', 'Same Day', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Condominium', 'Choox', 'Pioneer Mandaluyong', 'decastrojustin321@gmail.com', '09272345678', 'Calapan', 'Metro Manila', 'GDR-105844754666C5211E5AC8B4.35026018', '2024-08-21 14:05:02', '2024-08-21 15:04:55', NULL, NULL, NULL, NULL, 'Waiting For Courier', 'ABC-1234asd213', '19', 'Delivery successful', 'Nasiraan sa daan', '2024-08-15 16:00:00', 'Done');
+INSERT INTO `bookings` (`id`, `order_number`, `sender_name`, `transport_mode`, `shipping_type`, `delivery_type`, `journey_type`, `consignee_name`, `consignee_address`, `consignee_email`, `consignee_mobile`, `consignee_city`, `consignee_province`, `consignee_barangay`, `consignee_building_type`, `merchant_name`, `merchant_address`, `merchant_email`, `merchant_mobile`, `merchant_city`, `merchant_province`, `tracking_number`, `created_at`, `updated_at`, `assigned_driver_id`, `driver_id`, `vehicle_id`, `qr_code`, `order_status`, `plate_number`, `driver_name`, `status`, `remarks`, `date`, `proof_of_delivery`, `truck_type`) VALUES
+(73, '2024-0001', 'Maria Santos', 'Motorcycle', 'Standard Delivery', 'Same Day', 'One-Way', 'Antonio Garcia', 'Calapan', 'infinitech.justin2024@gmail.com', '0917-123-4567', 'Manila', 'Metro Manila', 'Barangay 123', 'Apartment', 'Liza’s Boutique', '5678 Rizal Avenue', 'liza.boutique@example.com', '0927-234-5678', 'Makati', 'Metro Manila', 'GDR-95411664566C3875E024870.24730081', '2024-08-20 00:56:46', '2024-08-21 13:11:06', NULL, NULL, NULL, NULL, 'Waiting For Courier', 'ABC132', '16', 'Pod_returned', NULL, NULL, NULL, NULL),
+(87, '2024-0002', 'qwertyui', 'Motorcycle', 'Standard Delivery', 'Same Day', 'One-Way', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Barangay 123', 'Apartment', 'Liza’s Boutique', '5678 Rizal Avenue', 'pola@email.com', '09456754591', 'Makati', 'oriental mindoro', 'GDR-93117225166C4DC13BA9FE7.13153880', '2024-08-21 09:10:27', '2024-08-21 09:34:18', NULL, NULL, NULL, NULL, 'Waiting For Courier', 'CDE-123652', '19', 'Pod_returned', NULL, NULL, NULL, NULL),
+(88, '2024-0003', 'Justin Mangubat De Castro', 'Motorcycle', 'Land', 'Same Day', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'Calapan City', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', 'GDR-187681082766C4DD336A9968.47420272', '2024-08-21 09:15:15', '2024-08-21 09:34:24', NULL, NULL, NULL, NULL, 'Waiting For Courier', 'CDE-123652', '19', 'First_delivery_attempt', 'naubusan ng gasolina', '2024-08-20 11:14:00', NULL, NULL),
+(94, '2024-0009', 'Justin Mangubat De Castro', 'Truck', 'Standard Delivery', 'Same Day', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'decastrojustin24@gmail.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Liza’s Boutique', 'Calapan City, Oriental Mindoro', 'decastrojustin321@gmail.com', '09456754591', 'makati', 'oriental mindoro', 'GDR-197508918266C612D0DACB51.75558921', '2024-08-22 07:16:16', '2024-08-22 07:16:16', NULL, NULL, NULL, NULL, 'Waiting For Courier', 'DGF-1234', '19', NULL, NULL, '2024-08-22 09:14:00', NULL, '7'),
+(95, '2024-0010', 'Justin Mangubat De Castro', 'Truck', 'Standard', 'Door-to-Door', 'One-Way', 'Antonio Garcia', 'Pasong Tamo Makati City', 'decastrojustin24@gmail.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Condominium', 'ABC Electronics', 'Calapan City, Oriental Mindoro', 'decastrojustin321@gmail.com', '09456754591', 'Makati', 'Metro Manila', 'GDR-55227953266C61372D42180.97460248', '2024-08-22 07:18:58', '2024-08-22 07:18:58', NULL, NULL, NULL, NULL, 'Waiting For Courier', 'VCV-9098', '19', NULL, NULL, '2024-08-22 09:17:00', NULL, '4');
 
 -- --------------------------------------------------------
 
@@ -653,8 +652,8 @@ CREATE TABLE `vehicles` (
 --
 
 INSERT INTO `vehicles` (`id`, `truck_name`, `truck_capacity`, `truck_status`, `quantity`, `created_at`, `updated_at`) VALUES
-(4, '10 Wheeler Aluminum wing van', '15,000 to 20,000 kilograms (15 to 20 metric tons).', 'Available', '19', '2024-08-15 03:13:39', '2024-08-17 03:05:15'),
-(7, '6 Wheeler closed vans', '5,000 to 8,000 kilograms (5 to 8 metric tons).', 'Available', '9', '2024-08-15 03:16:35', '2024-08-17 00:19:31'),
+(4, '10 Wheeler Aluminum wing van', '15,000 to 20,000 kilograms (15 to 20 metric tons).', 'Available', '17', '2024-08-15 03:13:39', '2024-08-22 07:18:58'),
+(7, '6 Wheeler closed vans', '5,000 to 8,000 kilograms (5 to 8 metric tons).', 'Available', '8', '2024-08-15 03:16:35', '2024-08-22 07:16:16'),
 (9, '6 Wheeler tractor heads', '12,000 kg to 26,000 kg (about 26,000 lbs to 57,000 lbs)', 'Available', '3', '2024-08-15 03:17:06', '2024-08-17 00:20:51');
 
 -- --------------------------------------------------------
@@ -858,7 +857,7 @@ ALTER TABLE `accounts`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
 
 --
 -- AUTO_INCREMENT for table `branch_managers`
