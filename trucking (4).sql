@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 17, 2024 at 05:08 PM
+-- Generation Time: Aug 21, 2024 at 03:02 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -51,6 +51,7 @@ INSERT INTO `accounts` (`id`, `name`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `bookings` (
   `id` bigint UNSIGNED NOT NULL,
+  `order_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sender_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `transport_mode` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `shipping_type` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
@@ -76,17 +77,28 @@ CREATE TABLE `bookings` (
   `assigned_driver_id` bigint UNSIGNED DEFAULT NULL,
   `driver_id` bigint UNSIGNED DEFAULT NULL,
   `vehicle_id` bigint UNSIGNED DEFAULT NULL,
-  `qr_code` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+  `qr_code` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `order_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'Waiting For Courier',
+  `plate_number` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `driver_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `remarks` text COLLATE utf8mb4_unicode_ci,
+  `date` datetime DEFAULT NULL,
+  `proof_of_delivery` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `bookings`
 --
 
-INSERT INTO `bookings` (`id`, `sender_name`, `transport_mode`, `shipping_type`, `delivery_type`, `journey_type`, `consignee_name`, `consignee_address`, `consignee_email`, `consignee_mobile`, `consignee_city`, `consignee_province`, `consignee_barangay`, `consignee_building_type`, `merchant_name`, `merchant_address`, `merchant_email`, `merchant_mobile`, `merchant_city`, `merchant_province`, `tracking_number`, `created_at`, `updated_at`, `assigned_driver_id`, `driver_id`, `vehicle_id`, `qr_code`) VALUES
-(54, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', 'GPC-117457722266BFE272D7BB51.99548403', '2024-08-17 06:36:18', '2024-08-17 06:36:18', NULL, NULL, NULL, NULL),
-(55, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', 'GPC-90678798166BFE2BB688978.81833058', '2024-08-17 06:37:31', '2024-08-17 06:37:31', NULL, NULL, NULL, NULL),
-(56, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', 'GPC-28364878666BFE2CBAC0A86.50488410', '2024-08-17 06:37:47', '2024-08-17 06:37:47', NULL, NULL, NULL, NULL);
+INSERT INTO `bookings` (`id`, `order_number`, `sender_name`, `transport_mode`, `shipping_type`, `delivery_type`, `journey_type`, `consignee_name`, `consignee_address`, `consignee_email`, `consignee_mobile`, `consignee_city`, `consignee_province`, `consignee_barangay`, `consignee_building_type`, `merchant_name`, `merchant_address`, `merchant_email`, `merchant_mobile`, `merchant_city`, `merchant_province`, `tracking_number`, `created_at`, `updated_at`, `assigned_driver_id`, `driver_id`, `vehicle_id`, `qr_code`, `order_status`, `plate_number`, `driver_name`, `status`, `remarks`, `date`, `proof_of_delivery`) VALUES
+(73, '2024-0001', 'Maria Santos', 'Motorcycle', 'Standard Delivery', 'Same Day', 'One-Way', 'Antonio Garcia', 'Calapan', 'infinitech.justin2024@gmail.com', '0917-123-4567', 'Manila', 'Metro Manila', 'Barangay 123', 'Apartment', 'Liza’s Boutique', '5678 Rizal Avenue', 'liza.boutique@example.com', '0927-234-5678', 'Makati', 'Metro Manila', 'GDR-95411664566C3875E024870.24730081', '2024-08-20 00:56:46', '2024-08-21 13:11:06', NULL, NULL, NULL, NULL, 'Waiting For Courier', 'ABC132', '16', 'Pod_returned', NULL, NULL, NULL),
+(87, '2024-0002', 'qwertyui', 'Motorcycle', 'Standard Delivery', 'Same Day', 'One-Way', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Barangay 123', 'Apartment', 'Liza’s Boutique', '5678 Rizal Avenue', 'pola@email.com', '09456754591', 'Makati', 'oriental mindoro', 'GDR-93117225166C4DC13BA9FE7.13153880', '2024-08-21 09:10:27', '2024-08-21 09:34:18', NULL, NULL, NULL, NULL, 'Waiting For Courier', 'CDE-123652', '19', 'Pod_returned', NULL, NULL, NULL),
+(88, '2024-0003', 'Justin Mangubat De Castro', 'Motorcycle', 'Land', 'Same Day', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'Calapan City', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', 'GDR-187681082766C4DD336A9968.47420272', '2024-08-21 09:15:15', '2024-08-21 09:34:24', NULL, NULL, NULL, NULL, 'Waiting For Courier', 'CDE-123652', '19', 'First_delivery_attempt', 'naubusan ng gasolina', '2024-08-20 11:14:00', NULL),
+(89, '2024-0004', 'Justin Mangubat De Castro', 'Motorcycle', 'Standard Delivery', 'Same Day', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'infinitech.justin2024@gmail.com', '09456754591', 'makati', 'Oriental Mindoro', 'Barangay Central', 'Condominium', 'Liza’s Boutique', 'pola oriental mindoro', 'decastrojustin321@gmail.com', '09456754591', 'Calapan', 'oriental mindoro', 'GDR-162792124666C515E0C4F9B2.33315933', '2024-08-21 13:17:04', '2024-08-21 13:18:01', NULL, NULL, NULL, NULL, 'Waiting For Courier', 'DEFG-1234', '19', 'For Pick-up', NULL, '2024-08-23 15:16:00', NULL),
+(90, '2024-0005', 'Justin Mangubat De Castro', 'Motorcycle', 'Standard Delivery', 'Same Day', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'infinitech.justin2024@gmail.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'decastrojustin321@gmail.com', '09456754591', 'makati', 'oriental mindoro', 'GDR-93346761466C517024E16C7.69164326', '2024-08-21 13:21:54', '2024-08-21 13:21:54', NULL, NULL, NULL, NULL, 'Waiting For Courier', '123123asd', '19', NULL, NULL, '2024-08-22 15:21:00', NULL),
+(91, '2024-0006', 'Justin', 'Motorcycle', 'Standard Delivery', 'Same Day', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Condominium', 'Choox', 'Pioneer Mandaluyong', 'decastrojustin321@gmail.com', '09272345678', 'Calapan', 'Metro Manila', 'GDR-204407153966C5203F466584.06829196', '2024-08-21 14:01:19', '2024-08-21 14:42:21', NULL, NULL, NULL, NULL, 'Waiting For Courier', 'ABC-1234asd213', '19', 'For Pick-up', 'flat tire', '2024-08-15 16:00:00', NULL),
+(92, '2024-0007', 'Justin', 'Motorcycle', 'Standard Delivery', 'Same Day', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Condominium', 'Choox', 'Pioneer Mandaluyong', 'decastrojustin321@gmail.com', '09272345678', 'Calapan', 'Metro Manila', 'GDR-105844754666C5211E5AC8B4.35026018', '2024-08-21 14:05:02', '2024-08-21 15:04:55', NULL, NULL, NULL, NULL, 'Waiting For Courier', 'ABC-1234asd213', '19', 'Delivery successful', 'Nasiraan sa daan', '2024-08-15 16:00:00', 'Done');
 
 -- --------------------------------------------------------
 
@@ -121,10 +133,10 @@ INSERT INTO `branch_managers` (`id`, `branch`, `name`, `email`, `phone`, `date`,
 
 CREATE TABLE `contacts` (
   `id` bigint UNSIGNED NOT NULL,
-  `name` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subject` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subject` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -340,7 +352,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (25, '2024_08_14_161340_create_expenses_table', 18),
 (26, '2024_08_15_170248_create_starting_balances_table', 19),
 (27, '2024_08_16_164721_create_contacts_table', 20),
-(28, '2024_08_16_212803_create_rubixes_table', 21);
+(28, '2024_08_16_212803_create_rubixes_table', 21),
+(29, '2024_08_16_215251_update_bookings_table', 22),
+(30, '2024_08_19_152442_create_pricing_salaries_table', 22),
+(31, '2024_08_19_174822_add_order_number_to_bookings_table', 23);
 
 -- --------------------------------------------------------
 
@@ -376,6 +391,73 @@ CREATE TABLE `personal_access_tokens` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `pricing_salaries`
+--
+
+CREATE TABLE `pricing_salaries` (
+  `id` bigint UNSIGNED NOT NULL,
+  `delivery_routes` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `driver_salary` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `helper_salary` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `pricing_salaries`
+--
+
+INSERT INTO `pricing_salaries` (`id`, `delivery_routes`, `driver_salary`, `helper_salary`, `created_at`, `updated_at`) VALUES
+(1, 'Bacolod', '8400', '3600', '2024-08-19 22:41:41', '2024-08-19 22:41:41'),
+(2, 'Butuan', '11200', '4800', '2024-08-19 23:02:50', '2024-08-19 23:02:50'),
+(3, 'Cagayan De Oro', '11900', '5100', '2024-08-19 23:19:09', '2024-08-19 23:19:09'),
+(4, 'Calapan', '3500', '1500', '2024-08-19 23:22:09', '2024-08-19 23:22:09'),
+(5, 'Cebu', '9800', '4200', '2024-08-19 23:23:24', '2024-08-19 23:23:24'),
+(6, 'Davao', '12600', '5400', '2024-08-19 23:23:47', '2024-08-19 23:23:47'),
+(10, 'IloIlo', '7700', '3300', '2024-08-19 23:33:45', '2024-08-19 23:33:45'),
+(11, 'Ormoc', '6300', '2700', '2024-08-19 23:34:33', '2024-08-19 23:34:33'),
+(12, 'Roxas', '3850', '1650', '2024-08-19 23:34:55', '2024-08-19 23:34:55'),
+(13, 'Tacloban', '5950', '2550', '2024-08-19 23:35:33', '2024-08-19 23:35:33'),
+(14, 'Tagum', '12250', '5250', '2024-08-19 23:36:35', '2024-08-19 23:36:35'),
+(15, 'ILIGAN', '12950', '5550', '2024-08-19 23:37:35', '2024-08-19 23:37:35'),
+(16, 'MASBATE', '4900', '2100', '2024-08-19 23:37:50', '2024-08-19 23:37:50'),
+(17, 'MARINDUQUE', '3500', '1500', '2024-08-19 23:38:17', '2024-08-19 23:38:17'),
+(18, 'GENSAN', '15400', '6600', '2024-08-19 23:38:30', '2024-08-19 23:38:30'),
+(19, 'ZAMBOANGA', '15400', '6600', '2024-08-19 23:38:43', '2024-08-19 23:38:43'),
+(20, 'NCR', '1260', '540', '2024-08-20 00:02:31', '2024-08-20 00:02:31'),
+(21, 'BULACAN', '1540', '660', '2024-08-20 00:02:46', '2024-08-20 00:02:46'),
+(22, 'BAGUIO', '3500', '1500', '2024-08-20 00:03:02', '2024-08-20 00:03:02'),
+(23, 'PAMPANGA', '1680', '720', '2024-08-20 00:03:14', '2024-08-20 00:03:14'),
+(24, 'NUEVA ICIJA/TARLAC', '1750', '750', '2024-08-20 00:03:50', '2024-08-20 00:03:50'),
+(25, 'PANGASINAN', '2100', '900', '2024-08-20 00:04:02', '2024-08-20 00:04:02'),
+(26, 'ISABELA/NUEVA VIZCAYA', '3150', '1350', '2024-08-20 00:04:25', '2024-08-20 00:04:25'),
+(27, 'TUGUEGARAO', '3500', '1500', '2024-08-20 00:04:40', '2024-08-20 00:04:40'),
+(28, 'LA UNION', '3150', '1350', '2024-08-20 00:04:55', '2024-08-20 00:04:55'),
+(29, 'VIGAN', '3360', '1440', '2024-08-20 00:05:12', '2024-08-20 00:05:12'),
+(30, 'LAOAG', '3500', '1500', '2024-08-20 00:05:29', '2024-08-20 00:05:29'),
+(31, 'BATANGAS', '1540', '660', '2024-08-20 00:05:42', '2024-08-20 00:05:42'),
+(32, 'QUEZON', '1960', '840', '2024-08-20 00:06:05', '2024-08-20 00:06:05'),
+(33, 'NAGA', '2800', '1200', '2024-08-20 00:06:19', '2024-08-20 00:06:19'),
+(34, 'LEGAZPI', '3150', '1350', '2024-08-20 00:06:42', '2024-08-20 00:06:42'),
+(35, 'SORSOGON', '3500', '1500', '2024-08-20 00:06:58', '2024-08-20 00:06:58'),
+(36, 'BAUAN BATANGAS/MEYCAUYAN', '1554', '666', '2024-08-20 00:07:17', '2024-08-20 00:07:17'),
+(37, 'TRINIDAD', '3500', '1500', '2024-08-20 00:07:29', '2024-08-20 00:07:29'),
+(38, 'ABRA', '3850', '1650', '2024-08-20 00:07:50', '2024-08-20 00:07:50'),
+(39, 'ORIENTAL MINDORO', '3500', '1500', '2024-08-20 00:08:06', '2024-08-20 00:08:06'),
+(40, 'MANSALAY', '4550', '1950', '2024-08-20 00:08:23', '2024-08-20 00:08:23'),
+(41, 'BATANGAS/PASAY', '1750', '750', '2024-08-20 00:08:44', '2024-08-20 00:08:44'),
+(42, 'BULACAN/PASAY', '1470', '630', '2024-08-20 00:09:06', '2024-08-20 00:09:06'),
+(43, 'PASAY/INFANTA', '2100', '900', '2024-08-20 00:09:50', '2024-08-20 00:09:50'),
+(44, 'PASAY/GUMACA QUEZON', '2450', '1050', '2024-08-20 00:10:07', '2024-08-20 00:10:07'),
+(45, 'PASAY/MULANAY QUEZON', '2800', '1200', '2024-08-20 00:10:34', '2024-08-20 00:10:34'),
+(46, 'PACO MANILA/ CATARMAN', '5250', '2250', '2024-08-20 00:10:53', '2024-08-20 00:10:53'),
+(47, 'IPIL ZAMBOANGA/PAGADIAN', '1750', '750', '2024-08-20 00:11:16', '2024-08-20 00:11:16'),
+(48, 'VALENZUELA/LUNA APAYAO', '3850', '1650', '2024-08-20 00:11:41', '2024-08-20 00:11:41'),
+(49, 'CEBU/GENSAN', '6650', '2850', '2024-08-20 00:11:59', '2024-08-20 00:11:59');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `proof_payments`
 --
 
@@ -393,41 +475,42 @@ CREATE TABLE `proof_payments` (
 
 CREATE TABLE `rubixes` (
   `id` bigint UNSIGNED NOT NULL,
-  `sender_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `transport_mode` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `shipping_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `delivery_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `journey_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `consignee_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `consignee_address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `consignee_email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `consignee_mobile` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `consignee_city` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `consignee_province` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `consignee_barangay` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `consignee_building_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `merchant_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `merchant_address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `merchant_email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `merchant_mobile` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `merchant_city` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `merchant_province` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sender_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `transport_mode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `shipping_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `delivery_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `journey_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `consignee_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `consignee_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `consignee_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `consignee_mobile` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `consignee_city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `consignee_province` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `consignee_barangay` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `consignee_building_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `merchant_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `merchant_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `merchant_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `merchant_mobile` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `merchant_city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `merchant_province` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `tracking_number` text COLLATE utf8mb4_unicode_ci
+  `tracking_number` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `rider_id` bigint UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `rubixes`
 --
 
-INSERT INTO `rubixes` (`id`, `sender_name`, `transport_mode`, `shipping_type`, `delivery_type`, `journey_type`, `consignee_name`, `consignee_address`, `consignee_email`, `consignee_mobile`, `consignee_city`, `consignee_province`, `consignee_barangay`, `consignee_building_type`, `merchant_name`, `merchant_address`, `merchant_email`, `merchant_mobile`, `merchant_city`, `merchant_province`, `created_at`, `updated_at`, `tracking_number`) VALUES
-(1, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 04:34:57', '2024-08-17 04:34:57', NULL),
-(2, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 04:35:36', '2024-08-17 04:35:36', NULL),
-(3, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 06:16:12', '2024-08-17 06:16:12', NULL),
-(4, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 06:17:30', '2024-08-17 06:17:30', NULL),
-(5, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 06:18:09', '2024-08-17 06:18:09', 'GPC-34220415766BFDE314B0213.90994180'),
-(6, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 06:31:43', '2024-08-17 06:31:43', 'GPC-156232497766BFE15F3AFE74.96969639');
+INSERT INTO `rubixes` (`id`, `sender_name`, `transport_mode`, `shipping_type`, `delivery_type`, `journey_type`, `consignee_name`, `consignee_address`, `consignee_email`, `consignee_mobile`, `consignee_city`, `consignee_province`, `consignee_barangay`, `consignee_building_type`, `merchant_name`, `merchant_address`, `merchant_email`, `merchant_mobile`, `merchant_city`, `merchant_province`, `created_at`, `updated_at`, `tracking_number`, `rider_id`) VALUES
+(1, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 04:34:57', '2024-08-17 04:34:57', NULL, 0),
+(2, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 04:35:36', '2024-08-17 04:35:36', NULL, 0),
+(3, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 06:16:12', '2024-08-17 06:16:12', NULL, 0),
+(4, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 06:17:30', '2024-08-17 06:17:30', NULL, 0),
+(5, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 06:18:09', '2024-08-17 06:18:09', 'GPC-34220415766BFDE314B0213.90994180', 0),
+(6, 'Justin Mangubat De Castro', 'Land', 'Land', 'Regular', 'Regular', 'Mangubat Gasoline Station', 'Pola Oriental Mindoro', 'admin@admin.com', '09456754591', 'makati', 'Oriental Mindoro', 'Tagbakin', 'Industrial', 'Choox', 'pola oriental mindoro', 'pola@email.com', '09456754591', 'makati', 'oriental mindoro', '2024-08-17 06:31:43', '2024-08-17 06:31:43', 'GPC-156232497766BFE15F3AFE74.96969639', 0);
 
 -- --------------------------------------------------------
 
@@ -492,7 +575,7 @@ CREATE TABLE `transactions` (
   `deposit_amount` decimal(10,2) DEFAULT '0.00',
   `withdraw_amount` decimal(10,2) DEFAULT '0.00',
   `expense_amount` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `proof_of_payment` text COLLATE utf8mb4_unicode_ci,
+  `proof_of_payment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `notes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -546,7 +629,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 (15, 'Driver 102', 'driver102@gmail.com', NULL, '$2y$12$qeRgGzhUUX4kxjd3pOD1N.vTPgS8X24OrYodzaRXl415oQnZ28zGi', NULL, '2024-08-14 06:15:58', '2024-08-14 06:15:58', 'courier', 'driver_licenses/1723590958_6185769061598739636.jpg', 'D05-17-33522323', '09456754591', NULL, 'Calapan Mindoro'),
 (16, 'Infinitrade Corporation', 'infinitech.justin2024@gmail.com', NULL, '$2y$12$p5WTeNrUVdbtJxovgQkchey13r3jU2lC4xI8whqZOkoGVSwsGvgFi', NULL, '2024-08-14 07:10:06', '2024-08-14 07:10:06', 'courier', 'driver_licenses/1723594205_6185769061598739636.jpg', 'D05-17-335223232', '09456754591', NULL, 'Calapan Mindoro'),
 (17, 'admin2admin', 'admin2@admin.com', NULL, '$2y$12$eL/EDMmWoS8CwpLmHivYterHdxpEmaSfKKcnfH/c.5bZGdX8w2.A.', NULL, '2024-08-14 07:10:50', '2024-08-14 07:10:50', 'admin', NULL, NULL, NULL, NULL, NULL),
-(18, 'Driver 110', 'driver110@gmail.com', NULL, '$2y$12$Ik4mzsZbwlKbcyr59.IP4.4QwxnO93QiMn7RszascysMg0yBREQDm', NULL, '2024-08-14 07:13:52', '2024-08-14 07:13:52', 'courier', 'driver_licenses/1723594432_6185769061598739636.jpg', 'D05-17-335223', '09456754591', NULL, 'Calapan Mindoro');
+(18, 'Driver 110', 'driver110@gmail.com', NULL, '$2y$12$Ik4mzsZbwlKbcyr59.IP4.4QwxnO93QiMn7RszascysMg0yBREQDm', NULL, '2024-08-14 07:13:52', '2024-08-14 07:13:52', 'courier', 'driver_licenses/1723594432_6185769061598739636.jpg', 'D05-17-335223', '09456754591', NULL, 'Calapan Mindoro'),
+(19, 'Justin De Castro', 'justin@justindrivercom', NULL, '$2y$12$seJjzAFM7ObX4bmw7wJOUOiZTzWCTkOJ0P9QFmNB3w0J.OpvzNgES', NULL, '2024-08-20 23:00:29', '2024-08-20 23:00:29', 'courier', 'driver_licenses/1724169629_6172391827609599868.jpg', 'D05-17-3352223', '09456754591', NULL, 'Calapan Mindoro');
 
 -- --------------------------------------------------------
 
@@ -559,7 +643,7 @@ CREATE TABLE `vehicles` (
   `truck_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `truck_capacity` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `truck_status` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `quantity` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `quantity` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -616,6 +700,7 @@ ALTER TABLE `accounts`
 --
 ALTER TABLE `bookings`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `bookings_order_number_unique` (`order_number`),
   ADD KEY `bookings_driver_id_foreign` (`driver_id`),
   ADD KEY `bookings_assigned_driver_id_foreign` (`assigned_driver_id`),
   ADD KEY `bookings_vehicle_id_foreign` (`vehicle_id`);
@@ -701,6 +786,12 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
+-- Indexes for table `pricing_salaries`
+--
+ALTER TABLE `pricing_salaries`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `proof_payments`
 --
 ALTER TABLE `proof_payments`
@@ -767,7 +858,7 @@ ALTER TABLE `accounts`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT for table `branch_managers`
@@ -827,13 +918,19 @@ ALTER TABLE `manage_branches`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `pricing_salaries`
+--
+ALTER TABLE `pricing_salaries`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `proof_payments`
@@ -869,7 +966,7 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `vehicles`
