@@ -219,7 +219,7 @@
             <th>Truck Plate Number</th>
             <th>Destination</th>
             <th>Status</th>
-            <th>Proof of Delivery</th>
+            <!-- <th>Proof of Delivery</th> -->
             <th>Remarks</th>
 
             <th>Actions</th>
@@ -233,7 +233,7 @@
                 <td>{{ $detail->plate_number }}</td>
                 <td>{{ $detail->consignee_address }}</td>
                 <td>{{ $detail->status }}</td>
-                <td>{{ $detail->proof }}</td>
+                <!-- <td>{{ $detail->proof }}</td> -->
                 <td>{{ $detail->remarks }}</td>
                 <td>
                     <!-- Trigger Button for Status Update Modal -->
@@ -305,9 +305,9 @@
                     </div>
 
                     <!-- Trigger Button for Pictures Modal -->
-                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updatePicturesModal{{ $detail->id }}">
+                    <!-- <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updatePicturesModal{{ $detail->id }}">
                         Update Proof Delivery
-                    </button>
+                    </button> -->
 
                     <!-- Pictures Update Modal -->
                     <div class="modal fade" id="updatePicturesModal{{ $detail->id }}" tabindex="-1" aria-labelledby="updatePicturesModalLabel{{ $detail->id }}" aria-hidden="true">
