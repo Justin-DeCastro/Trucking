@@ -219,19 +219,21 @@
             <th>Truck Plate Number</th>
             <th>Destination</th>
             <th>Status</th>
+            <th>Proof of Delivery</th>
             <th>Remarks</th>
+
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @forelse ($bookings as $detail)
             <tr>
-            <td>{{ \Carbon\Carbon::parse($detail->date)->format('F d, Y g:i A') }}</td>
-
+                <td>{{ \Carbon\Carbon::parse($detail->date)->format('F d, Y g:i A') }}</td>
                 <td>{{ $detail->tracking_number }}</td>
                 <td>{{ $detail->plate_number }}</td>
                 <td>{{ $detail->consignee_address }}</td>
                 <td>{{ $detail->status }}</td>
+                <td>{{ $detail->proof }}</td>
                 <td>{{ $detail->remarks }}</td>
                 <td>
                     <!-- Trigger Button for Status Update Modal -->
@@ -253,15 +255,14 @@
                                         @csrf
                                         @method('PATCH')
                                         <div class="mb-3">
-    <label for="order_status{{ $detail->id }}" class="form-label">Order Status</label>
-    <select name="order_status" id="order_status{{ $detail->id }}" class="form-select" required>
-        <option value="Pod_returned" {{ $detail->order_status === 'Pod_returned' ? 'selected' : '' }}>Pod returned</option>
-        <option value="Delivery successful" {{ $detail->order_status === 'Delivery successful' ? 'selected' : '' }}>Delivery successful</option>
-        <option value="For Pick-up" {{ $detail->order_status === 'For Pick-up' ? 'selected' : '' }}>For Pick-up</option>
-        <option value="First_delivery_attempt" {{ $detail->order_status === 'First_delivery_attempt' ? 'selected' : '' }}>First Delivery Attempt</option>
-    </select>
-</div>
-
+                                            <label for="order_status{{ $detail->id }}" class="form-label">Order Status</label>
+                                            <select name="order_status" id="order_status{{ $detail->id }}" class="form-select" required>
+                                                <option value="Pod_returned" {{ $detail->order_status === 'Pod_returned' ? 'selected' : '' }}>Pod returned</option>
+                                                <option value="Delivery successful" {{ $detail->order_status === 'Delivery successful' ? 'selected' : '' }}>Delivery successful</option>
+                                                <option value="For Pick-up" {{ $detail->order_status === 'For Pick-up' ? 'selected' : '' }}>For Pick-up</option>
+                                                <option value="First_delivery_attempt" {{ $detail->order_status === 'First_delivery_attempt' ? 'selected' : '' }}>First Delivery Attempt</option>
+                                            </select>
+                                        </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                             <button type="submit" class="btn btn-primary">Update Status</button>
@@ -271,7 +272,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Trigger Button for Remarks Modal -->
                     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateRemarksModal{{ $detail->id }}">
                         Add Remarks
@@ -298,6 +299,38 @@
                                             <button type="submit" class="btn btn-primary">Add Remarks</button>
                                         </div>
                                     </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trigger Button for Pictures Modal -->
+                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updatePicturesModal{{ $detail->id }}">
+                        Update Proof Delivery
+                    </button>
+
+                    <!-- Pictures Update Modal -->
+                    <div class="modal fade" id="updatePicturesModal{{ $detail->id }}" tabindex="-1" aria-labelledby="updatePicturesModalLabel{{ $detail->id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updatePicturesModalLabel{{ $detail->id }}">Update Pictures</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Pictures Upload Form -->
+                                    <form action="{{ route('update.order.pictures', $detail->id) }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <div class="mb-3">
+        <label for="proof_of_delivery" class="form-label">Upload Picture</label>
+        <input type="file" name="proof_of_delivery" id="proof_of_delivery" class="form-control">
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-info">Upload Picture</button>
+    </div>
+</form>
+
                                 </div>
                             </div>
                         </div>

@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderStatusUpdated;
@@ -49,8 +51,62 @@ class BookingController extends Controller
         return redirect()->back()->with('success', 'Plate number saved successfully.');
     }
 
+    public function getPlateNumberCounts()
+    {
+        // Retrieve all unique plate numbers with their counts and status counts
+        $plateNumberCounts = Booking::select('plate_number')
+            ->selectRaw('count(*) as total_bookings')
+            ->selectRaw('GROUP_CONCAT(DISTINCT status) as statuses')
+            ->groupBy('plate_number')
+            ->get();
+    
+        // Prepare data for each status count
+        $plateNumberDetails = $plateNumberCounts->map(function ($plate) {
+            // Get booking details for the plate number
+            $statusCounts = Booking::select('status')
+                ->where('plate_number', $plate->plate_number)
+                ->groupBy('status')
+                ->selectRaw('count(*) as count')
+                ->pluck('count', 'status')
+                ->toArray();
+            
+            $plate->status_counts = $statusCounts;
+            return $plate;
+        });
+    
+        // Handle empty result set by ensuring it's an empty collection
+        if ($plateNumberCounts === null) {
+            $plateNumberDetails = collect(); // Return an empty collection
+        }
+    
+        // Pass the data to the view
+        return view('Admin.PlatenumberBookingCount', [
+            'plateNumberCounts' => $plateNumberDetails,
+        ]);
+    }
+    
+  
 
-
+    public function getBookingCountByPlateNumber(Request $request)
+    {
+        // Validate the plate number
+        $validatedData = $request->validate([
+            'plate_number' => 'required|string|max:255',
+        ]);
+    
+        // Retrieve the plate number from the request
+        $plateNumber = $validatedData['plate_number'];
+    
+        // Get the count of bookings with the given plate number
+        $bookingCount = Booking::where('plate_number', $plateNumber)->count();
+    
+        // Return the count as a JSON response or however you prefer
+        return response()->json([
+            'plate_number' => $plateNumber,
+            'booking_count' => $bookingCount,
+        ]);
+    }
+    
 
     // Handle form submission
     public function submitForm(Request $request)
@@ -268,6 +324,7 @@ class BookingController extends Controller
     // Redirect back with a success message including the driver's name
     return redirect()->back()->with('success', 'Driver ' . $driver->name . ' assigned successfully.');
 }
+
 public function updateOrderStatus(Request $request, $id)
 {
     // Validate the incoming request
@@ -281,16 +338,22 @@ public function updateOrderStatus(Request $request, $id)
     // Get the consignee email
     $consigneeEmail = $booking->consignee_email;
 
+    // Define the sender's name and tracking number
+    $senderName = $booking->sender_name; // Ensure this field exists in your Booking model
+    $trackingNumber = $booking->tracking_number; // Ensure this field exists in your Booking model
+
     // Update the status
     $booking->status = $request->input('order_status');
     $booking->save();
 
     // Send the email notification
-    Mail::to($consigneeEmail)->send(new OrderStatusUpdated($booking));
+    Mail::to($consigneeEmail)->send(new OrderStatusUpdated($booking, $senderName, $trackingNumber));
 
     // Redirect back with a success message
     return redirect()->back()->with('success', 'Order status updated and notification sent successfully.');
 }
+
+
 
     public function updateRemarks(Request $request, $id)
     {
@@ -301,7 +364,7 @@ public function updateOrderStatus(Request $request, $id)
 
         // Find the booking by ID
         $booking = Booking::findOrFail($id);
-
+        
         // Update the remarks
         $booking->remarks = $request->input('remarks');
         $booking->save();
@@ -309,6 +372,53 @@ public function updateOrderStatus(Request $request, $id)
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Remarks added successfully.');
     }
+    public function updatePictures(Request $request, $id)
+{
+    // Validate the request to accept only one image file
+    $request->validate([
+        'proof_of_delivery' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust validation as needed
+    ]);
+
+    // Find the booking
+    $booking = Booking::findOrFail($id);
+
+    // Define the path where the file will be stored
+    $destinationPath = public_path('pictures'); // Ensure this directory exists or create it
+
+    // Check if the directory exists and is writable
+    if (!is_dir($destinationPath)) {
+        mkdir($destinationPath, 0755, true);
+    }
+
+    // Check if a file was uploaded
+    if ($request->hasFile('proof_of_delivery')) {
+        try {
+            $file = $request->file('proof_of_delivery');
+    
+            // Generate a unique file name
+            $fileName = time() . '_' . $file->getClientOriginalName();
+    
+            // Move the file to the destination path
+            $file->move($destinationPath, $fileName);
+    
+            // Save the file path in the database
+            $booking->update(['proof_of_delivery' => 'pictures/' . $fileName]);
+
+            // Redirect back or to a specific route with success message
+            return redirect()->back()->with('success', 'Picture uploaded successfully.');
+
+        } catch (\Exception $e) {
+            // Log the error message for debugging
+            \Log::error('File upload error: ' . $e->getMessage());
+            return redirect()->back()->withErrors('An error occurred while uploading the picture.');
+        }
+    }
+
+    return redirect()->back()->withErrors('No file was uploaded.');
+}
+
+    
+    
 public function updatePaymentStatus(Request $request, Booking $booking)
 {
     // Validate the payment status input

@@ -154,11 +154,13 @@ Route::middleware(['auth'])->group(function () {
 Route::patch('/bookings/{id}/status', [BookingController::class, 'updateOrderStatus'])->name('update.order.status');
 // Route::patch('/orders/{id}/remarks', [BookingController::class, 'updateRemarks'])->name('update.order.remarks');
 Route::post('/booking/{id}/remarks', [BookingController::class, 'updateRemarks'])->name('update.order.remarks');
+Route::post('/booking/{id}/pictures', [BookingController::class, 'updatePictures'])->name('update.order.pictures');
 // routes/web.php
 Route::post('/update-order-amount', [BookingController::class, 'updateSingleOrderAmount'])
     ->name('orderamount.updateSingle');
-
-
+Route::get('/booking-count', [BookingController::class, 'getBookingCountByPlateNumber']);
+Route::get('/plate-number-counts', [BookingController::class, 'getPlateNumberCounts']);
+Route::get('/admin-overview', [BookingController::class, 'getStatusCounts']);
 
 
 

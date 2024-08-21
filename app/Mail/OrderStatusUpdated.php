@@ -11,15 +11,22 @@ class OrderStatusUpdated extends Mailable
     use Queueable, SerializesModels;
 
     public $booking;
+    public $senderName;
+    public $trackingNumber;
 
     /**
      * Create a new message instance.
      *
+     * @param $booking
+     * @param $senderName
+     * @param $trackingNumber
      * @return void
      */
-    public function __construct($booking)
+    public function __construct($booking, $senderName, $trackingNumber)
     {
         $this->booking = $booking;
+        $this->senderName = $senderName;
+        $this->trackingNumber = $trackingNumber;
     }
 
     /**
@@ -33,6 +40,8 @@ class OrderStatusUpdated extends Mailable
                     ->with([
                         'status' => $this->booking->status,
                         'order_id' => $this->booking->id,
+                        'tracking_number' => $this->trackingNumber,
+                        'sender_name' => $this->senderName,
                     ]);
     }
 }

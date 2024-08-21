@@ -29,10 +29,16 @@ class AdminController extends Controller
 
         return view('Admin.show', compact('detail'));
     }
-    public function  rubix_details(){
+    public function rubix_details()
+    {
         $rubixdetails = Booking::all();
-        return view('Admin.rubix_details',compact('rubixdetails'));
+        // Generate the full URL to the QR code images
+        foreach ($rubixdetails as $detail) {
+            $detail->qr_code_url = asset($detail->qr_code);
+        }
+        return view('Admin.rubix_details', compact('rubixdetails'));
     }
+    
     public function adminside(){
         return view('Admin.Admin');
     }

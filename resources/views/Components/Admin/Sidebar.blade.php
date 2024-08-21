@@ -31,12 +31,12 @@
                             <span class="menu-title">Driver Salary</span>
                         </a>
                     </li>
-                    <li class="sidebar-menu-item ">
+                    <!-- <li class="sidebar-menu-item ">
                         <a href="adminside" class="nav-link ">
                         <i class="fa fa-users menu-icon"></i>
                             <span class="menu-title">Admin</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="sidebar-menu-item ">
                         <a href="waybill" class="nav-link ">
                         <i class="fa fa-receipt menu-icon"></i>
@@ -111,6 +111,12 @@
                         <a href="addtruck" class="nav-link ">
                         <i class="fa fa-bus menu-icon"></i>
                             <span class="menu-title">Add Vehicle</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item ">
+                        <a href="plate-number-counts" class="nav-link ">
+                        <i class="fa fa-bus menu-icon"></i>
+                            <span class="menu-title">Bookings Per Plate Number</span>
                         </a>
                     </li>
                     <!-- <li class="sidebar-menu-item ">
