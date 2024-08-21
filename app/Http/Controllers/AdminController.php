@@ -19,14 +19,26 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-       
-        $totalBookings = Booking::count();     
+        // Count the total number of bookings
+        $totalBookings = Booking::count();
+    
+        // Get today's date and format it
         $today = Carbon::today();
         $formattedDate = $today->format('F j, Y');
+    
+        // Count bookings created today
         $todayBookings = Booking::whereDate('created_at', $today)->count();
+    
+        // Count bookings where the status is 'Delivery successful'
         $deliverySuccessfulCount = Booking::where('status', 'Delivery successful')->count();
-        return view('Admin.dashboard', compact('totalBookings', 'todayBookings', 'formattedDate', 'deliverySuccessfulCount'));
-    } 
+    
+        // Count the total number of available trucks
+        $totalAvailableTrucks = Vehicle::sum('quantity');
+    
+        // Pass the data to the view
+        return view('Admin.dashboard', compact('totalBookings', 'todayBookings', 'formattedDate', 'deliverySuccessfulCount', 'totalAvailableTrucks'));
+    }
+    
      public function waybill(){
         $vehicles = Vehicle::all();
         return view('Admin.Waybill',compact('vehicles'));

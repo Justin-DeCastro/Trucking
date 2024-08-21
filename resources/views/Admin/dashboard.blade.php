@@ -60,8 +60,9 @@
                                     </span>
                                     <div class="widget-seven__description">
                                         <p class="widget-seven__content-title">Bookings Today</p>
-                                        <h3 class="widget-seven__content-amount">{{ $todayBookings }}</h3>
                                         <p class="widget-seven__content-amount">Date: {{ $formattedDate }}</p>
+                                        <h3 class="widget-seven__content-amount">{{ $todayBookings }}</h3>
+                                       
                                     </div>
                                 </div>
 
@@ -82,6 +83,26 @@
                                     <div class="widget-seven__description">
                                         <p class="widget-seven__content-title"> Successful Delivery</p>
                                         <h3 class="widget-seven__content-amount">{{$deliverySuccessfulCount}}</h3>
+                                    </div>
+                                </div>
+
+                               
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xxl-3 col-sm-6">
+                        <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=2">
+                            <div class="widget-seven bg--deep-purple  outline ">
+                                <div class="widget-seven__content">
+                                    <span class="widget-seven__content-icon">
+                                        <span class="icon">
+                                        <i class="fas fa-bus"></i>
+
+                                        </span>
+                                    </span>
+                                    <div class="widget-seven__description">
+                                        <p class="widget-seven__content-title">Total Available Truck</p>
+                                        <h3 class="widget-seven__content-amount">{{$totalAvailableTrucks}}</h3>
                                     </div>
                                 </div>
 
@@ -119,6 +140,7 @@
                             </div>
                         </div>
                     </div>
+                   
                 </div>
 
             </div>
@@ -136,63 +158,6 @@
     <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast_custom.css" rel="stylesheet">
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/iziToast.min.js"></script>
 
-    <script>
-        "use strict";
-        const colors = {
-            success: '#28c76f',
-            error: '#eb2222',
-            warning: '#ff9f43',
-            info: '#1e9ff2',
-        }
-
-        const icons = {
-            success: 'fas fa-check-circle',
-            error: 'fas fa-times-circle',
-            warning: 'fas fa-exclamation-triangle',
-            info: 'fas fa-exclamation-circle',
-        }
-
-        const notifications = [];
-        const errors = [];
-
-
-        const triggerToaster = (status, message) => {
-            iziToast[status]({
-                title: status.charAt(0).toUpperCase() + status.slice(1),
-                message: message,
-                position: "topRight",
-                backgroundColor: '#fff',
-                icon: icons[status],
-                iconColor: colors[status],
-                progressBarColor: colors[status],
-                titleSize: '1rem',
-                messageSize: '1rem',
-                titleColor: '#474747',
-                messageColor: '#a2a2a2',
-                transitionIn: 'obunceInLeft'
-            });
-        }
-
-        if (notifications.length) {
-            notifications.forEach(element => {
-                triggerToaster(element[0], element[1]);
-            });
-        }
-
-        if (errors.length) {
-            errors.forEach(error => {
-                triggerToaster('error', error);
-            });
-        }
-
-        function notify(status, message) {
-            if (typeof message == 'string') {
-                triggerToaster(status, message);
-            } else {
-                $.each(message, (i, val) => triggerToaster(status, val));
-            }
-        }
-    </script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/vendor/chart.js.2.8.0.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/charts.js"></script>
 
@@ -202,53 +167,7 @@
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
 
 
-    <script>
-        "use strict";
-        bkLib.onDomLoaded(function () {
-            $(".nicEdit").each(function (index) {
-                $(this).attr("id", "nicEditor" + index);
-                new nicEditor({
-                    fullPanel: true
-                }).panelInstance('nicEditor' + index, {
-                    hasPanel: true
-                });
-            });
-        });
-
-        (function ($) {
-            $(document).on('mouseover ', '.nicEdit-main,.nicEdit-panelContain', function () {
-                $('.nicEdit-main').focus();
-            });
-
-            $('.breadcrumb-nav-open').on('click', function () {
-                $(this).toggleClass('active');
-                $('.breadcrumb-nav').toggleClass('active');
-            });
-
-            $('.breadcrumb-nav-close').on('click', function () {
-                $('.breadcrumb-nav').removeClass('active');
-            });
-
-            if ($('.topTap').length) {
-                $('.breadcrumb-nav-open').removeClass('d-none');
-            }
-
-            $('.table-responsive').on('click', 'button[data-bs-toggle="dropdown"]', function (e) {
-                const {
-                    top,
-                    left
-                } = $(this).next(".dropdown-menu")[0].getBoundingClientRect();
-                $(this).next(".dropdown-menu").css({
-                    position: "fixed",
-                    inset: "unset",
-                    transform: "unset",
-                    top: top + "px",
-                    left: left + "px",
-                });
-            });
-        })(jQuery);
-    </script>
-
+    
 <script>
     (function ($) {
         "use strict";
@@ -300,6 +219,11 @@
                 document.getElementById('userCountryChart'),
                 ["Sucessful Delivery"],
                 [{{$deliverySuccessfulCount}}]
+            );
+            piChart(
+                document.getElementById('userTruckChart'),
+                ["Total Trucks Available"],
+                [$totalAvailableTrucks]
             );
         });
 
