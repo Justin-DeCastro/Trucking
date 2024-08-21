@@ -11,15 +11,23 @@ use App\Models\Transaction;
 use App\Models\Subcontractor;
 use App\Models\PricingSalary;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function dashboard(){
-        return view('Admin.dashboard');
-    }
-    public function waybill(){
+    public function dashboard()
+    {
+       
+        $totalBookings = Booking::count();     
+        $today = Carbon::today();
+        $formattedDate = $today->format('F j, Y');
+        $todayBookings = Booking::whereDate('created_at', $today)->count();
+        $deliverySuccessfulCount = Booking::where('status', 'Delivery successful')->count();
+        return view('Admin.dashboard', compact('totalBookings', 'todayBookings', 'formattedDate', 'deliverySuccessfulCount'));
+    } 
+     public function waybill(){
         $vehicles = Vehicle::all();
         return view('Admin.Waybill',compact('vehicles'));
     }
