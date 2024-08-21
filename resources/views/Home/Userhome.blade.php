@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
-
+<style>
+  
+</style>
 @include('Components.Home.Header')
 
 <body>
@@ -94,12 +96,11 @@
                     </div>
                 </div>
                 <div class="col-xl-7 col-lg-6">
-                    <div class="">
-                        <span class="img">
-                            <img src="Home/logistics-removebg-preview.png" alt="banner-thumb"
-                                style="height: 500px; width: 2500px;">
-                        </span>
-                    </div>
+                <div class="truck-container">
+    <span class="img">
+        <img src="Home/logistics-removebg-preview.png" alt="truck" class="truck-img">
+    </span>
+</div>
 
 
                 </div>

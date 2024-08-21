@@ -34,9 +34,9 @@ class AdminController extends Controller
     
         // Count the total number of available trucks
         $totalAvailableTrucks = Vehicle::sum('quantity');
-    
+        $totalCouriers = User::where('role', 'courier')->count();
         // Pass the data to the view
-        return view('Admin.dashboard', compact('totalBookings', 'todayBookings', 'formattedDate', 'deliverySuccessfulCount', 'totalAvailableTrucks'));
+        return view('Admin.dashboard', compact('totalBookings', 'todayBookings', 'formattedDate', 'deliverySuccessfulCount', 'totalAvailableTrucks','totalCouriers'));
     }
     
      public function waybill(){

@@ -19,9 +19,11 @@
         <div class="sidebar__inner">
      
       
-<div class="sidebar__logo" style = "justify-content: center;">
-                <img src="Home/GDR_Logo.jpg" alt="image" class="circular-image">
-            </div>
+        <div class="sidebar__logo" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+    <img src="Home/GDR_Logo.jpg" alt="Logo" style="border-radius: 50%; width: 100px; height: 100px;">
+    <h3 style="margin-top: 10px; color: #686EE2;">ADMIN</h3>
+</div>
+
 
 
             <div class="sidebar__menu-wrapper">

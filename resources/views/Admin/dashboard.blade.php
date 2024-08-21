@@ -110,6 +110,26 @@
                             </div>
                         </a>
                     </div>
+                    <div class="col-xxl-3 col-sm-6">
+                        <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=2">
+                            <div class="widget-seven bg--deep-purple  outline ">
+                                <div class="widget-seven__content">
+                                    <span class="widget-seven__content-icon">
+                                        <span class="icon">
+                                        <i class="fas fa-car"></i> 
+
+                                        </span>
+                                    </span>
+                                    <div class="widget-seven__description">
+                                        <p class="widget-seven__content-title">Total Drivers</p>
+                                        <h3 class="widget-seven__content-amount">{{$totalCouriers}}</h3>
+                                    </div>
+                                </div>
+
+                               
+                            </div>
+                        </a>
+                    </div>
                    
                 </div>
 
