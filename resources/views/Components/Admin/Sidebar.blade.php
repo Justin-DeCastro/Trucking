@@ -1,16 +1,29 @@
 <link rel="stylesheet" href="https://cdn.lineicons.com/2.0/LineIcons.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+<style>
+
+.circular-image {
+    width: 120px; /* Set the desired width */
+    height: 120px; /* Set the desired height */
+    border-radius: 50%; /* Make the image circular */
+    object-fit: cover; /* Ensure the image covers the entire area */
+}
+
+</style>
 <!-- Other CSS files -->
 <div class="page-wrapper default-version">
 
     <div class="sidebar bg--dark">
         <button class="res-sidebar-close-btn"><i class="las la-times"></i></button>
         <div class="sidebar__inner">
-            <div class="sidebar__logo">
-                <!-- <a href="https://script.viserlab.com/courierlab/demo/admin/dashboard" class="sidebar__main-logo"> -->
-                <img src="Admin/img/GPCLogo-removebg-preview.png" alt="image">
+     
+      
+<div class="sidebar__logo" style = "justify-content: center;">
+                <img src="Home/GDR_Logo.jpg" alt="image" class="circular-image">
             </div>
+
+
             <div class="sidebar__menu-wrapper">
                 <ul class="sidebar__menu">
                     <li class="sidebar-menu-item active">

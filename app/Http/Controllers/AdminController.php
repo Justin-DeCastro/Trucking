@@ -32,13 +32,26 @@ class AdminController extends Controller
     public function rubix_details()
     {
         $rubixdetails = Booking::all();
-        // Generate the full URL to the QR code images
+      
         foreach ($rubixdetails as $detail) {
             $detail->qr_code_url = asset($detail->qr_code);
         }
         return view('Admin.rubix_details', compact('rubixdetails'));
     }
-    
+    public function showMap()
+{
+    // Fetch a specific booking or relevant data
+    $booking = Booking::find(88); // Adjust as needed to fetch the booking
+
+    // Get the merchant and consignee addresses from the booking
+    $merchantAddress = $booking->merchant_address;
+    $consigneeAddress = $booking->consignee_address;
+
+    return view('map', [
+        'merchantAddress' => $merchantAddress,
+        'consigneeAddress' => $consigneeAddress
+    ]);
+}
     public function adminside(){
         return view('Admin.Admin');
     }
@@ -131,20 +144,7 @@ public function courier_order()
 
     return view('Admin.ManageCourierOrder', compact('bookings', 'drivers'));
 }
-public function showMap()
-{
-    // Fetch a specific booking or relevant data
-    $booking = Booking::find(88); // Adjust as needed to fetch the booking
 
-    // Get the merchant and consignee addresses from the booking
-    $merchantAddress = $booking->merchant_address;
-    $consigneeAddress = $booking->consignee_address;
-
-    return view('map', [
-        'merchantAddress' => $merchantAddress,
-        'consigneeAddress' => $consigneeAddress
-    ]);
-}
 
 
 
