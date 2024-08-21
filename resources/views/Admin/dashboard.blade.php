@@ -93,154 +93,20 @@
                 </div>
 
 
-                <div class="row mt-4">
-                    <div class="col-lg-12 col-md-12">
-                        <div class="card">
-                            <div class="card-body p-0">
-                                <div class="table-responsive--sm table-responsive">
-                                    <table class="table table--light style--two">
-                                        <thead>
-                                            <tr>
-                                                <th>Name - Address</th>
-                                                <th>Email - Phone</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <span class="fw-bold">Curran</span><br>
-                                                    <span>Est quas incididunt</span>
-                                                </td>
-                                                <td>
-                                                    <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                                            data-cfemail="12606b7f7b527f737b7e7b7c73667d603c717d7f">[email&#160;protected]</a></span><br>
-                                                    <span>6444564545</span>
-                                                </td>
-                                                <td> <span class="badge badge--success">Enabled</span> </td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-outline--primary" id="actionButton"
-                                                        data-bs-toggle="dropdown"><i class="las la-ellipsis-v"></i>
-                                                        Action</button>
-                                                    <div class="dropdown-menu p-0">
-                                                        <a href="https://script.viserlab.com/courierlab/demo/admin/branch-manager/manager/4"
-                                                            class="dropdown-item"><i class="las la-user-tie"></i>
-                                                            Manager </a>
-                                                        <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?&amp;sender_branch_id=4"
-                                                            class=" dropdown-item"><i class="las la-dolly-flatbed"></i>
-                                                            Courier </a>
-                                                        <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=3&amp;receiver_branch_id=4"
-                                                            class="dropdown-item"><i class="las la-truck"></i>
-                                                            Delivery </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span class="fw-bold">India</span><br>
-                                                    <span>India,India</span>
-                                                </td>
-                                                <td>
-                                                    <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                                            data-cfemail="b2fbdcd6dbd3f2c6d7c1c6dfd3dbde9cd1dddf">[email&#160;protected]</a></span><br>
-                                                    <span>54165544545</span>
-                                                </td>
-                                                <td> <span class="badge badge--success">Enabled</span> </td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-outline--primary" id="actionButton"
-                                                        data-bs-toggle="dropdown"><i class="las la-ellipsis-v"></i>
-                                                        Action</button>
-                                                    <div class="dropdown-menu p-0">
-                                                        <a href="https://script.viserlab.com/courierlab/demo/admin/branch-manager/manager/2"
-                                                            class="dropdown-item"><i class="las la-user-tie"></i>
-                                                            Manager </a>
-                                                        <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?&amp;sender_branch_id=2"
-                                                            class=" dropdown-item"><i class="las la-dolly-flatbed"></i>
-                                                            Courier </a>
-                                                        <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=3&amp;receiver_branch_id=2"
-                                                            class="dropdown-item"><i class="las la-truck"></i>
-                                                            Delivery </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span class="fw-bold">Singapore</span><br>
-                                                    <span>Singapore,Singapore</span>
-                                                </td>
-                                                <td>
-                                                    <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                                            data-cfemail="4c3f25222b2d3c233e290c38293f38212d2520622f2321">[email&#160;protected]</a></span><br>
-                                                    <span>102343545</span>
-                                                </td>
-                                                <td> <span class="badge badge--success">Enabled</span> </td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-outline--primary" id="actionButton"
-                                                        data-bs-toggle="dropdown"><i class="las la-ellipsis-v"></i>
-                                                        Action</button>
-                                                    <div class="dropdown-menu p-0">
-                                                        <a href="https://script.viserlab.com/courierlab/demo/admin/branch-manager/manager/1"
-                                                            class="dropdown-item"><i class="las la-user-tie"></i>
-                                                            Manager </a>
-                                                        <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?&amp;sender_branch_id=1"
-                                                            class=" dropdown-item"><i class="las la-dolly-flatbed"></i>
-                                                            Courier </a>
-                                                        <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=3&amp;receiver_branch_id=1"
-                                                            class="dropdown-item"><i class="las la-truck"></i>
-                                                            Delivery </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span class="fw-bold">Srilanka</span><br>
-                                                    <span>Srilanka,Srilanka</span>
-                                                </td>
-                                                <td>
-                                                    <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                                            data-cfemail="89fafbe0e5e8e7e2e8c9fdecfafde4e8e0e5a7eae6e4">[email&#160;protected]</a></span><br>
-                                                    <span>6444564545</span>
-                                                </td>
-                                                <td> <span class="badge badge--success">Enabled</span> </td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-outline--primary" id="actionButton"
-                                                        data-bs-toggle="dropdown"><i class="las la-ellipsis-v"></i>
-                                                        Action</button>
-                                                    <div class="dropdown-menu p-0">
-                                                        <a href="https://script.viserlab.com/courierlab/demo/admin/branch-manager/manager/3"
-                                                            class="dropdown-item"><i class="las la-user-tie"></i>
-                                                            Manager </a>
-                                                        <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?&amp;sender_branch_id=3"
-                                                            class=" dropdown-item"><i class="las la-dolly-flatbed"></i>
-                                                            Courier </a>
-                                                        <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=3&amp;receiver_branch_id=3"
-                                                            class="dropdown-item"><i class="las la-truck"></i>
-                                                            Delivery </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+             
                 <div class="row mt-4">
                     <div class="col-xl-4 col-lg-6 ">
                         <div class="card overflow-hidden">
                             <div class="card-body">
-                                <h5 class="card-title">Login By Browser (Last 30 days)</h5>
-                                <canvas id="userBrowserChart"></canvas>
+                                <h5 class="card-title">Total Bookings</h5>
+                                <canvas id="userBrowserChart">{{ $totalBookings }}</canvas>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-6">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Login By OS (Last 30 days)</h5>
+                                <h5 class="card-title">Today`s Booking:{{ $formattedDate }}<h5>
                                 <canvas id="userOsChart"></canvas>
                             </div>
                         </div>
@@ -248,7 +114,7 @@
                     <div class="col-xl-4 col-lg-6">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Login By Country (Last 30 days)</h5>
+                                <h5 class="card-title">Successful Delivery</h5>
                                 <canvas id="userCountryChart"></canvas>
                             </div>
                         </div>
@@ -383,26 +249,63 @@
         })(jQuery);
     </script>
 
-    <script>
-        (function ($) {
-            "use strict"
+<script>
+    (function ($) {
+        "use strict";
 
+        // Assuming piChart is a function that takes a canvas element and data to draw a pie chart
+        function piChart(canvas, labels, data) {
+            var ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#e7e9ed', '#4bc0c0', '#f3d3b6'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.label + ': ' + tooltipItem.raw;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function() {
             piChart(
                 document.getElementById('userBrowserChart'),
-                ["Chrome", "Firefox", "Handheld Browser", "Safari"],
-                [153, 20, 35, 1]);
+                ["Total Bookings"],
+                [{{ $totalBookings }}]
+            );
 
             piChart(
                 document.getElementById('userOsChart'),
-                ["Windows 10", "Mac OS X", "Android", "Linux", "iPhone", "Unknown OS Platform", "Ubuntu"],
-                [146, 20, 26, 5, 9, 2, 1]);
+                ["Today`s Booking"],
+                [{{ $todayBookings }}]
+            );
 
             piChart(
                 document.getElementById('userCountryChart'),
-                ["Nigeria", "India", "Egypt", "Pakistan", "Indonesia"],
-                [34, 28, 15, 14, 10]);
-        })(jQuery)
-    </script>
+                ["Sucessful Delivery"],
+                [{{$deliverySuccessfulCount}}]
+            );
+        });
+
+    })(jQuery);
+</script>
+
     <script>
         if ($('li').hasClass('active')) {
             $('.sidebar__menu-wrapper').animate({
