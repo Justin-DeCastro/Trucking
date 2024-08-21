@@ -170,10 +170,42 @@ class BookingController extends Controller
         // Create the booking
         $booking = Booking::create($validatedData);
     
+        // Format the data for the QR code
+        $formattedData = [
+            "1. Sender Name: " . $validatedData['sender_name'],
+            "2. Transport Mode: " . $validatedData['transport_mode'],
+            "3. Shipping Type: " . $validatedData['shipping_type'],
+            "4. Delivery Type: " . $validatedData['delivery_type'],
+            "5. Journey Type: " . $validatedData['journey_type'],
+            "6. Consignee Name: " . $validatedData['consignee_name'],
+            "7. Consignee Address: " . $validatedData['consignee_address'],
+            "8. Consignee Email: " . $validatedData['consignee_email'],
+            "9. Consignee Mobile: " . $validatedData['consignee_mobile'],
+            "10. Consignee City: " . $validatedData['consignee_city'],
+            "11. Consignee Province: " . $validatedData['consignee_province'],
+            "12. Consignee Barangay: " . $validatedData['consignee_barangay'],
+            "13. Consignee Building Type: " . $validatedData['consignee_building_type'],
+            "14. Merchant Name: " . $validatedData['merchant_name'],
+            "15. Merchant Address: " . $validatedData['merchant_address'],
+            "16. Merchant Email: " . $validatedData['merchant_email'],
+            "17. Merchant Mobile: " . $validatedData['merchant_mobile'],
+            "18. Merchant City: " . $validatedData['merchant_city'],
+            "19. Merchant Province: " . $validatedData['merchant_province'],
+            "20. Driver Name: " . $validatedData['driver_name'],
+            "21. Plate Number: " . $validatedData['plate_number'],
+            "22. Date: " . $validatedData['date'],
+            "23. Truck Type: " . $validatedData['truck_type'],
+            "24. Tracking Number: " . $trackingNumber,
+            "25. Order Number: " . $validatedData['order_number'],
+        ];
+    
+        // Convert formatted data to a single string
+        $formattedDataString = implode("\n", $formattedData);
+    
         // Generate QR code
         $filename = time() . '-' . $trackingNumber . '.svg';
         $qrCodePath = 'qrcodes/' . $filename;
-        $qrCodeImage = QrCode::size(300)->generate($trackingNumber);
+        $qrCodeImage = QrCode::size(300)->generate($formattedDataString);
         file_put_contents(public_path($qrCodePath), $qrCodeImage);
     
         // Save QR code path to the booking
@@ -208,7 +240,6 @@ class BookingController extends Controller
         ]);
     }
     
-
 
 
 
