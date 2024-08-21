@@ -286,6 +286,7 @@
                                     <tr><td>City</td><td>{{ $detail->merchant_city }}</td></tr>
                                     <tr><td>Province</td><td>{{ $detail->merchant_province }}</td></tr>
                                 </table>
+                                
                             </div>
                         </div>
 

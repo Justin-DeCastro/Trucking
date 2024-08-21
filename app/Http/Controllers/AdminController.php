@@ -22,20 +22,20 @@ class AdminController extends Controller
         // Count the total number of bookings
         $totalBookings = Booking::count();
     
-        // Get today's date and format it
+        
         $today = Carbon::today();
         $formattedDate = $today->format('F j, Y');
     
-        // Count bookings created today
+      
         $todayBookings = Booking::whereDate('created_at', $today)->count();
     
-        // Count bookings where the status is 'Delivery successful'
+        
         $deliverySuccessfulCount = Booking::where('status', 'Delivery successful')->count();
     
-        // Count the total number of available trucks
+       
         $totalAvailableTrucks = Vehicle::sum('quantity');
         $totalCouriers = User::where('role', 'courier')->count();
-        // Pass the data to the view
+        
         return view('Admin.dashboard', compact('totalBookings', 'todayBookings', 'formattedDate', 'deliverySuccessfulCount', 'totalAvailableTrucks','totalCouriers'));
     }
     
@@ -53,9 +53,6 @@ class AdminController extends Controller
     {
         $rubixdetails = Booking::all();
       
-        foreach ($rubixdetails as $detail) {
-            $detail->qr_code_url = asset($detail->qr_code);
-        }
         return view('Admin.rubix_details', compact('rubixdetails'));
     }
     public function showMap()
@@ -63,7 +60,7 @@ class AdminController extends Controller
     // Fetch a specific booking or relevant data
     $booking = Booking::find(88); // Adjust as needed to fetch the booking
 
-    // Get the merchant and consignee addresses from the booking
+   
     $merchantAddress = $booking->merchant_address;
     $consigneeAddress = $booking->consignee_address;
 
