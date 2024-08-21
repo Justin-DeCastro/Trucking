@@ -95,98 +95,135 @@
 <section style="padding: 60px 0; background: #f9f9f9;">
     <div style="max-width: 900px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
         <div style="text-align: center; margin-bottom: 40px;">
-            <h3 style="margin-top: 0; color: #333; font-size: 28px; font-weight: bold;">Trucking Booking Form</h3>
+            <h3 style="margin-top: 0; color: #333; font-size: 28px; font-weight: bold;">RUBIX Form</h3>
             <p style="color: #666; font-size: 16px;">Fill out the form below to arrange for the transportation of your goods.</p>
         </div>
-        <form action="" method="post" enctype="multipart/form-data">
+        <form action="{{ route('booking.submit') }}" method="post" enctype="multipart/form-data">
     @csrf
 
     <!-- Sender Information -->
-    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
-        <div style="flex: 1; min-width: 220px;">
-            <label for="sender-name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Sender Name</label>
-            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="sender-name" name="sender_name" type="text" placeholder="Enter Sender's Name" required>
+    <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px;">
+        <!-- Top Section: Driver Name and Plate Number -->
+        <div style="display: flex; gap: 20px;">
+            <div style="flex: 1; min-width: 220px;">
+                <label for="driver_name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Driver Name</label>
+                <select id="driver_name" name="driver_name" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);">
+                    @foreach($users as $user)
+                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div style="flex: 1; min-width: 220px;">
+                <label for="plate_number" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Plate Number</label>
+                <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="plate_number" name="plate_number" type="text" placeholder="Enter Plate Number" required>
+            </div>
+            <div style="flex: 1; min-width: 220px;">
+                <label for="plate_number" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Date</label>
+                <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="date" name="date" type="datetime-local" placeholder="Enter Date" required>
+            </div>
         </div>
-        <div style="flex: 1; min-width: 220px;">
-            <label for="pickup-address" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Pickup Address</label>
-            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="pickup-address" name="pickup_address" type="text" placeholder="Enter Pickup Address" required>
-        </div>
-        <div style="flex: 1; min-width: 220px;">
-            <label for="sender-phone" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Sender Phone Number</label>
-            <input
-                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                id="sender-phone"
-                name="sender_phone"
-                type="number"
-                placeholder="Enter Sender's Phone Number"
-                required
-                maxlength="11"
-                pattern="\d{11}"
-                title="Please enter exactly 11 digits."
-            >
+
+        <!-- Bottom Section: Client Name, Transport Mode, Shipping Type -->
+        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 220px;">
+                <label for="sender_name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Client Name</label>
+                <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="sender_name" name="sender_name" type="text" placeholder="Enter Sender's Name" required>
+            </div>
+            <div style="flex: 1; min-width: 220px;">
+                <label for="transport_mode" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Transport Mode</label>
+                <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="transport_mode" name="transport_mode" type="text" placeholder="Enter transport mode" required>
+            </div>
+            <div style="flex: 1; min-width: 220px;">
+                <label for="shipping_type" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Shipping Type</label>
+                <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="shipping_type" name="shipping_type" type="text" placeholder="Enter shipping type" required>
+            </div>
         </div>
     </div>
+
 
     <!-- Item List and Weight -->
     <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
-        <div style="flex: 1; min-width: 220px;">
-            <label for="item-list" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Item List (Picture)</label>
-            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="item-list" name="item_list" type="file" accept="image/*" required>
+    <div style="flex: 1; min-width: 220px;">
+            <label for="pickup-address" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Delivery Type</label>
+            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="delivery_type" name="delivery_type" type="text" placeholder="Enter delivery type" required>
         </div>
+
         <div style="flex: 1; min-width: 220px;">
-            <label for="weight" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Est. Weight</label>
-            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="weight" name="weight" type="number" step="0.01" placeholder="Enter Weight (kg)" required>
-        </div>
-        <div style="flex: 1; min-width: 220px;">
-            <label for="quantity" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Quantity</label>
-            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="quantity" name="quantity" type="number" step="0.01" placeholder="Enter Quantity" required>
+            <label for="quantity" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Journey Type</label>
+            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="journey_type" name="journey_type" type="text" placeholder="Enter journey type" required>
         </div>
     </div>
 
-    <!-- List of Products -->
-    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
-        <div style="flex: 1; min-width: 220px;">
-            <label for="list-of-products" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">List of Products</label>
-            <textarea style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="list-of-products" name="list_of_products" placeholder="Enter List of Products" rows="4" required></textarea>
-        </div>
-    </div>
+    <div style="margin-bottom: 40px;">
+                <h4 style="color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">Consignee Information</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="consignee_name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Consignee Name</label>
+                        <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="consignee_name" name="consignee_name" type="text" placeholder="Enter Consignee's Name" required>
+                    </div>
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="consignee_address" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Address</label>
+                        <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="consignee_address" name="consignee_address" type="text" placeholder="Enter Consignee Address" required>
+                    </div>
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="consignee_email" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Consignee Email</label>
+                        <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="consignee_email" name="consignee_email" type="email" placeholder="Enter Consignee Email" required>
+                    </div>
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="consignee_mobile" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Consignee Mobile</label>
+                        <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="consignee_mobile" name="consignee_mobile" type="tel" placeholder="Enter Consignee Mobile Number" required>
+                    </div>
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="consignee_city" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">City</label>
+                        <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="consignee_city" name="consignee_city" type="text" placeholder="Enter City" required>
+                    </div>
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="consignee_province" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Province</label>
+                        <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="consignee_province" name="consignee_province" type="text" placeholder="Enter Province" required>
+                    </div>
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="consignee_barangay" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Barangay</label>
+                        <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="consignee_barangay" name="consignee_barangay" type="text" placeholder="Enter Barangay" required>
+                    </div>
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="consignee_building_type" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Building Type</label>
+                        <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="consignee_building_type" name="consignee_building_type" type="text" placeholder="Enter Building Type" required>
+                    </div>
+                </div>
+            </div>
 
-    <!-- Receiver Information -->
-    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
-        <div style="flex: 1; min-width: 220px;">
-            <label for="receiver-name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Receiver Name</label>
-            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="receiver-name" name="receiver_name" type="text" placeholder="Enter Receiver's Name" required>
-        </div>
-        <div style="flex: 1; min-width: 220px;">
-            <label for="receiver-email" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Receiver Email</label>
-            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="receiver-email" name="receiver_email" type="email" placeholder="Enter Receiver's Email" required>
-        </div>
-        <div style="flex: 1; min-width: 220px;">
-            <label for="receiver-phone" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Receiver Phone Number</label>
-            <input
-                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                id="receiver-phone"
-                name="receiver_phone"
-                type="number"
-                placeholder="Enter Receiver's Phone Number"
-                required
-                maxlength="11"
-                pattern="\d{11}"
-                title="Please enter exactly 11 digits."
-            >
-        </div>
-    </div>
-
-    <!-- Drop-off Address -->
-    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
-        <div style="flex: 1; min-width: 220px;">
-            <label for="dropoff-address" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Drop-off Address</label>
-            <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="dropoff-address" name="dropoff_address" type="text" placeholder="Enter Drop-off Address" required>
-        </div>
-    </div>
-
-    <!-- Truck Type -->
-    <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px;">
+            <!-- Merchant Information -->
+            <div style="margin-bottom: 40px;">
+                <h4 style="color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">Merchant Information</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="merchant_name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Merchant Name</label>
+                        <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="merchant_name" name="merchant_name" type="text" placeholder="Enter Merchant's Name" required>
+                    </div>
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="merchant_address" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Address</label>
+                        <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="merchant_address" name="merchant_address" type="text" placeholder="Enter Merchant Address" required>
+                    </div>
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="merchant_email" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Merchant Email</label>
+                        <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="merchant_email" name="merchant_email" type="email" placeholder="Enter Merchant Email" required>
+                    </div>
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="merchant_mobile" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Merchant Mobile</label>
+                        <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="merchant_mobile" name="merchant_mobile" type="tel" placeholder="Enter Merchant Mobile Number" required>
+                    </div>
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="merchant_city" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">City</label>
+                        <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="merchant_city" name="merchant_city" type="text" placeholder="Enter City" required>
+                    </div>
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="merchant_province" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Province</label>
+                        <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="merchant_province" name="merchant_province" type="text" placeholder="Enter Province" required>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px;">
     @foreach($vehicles as $vehicle)
         <div style="background-color: #fff; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 20px; width: calc(33.333% - 20px); box-sizing: border-box; text-align: center; position: relative;">
             <!-- Radio Input -->
@@ -216,9 +253,6 @@
         </div>
     @endforeach
 </div>
-
-
-
     <!-- Submit Button -->
     <div style="text-align: center;">
         <button style="padding: 12px 24px; background-color: #007bff; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background-color 0.3s ease;" type="submit">
@@ -230,6 +264,7 @@
 
     </div>
 </section>
+
 
 
 

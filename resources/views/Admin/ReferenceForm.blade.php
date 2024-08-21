@@ -214,6 +214,36 @@
                     </div>
                 </div>
             </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px;">
+    @foreach($vehicles as $vehicle)
+        <div style="background-color: #fff; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 20px; width: calc(33.333% - 20px); box-sizing: border-box; text-align: center; position: relative;">
+            <!-- Radio Input -->
+            <input type="radio" id="truck-{{ $vehicle->id }}" name="truck_type" value="{{ $vehicle->id }}" style="position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; cursor: pointer;" required>
+
+            <!-- Card Content -->
+            <label for="truck-{{ $vehicle->id }}" style="display: block; cursor: pointer; padding-right: 30px;">
+                <!-- Conditional Image -->
+                @php
+                    $imagePath = 'Home/icons8-truck-48.png'; // Default image
+
+                    if ($vehicle->truck_name === '6 Wheeler tractor heads') {
+                        $imagePath = 'Home/tractorhead-removebg-preview.png';
+                    } elseif ($vehicle->truck_name === '6 Wheeler closed vans') {
+                        $imagePath = 'Home/closedvans-removebg-preview.png';
+                    } elseif ($vehicle->truck_name === '10 Wheeler Aluminum wing van') {
+                        $imagePath = 'Home/10wheeler-removebg-preview.png';
+                    }
+                @endphp
+                <img src="{{ asset($imagePath) }}" alt="Truck Moving" style="width: 150px; height: auto; margin-bottom: 10px;">
+
+                <!-- Truck Details -->
+                <h3 style="font-size: 1.2em; margin-bottom: 10px; color: #333;">{{ $vehicle->truck_name }}</h3>
+                <p style="font-size: 1em; color: #666;">{{ $vehicle->truck_capacity }}</p>
+                <p style="font-size: 1em; color: #666; margin-top: 10px;">Available: {{ $vehicle->quantity }}</p>
+            </label>
+        </div>
+    @endforeach
+</div>
 
     <!-- Submit Button -->
     <div style="text-align: center;">

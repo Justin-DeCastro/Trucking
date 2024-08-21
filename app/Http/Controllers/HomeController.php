@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Vehicle;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -35,10 +36,11 @@ class HomeController extends Controller
     }
     public function appointment()
     {
+        $users = User::where('role', 'courier')->get();
         
         $vehicles = Vehicle::where('truck_status', 'Available')->get();
         
-        return view('Home.Appointment', compact('vehicles'));
+        return view('Home.Appointment', compact('vehicles','users'));
     }
     
 }

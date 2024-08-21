@@ -56,8 +56,9 @@ class AdminController extends Controller
         return view('Admin.Admin');
     }
     public function reference(){
+        $vehicles = Vehicle::where('truck_status', 'Available')->get();
         $users = User::where('role', 'courier')->get();
-        return view('Admin.ReferenceForm',compact('users'));
+        return view('Admin.ReferenceForm',compact('users','vehicles'));
     }
     public function managebranch(){
         $branches = ManageBranch::all();

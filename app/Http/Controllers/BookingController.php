@@ -135,7 +135,7 @@ class BookingController extends Controller
             'driver_name' => 'required|string|max:255',
             'plate_number' => 'required|string|max:255',
             'date' => 'required|date',
-            // 'truck_type' => 'required|exists:vehicles,id',
+            'truck_type' => 'required',
         ]);
     
         // Generate tracking number

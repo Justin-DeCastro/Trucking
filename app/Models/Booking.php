@@ -38,6 +38,7 @@ class Booking extends Model
         'tracking_number',
         'date',
 'order_number',
+'truck_type',
 
 
         'driver_id', // Add this if you have a driver_id field
