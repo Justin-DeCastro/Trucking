@@ -133,12 +133,7 @@
                         </button>
 
                         <!-- Expense Button -->
-                        <button class="btn btn-sm btn-outline--primary" type="button" data-bs-toggle="modal" data-bs-target="#manageExpense">
-                            <i class="las la-minus"></i> Expense
-                        </button>
-                        <button class="btn btn-sm btn-outline--primary" type="button" data-bs-toggle="modal" data-bs-target="#managePayment">
-                            <i class="las la-minus"></i> Proof of Payment
-                        </button>
+
                         <button class="btn btn-sm btn-outline--primary" type="button" data-bs-toggle="modal" data-bs-target="#manageStartingBalance">
                             <i class="las la-minus"></i> Add Starting Balance
                         </button>
@@ -163,93 +158,58 @@
                 <!-- Display the overall Outstanding Balance and Remaining Balance -->
                 <div class="row mb-3">
                     <div class="col-md-4">
-                    <div class="alert alert-info">
-    <strong>Starting Balance:</strong> {{ number_format($startingBalance, 2) }}
-</div>
-
                         <div class="alert alert-info">
+                            <strong>Starting Balance:</strong> {{ number_format($startingBalance, 2) }}
+                        </div>
+                        <div class="alert alert-info" style="background-color: rgba(255, 0, 0, 0.5); color: white;">
                             <strong>Outstanding Balance:</strong> {{ number_format($outstandingBalance, 2) }}
                         </div>
-                        <div class="alert alert-warning">
-                        <strong>Total Expense:</strong> {{ number_format($totalExpense, 2) }}
+                        {{-- <div class="alert alert-info" style="background-color: rgba(255, 0, 0, 0.5); color: white;">
+                            <strong>Total Expenses:</strong> {{ number_format($totalExpense, 2) }}
+                        </div> --}}
+
                     </div>
-                        <div class="alert alert-success">
-                            <strong>Remaining Balance:</strong> {{ number_format($remainingBalance, 2) }}
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="dt-buttons btn-group d-flex justify-content-end gap-2">
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class='bx bx-export'></i> Export
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><button type="button" id="copyBtn" class="btn dropdown-item"><i class='bx bx-copy'></i> Copy</button></li>
-                                    <li><button type="button" id="printBtn" class="btn dropdown-item"><i class='bx bx-printer'></i> Print</button></li>
-                                    <li><button type="button" id="excelBtn" class="btn dropdown-item"><i class='bx bx-file'></i> Excel</button></li>
-                                    <li><button type="button" id="pdfBtn" class="btn dropdown-item"><i class='bx bxs-file-pdf'></i> Pdf</button></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
-           <table class="jobOffersTable">
+                <table class="jobOffersTable">
     <thead>
         <tr>
             <th>Date</th>
             <th>Particulars</th>
-            <th>Payment Received</th>
-            <th>Expense</th>
-            <th>Net Income</th>
+            <th>Payment Amount</th>
+            <th>Expense Amount</th>
+            <th>Payment Channel</th>
+            {{-- <th>Net Income</th> --}}
             <th>Proof of Payment</th>
             <th>Notes</th>
-            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @forelse($transactions as $transaction)
             <tr>
-                <td>{{ date('F d Y', strtotime($transaction->date)) }}</td>
+                <td>{{ date('F d, Y g:i A', strtotime($transaction->date)) }}</td>
+
                 <td>{{ $transaction->particulars }}</td>
                 <td>₱{{ number_format($transaction->deposit_amount, 2, '.', ',') }}</td>
                 <td>₱{{ number_format($transaction->withdraw_amount, 2, '.', ',') }}</td>
-                <td>₱{{ number_format($netIncome, 2, '.', ',') }}</td>
+                <td>{{ $transaction->payment_channel }}</td>
+                {{-- <td>₱{{ number_format($transaction->netIncome, 2, '.', ',') }}</td> <!-- Assuming net_income is a property of $transaction --> --}}
 
                 <td>
-    @if($transaction->proof_of_payment)
-        <a href="{{ asset($transaction->proof_of_payment) }}" data-fancybox="gallery" data-caption="Proof of Payment">
-            <img src="{{ asset($transaction->proof_of_payment) }}" alt="Company Image" style="max-width: 100px;">
-        </a>
-    @else
-        No Proof Uploaded
-    @endif
-</td>
-
-                <td>{{ $transaction->notes }}</td>
-                <td>
-                    <!-- Update Action -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal"
-                        data-id="{{ $transaction->id }}"
-                        data-date="{{ $transaction->date }}"
-                        data-particulars="{{ $transaction->particulars }}"
-                        data-deposit="{{ $transaction->deposit_amount }}"
-                        data-withdraw="{{ $transaction->withdraw_amount }}"
-                        data-expense="{{ $transaction->expense_amount }}"
-                        data-notes="{{ $transaction->notes }}">
-                        Update
-                    </button>
-
-                    <!-- Delete Action -->
-                    <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
+                    @if($transaction->proof_payment)
+                        <a href="{{ asset($transaction->proof_payment) }}" data-fancybox="gallery" data-caption="Proof of Payment">
+                            <img src="{{ asset($transaction->proof_payment) }}" alt="Proof of Payment" style="max-width: 100px;">
+                        </a>
+                    @else
+                        No Proof Uploaded
+                    @endif
                 </td>
+
+                <td class="text-start">{{ $transaction->notes }}</td>
             </tr>
         @empty
             <tr>
-                <td colspan="8">No records found</td>
+                <td colspan="7">No records found</td>
             </tr>
         @endforelse
     </tbody>
@@ -280,18 +240,20 @@
                                         <label for="deposit_amount" class="form-label">Payment Received</label>
                                         <input type="number" step="0.01" class="form-control" id="deposit_amount" name="deposit_amount" required>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="withdraw_amount" class="form-label">Expense</label>
-                                        <input type="number" step="0.01" class="form-control" id="withdraw_amount" name="withdraw_amount" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="expense_amount" class="form-label">Net Income</label>
-                                        <input type="number" step="0.01" class="form-control" id="expense_amount" name="expense_amount" required>
-                                    </div>
+
+
                                     <div class="mb-3">
                                         <label for="notes" class="form-label">Notes</label>
                                         <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="payment_channel" class="form-label">Payment Channel</label>
+                                        <textarea class="form-control" id="payment_channel" name="payment_channel" rows="3"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+            <label for="proof_payment" class="form-label">Proof of Payment</label>
+            <input type="file" id="proof_payment" name="proof_payment" class="form-control">
+        </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -336,43 +298,52 @@
                                 <h5 class="modal-title" id="manageDepositLabel">Deposit</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <form action="{{ route('deposit.store') }}" method="POST">
-                                @csrf
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label for="account_id" class="form-label">Account</label>
-                                        <select id="account_id" name="account_id" class="form-select" required>
-                                            <option value="">Select Account</option>
-                                            @foreach($accounts as $account)
-                                                <option value="{{ $account->id }}">{{ $account->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('account_id')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="date" class="form-label">Date</label>
-                                        <input type="date" id="date" name="date" class="form-control" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="particulars" class="form-label">Particulars</label>
-                                        <input type="text" id="particulars" name="particulars" class="form-control" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="deposit_amount" class="form-label">Deposit Amount</label>
-                                        <input type="number" id="deposit_amount" name="deposit_amount" class="form-control" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="notes" class="form-label">Notes</label>
-                                        <input type="text" id="notes" name="notes" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                </div>
-                            </form>
+                            <form action="{{ route('deposit.store') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <div class="modal-body">
+        <div class="mb-3">
+            <label for="account_id" class="form-label">Account</label>
+            <select id="account_id" name="account_id" class="form-select" required>
+                <option value="">Select Account</option>
+                @foreach($accounts as $account)
+                    <option value="{{ $account->id }}">{{ $account->name }}</option>
+                @endforeach
+            </select>
+            @error('account_id')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <input type="datetime-local" id="date" name="date" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="particulars" class="form-label">Particulars</label>
+            <input type="text" id="particulars" name="particulars" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="deposit_amount" class="form-label">Deposit Amount</label>
+            <input type="number" id="deposit_amount" name="deposit_amount" class="form-control" required min="0" step="0.01">
+        </div>
+        <div class="mb-3">
+            <label for="notes" class="form-label">Notes</label>
+            <input type="text" id="notes" name="notes" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="payment_channel" class="form-label">Payment Channel</label>
+            <input type="text" id="payment_channel" name="payment_channel" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="proof_payment" class="form-label">Proof of Payment</label>
+            <input type="file" id="proof_payment" name="proof_payment" class="form-control">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    </div>
+</form>
+
                         </div>
                     </div>
                 </div>

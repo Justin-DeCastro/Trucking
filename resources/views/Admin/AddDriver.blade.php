@@ -126,43 +126,51 @@
                             <div class="card">
                                 <div class="card-body p-0">
                                     <div class="table-responsive--sm table-responsive">
-                                        <table class="table table--light style--two">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Address</th>
-                                                    <th>Contact Number</th>
-                                                    <th>Email</th>
-                                                    <th>Driver License</th>
-                                                    <th>License Number</th>
-                                                    <!-- <th>Plate Number</th> -->
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($couriers as $driver)
-                                                    <tr>
-                                                        <td>{{ $driver->name }}</td>
-                                                        <td>{{ $driver->address }}</td>
-                                                        <td>{{ $driver->contact_number }}</td>
-                                                        <td>{{ $driver->email }}</td>
-                                                        <td>
-                                                            @if ($driver->driver_license)
-                                                                <a href="{{ asset('driver_licenses/' . basename($driver->driver_license)) }}"
-                                                                    target="_blank">View License</a>
-                                                            @else
-                                                                No License
-                                                            @endif
-                                                        </td>
-                                                        <td>{{ $driver->license_number }}</td>
-                                                        <!-- <td>{{ $driver->plate_number }}</td> -->
-                                                        <!-- Optionally display the driver's license file path or a link to the file -->
+                                    <table class="table table--light style--two">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Contact Number</th>
+            <th>Email</th>
+            <th>Driver License</th>
+            <th>License Number</th>
+            <!-- <th>Plate Number</th> -->
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($couriers as $driver)
+            <tr>
+                <td>{{ $driver->name }}</td>
+                <td>{{ $driver->address }}</td>
+                <td>{{ $driver->contact_number }}</td>
+                <td>{{ $driver->email }}</td>
+                <td>
+                    @if ($driver->driver_license)
+                        <a href="{{ asset('driver_licenses/' . basename($driver->driver_license)) }}"
+                            target="_blank">View License</a>
+                    @else
+                        No License
+                    @endif
+                </td>
+                <td>{{ $driver->license_number }}</td>
+                <!-- <td>{{ $driver->plate_number }}</td> -->
 
-                                                    </tr>
-                                                @endforeach
+                <!-- Delete Action -->
+                <td>
+                    <!-- Delete Form -->
+                    <form action="{{ route('couriers.destroy', $driver->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this courier?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
 
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
                             </div><!-- card end -->

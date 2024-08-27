@@ -1,8 +1,34 @@
 <!doctype html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
+<style>
 
+</style>
 @include('Components.Home.Header')
 
+<style>
+    .contact-list__item {
+        display: flex;
+        align-items: center;
+    }
+
+    .contact-list__item-icon {
+        margin-right: 8px;
+    }
+
+    .contact-numbers a {
+        margin-left: 15px;
+        white-space: nowrap;
+    }
+
+    .bullet {
+        margin: 0 10px;
+        color: #2789FF;
+    }
+
+    .top-contact {
+        justify-content: flex-end;
+    }
+</style>
 
 <body>
 
@@ -19,71 +45,44 @@
     <div class="header-top d-lg-block d-none">
         <div class="container">
             <div class="top-header-wrapper d-flex justify-content-between align-items-center flex-wrap">
-                <div class="top-contact">
-                    <ul class="contact-list">
-                        <li class="contact-list__item flex-align">
+                <div class="top-contact d-flex align-items-center">
+                    <ul class="contact-list d-flex">
+                        <li class="contact-list__item d-flex align-items-center mr-4">
                             <span class="contact-list__item-icon flex-center">
-                                <i class="las la-envelope-open"></i> </span>
-                            <a class="contact-list__link" href="mailto:example@gmail.com">
-                                <span>example@gmail.com</span>
-                            </a>
-                        </li>
-                        <li class="contact-list__item flex-align">
-                            <span class="contact-list__item-icon flex-center">
-                                <i class="las la-phone"></i> </span>
-                            <a class="contact-list__link" href="tel:+44 123 1217">
-                                +639123456789
+                                <i class="fas fa-envelope-open"></i>
+                            </span>
+                            <a class="contact-list__link" href="mailto:gdrlogisticinc@outlook.com">
+                                gdrlogisticinc@outlook.com
                             </a>
                         </li>
                     </ul>
                 </div>
-                <div class="top-button d-flex justify-content-between align-items-center flex-wrap">
-                    <div class="top-button d-flex justify-content-between align-items-center flex-wrap">
-                        <div class="language-box">
-                            <div class="custom--dropdown">
-                                <div class="custom--dropdown__selected dropdown-list__item">
-                                    <div class="thumb">
-                                        <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50"
-                                            alt="image">
-                                    </div>
-                                    <span class="text">English</span>
-                                    i
-                                </div>
-                                <ul class="dropdown-list">
-                                    <li class="dropdown-list__item langSel" data-value="hn">
-                                        <div class="thumb">
-                                            <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50"
-                                                alt="image">
-                                        </div>
-                                        <span class="text">Hindi</span>
-                                    </li>
-                                    <li class="dropdown-list__item langSel" data-value="bn">
-                                        <div class="thumb">
-                                            <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50"
-                                                alt="image">
-                                        </div>
-                                        <span class="text">Bangla</span>
-                                    </li>
-                                    <li class="dropdown-list__item langSel" data-value="sp">
-                                        <div class="thumb">
-                                            <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50"
-                                                alt="image">
-                                        </div>
-                                        <span class="text">Spanish</span>
-                                    </li>
-                                </ul>
+                <div class="top-contact d-flex align-items-center">
+                    <ul class="contact-list d-flex">
+                        <li class="contact-list__item d-flex align-items-center text-right">
+                            <span class="contact-list__item-icon flex-center">
+                                <i class="fas fa-phone"></i>
+                            </span>
+                            <div class="contact-numbers d-flex align-items-center">
+                                <a class="contact-list__link" href="tel:0917-7166-132">0917-7166-132</a>
+                                <span class="bullet">&bull;</span>
+                                <a class="contact-list__link" href="tel:0919-345-5535">0919-345-5535</a>
+                                <span class="bullet">&bull;</span>
+                                <a class="contact-list__link" href="tel:0917-819-1571">0917-819-1571</a>
                             </div>
-                        </div>
-                    </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 
+
+
     @include('Components.Home.Navbar')
 
 
-    <section class="breadcrumb bg-img mb-0" data-background-image="Home/logistics.jpg">
+    <section class="breadcrumb bg-img mb-0" data-background-image="Home/Truckgdr-removebg-preview.png">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
@@ -184,7 +183,7 @@
                                 </p>
                             </div>
                         </li>
-                       
+
                     </ul>
                 </div>
             </div>
@@ -535,13 +534,13 @@
                 <div class="row g-0 h-100">
                     <div class="col-xl-7 col-lg-8">
                         <div class="left-thumb">
-                            <img src="Home/logistics.jpg"
+                            <img src="Home/Truckgdr-removebg-preview.png"
                                 alt="client">
                         </div>
                     </div>
                     <div class="col-xl-5 col-lg-4 d-lg-block d-none">
                         <div class="right-thumb">
-                            <img src="Home/trucker.jpg"
+                            <img src="Home/truckbox.jpg"
                                 alt="client">
                         </div>
                     </div>
@@ -832,7 +831,7 @@
                     alt="clients">
                 <img src="Home/jandt.png"
                     alt="clients">
-                
+
             </div>
         </div>
     </div>

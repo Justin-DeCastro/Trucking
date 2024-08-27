@@ -1,9 +1,34 @@
 <!doctype html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
 <style>
-  
+
 </style>
 @include('Components.Home.Header')
+
+<style>
+    .contact-list__item {
+        display: flex;
+        align-items: center;
+    }
+
+    .contact-list__item-icon {
+        margin-right: 8px;
+    }
+
+    .contact-numbers a {
+        margin-left: 15px;
+        white-space: nowrap;
+    }
+
+    .bullet {
+        margin: 0 10px;
+        color: #2789FF;
+    }
+
+    .top-contact {
+        justify-content: flex-end;
+    }
+</style>
 
 <body>
 
@@ -20,37 +45,41 @@
     <div class="header-top d-lg-block d-none">
         <div class="container">
             <div class="top-header-wrapper d-flex justify-content-between align-items-center flex-wrap">
-                <div class="top-contact">
-                    <ul class="contact-list">
-                        <li class="contact-list__item flex-align">
+                <div class="top-contact d-flex align-items-center">
+                    <ul class="contact-list d-flex">
+                        <li class="contact-list__item d-flex align-items-center mr-4">
                             <span class="contact-list__item-icon flex-center">
                                 <i class="fas fa-envelope-open"></i>
                             </span>
                             <a class="contact-list__link" href="mailto:gdrlogisticinc@outlook.com">
-                                <span>gdrlogisticinc@outlook.com</span>
+                                gdrlogisticinc@outlook.com
                             </a>
                         </li>
-                        <li class="contact-list__item flex-align">
+                    </ul>
+                </div>
+                <div class="top-contact d-flex align-items-center">
+                    <ul class="contact-list d-flex">
+                        <li class="contact-list__item d-flex align-items-center text-right">
                             <span class="contact-list__item-icon flex-center">
                                 <i class="fas fa-phone"></i>
                             </span>
-                            <div class="contact-list__links">
-                                <a class="contact-list__link" href="tel:0917-7166-132">0917-7166-132</a><br>
-                                <a class="contact-list__link" href="tel:0919-345-5535">0919-345-5535</a><br>
+                            <div class="contact-numbers d-flex align-items-center">
+                                <a class="contact-list__link" href="tel:0917-7166-132">0917-7166-132</a>
+                                <span class="bullet">&bull;</span>
+                                <a class="contact-list__link" href="tel:0919-345-5535">0919-345-5535</a>
+                                <span class="bullet">&bull;</span>
                                 <a class="contact-list__link" href="tel:0917-819-1571">0917-819-1571</a>
                             </div>
                         </li>
-
                     </ul>
                 </div>
             </div>
-
         </div>
     </div>
+
+
+
     @include('Components.Home.Navbar')
-
-
-
 
     <section class="banner-section bg-img mb-60" data-background-image="Home/remove.png">
         <div class="h-100 container">
@@ -60,11 +89,9 @@
                         <h1 class="banner-content__title">We Provide Best Dispatch &amp; Parcel Service</h1>
                         <div class="banner-content__button d-flex align-items-center gap-3">
                             <a class="btn btn--base" href="ordertracking">
-                                <span class="btn--icon"><i class="icon-View-More"></i></span>
                                 Track Your Order
                             </a>
                             <a class="btn btn-outline--base" href="contact">
-                                <span class="btn--icon"><i class="icon-View-More"></i></span>
                                 Contact Us
                             </a>
                         </div>
@@ -96,11 +123,11 @@
                     </div>
                 </div>
                 <div class="col-xl-7 col-lg-6">
-                <div class="truck-container">
-    <span class="img">
-        <img src="Home/logistics-removebg-preview.png" alt="truck" class="truck-img">
-    </span>
-</div>
+                    <div class="truck-container" style="margin-top:1px">
+                        <span class="img">
+                            <img src="Home/Truckgdr-removebg-preview.png" alt="truck" class="truck-img"  style="width: 100  %; height: auto;">
+                        </span>
+                    </div>
 
 
                 </div>
@@ -229,7 +256,8 @@
                                     Fast Delivery
                                 </h6>
                                 <p class="about-services__desc">
-                                    Ut recusandae non veniam obcaecati, sunt earum atque cumque, alias quae molestiae
+                                    Ut recusandae non veniam obcaecati, sunt earum atque cumque, alias quae
+                                    molestiae
                                     quo, ad debitis saepe.
                                 </p>
                             </div>
@@ -244,7 +272,8 @@
                                     Lowest Cost
                                 </h6>
                                 <p class="about-services__desc">
-                                    Ut recusandae non veniam obcaecati, sunt earum atque cumque, alias quae molestiae
+                                    Ut recusandae non veniam obcaecati, sunt earum atque cumque, alias quae
+                                    molestiae
                                     quo, ad debitis saepe.
                                 </p>
                             </div>
@@ -259,7 +288,8 @@
                                     Secured Services
                                 </h6>
                                 <p class="about-services__desc">
-                                    Ut recusandae non veniam obcaecati, sunt earum atque cumque, alias quae molestiae
+                                    Ut recusandae non veniam obcaecati, sunt earum atque cumque, alias quae
+                                    molestiae
                                     quo, ad debitis saepe.
                                 </p>
                             </div>
@@ -291,8 +321,10 @@
                                     Standard Courier
                                 </h6>
                                 <p class="service-card__desc">
-                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos, deleniti,
-                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium voluptatibus
+                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos,
+                                    deleniti,
+                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium
+                                    voluptatibus
                                     illum esse.
                                 </p>
                             </div>
@@ -307,8 +339,10 @@
                                     Express Courier
                                 </h6>
                                 <p class="service-card__desc">
-                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos, deleniti,
-                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium voluptatibus
+                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos,
+                                    deleniti,
+                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium
+                                    voluptatibus
                                     illum esse.
                                 </p>
                             </div>
@@ -323,8 +357,10 @@
                                     Pallet Courier
                                 </h6>
                                 <p class="service-card__desc">
-                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos, deleniti,
-                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium voluptatibus
+                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos,
+                                    deleniti,
+                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium
+                                    voluptatibus
                                     illum esse.
                                 </p>
                             </div>
@@ -339,8 +375,10 @@
                                     Over Night Courier
                                 </h6>
                                 <p class="service-card__desc">
-                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos, deleniti,
-                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium voluptatibus
+                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos,
+                                    deleniti,
+                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium
+                                    voluptatibus
                                     illum esse.
                                 </p>
                             </div>
@@ -355,8 +393,10 @@
                                     International Courier
                                 </h6>
                                 <p class="service-card__desc">
-                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos, deleniti,
-                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium voluptatibus
+                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos,
+                                    deleniti,
+                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium
+                                    voluptatibus
                                     illum esse.
                                 </p>
                             </div>
@@ -371,8 +411,10 @@
                                     Warehousing
                                 </h6>
                                 <p class="service-card__desc">
-                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos, deleniti,
-                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium voluptatibus
+                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos,
+                                    deleniti,
+                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium
+                                    voluptatibus
                                     illum esse.
                                 </p>
                             </div>
@@ -518,19 +560,26 @@
                                                 </span>
                                                 <div class="testimonial-item__rating">
                                                     <ul class="rating-list">
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <p class="testimonial-item__desc">
-                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa neque
-                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui labore
+                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa
+                                        neque
+                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui
+                                        labore
                                         totam nam? Impedit, doloribus odit. Quo?
                                     </p>
                                 </div>
@@ -552,19 +601,26 @@
                                                 </span>
                                                 <div class="testimonial-item__rating">
                                                     <ul class="rating-list">
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="far fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="far fa-star"></i>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <p class="testimonial-item__desc">
-                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa neque
-                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui labore
+                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa
+                                        neque
+                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui
+                                        labore
                                         totam nam? Impedit, doloribus odit. Quo?
                                     </p>
                                 </div>
@@ -586,19 +642,26 @@
                                                 </span>
                                                 <div class="testimonial-item__rating">
                                                     <ul class="rating-list">
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <p class="testimonial-item__desc">
-                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa neque
-                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui labore
+                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa
+                                        neque
+                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui
+                                        labore
                                         totam nam? Impedit, doloribus odit. Quo?
                                     </p>
                                 </div>
@@ -620,19 +683,26 @@
                                                 </span>
                                                 <div class="testimonial-item__rating">
                                                     <ul class="rating-list">
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="far fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="far fa-star"></i>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <p class="testimonial-item__desc">
-                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa neque
-                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui labore
+                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa
+                                        neque
+                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui
+                                        labore
                                         totam nam? Impedit, doloribus odit. Quo?
                                     </p>
                                 </div>
@@ -654,19 +724,26 @@
                                                 </span>
                                                 <div class="testimonial-item__rating">
                                                     <ul class="rating-list">
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="far fa-star"></i></li>
-                                                        <li class="rating-list__item"><i class="far fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="far fa-star"></i>
+                                                        </li>
+                                                        <li class="rating-list__item"><i class="far fa-star"></i>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <p class="testimonial-item__desc">
-                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa neque
-                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui labore
+                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa
+                                        neque
+                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui
+                                        labore
                                         totam nam? Impedit, doloribus odit. Quo?
                                     </p>
                                 </div>
@@ -686,7 +763,8 @@
                             Explore Our Services and Solutions
                         </h3>
                         <p class="section-heading__desc">
-                            Voluptatem, fugit, facilis iure eligendi doloremque nisi minima ipsam corrupti vero eaque
+                            Voluptatem, fugit, facilis iure eligendi doloremque nisi minima ipsam corrupti vero
+                            eaque
                             quo aut voluptatibus! Necessitatibus minima
                         </p>
                     </div>
@@ -707,7 +785,8 @@
                             <div class="accordion-collapse show collapse" id="faq0" data-bs-parent="#faqList">
                                 <div class="accordion-body">
                                     <p class="text">
-                                        Voluptatem, fugit, facilis iure eligendi doloremque nisi minima ipsam corrupti
+                                        Voluptatem, fugit, facilis iure eligendi doloremque nisi minima ipsam
+                                        corrupti
                                         vero eaque quo aut voluptatibus! Necessitatibus minima
                                     </p>
                                 </div>
@@ -716,7 +795,8 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" data-bs-toggle="collapse"
-                                    data-bs-target="#faq1" type="button" aria-expanded="false" aria-controls="faq1">
+                                    data-bs-target="#faq1" type="button" aria-expanded="false"
+                                    aria-controls="faq1">
                                     Cum molestias sequi dignissimos nemo?
                                 </button>
                             </h2>
@@ -732,14 +812,16 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" data-bs-toggle="collapse"
-                                    data-bs-target="#faq2" type="button" aria-expanded="false" aria-controls="faq2">
+                                    data-bs-target="#faq2" type="button" aria-expanded="false"
+                                    aria-controls="faq2">
                                     Cum molestias sequi dignissimos nemo?
                                 </button>
                             </h2>
                             <div class="accordion-collapse  collapse" id="faq2" data-bs-parent="#faqList">
                                 <div class="accordion-body">
                                     <p class="text">
-                                        Alias ducimus autem, laudantium rerum quas libero dolorem? Inventore, corrupti,
+                                        Alias ducimus autem, laudantium rerum quas libero dolorem? Inventore,
+                                        corrupti,
                                         nihil iste distinctio asperiores
                                     </p>
                                 </div>
@@ -748,14 +830,16 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" data-bs-toggle="collapse"
-                                    data-bs-target="#faq3" type="button" aria-expanded="false" aria-controls="faq3">
+                                    data-bs-target="#faq3" type="button" aria-expanded="false"
+                                    aria-controls="faq3">
                                     harum ab iste temporibus eveniet dolore porro
                                 </button>
                             </h2>
                             <div class="accordion-collapse  collapse" id="faq3" data-bs-parent="#faqList">
                                 <div class="accordion-body">
                                     <p class="text">
-                                        Alias ducimus autem, laudantium rerum quas libero dolorem? Inventore, corrupti,
+                                        Alias ducimus autem, laudantium rerum quas libero dolorem? Inventore,
+                                        corrupti,
                                         nihil iste distinctio asperiores
                                     </p>
                                 </div>
@@ -853,7 +937,8 @@
         <div class="container">
             <div class="section-heading">
                 <h3 class="section-heading__title">Our Top Branches</h3>
-                <p class="section-heading__desc">Here is more information about our courier company branches, Where we
+                <p class="section-heading__desc">Here is more information about our courier company branches, Where
+                    we
                     are belong</p>
             </div>
             <div class="row gy-3 gx-5">
@@ -1016,7 +1101,8 @@
         <div class="container">
             <div class="section-heading">
                 <h2 class="section-heading__title">Our Blog Posts</h2>
-                <p class="section-heading__desc">Get our latest news from in here, also get what`s our update about our
+                <p class="section-heading__desc">Get our latest news from in here, also get what`s our update about
+                    our
                     services</p>
             </div>
             <div class="row gy-4 justify-content-center">
@@ -1042,7 +1128,8 @@
                             <h6 class="blog-item__title">
                                 <a class="blog-item__title-link border-effect"
                                     href="https://script.viserlab.com/courierlab/demo/blog/praesentium-at-nobis-unde-quis-aut-quaerat-autem-libero-in-consequuntur-recusandae-provident">
-                                    Praesentium at nobis unde quis aut quaerat autem libero in consequuntur recusand...
+                                    Praesentium at nobis unde quis aut quaerat autem libero in consequuntur
+                                    recusand...
                                 </a>
                             </h6>
                             <div class="blog-item__btn">
@@ -1078,7 +1165,8 @@
                             <h6 class="blog-item__title">
                                 <a class="blog-item__title-link border-effect"
                                     href="https://script.viserlab.com/courierlab/demo/blog/unde-quis-aut-quaerat-autem-libero-in-consequuntur-recusandae-provident-raesentium-at-nobis">
-                                    Unde quis aut quaerat autem libero in consequuntur recusandae provident raesenti...
+                                    Unde quis aut quaerat autem libero in consequuntur recusandae provident
+                                    raesenti...
                                 </a>
                             </h6>
                             <div class="blog-item__btn">
@@ -1114,7 +1202,8 @@
                             <h6 class="blog-item__title">
                                 <a class="blog-item__title-link border-effect"
                                     href="https://script.viserlab.com/courierlab/demo/blog/praesentium-at-nobis-unde-quis-aut-quaerat-autem-libero-in-consequuntur-recusandae">
-                                    Praesentium at nobis unde quis aut quaerat autem libero in consequuntur recusand...
+                                    Praesentium at nobis unde quis aut quaerat autem libero in consequuntur
+                                    recusand...
                                 </a>
                             </h6>
                             <div class="blog-item__btn">
@@ -1146,10 +1235,5 @@
         </div>
     </div>
 
-
-
     @include('Components.Home.Footer')
-
-
-
     @include('Components.Home.Script')

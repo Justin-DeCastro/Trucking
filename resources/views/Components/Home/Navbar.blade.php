@@ -3,8 +3,7 @@
         <div class="col-12">
             <nav class="navbar navbar-expand-lg navbar-light">
                 <a class="navbar-brand logo" href="/">
-                    <img src="Home/GDR-removebg-preview.png"
-                        alt="logo image">
+                    <img src="Home/GDR_Logo.jpg" alt="Logo" style="border-radius: 50%; width: 80px; height: 90px;">
                 </a>
                 <button class="navbar-toggler header-button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" type="button" aria-controls="navbarSupportedContent"
@@ -23,12 +22,8 @@
                                                     <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50"
                                                         alt="image">
                                                 </div>
-                                                
                                             </div>
                                             <ul class="dropdown-list">
-                                                
-                                               
-                                                
                                             </ul>
                                         </div>
                                     </div>
@@ -40,49 +35,40 @@
                                     Order Tracking </a>
                             </div>
                         </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/" aria-current="page">
-                                Home </a>
+                        <li class="nav-item {{ Request::is('/') ? 'active' : '' }}">
+                            <a class="nav-link" href="/" aria-current="page">Home</a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="about" aria-current="page">
-                                About
-                            </a>
+                        <li class="nav-item {{ Request::is('about') ? 'active' : '' }}">
+                            <a class="nav-link" href="about" aria-current="page">About</a>
                         </li>
-                       
-                        <li class="nav-item ">
-                            <a class="nav-link" href="service" aria-current="page">
-                                Service
-                            </a>
+                        <li class="nav-item {{ Request::is('service') ? 'active' : '' }}">
+                            <a class="nav-link" href="service" aria-current="page">Service</a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="" aria-current="page">
-                                Team
-                            </a>
+                        <li class="nav-item {{ Request::is('team') ? 'active' : '' }}">
+                            <a class="nav-link" href="team" aria-current="page">Team</a>
                         </li>
-                        <li class="nav-item ">
+                        <li class="nav-item {{ Request::is('blog') ? 'active' : '' }}">
                             <a class="nav-link" href="blog" aria-current="page">Blog</a>
                         </li>
-                        <li class="nav-item ">
+                        <li class="nav-item {{ Request::is('contact') ? 'active' : '' }}">
                             <a class="nav-link" href="contact">Contact</a>
                         </li>
-                     
-                        <li class="nav-item ">
+                        <li class="nav-item {{ Request::is('appointment') ? 'active' : '' }}">
                             <a class="nav-link" href="appointment">Book Now</a>
                         </li>
-                       
-                        <li class="nav-item d-lg-block d-none">
+                        <li class="nav-item d-lg-block d-none {{ Request::is('ordertracking') ? 'active' : '' }}">
                             <a class="nav-button flex-align btn btn--base" href="ordertracking" aria-current="page">
                                 <span class="icon"><i class="icon-Product-Box"></i></span>
-                                Order Tracking </a>
+                                Order Tracking
+                            </a>
                         </li>
-                        <li class="nav-item d-lg-block d-none">
-                            <a class="nav-button flex-align btn btn--base" href="" aria-current="page">
+                        <li class="nav-item d-lg-block d-none {{ Request::is('download') ? 'active' : '' }}">
+                            <a class="nav-button flex-align btn btn--base" href="download" aria-current="page">
                                 <span class="icon"><i class="icon-Product-Box"></i></span>
-                               Download App </a>
+                                Download App
+                            </a>
                         </li>
-                        
-                     
+
                     </ul>
 
                 </div>
@@ -90,3 +76,17 @@
         </div>
     </div>
 </header>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const currentLocation = window.location.pathname;
+        const menuItems = document.querySelectorAll('.nav-item a');
+
+        menuItems.forEach(menuItem => {
+            if(menuItem.getAttribute('href') === currentLocation){
+                menuItem.parentElement.classList.add('active');
+            }
+        });
+    });
+</script>
+

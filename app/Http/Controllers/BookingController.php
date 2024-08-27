@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\User;
@@ -59,7 +61,7 @@ class BookingController extends Controller
             ->selectRaw('GROUP_CONCAT(DISTINCT status) as statuses')
             ->groupBy('plate_number')
             ->get();
-    
+
         // Prepare data for each status count
         $plateNumberDetails = $plateNumberCounts->map(function ($plate) {
             // Get booking details for the plate number
@@ -69,23 +71,23 @@ class BookingController extends Controller
                 ->selectRaw('count(*) as count')
                 ->pluck('count', 'status')
                 ->toArray();
-            
+
             $plate->status_counts = $statusCounts;
             return $plate;
         });
-    
+
         // Handle empty result set by ensuring it's an empty collection
         if ($plateNumberCounts === null) {
             $plateNumberDetails = collect(); // Return an empty collection
         }
-    
+
         // Pass the data to the view
         return view('Admin.PlatenumberBookingCount', [
             'plateNumberCounts' => $plateNumberDetails,
         ]);
     }
-    
-  
+
+
 
     public function getBookingCountByPlateNumber(Request $request)
     {
@@ -93,20 +95,20 @@ class BookingController extends Controller
         $validatedData = $request->validate([
             'plate_number' => 'required|string|max:255',
         ]);
-    
+
         // Retrieve the plate number from the request
         $plateNumber = $validatedData['plate_number'];
-    
+
         // Get the count of bookings with the given plate number
         $bookingCount = Booking::where('plate_number', $plateNumber)->count();
-    
+
         // Return the count as a JSON response or however you prefer
         return response()->json([
             'plate_number' => $plateNumber,
             'booking_count' => $bookingCount,
         ]);
     }
-    
+
 
     // Handle form submission
     public function submitForm(Request $request)
@@ -137,22 +139,22 @@ class BookingController extends Controller
             'date' => 'required|date',
             'truck_type' => 'required',
         ]);
-    
+
         // Generate tracking number
         $trackingNumber = 'GDR-' . strtoupper(uniqid(mt_rand(), true));
         $validatedData['tracking_number'] = $trackingNumber;
-    
+
         // Generate order number with the format '2024-(order_number)'
         $currentYear = date('Y'); // Gets the current year
-    
+
         // Retrieve the last booking for the current year
         $lastBooking = Booking::whereYear('created_at', $currentYear)->orderBy('order_number', 'desc')->first();
-    
+
         // Initialize order number
         if ($lastBooking && strpos($lastBooking->order_number, '-') !== false) {
             // Split the last order number by '-'
             $parts = explode('-', $lastBooking->order_number);
-    
+
             // Check if the split parts are valid
             if (isset($parts[1]) && is_numeric($parts[1])) {
                 $orderNumber = intval($parts[1]) + 1;
@@ -162,64 +164,35 @@ class BookingController extends Controller
         } else {
             $orderNumber = 1;
         }
-    
+
         // Format order number to start from 0001
         $formattedOrderNumber = str_pad($orderNumber, 4, '0', STR_PAD_LEFT);
         $validatedData['order_number'] = $currentYear . '-' . $formattedOrderNumber;
-    
+
         // Create the booking
         $booking = Booking::create($validatedData);
-    
-        // Format the data for the QR code
-        $formattedData = [
-            "1. Sender Name: " . $validatedData['sender_name'],
-            "2. Transport Mode: " . $validatedData['transport_mode'],
-            "3. Shipping Type: " . $validatedData['shipping_type'],
-            "4. Delivery Type: " . $validatedData['delivery_type'],
-            "5. Journey Type: " . $validatedData['journey_type'],
-            "6. Consignee Name: " . $validatedData['consignee_name'],
-            "7. Consignee Address: " . $validatedData['consignee_address'],
-            "8. Consignee Email: " . $validatedData['consignee_email'],
-            "9. Consignee Mobile: " . $validatedData['consignee_mobile'],
-            "10. Consignee City: " . $validatedData['consignee_city'],
-            "11. Consignee Province: " . $validatedData['consignee_province'],
-            "12. Consignee Barangay: " . $validatedData['consignee_barangay'],
-            "13. Consignee Building Type: " . $validatedData['consignee_building_type'],
-            "14. Merchant Name: " . $validatedData['merchant_name'],
-            "15. Merchant Address: " . $validatedData['merchant_address'],
-            "16. Merchant Email: " . $validatedData['merchant_email'],
-            "17. Merchant Mobile: " . $validatedData['merchant_mobile'],
-            "18. Merchant City: " . $validatedData['merchant_city'],
-            "19. Merchant Province: " . $validatedData['merchant_province'],
-            "20. Driver Name: " . $validatedData['driver_name'],
-            "21. Plate Number: " . $validatedData['plate_number'],
-            "22. Date: " . $validatedData['date'],
-            "23. Truck Type: " . $validatedData['truck_type'],
-            "24. Tracking Number: " . $trackingNumber,
-            "25. Order Number: " . $validatedData['order_number'],
-        ];
-    
-        // Convert formatted data to a single string
-        $formattedDataString = implode("\n", $formattedData);
-    
+
+        // Generate URL to redirect to
+        $detailsUrl = route('rubixdetails', ['tracking_number' => $trackingNumber, 'order_number' => $validatedData['order_number']]);
+
         // Generate QR code
         $filename = time() . '-' . $trackingNumber . '.svg';
         $qrCodePath = 'qrcodes/' . $filename;
-        $qrCodeImage = QrCode::size(300)->generate($formattedDataString);
+        $qrCodeImage = QrCode::size(300)->generate($detailsUrl);
         file_put_contents(public_path($qrCodePath), $qrCodeImage);
-    
+
         // Save QR code path to the booking
         $booking->update(['qr_code' => $qrCodePath]);
-    
+
         // Update the truck status if truck_type is provided
         $truckId = $request->input('truck_type'); // Ensure 'truck_type' field exists in the form
         if ($truckId) {
             $truck = Vehicle::find($truckId);
-    
+
             if ($truck) {
                 // Decrement the quantity of the truck
                 $truck->decrement('quantity');
-    
+
                 // Update truck status if quantity is 0
                 if ($truck->quantity <= 0) {
                     $truck->update([
@@ -228,10 +201,10 @@ class BookingController extends Controller
                 }
             }
         }
-    
+
         // Generate the URL to the QR code image
         $qrCodeUrl = asset($qrCodePath);
-    
+
         // Redirect to the confirmation view with data
         return view('Home.confirmation', [
             'trackingNumber' => $trackingNumber,
@@ -239,9 +212,10 @@ class BookingController extends Controller
             'orderNumber' => $validatedData['order_number'],
         ]);
     }
-    
 
-    
+
+
+
 
 
 
@@ -398,7 +372,7 @@ public function updateOrderStatus(Request $request, $id)
 
         // Find the booking by ID
         $booking = Booking::findOrFail($id);
-        
+
         // Update the remarks
         $booking->remarks = $request->input('remarks');
         $booking->save();
@@ -428,13 +402,13 @@ public function updateOrderStatus(Request $request, $id)
     if ($request->hasFile('proof_of_delivery')) {
         try {
             $file = $request->file('proof_of_delivery');
-    
+
             // Generate a unique file name
             $fileName = time() . '_' . $file->getClientOriginalName();
-    
+
             // Move the file to the destination path
             $file->move($destinationPath, $fileName);
-    
+
             // Save the file path in the database
             $booking->update(['proof_of_delivery' => 'pictures/' . $fileName]);
 
@@ -443,7 +417,7 @@ public function updateOrderStatus(Request $request, $id)
 
         } catch (\Exception $e) {
             // Log the error message for debugging
-            \Log::error('File upload error: ' . $e->getMessage());
+            Log::error('File upload error: ' . $e->getMessage());
             return redirect()->back()->withErrors('An error occurred while uploading the picture.');
         }
     }
@@ -451,8 +425,8 @@ public function updateOrderStatus(Request $request, $id)
     return redirect()->back()->withErrors('No file was uploaded.');
 }
 
-    
-    
+
+
 public function updatePaymentStatus(Request $request, Booking $booking)
 {
     // Validate the payment status input

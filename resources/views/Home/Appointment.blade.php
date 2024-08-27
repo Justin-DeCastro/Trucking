@@ -1,13 +1,38 @@
 
 <!doctype html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
 
-
+</style>
 @include('Components.Home.Header')
 
+<style>
+    .contact-list__item {
+        display: flex;
+        align-items: center;
+    }
+
+    .contact-list__item-icon {
+        margin-right: 8px;
+    }
+
+    .contact-numbers a {
+        margin-left: 15px;
+        white-space: nowrap;
+    }
+
+    .bullet {
+        margin: 0 10px;
+        color: #2789FF;
+    }
+
+    .top-contact {
+        justify-content: flex-end;
+    }
+</style>
+
 <body>
-    
+
     <div class="preloader">
         <div class="loader-p"></div>
     </div>
@@ -18,65 +43,44 @@
 
     <a class="scroll-top"><i class="fas fa-angle-double-up"></i></a>
 
-        <div class="header-top d-lg-block d-none">
-    <div class="container">
-        <div class="top-header-wrapper d-flex justify-content-between align-items-center flex-wrap">
-            <div class="top-contact">
-                <ul class="contact-list">
-                    <li class="contact-list__item flex-align">
-                        <span class="contact-list__item-icon flex-center">
-                            <i class="las la-envelope-open"></i>                        </span>
-                        <a class="contact-list__link" href="/cdn-cgi/l/email-protection#e1929491918e9395a1828e94938884938d8083cf828e8c">
-                            <span class="__cf_email__" data-cfemail="8bf8fefbfbe4f9ffcbe8e4fef9e2eef9e7eae9a5e8e4e6">[email&#160;protected]</span>
-                        </a>
-                    </li>
-                    <li class="contact-list__item flex-align">
-                        <span class="contact-list__item-icon flex-center">
-                            <i class="las la-phone"></i>                        </span>
-                        <a class="contact-list__link" href="tel:+44 123 1217">
-                            +44 123 1217
-                        </a>
-                    </li>
-                </ul>
-            </div>
-                            <div class="top-button d-flex justify-content-between align-items-center flex-wrap">
-                    <div class="top-button d-flex justify-content-between align-items-center flex-wrap">
-                        <div class="language-box">
-    <div class="custom--dropdown">
-        <div class="custom--dropdown__selected dropdown-list__item">
-                                                <div class="thumb">
-                        <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50" alt="image">
-                    </div>
-                    <span class="text">English</span>
-                                                                                                                        </div>
-        <ul class="dropdown-list">
-                                                                            <li class="dropdown-list__item langSel" data-value="hn">
-                        <div class="thumb">
-                            <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50" alt="image">
-                        </div>
-  in                  <span class="text">Hindi</span>
-                    </li>
-                                                                <li class="dropdown-list__item langSel" data-value="bn">
-                        <div class="thumb">
-                            <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50" alt="image">
-                        </div>
-                        <span class="text">Bangla</span>
-                    </li>
-                                                                <li class="dropdown-list__item langSel" data-value="sp">
-                        <div class="thumb">
-                            <img src="https://script.viserlab.com/courierlab/demo/placeholder-image/50x50" alt="image">
-                        </div>
-                        <span class="text">Spanish</span>
-                    </li>
-                                    </ul>
-    </div>
-</div>
-                    </div>
+    <div class="header-top d-lg-block d-none">
+        <div class="container">
+            <div class="top-header-wrapper d-flex justify-content-between align-items-center flex-wrap">
+                <div class="top-contact d-flex align-items-center">
+                    <ul class="contact-list d-flex">
+                        <li class="contact-list__item d-flex align-items-center mr-4">
+                            <span class="contact-list__item-icon flex-center">
+                                <i class="fas fa-envelope-open"></i>
+                            </span>
+                            <a class="contact-list__link" href="mailto:gdrlogisticinc@outlook.com">
+                                gdrlogisticinc@outlook.com
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                    </div>
+                <div class="top-contact d-flex align-items-center">
+                    <ul class="contact-list d-flex">
+                        <li class="contact-list__item d-flex align-items-center text-right">
+                            <span class="contact-list__item-icon flex-center">
+                                <i class="fas fa-phone"></i>
+                            </span>
+                            <div class="contact-numbers d-flex align-items-center">
+                                <a class="contact-list__link" href="tel:0917-7166-132">0917-7166-132</a>
+                                <span class="bullet">&bull;</span>
+                                <a class="contact-list__link" href="tel:0919-345-5535">0919-345-5535</a>
+                                <span class="bullet">&bull;</span>
+                                <a class="contact-list__link" href="tel:0917-819-1571">0917-819-1571</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-@include('Components.Home.Navbar')
+
+
+
+    @include('Components.Home.Navbar')
 
 
             <section class="breadcrumb bg-img mb-0"
@@ -91,7 +95,7 @@
         </div>
     </div>
 </section>
-    
+
 <section style="padding: 60px 0; background: #f9f9f9;">
     <div style="max-width: 900px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
         <div style="text-align: center; margin-bottom: 40px;">
@@ -122,6 +126,7 @@
                 <label for="plate_number" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Date</label>
                 <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="date" name="date" type="datetime-local" placeholder="Enter Date" required>
             </div>
+
         </div>
 
         <!-- Bottom Section: Client Name, Transport Mode, Shipping Type -->
@@ -131,12 +136,20 @@
                 <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="sender_name" name="sender_name" type="text" placeholder="Enter Sender's Name" required>
             </div>
             <div style="flex: 1; min-width: 220px;">
-                <label for="transport_mode" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Transport Mode</label>
-                <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="transport_mode" name="transport_mode" type="text" placeholder="Enter transport mode" required>
+                <label for="shipping-mode" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Transport Mode</label>
+                <select id="shipping-mode" name="transport_mode" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);">
+                    <option value="Air Transport">Air Transport </option>
+                    <option value="Water Transport">Water Transport</option>
+                    <option value="Land Transport">Land Transport</option>
+                </select>
             </div>
             <div style="flex: 1; min-width: 220px;">
-                <label for="shipping_type" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Shipping Type</label>
-                <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="shipping_type" name="shipping_type" type="text" placeholder="Enter shipping type" required>
+                <label for="shipping-mode" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Shipping Type</label>
+                <select id="shipping-mode" name="shipping_type" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);">
+                    <option value="air">Air Freight</option>
+                    <option value="sea">Sea Freight</option>
+                    <option value="road">Road Transport</option>
+                </select>
             </div>
         </div>
     </div>
@@ -269,12 +282,12 @@
 
 
 
-    
 
-   
-    
-    
-   
+
+
+
+
+
 @if(session('success'))
     <script>
         Swal.fire({

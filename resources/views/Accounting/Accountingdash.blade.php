@@ -94,10 +94,10 @@
                                             <i class="fas fa-money-bill-wave"></i>
                                             </span>
                                         </span>
-                                        <div class="widget-seven__description">
+                                        {{-- <div class="widget-seven__description">
     <p class="widget-seven__content-title">Total Cash on Deposit</p>
     <h3 class="widget-seven__content-amount">{{ number_format($outstandingBalance, 2) }}</h3>
-</div>
+</div> --}}
 
                                     </div>
 
@@ -107,27 +107,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="col-xxl-4 col-sm-6">
-                            <a href="g">
-                                <div class="widget-seven bg--cyan ">
-                                    <div class="widget-seven__content">
-                                        <span class="widget-seven__content-icon">
-                                            <span class="icon">
-                                            <i class="fas fa-money-bill-wave"></i>
-                                            </span>
-                                        </span>
-                                        <div class="widget-seven__description">
-    <p class="widget-seven__content-title">Total Withdrawal Cash</p>
-    <h3 class="widget-seven__content-amount">{{ number_format($totalWithdraw, 2) }}</h3>
-</div>
-                                    </div>
 
-                                    <span class="widget-seven__arrow">
-                                    <i class="fas fa-money-bill-wave"></i>
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
                         <div class="col-xxl-4 col-sm-6">
                             <a href="">
                                 <div class="widget-seven bg--primary ">
@@ -137,10 +117,10 @@
                                             <i class="fas fa-calculator"></i>
                                             </span>
                                         </span>
-                                        <div class="widget-seven__description">
+                                        {{-- <div class="widget-seven__description">
     <p class="widget-seven__content-title">Total Expenses</p>
     <h3 class="widget-seven__content-amount">{{ number_format($totalExpense, 2) }}</h3>
-</div>
+</div> --}}
                                     </div>
 
                                     <span class="widget-seven__arrow">
@@ -149,166 +129,12 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="col-xxl-4 col-sm-6">
-                            <a href="https://script.viserlab.com/courierlab/demo/staff/courier/delivery/queue">
-                                <div class="widget-seven bg--pink ">
-                                    <div class="widget-seven__content">
-                                        <span class="widget-seven__content-icon">
-                                            <span class="icon">
-                                                <i class="lab la-accessible-icon"></i>
-                                            </span>
-                                        </span>
-                                        <div class="widget-seven__description">
-                                            <p class="widget-seven__content-title">Delivery in Queue</p>
-                                            <h3 class="widget-seven__content-amount">0</h3>
-                                        </div>
-                                    </div>
 
-                                    <span class="widget-seven__arrow">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-xxl-4 col-sm-6">
-                            <a href="https://script.viserlab.com/courierlab/demo/staff/courier/send/list">
-                                <div class="widget-seven bg--green ">
-                                    <div class="widget-seven__content">
-                                        <span class="widget-seven__content-icon">
-                                            <span class="icon">
-                                                <i class="las la-check-double"></i>
-                                            </span>
-                                        </span>
-                                        <div class="widget-seven__description">
-                                            <p class="widget-seven__content-title">Total Sent</p>
-                                            <h3 class="widget-seven__content-amount">384</h3>
-                                        </div>
-                                    </div>
 
-                                    <span class="widget-seven__arrow">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-xxl-4 col-sm-6">
-                            <a href="https://script.viserlab.com/courierlab/demo/staff/courier/delivery/list/total">
-                                <div class="widget-seven bg--deep-purple ">
-                                    <div class="widget-seven__content">
-                                        <span class="widget-seven__content-icon">
-                                            <span class="icon">
-                                                <i class="las la-list-alt"></i>
-                                            </span>
-                                        </span>
-                                        <div class="widget-seven__description">
-                                            <p class="widget-seven__content-title">Total Delivered</p>
-                                            <h3 class="widget-seven__content-amount">28</h3>
-                                        </div>
-                                    </div>
 
-                                    <span class="widget-seven__arrow">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-xxl-4 col-sm-6">
-                            <a href="https://script.viserlab.com/courierlab/demo/staff/branch/list">
-                                <div class="widget-seven bg--lime ">
-                                    <div class="widget-seven__content">
-                                        <span class="widget-seven__content-icon">
-                                            <span class="icon">
-                                                <i class="las la-university"></i>
-                                            </span>
-                                        </span>
-                                        <div class="widget-seven__description">
-                                            <p class="widget-seven__content-title">Total Branch</p>
-                                            <h3 class="widget-seven__content-amount">4</h3>
-                                        </div>
-                                    </div>
 
-                                    <span class="widget-seven__arrow">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-xxl-4 col-sm-6">
-                            <a href="https://script.viserlab.com/courierlab/demo/staff/cash/collection">
-                                <div class="widget-seven bg--orange ">
-                                    <div class="widget-seven__content">
-                                        <span class="widget-seven__content-icon">
-                                            <span class="icon">
-                                                <i class="las la-money-bill-wave"></i>
-                                            </span>
-                                        </span>
-                                        <div class="widget-seven__description">
-                                            <p class="widget-seven__content-title">Total Cash Collection</p>
-                                            <h3 class="widget-seven__content-amount">$1,129,810.15</h3>
-                                        </div>
-                                    </div>
-
-                                    <span class="widget-seven__arrow">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-xxl-4 col-sm-6">
-                            <a href="https://script.viserlab.com/courierlab/demo/staff/courier/list">
-                                <div class="widget-seven bg--teal ">
-                                    <div class="widget-seven__content">
-                                        <span class="widget-seven__content-icon">
-                                            <span class="icon">
-                                                <i class="las la-shipping-fast"></i>
-                                            </span>
-                                        </span>
-                                        <div class="widget-seven__description">
-                                            <p class="widget-seven__content-title">All Courier</p>
-                                            <h3 class="widget-seven__content-amount">434</h3>
-                                        </div>
-                                    </div>
-
-                                    <span class="widget-seven__arrow">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
                     </div>
 
-                    <div class="row mt-30 ">
-                        <div class="col-lg-12">
-                            <div class="card  ">
-                                <div class="card-header mb-1">
-                                    <h6>Upcoming Courier</h6>
-                                </div>
-                                <div class="card-body p-0">
-                                    <div class="table-responsive--sm table-responsive">
-                                        <table class="table table--light style--two">
-                                            <thead>
-                                                <tr>
-                                                    <th>Sender Branch - Staff</th>
-                                                    <th>Receiver Branch - Staff</th>
-                                                    <th>Amount - Order Number</th>
-                                                    <th>Creations Date</th>
-                                                    <th>Payment Status</th>
-                                                    <th>Status</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td class="text-muted text-center" colspan="100%">Data not found
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
 
                     <div class="modal fade" id="paymentBy">

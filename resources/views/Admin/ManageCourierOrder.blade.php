@@ -1,6 +1,8 @@
 <!-- meta tags and other links -->
 <!DOCTYPE html>
 <html lang="en">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.lineicons.com/1.0/LineIcons.css">
 
 @include('Components.Admin.Header')
 
@@ -13,36 +15,32 @@
             <div class="sidebar bg--dark">
                 <button class="res-sidebar-close-btn"><i class="las la-times"></i></button>
                 <div class="sidebar__inner">
-                    <div class="sidebar__logo">
-                        <a href="https://script.viserlab.com/courierlab/demo/admin/dashboard"
-                            class="sidebar__main-logo">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/logo_icon/logo.png"
-                                alt="image"></a>
-                    </div>
+                    <div class="sidebar__logo"
+            style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+           <img src="proofs/GDR.png" alt="Logo"
+                style="border-radius: 0; width: 100px; height: 100px;
+                       filter: drop-shadow(0 0 30px rgba(0, 127, 255, 1));">
+           <h3 style="margin-top: 10px; color: #1F8FFF;"><b>ADMIN</b></h3>
+       </div>
+
+
                     <div class="sidebar__menu-wrapper">
                         <ul class="sidebar__menu">
                             <li class="sidebar-menu-item active">
-                                <a href="admindash" class="nav-link ">
-                                    <i class="menu-icon las la-home"></i>
+                                <a href="courierdash" class="nav-link">
+                                    <i class="menu-icon fas fa-tachometer-alt"></i> <!-- Updated icon -->
                                     <span class="menu-title">Dashboard</span>
                                 </a>
                             </li>
 
-
-                            <li class="sidebar-menu-item ">
-                                <a href="order-for-courier" class="nav-link ">
-                                    <i class="menu-icon las la-fax"></i>
+                            <li class="sidebar-menu-item">
+                                <a href="order-for-courier" class="nav-link">
+                                    <i class="menu-icon fas fa-truck"></i> <!-- Trucking order icon -->
                                     <span class="menu-title">Manage Order</span>
                                 </a>
                             </li>
-
-
-
-
-
-
-
                         </ul>
+
                     </div>
                     <div class="version-info text-center text-uppercase">
                         <span class="text--primary">courierlab</span>
@@ -240,7 +238,7 @@
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateStatusModal{{ $detail->id }}">
                         Update Status
                     </button>
-                    
+
                     <!-- Status Update Modal -->
                     <div class="modal fade" id="updateStatusModal{{ $detail->id }}" tabindex="-1" aria-labelledby="updateStatusModalLabel{{ $detail->id }}" aria-hidden="true">
                         <div class="modal-dialog">

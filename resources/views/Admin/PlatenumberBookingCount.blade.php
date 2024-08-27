@@ -117,8 +117,6 @@
 @include('Components.Admin.Header')
 
 <body>
-
-
     @include('Components.Admin.Sidebar')
 
     <div class="container-fluid px-3 px-sm-0">
@@ -128,35 +126,7 @@
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
                     <h6 class="page-title">In and Out</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                        {{-- <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal" data-bs-target="#manageSubcontractor">
-    <i class="las la-plus"></i> IN
-</button>
-<button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal" data-bs-target="#manageWithdraw">
-    <i class="las la-plus"></i> OUT
-</button> --}}
 
-                    </div>
-                </div>
-                <!-- Display the overall Outstanding Balance -->
-
-                <div class="dt-buttons btn-group d-flex justify-content-end gap-2 ">
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class='bx bx-export'></i> Export
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><button type="button" id="copyBtn" class="btn dropdown-item"><i
-                                        class='bx bx-copy'></i> Copy</button></li>
-                            <li><button type="button" id="printBtn" class="btn dropdown-item"><i
-                                        class='bx bx-printer'></i> Print</button></li>
-                            <li><button type="button" id="excelBtn" class="btn dropdown-item"><i
-                                        class='bx bx-file'></i>Excel</button></li>
-                            <li><button type="button" id="pdfBtn" class="btn dropdown-item"><i
-                                        class='bx bxs-file-pdf'></i> Pdf</button></li>
-                        </ul>
-                    </div>
-                    <div class="dropdown">
 
                     </div>
                 </div>
@@ -214,7 +184,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h2>Booking Details</h2>
-                           
+
                             <h3>Status Counts</h3>
                             <table class="table">
                                 <thead>
@@ -249,7 +219,7 @@
             <style>
                 @media print {
                     .modal-footer button {
-                        display: none; /* Hide the Close and Print buttons when printing */
+                        display: none;
                     }
                 }
                 </style>

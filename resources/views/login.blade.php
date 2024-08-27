@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Login</title>
     <style>
-       
+
         .divider:after,
         .divider:before {
             content: "";
@@ -38,7 +38,7 @@
         <div class="container py-5 h-100">
             <div class="row d-flex align-items-center justify-content-center h-100">
                 <div class="col-md-8 col-lg-7 col-xl-6 form-container">
-                    <img src="images/no.jpg"
+                    <img src="Home/GDR logo.png"
                         class="img-fluid" alt="Phone image">
 
                         <h6> Welcome! Sign in to your account. </h6>

@@ -10,6 +10,8 @@ use App\Models\Vehicle;
 use App\Models\Transaction;
 use App\Models\Subcontractor;
 use App\Models\PricingSalary;
+use App\Models\Preventive;
+use App\Models\RatePerMile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -21,24 +23,24 @@ class AdminController extends Controller
     {
         // Count the total number of bookings
         $totalBookings = Booking::count();
-    
-        
+
+
         $today = Carbon::today();
         $formattedDate = $today->format('F j, Y');
-    
-      
+
+
         $todayBookings = Booking::whereDate('created_at', $today)->count();
-    
-        
+
+
         $deliverySuccessfulCount = Booking::where('status', 'Delivery successful')->count();
-    
-       
+
+
         $totalAvailableTrucks = Vehicle::sum('quantity');
         $totalCouriers = User::where('role', 'courier')->count();
-        
+
         return view('Admin.dashboard', compact('totalBookings', 'todayBookings', 'formattedDate', 'deliverySuccessfulCount', 'totalAvailableTrucks','totalCouriers'));
     }
-    
+
      public function waybill(){
         $vehicles = Vehicle::all();
         return view('Admin.Waybill',compact('vehicles'));
@@ -52,7 +54,7 @@ class AdminController extends Controller
     public function rubix_details()
     {
         $rubixdetails = Booking::all();
-      
+
         return view('Admin.rubix_details', compact('rubixdetails'));
     }
     public function showMap()
@@ -60,7 +62,7 @@ class AdminController extends Controller
     // Fetch a specific booking or relevant data
     $booking = Booking::find(88); // Adjust as needed to fetch the booking
 
-   
+
     $merchantAddress = $booking->merchant_address;
     $consigneeAddress = $booking->consignee_address;
 
@@ -122,17 +124,34 @@ class AdminController extends Controller
     public function courier_dash(){
         return view('Admin.Courierdash');
     }
-    public function accounting_dash(){
+    public function accounting_dash()
+{
+    // Fetch all transactions from the database
+    $transactions = Transaction::all();
 
-        $transactions = Transaction::all();
-        $totalDeposit = Transaction::all();
-        $totalWithdraw = $transactions->sum('withdraw_amount');
-        $outstandingBalance = $transactions->sum('deposit_amount');
-        $totalExpense = $transactions->sum('expense_amount');
-        $netIncome = $outstandingBalance - $totalWithdraw;
-        return view('Accounting.Accountingdash',compact('outstandingBalance','totalWithdraw','totalExpense','netIncome'));
+    // Calculate total deposit and withdrawal amounts
+    $totalDeposit = $transactions->sum('deposit_amount');
+    $totalWithdraw = $transactions->sum('withdraw_amount');
+    // $totalExpense = $transactions->sum('withdraw_amount');
+
+    // Calculate net income
+    // $netIncome = $totalDeposit - $totalWithdraw - $totalExpense;
+
+    // Pass the computed values to the view
+    return view('Accounting.Accountingdash', compact('totalDeposit', 'totalWithdraw',  ));
+}
+
+    public function destroy($id)
+    {
+        // Find the courier by ID
+        $courier = User::findOrFail($id);
+
+        // Delete the courier
+        $courier->delete();
+
+        // Redirect with a success message
+        return redirect()->back()->with('success', 'Courier deleted successfully.');
     }
-
     public function add_driver(){
         $bookings = Booking::all();
         $couriers = User::where('role', 'courier')->get();
@@ -186,7 +205,7 @@ public function salary()
         $deliveryRoutes= $record->delivery_routes;
         $driverSalary = $record->driver_salary;
         $helperSalary = $record->helper_salary;
-        
+
 
         // Compute total salary or other needed calculations per ID
         $totalSalary = $driverSalary + $helperSalary;
@@ -202,6 +221,71 @@ public function salary()
 
     // Pass the data to the view
     return view('Admin.Salary', compact('computedSalaries'));
+}
+public function preventive(){
+    $preventive = Preventive::all();
+    return view('Admin.PMS',compact('preventive'));
+}
+public function ratepermile(Request $request)
+{
+    // Retrieve all records from RatePerMile
+    $rates = RatePerMile::all();
+
+
+    // Pass data to the view
+    return view('Accounting.In-house', compact('rates'));
+}
+public function ratepermonth(Request $request)
+{
+    // Get the start and end dates for the current month
+    $startOfMonth = Carbon::now()->startOfMonth();
+    $endOfMonth = Carbon::now()->endOfMonth();
+
+    // Retrieve records from RatePerMile that fall within the current month
+    $rates = RatePerMile::whereBetween('created_at', [$startOfMonth, $endOfMonth])->get();
+
+    // Group records by date
+    $dailyTotals = $rates->groupBy(function ($date) {
+        return Carbon::parse($date->created_at)->format('M j, Y'); // Group by date
+    })->map(function ($group) {
+        return $group->sum(function ($rate) {
+            return ($rate->rate_per_mile * $rate->km) - $rate->operational_costs;
+        });
+    });
+
+    // Calculate the grand total for the current month
+    $overallTotal = $dailyTotals->sum();
+
+    // Pass data to the view
+    return view('Accounting.Monthly-inhouse', [
+        'dailyTotals' => $dailyTotals,
+        'overallTotal' => $overallTotal,
+    ]);
+}
+
+
+public function rateperyear(Request $request)
+{
+    // Get the start and end dates of the current year
+    $rates = RatePerMile::all();
+
+    // Group records by month and year
+    $monthlyTotals = $rates->groupBy(function ($date) {
+        return Carbon::parse($date->created_at)->format('F Y'); // Group by month and year
+    })->map(function ($group) {
+        return $group->sum(function ($rate) {
+            return ($rate->rate_per_mile * $rate->km) - $rate->operational_costs;
+        });
+    });
+
+    // Calculate the grand total for all available data
+    $yearlyTotal = $monthlyTotals->sum();
+
+    // Pass data to the view
+    return view('Accounting.Yearly-inhouse', [
+        'monthlyTotals' => $monthlyTotals,
+        'yearlyTotal' => $yearlyTotal,
+    ]);
 }
 
 }

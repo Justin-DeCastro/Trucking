@@ -121,14 +121,27 @@
                 <label for="sender_name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Client Name</label>
                 <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="sender_name" name="sender_name" type="text" placeholder="Enter Sender's Name" required>
             </div>
-            <div style="flex: 1; min-width: 220px;">
+            <!-- <div style="flex: 1; min-width: 220px;">
                 <label for="transport_mode" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Transport Mode</label>
                 <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="transport_mode" name="transport_mode" type="text" placeholder="Enter transport mode" required>
-            </div>
+            </div> -->
             <div style="flex: 1; min-width: 220px;">
-                <label for="shipping_type" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Shipping Type</label>
-                <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="shipping_type" name="shipping_type" type="text" placeholder="Enter shipping type" required>
-            </div>
+            <label for="shipping-mode" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Transport Mode</label>
+            <select id="shipping-mode" name="transport_mode" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);">
+                <option value="Air Transport">Air Transport </option>
+                <option value="Water Transport">Water Transport</option>
+                <option value="Land Transport">Land Transport</option>
+            </select>
+        </div>
+            <div style="flex: 1; min-width: 220px;">
+            <label for="shipping-mode" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Shipping Type</label>
+            <select id="shipping-mode" name="shipping_type" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);">
+                <option value="air">Air Freight</option>
+                <option value="sea">Sea Freight</option>
+                <option value="road">Road Transport</option>
+            </select>
+        </div>
+
         </div>
     </div>
 
@@ -244,7 +257,6 @@
         </div>
     @endforeach
 </div>
-
     <!-- Submit Button -->
     <div style="text-align: center;">
         <button style="padding: 12px 24px; background-color: #007bff; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background-color 0.3s ease;" type="submit">

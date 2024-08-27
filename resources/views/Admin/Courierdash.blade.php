@@ -1,6 +1,8 @@
 <!-- meta tags and other links -->
 <!DOCTYPE html>
 <html lang="en">
+<!-- Include Font Awesome from a CDN -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 @include('Components.Admin.Header')
 
@@ -11,39 +13,45 @@
         <div class="sidebar bg--dark">
             <button class="res-sidebar-close-btn"><i class="las la-times"></i></button>
             <div class="sidebar__inner">
-                <div class="sidebar__logo">
-                    <a href="https://script.viserlab.com/courierlab/demo/admin/dashboard" class="sidebar__main-logo">
-                        <img src="https://script.viserlab.com/courierlab/demo/assets/images/logo_icon/logo.png"
-                            alt="image"></a>
-                </div>
+                <div class="sidebar__logo"
+                style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+               <img src="proofs/GDR.png" alt="Logo"
+                    style="border-radius: 0; width: 100px; height: 100px;
+                           filter: drop-shadow(0 0 30px rgba(0, 127, 255, 1));">
+               <h3 style="margin-top: 10px; color: #1F8FFF;"><b>ADMIN</b></h3>
+           </div>
+
+
                 <div class="sidebar__menu-wrapper">
                     <ul class="sidebar__menu">
                         <li class="sidebar-menu-item active">
                             <a href="admindash" class="nav-link ">
-                                <i class="menu-icon las la-home"></i>
+                                <i class="menu-icon fas fa-home"></i>
+
                                 <span class="menu-title">Dashboard</span>
                             </a>
                         </li>
-                       
-                       
+
+
                         <li class="sidebar-menu-item ">
                             <a href="order-for-courier" class="nav-link ">
-                                <i class="menu-icon las la-fax"></i>
+                                <i class="menu-icon fas fa-clipboard-list"></i>
+
                                 <span class="menu-title">Manage Order</span>
                             </a>
                         </li>
-                       
-                       
-                     
-                      
-                      
-                      
-                        
+
+
+
+
+
+
+
                     </ul>
                 </div>
                 <div class="version-info text-center text-uppercase">
-                    <span class="text--primary">courierlab</span>
-                    <span class="text--success">V3.0 </span>
+                    <span class="text--primary">Infinitech Advertising</span>
+                    <span class="text--success">V1.1 </span>
                 </div>
             </div>
         </div>
@@ -71,7 +79,7 @@
                                     <div class="widget-seven__content">
                                         <span class="widget-seven__content-icon">
                                             <span class="icon">
-                                                <i class="las la-hourglass-start"></i>
+                                                <i class="fas fa-hourglass-start"></i> <!-- Changed to Font Awesome -->
                                             </span>
                                         </span>
                                         <div class="widget-seven__description">
@@ -92,7 +100,7 @@
                                     <div class="widget-seven__content">
                                         <span class="widget-seven__content-icon">
                                             <span class="icon">
-                                                <i class="las la-dolly"></i>
+                                                <i class="fas fa-truck"></i> <!-- Changed to Font Awesome -->
                                             </span>
                                         </span>
                                         <div class="widget-seven__description">
@@ -113,7 +121,7 @@
                                     <div class="widget-seven__content">
                                         <span class="widget-seven__content-icon">
                                             <span class="icon">
-                                                <i class="lab la-accessible-icon"></i>
+                                                <i class="fas fa-clock"></i> <!-- Changed to Font Awesome -->
                                             </span>
                                         </span>
                                         <div class="widget-seven__description">
@@ -134,7 +142,7 @@
                                     <div class="widget-seven__content">
                                         <span class="widget-seven__content-icon">
                                             <span class="icon">
-                                                <i class="las  la-list-alt"></i>
+                                                <i class="fas fa-list-alt"></i> <!-- Changed to Font Awesome -->
                                             </span>
                                         </span>
                                         <div class="widget-seven__description">
@@ -154,11 +162,11 @@
                     <div class="row gy-4 mt-2">
                         <div class="col-xxl-3 col-sm-6">
                             <a href="https://script.viserlab.com/courierlab/demo/admin/branch">
-                                <div class="widget-seven bg--primary  outline ">
+                                <div class="widget-seven bg--primary outline">
                                     <div class="widget-seven__content">
                                         <span class="widget-seven__content-icon">
                                             <span class="icon">
-                                                <i class="las la-university"></i>
+                                                <i class="fas fa-university"></i> <!-- Changed to Font Awesome -->
                                             </span>
                                         </span>
                                         <div class="widget-seven__description">
@@ -175,15 +183,15 @@
                         </div>
                         <div class="col-xxl-3 col-sm-6">
                             <a href="https://script.viserlab.com/courierlab/demo/admin/branch-manager/list">
-                                <div class="widget-seven bg--cyan  outline ">
+                                <div class="widget-seven bg--cyan outline">
                                     <div class="widget-seven__content">
                                         <span class="widget-seven__content-icon">
                                             <span class="icon">
-                                                <i class="las la-user-check"></i>
+                                                <i class="fas fa-user-check"></i> <!-- Changed to Font Awesome -->
                                             </span>
                                         </span>
                                         <div class="widget-seven__description">
-                                            <p class="widget-seven__content-title">Total manager</p>
+                                            <p class="widget-seven__content-title">Total Manager</p>
                                             <h3 class="widget-seven__content-amount">2</h3>
                                         </div>
                                     </div>
@@ -196,11 +204,11 @@
                         </div>
                         <div class="col-xxl-3 col-sm-6">
                             <a href="https://script.viserlab.com/courierlab/demo/admin/courier/branch/income">
-                                <div class="widget-seven bg--orange  outline ">
+                                <div class="widget-seven bg--orange outline">
                                     <div class="widget-seven__content">
                                         <span class="widget-seven__content-icon">
                                             <span class="icon">
-                                                <i class="las la-money-bill-wave"></i>
+                                                <i class="fas fa-money-bill-wave"></i> <!-- Changed to Font Awesome -->
                                             </span>
                                         </span>
                                         <div class="widget-seven__description">
@@ -217,11 +225,11 @@
                         </div>
                         <div class="col-xxl-3 col-sm-6">
                             <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list">
-                                <div class="widget-seven bg--pink  outline ">
+                                <div class="widget-seven bg--pink outline">
                                     <div class="widget-seven__content">
                                         <span class="widget-seven__content-icon">
                                             <span class="icon">
-                                                <i class="las la-dolly-flatbed"></i>
+                                                <i class="fas fa-dolly-flatbed"></i> <!-- Changed to Font Awesome -->
                                             </span>
                                         </span>
                                         <div class="widget-seven__description">
@@ -238,148 +246,8 @@
                         </div>
                     </div>
 
-                    <div class="row mt-4">
-                        <div class="col-lg-12 col-md-12">
-                            <div class="card">
-                                <div class="card-body p-0">
-                                    <div class="table-responsive--sm table-responsive">
-                                        <table class="table table--light style--two">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name - Address</th>
-                                                    <th>Email - Phone</th>
-                                                    <th>Status</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <span class="fw-bold">Curran</span><br>
-                                                        <span>Est quas incididunt</span>
-                                                    </td>
-                                                    <td>
-                                                        <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                                                data-cfemail="12606b7f7b527f737b7e7b7c73667d603c717d7f">[email&#160;protected]</a></span><br>
-                                                        <span>6444564545</span>
-                                                    </td>
-                                                    <td> <span class="badge badge--success">Enabled</span> </td>
-                                                    <td>
-                                                        <button class="btn btn-sm btn-outline--primary"
-                                                            id="actionButton" data-bs-toggle="dropdown"><i
-                                                                class="las la-ellipsis-v"></i>
-                                                            Action</button>
-                                                        <div class="dropdown-menu p-0">
-                                                            <a href="https://script.viserlab.com/courierlab/demo/admin/branch-manager/manager/4"
-                                                                class="dropdown-item"><i class="las la-user-tie"></i>
-                                                                Manager </a>
-                                                            <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?&amp;sender_branch_id=4"
-                                                                class=" dropdown-item"><i
-                                                                    class="las la-dolly-flatbed"></i>
-                                                                Courier </a>
-                                                            <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=3&amp;receiver_branch_id=4"
-                                                                class="dropdown-item"><i class="las la-truck"></i>
-                                                                Delivery </a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <span class="fw-bold">India</span><br>
-                                                        <span>India,India</span>
-                                                    </td>
-                                                    <td>
-                                                        <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                                                data-cfemail="b2fbdcd6dbd3f2c6d7c1c6dfd3dbde9cd1dddf">[email&#160;protected]</a></span><br>
-                                                        <span>54165544545</span>
-                                                    </td>
-                                                    <td> <span class="badge badge--success">Enabled</span> </td>
-                                                    <td>
-                                                        <button class="btn btn-sm btn-outline--primary"
-                                                            id="actionButton" data-bs-toggle="dropdown"><i
-                                                                class="las la-ellipsis-v"></i>
-                                                            Action</button>
-                                                        <div class="dropdown-menu p-0">
-                                                            <a href="https://script.viserlab.com/courierlab/demo/admin/branch-manager/manager/2"
-                                                                class="dropdown-item"><i class="las la-user-tie"></i>
-                                                                Manager </a>
-                                                            <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?&amp;sender_branch_id=2"
-                                                                class=" dropdown-item"><i
-                                                                    class="las la-dolly-flatbed"></i>
-                                                                Courier </a>
-                                                            <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=3&amp;receiver_branch_id=2"
-                                                                class="dropdown-item"><i class="las la-truck"></i>
-                                                                Delivery </a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <span class="fw-bold">Singapore</span><br>
-                                                        <span>Singapore,Singapore</span>
-                                                    </td>
-                                                    <td>
-                                                        <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                                                data-cfemail="4c3f25222b2d3c233e290c38293f38212d2520622f2321">[email&#160;protected]</a></span><br>
-                                                        <span>102343545</span>
-                                                    </td>
-                                                    <td> <span class="badge badge--success">Enabled</span> </td>
-                                                    <td>
-                                                        <button class="btn btn-sm btn-outline--primary"
-                                                            id="actionButton" data-bs-toggle="dropdown"><i
-                                                                class="las la-ellipsis-v"></i>
-                                                            Action</button>
-                                                        <div class="dropdown-menu p-0">
-                                                            <a href="https://script.viserlab.com/courierlab/demo/admin/branch-manager/manager/1"
-                                                                class="dropdown-item"><i class="las la-user-tie"></i>
-                                                                Manager </a>
-                                                            <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?&amp;sender_branch_id=1"
-                                                                class=" dropdown-item"><i
-                                                                    class="las la-dolly-flatbed"></i>
-                                                                Courier </a>
-                                                            <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=3&amp;receiver_branch_id=1"
-                                                                class="dropdown-item"><i class="las la-truck"></i>
-                                                                Delivery </a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <span class="fw-bold">Srilanka</span><br>
-                                                        <span>Srilanka,Srilanka</span>
-                                                    </td>
-                                                    <td>
-                                                        <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                                                data-cfemail="89fafbe0e5e8e7e2e8c9fdecfafde4e8e0e5a7eae6e4">[email&#160;protected]</a></span><br>
-                                                        <span>6444564545</span>
-                                                    </td>
-                                                    <td> <span class="badge badge--success">Enabled</span> </td>
-                                                    <td>
-                                                        <button class="btn btn-sm btn-outline--primary"
-                                                            id="actionButton" data-bs-toggle="dropdown"><i
-                                                                class="las la-ellipsis-v"></i>
-                                                            Action</button>
-                                                        <div class="dropdown-menu p-0">
-                                                            <a href="https://script.viserlab.com/courierlab/demo/admin/branch-manager/manager/3"
-                                                                class="dropdown-item"><i class="las la-user-tie"></i>
-                                                                Manager </a>
-                                                            <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?&amp;sender_branch_id=3"
-                                                                class=" dropdown-item"><i
-                                                                    class="las la-dolly-flatbed"></i>
-                                                                Courier </a>
-                                                            <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=3&amp;receiver_branch_id=3"
-                                                                class="dropdown-item"><i class="las la-truck"></i>
-                                                                Delivery </a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+
 
                     <div class="row mt-4">
                         <div class="col-xl-4 col-lg-6 ">

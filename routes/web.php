@@ -25,7 +25,10 @@ use App\Http\Controllers\ProofPaymentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\QrCodeController;
 use App\Http\Controllers\RubixController;
-
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\PreventiveController;
+use App\Http\Controllers\RatePerMileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -43,7 +46,6 @@ use App\Http\Controllers\RubixController;
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('ordertracking', [HomeController::class, 'ordertracking'])->name('ordertracking');
 Route::get('/track', [BookingController::class, 'trackBooking'])->name('track.booking');
-
 Route::get('about', [HomeController::class, 'about'])->name('about');
 Route::get('faq', [HomeController::class, 'faq'])->name('faq');
 Route::get('service', [HomeController::class, 'service'])->name('service');
@@ -57,44 +59,10 @@ Route::get('branchlist', [AccountingController::class, 'branch_list'])->name('br
 Route::get('cashcollection', [AccountingController::class, 'cash_collection'])->name('cashcollection');
 Route::get('deliveryqueue', [AccountingController::class, 'delivery_queue'])->name('deliveryqueue');
 Route::get('package', [AccountingController::class, 'send_courier'])->name('sendcourier');
-Route::get('rubix_details', [AdminController::class, 'rubix_details'])->name('rubixdetails');
-// routes/web.php
-Route::get('/details/{id}', [AdminController::class, 'showDetails'])->name('rubixdetails.show');
-
 Route::get('sentInQueue', [AccountingController::class, 'sentin_queue'])->name('sentInQueue');
 Route::get('shippingcourier', [AccountingController::class, 'shipping_courier'])->name('shippingcourier');
 Route::get('totaldelivered', [AccountingController::class, 'total_delivered'])->name('totaldelivered');
 Route::get('totalsent', [AccountingController::class, 'total_sent'])->name('totalsent');
-
-//admin post
-Route::post('/rubix', [RubixController::class, 'submit'])->name('rubix.submit');
-
-
-
-
-//admin get
-
-Route::get('salary', [AdminController::class, 'salary'])->name('salary');
-Route::get('reference', [AdminController::class, 'reference'])->name('reference');
-Route::get('admindash', [AdminController::class, 'dashboard'])->name('admindash');
-Route::get('adminside', [AdminController::class, 'adminside'])->name('adminside');
-Route::get('managebranch', [AdminController::class, 'managebranch'])->name('managebranch');
-Route::get('branchmanager', [AdminController::class, 'branchmanager'])->name('branchmanager');
-Route::get('branchincome', [AdminController::class, 'branch_income'])->name('branchincome');
-Route::get('managecourier', [AdminController::class, 'manage_courier'])->name('managecourier');
-Route::get('stafflist', [AdminController::class, 'staff_list'])->name('stafflist');
-Route::get('customerlist', [AdminController::class, 'customer_list'])->name('customerlist');
-Route::get('manageunit', [AdminController::class, 'manage_unit'])->name('manageunit');
-Route::get('managetype', [AdminController::class, 'manage_type'])->name('managetype');
-Route::get('pendingticket', [AdminController::class, 'pending_ticket'])->name('pendingticket');
-Route::get('closedticket', [AdminController::class, 'closed_ticket'])->name('closedticket');
-Route::get('answeredticket', [AdminController::class, 'answered_ticket'])->name('answeredticket');
-Route::get('allticket', [AdminController::class, 'all_ticket'])->name('allticket');
-Route::get('loginhistory', [AdminController::class, 'login_history'])->name('loginhistory');
-Route::get('notificationhistory', [AdminController::class, 'notification_history'])->name('notificationhistory');
-Route::get('manageappointment', [AdminController::class, 'manage_appointment'])->name('manageappointment');
-Route::get('addtruck', [AdminController::class, 'addtruck'])->name('addtruck');
-Route::get('addsubcon', [AdminController::class, 'addsubcon'])->name('addsubcon');
 Route::get('addexpense', [AccountingController::class, 'addexpense'])->name('addexpense');
 Route::get('paymentproof', [AccountingController::class, 'paymentproof'])->name('paymentproof');
 Route::get('addproofpayment', [AccountingController::class, 'addproofpayment'])->name('addpayment.store');
@@ -102,7 +70,37 @@ Route::get('depositamount', [AccountingController::class, 'depositamount'])->nam
 Route::post('depositamounts', [DepositController::class, 'store'])->name('deposit.store');
 Route::post('withdrawamounts', [WithdrawController::class, 'store'])->name('withdraw.store');
 Route::get('loanamount', [LoanController::class, 'loanamount'])->name('loanamount');
-Route::get('waybill', [AdminController::class, 'waybill'])->name('waybill');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('rubix_details', [AdminController::class, 'rubix_details'])->name('rubixdetails');
+    Route::get('/details/{id}', [AdminController::class, 'showDetails'])->name('rubixdetails.show');
+
+    Route::get('salary', [AdminController::class, 'salary'])->name('salary');
+    Route::get('reference', [AdminController::class, 'reference'])->name('reference');
+    Route::get('admindash', [AdminController::class, 'dashboard'])->name('admindash');
+    Route::get('adminside', [AdminController::class, 'adminside'])->name('adminside');
+    Route::get('managebranch', [AdminController::class, 'managebranch'])->name('managebranch');
+    Route::get('branchmanager', [AdminController::class, 'branchmanager'])->name('branchmanager');
+    Route::get('branchincome', [AdminController::class, 'branch_income'])->name('branchincome');
+    Route::get('managecourier', [AdminController::class, 'manage_courier'])->name('managecourier');
+    Route::get('stafflist', [AdminController::class, 'staff_list'])->name('stafflist');
+    Route::get('customerlist', [AdminController::class, 'customer_list'])->name('customerlist');
+    Route::get('manageunit', [AdminController::class, 'manage_unit'])->name('manageunit');
+    Route::get('managetype', [AdminController::class, 'manage_type'])->name('managetype');
+    Route::get('pendingticket', [AdminController::class, 'pending_ticket'])->name('pendingticket');
+    Route::get('closedticket', [AdminController::class, 'closed_ticket'])->name('closedticket');
+    Route::get('answeredticket', [AdminController::class, 'answered_ticket'])->name('answeredticket');
+    Route::get('allticket', [AdminController::class, 'all_ticket'])->name('allticket');
+    Route::get('loginhistory', [AdminController::class, 'login_history'])->name('loginhistory');
+    Route::get('notificationhistory', [AdminController::class, 'notification_history'])->name('notificationhistory');
+    Route::get('manageappointment', [AdminController::class, 'manage_appointment'])->name('manageappointment');
+    Route::get('addtruck', [AdminController::class, 'addtruck'])->name('addtruck');
+    Route::get('addsubcon', [AdminController::class, 'addsubcon'])->name('addsubcon');
+    Route::get('waybill', [AdminController::class, 'waybill'])->name('waybill');
+});
+
+
+
 Route::post('loanamount-store', [LoanController::class, 'store'])->name('loan.store');
 //login and register
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -218,7 +216,7 @@ Route::post('/startingbalance', [AccountingController::class, 'startingbalance']
 Route::post('/contact-store', [ContactController::class, 'store'])->name('contact.store');
 
 //qr
-Route::get('/qrcode', [QrCodeController::class, 'generate']);
+// Route::get('/qrcode', [QrCodeController::class, 'generate']);
 
 //map
 Route::get('/map', [AdminController::class, 'showMap']);
@@ -226,3 +224,33 @@ Route::get('/map', [AdminController::class, 'showMap']);
 //salary store
 Route::post('salary-store', [PricingController::class, 'submit'])->name('salary.store');
 Route::put('salary-update', [PricingController::class, 'update'])->name('salary.update');
+
+Route::delete('/couriers/{id}', [AdminController::class, 'destroy'])->name('couriers.destroy');
+
+
+Route::get('/employee-details', [EmployeeController::class, 'employee_details'])->name('employeedetails');
+Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+Route::put('/employees/{id}', [EmployeeController::class, 'update'])->name('employee.update');
+Route::delete('/employees/{id}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
+
+Route::get('qrcode/{qrCode}', [QRCodeController::class, 'showQRCode']);
+Route::post('attendance', [AttendanceController::class, 'recordAttendance']);
+
+Route::post('/rubix', [RubixController::class, 'submit'])->name('rubix.submit');
+
+//preventive maintenance
+Route::post('preventive-store', [PreventiveController::class, 'submit'])->name('preventive.store');
+Route::get('preventive-maintenance', [AdminController::class, 'preventive'])->name('preventive-maintenance');
+Route::get('/maintenance/{id}/edit', [PreventiveController::class, 'edit'])->name('maintenance.edit');
+Route::put('/maintenance/{id}', [PreventiveController::class, 'update'])->name('maintenance.update');
+Route::delete('/maintenance/{id}', [PreventiveController::class, 'destroy'])->name('maintenance.destroy');
+
+//rate per mile
+Route::post('preventive-store', [RatePerMileController::class, 'submit'])->name('earning.store');
+Route::get('rate-per-mile', [AdminController::class, 'ratepermile'])->name('rate-per-mile');
+Route::get('rate-per-month', [AdminController::class, 'ratepermonth'])->name('rate-per-month');
+Route::get('rate-per-year', [AdminController::class, 'rateperyear'])->name('rate-per-year');
+Route::get('/rate-per-mile/{id}/edit', [RatePerMileController::class, 'edit'])->name('rate-per-mile.edit');
+Route::put('/rate-per-mile/{id}', [RatePerMileController::class, 'update'])->name('rate-per-mile.update');
+Route::delete('/rate-per-mile/{id}', [RatePerMileController::class, 'destroy'])->name('rate-per-mile.destroy');
+
