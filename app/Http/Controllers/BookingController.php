@@ -55,21 +55,26 @@ class BookingController extends Controller
 
     public function getPlateNumberCounts()
     {
-        // Retrieve all unique plate numbers with their counts and status counts
+        // Retrieve all unique plate numbers with their counts, status counts, and order_status counts
         $plateNumberCounts = Booking::select('plate_number')
             ->selectRaw('count(*) as total_bookings')
             ->selectRaw('GROUP_CONCAT(DISTINCT status) as statuses')
+            ->selectRaw('GROUP_CONCAT(DISTINCT order_status) as order_statuses')
             ->groupBy('plate_number')
             ->get();
 
-        // Prepare data for each status count
+        // Prepare data for each status count including order_status
         $plateNumberDetails = $plateNumberCounts->map(function ($plate) {
             // Get booking details for the plate number
-            $statusCounts = Booking::select('status')
+            $statusCounts = Booking::select('status', 'order_status')
                 ->where('plate_number', $plate->plate_number)
-                ->groupBy('status')
+                ->groupBy('status', 'order_status')
                 ->selectRaw('count(*) as count')
-                ->pluck('count', 'status')
+                ->get()
+                ->groupBy('status')
+                ->map(function ($group) {
+                    return $group->pluck('count', 'order_status')->toArray();
+                })
                 ->toArray();
 
             $plate->status_counts = $statusCounts;
@@ -77,7 +82,7 @@ class BookingController extends Controller
         });
 
         // Handle empty result set by ensuring it's an empty collection
-        if ($plateNumberCounts === null) {
+        if ($plateNumberCounts->isEmpty()) {
             $plateNumberDetails = collect(); // Return an empty collection
         }
 
@@ -86,6 +91,7 @@ class BookingController extends Controller
             'plateNumberCounts' => $plateNumberDetails,
         ]);
     }
+
 
 
 
@@ -362,6 +368,35 @@ public function updateOrderStatus(Request $request, $id)
     // Redirect back with a success message
     return redirect()->back()->with('success', 'Order status updated and notification sent successfully.');
 }
+
+public function updateAdminStatus(Request $request, $id)
+{
+    // Validate the incoming request
+    $request->validate([
+        'order_status' => 'required|string|in:Confirmed_delivery',
+    ]);
+
+    // Find the booking by ID
+    $booking = Booking::findOrFail($id);
+
+    // Get the consignee email
+    $consigneeEmail = $booking->consignee_email;
+
+    // Define the sender's name and tracking number
+    $senderName = $booking->sender_name; // Ensure this field exists in your Booking model
+    $trackingNumber = $booking->tracking_number; // Ensure this field exists in your Booking model
+
+    // Update the status
+    $booking->order_status = $request->input('order_status');
+    $booking->save();
+
+    // Send the email notification
+    Mail::to($consigneeEmail)->send(new OrderStatusUpdated($booking, $senderName, $trackingNumber));
+
+    // Redirect back with a success message
+    return redirect()->back()->with('success', 'Order status updated and notification sent successfully.');
+}
+
 
 
 

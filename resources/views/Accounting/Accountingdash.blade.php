@@ -1,7 +1,64 @@
 <!-- meta tags and other links -->
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
+* {
+    font-family: "Roboto", sans-serif;
+    text-align: center;
+}
+body {
+    background: #ebf5fc;
+}
+.clock {
+    color: #000;
+    font-size: 56px;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+}
+h2 {
+    color: #85c1e9;
+    padding: 30px;
+}
+#m {
+    margin: 0 10px 0 10px;
+}
+.bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4em;
+    height: 4em;
+    background: inherit;
+    position: relative;
+    border-radius: 50%;
+    box-shadow: inset -2px -2px 5px rgba(255, 255, 255, 1),
+        inset 3px 3px 5px rgba(0, 0, 0, 0.2);
+}
+.bg:last-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: inherit;
+    position: relative;
+    margin-left: 20px;
+    width: 2em;
+    height: 2em;
+    font-size: 16px;
+    padding: 15px;
+    border-radius: 50%;
+    box-shadow: inset -2px -2px 5px rgba(255, 255, 255, 1),
+        inset 3px 3px 5px rgba(0, 0, 0, 0.2);
+}
 
+</style>
 @include('Components.Admin.header')
 
 <body>
@@ -20,7 +77,7 @@
                             aria-expanded="false">
                             <span class="navbar-user">
                                 <span class="navbar-user__thumb"><img
-                                        src="https://script.viserlab.com/courierlab/demo/assets/images/user/profile/667fa67c7d5771719641724.png"
+                                        src="Home/user-avatar-male-5.png"
                                         alt="image"></span>
                                 <span class="navbar-user__info">
                                     <span class="navbar-user__name">Accounting</span>
@@ -46,70 +103,22 @@
         </nav>
 
 
-        <div class="container-fluid px-3 px-sm-0">
-            <div class="body-wrapper">
-                <div class="bodywrapper__inner">
-
-
-                    <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                        <h6 class="page-title">Dashboard</h6>
-                        <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                            <div class="d-flex flex-wrap justify-content-end">
-                                <h3>Philippines</h3>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row gy-4">
-                        <div class="col-xxl-4 col-sm-6">
-                            <a href="https://script.viserlab.com/courierlab/demo/staff/courier/sent/queue">
-                                <div class="widget-seven bg--purple ">
-                                    <div class="widget-seven__content">
-                                        <span class="widget-seven__content-icon">
-                                            <span class="icon">
-                                            <i class="fas fa-money-bill-wave"></i>
-                                            </span>
-                                        </span>
-                                        {{-- <div class="widget-seven__description">
-    <p class="widget-seven__content-title">Total Cash on Deposit</p>
-    <h3 class="widget-seven__content-amount">{{ number_format($outstandingBalance, 2) }}</h3>
-</div> --}}
-
-                                    </div>
-
-                                    <span class="widget-seven__arrow">
-                                    <i class="fas fa-money-bill-wave"></i>
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="col-xxl-4 col-sm-6">
-                            <a href="">
-                                <div class="widget-seven bg--primary ">
-                                    <div class="widget-seven__content">
-                                        <span class="widget-seven__content-icon">
-                                            <span class="icon">
-                                            <i class="fas fa-calculator"></i>
-                                            </span>
-                                        </span>
-                                        {{-- <div class="widget-seven__description">
-    <p class="widget-seven__content-title">Total Expenses</p>
-    <h3 class="widget-seven__content-amount">{{ number_format($totalExpense, 2) }}</h3>
-</div> --}}
-                                    </div>
-
-                                    <span class="widget-seven__arrow">
-                                    <i class="fas fa-calculator"></i>
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
-
-
-
-
-                    </div>
+        <div class="clock">
+            <div class="bg">
+                <h2 id="h">12</h2>
+            </div>
+            <h2>:</h2>
+            <div class="bg">
+                <h2 id="m">20</h2>
+            </div>
+            <h2>:</h2>
+            <div class="bg">
+                <h2 id="s">00</h2>
+            </div>
+            <div class="bg">
+                <h2 id="ap">AM</h2>
+            </div>
+        </div>
 
 
 
@@ -337,6 +346,38 @@
             </li>`
         }
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+
+    realTime();
+
+    });
+
+
+    function realTime() {
+
+    var date = new Date();
+    var hour = date.getHours();
+    var min = date.getMinutes();
+    var sec = date.getSeconds();
+    var halfday = "AM";
+    halfday = (hour >= 12) ? "PM" : "AM";
+    hour = (hour == 0) ? 12 : ((hour > 12) ? (hour - 12): hour);
+    hour = update(hour);
+    min = update(min);
+    sec = update(sec);
+    document.getElementById("h").innerText = hour;
+    document.getElementById("m").innerText = min;
+    document.getElementById("s").innerText = sec;
+    document.getElementById("ap").innerText = halfday;
+
+    setTimeout(realTime, 1000);
+    }
+
+    function update(k) {
+    if (k < 10) { return "0" + k; } else { return k; } }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </body>
 
 </html>

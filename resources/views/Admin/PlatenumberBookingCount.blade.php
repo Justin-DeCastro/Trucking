@@ -140,7 +140,8 @@
                             <tr>
                                 <th>Plate Number</th>
                                 <th>Total Bookings</th>
-                                <th>Statuses</th>
+                                <th>Status</th>
+                                <th>Reference</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -150,6 +151,7 @@
                                 <td>{{ $detail->plate_number }}</td>
                                 <td>{{ $detail->total_bookings }}</td>
                                 <td>{{ $detail->statuses }}</td>
+                                <td>{{ $detail->order_statuses }}</td>
                                 <td>
                                     <!-- Button to trigger modal -->
                                     <button type="button" class="btn btn-info" data-bs-toggle="modal"
@@ -185,20 +187,24 @@
                         <div class="col-md-12">
                             <h2>Booking Details</h2>
 
-                            <h3>Status Counts</h3>
+                            <h3>Status and Order Status Counts</h3>
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <th>Status</th>
+                                        <th>Order Status</th>
                                         <th>Count</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($detail->status_counts as $status => $count)
-                                    <tr>
-                                        <td>{{ $status }}</td>
-                                        <td>{{ $count }}</td>
-                                    </tr>
+                                    @foreach ($detail->status_counts as $status => $orderStatuses)
+                                        @foreach ($orderStatuses as $orderStatus => $count)
+                                            <tr>
+                                                <td>{{ $status }}</td>
+                                                <td>{{ $orderStatus }}</td>
+                                                <td>{{ $count }}</td>
+                                            </tr>
+                                        @endforeach
                                     @endforeach
                                 </tbody>
                             </table>

@@ -137,73 +137,53 @@
                                                     </td>
 
                                                     <td>
-                                                        <!-- Trigger Button for Status Update Modal -->
-                                                        <button type="button" class="btn btn-primary"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#updateStatusModal{{ $detail->id }}">
-                                                            Update Status
-                                                        </button>
+                                                        <!-- Dropdown Button for Actions -->
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                Actions
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <!-- Update Status Action -->
+                                                                <li>
+                                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateStatusModal{{ $detail->id }}">Update Status</a>
+                                                                </li>
+                                                                <!-- Add Remarks Action -->
+                                                                <li>
+                                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateRemarksModal{{ $detail->id }}">Add Remarks</a>
+                                                                </li>
+                                                                <!-- Submit Proof Action -->
+                                                                <li>
+                                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updatePicturesModal{{ $detail->id }}">Submit Proof</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
 
                                                         <!-- Status Update Modal -->
-                                                        <div class="modal fade"
-                                                            id="updateStatusModal{{ $detail->id }}" tabindex="-1"
-                                                            aria-labelledby="updateStatusModalLabel{{ $detail->id }}"
-                                                            aria-hidden="true">
+                                                        <div class="modal fade" id="updateStatusModal{{ $detail->id }}" tabindex="-1" aria-labelledby="updateStatusModalLabel{{ $detail->id }}" aria-hidden="true">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="updateStatusModalLabel{{ $detail->id }}">
-                                                                            Update Order Status</h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
+                                                                        <h5 class="modal-title" id="updateStatusModalLabel{{ $detail->id }}">Update Order Status</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         <!-- Update Status Form -->
-                                                                        <form
-                                                                            action="{{ route('update.order.status', $detail->id) }}"
-                                                                            method="POST">
+                                                                        <form action="{{ route('update.order.status', $detail->id) }}" method="POST">
                                                                             @csrf
                                                                             @method('PATCH')
                                                                             <div class="mb-3">
-                                                                                <label
-                                                                                    for="order_status{{ $detail->id }}"
-                                                                                    class="form-label">Order
-                                                                                    Status</label>
-                                                                                    <select name="order_status"
-                                                                                    id="order_status{{ $detail->id }}"
-                                                                                    class="form-select" required>
-                                                                                <option value="Pod_returned"
-                                                                                    {{ $detail->order_status === 'Pod_returned' ? 'selected' : '' }}>
-                                                                                    Pod returned
-                                                                                </option>
-                                                                                <option value="Delivery successful"
-                                                                                    {{ $detail->order_status === 'Delivery successful' ? 'selected' : '' }}>
-                                                                                    Delivery successful
-                                                                                </option>
-                                                                                <option value="For Pick-up"
-                                                                                    {{ $detail->order_status === 'For Pick-up' ? 'selected' : '' }}>
-                                                                                    For Pick-up
-                                                                                </option>
-                                                                                <option value="First_delivery_attempt"
-                                                                                    {{ $detail->order_status === 'First_delivery_attempt' ? 'selected' : '' }}>
-                                                                                    First Delivery Attempt
-                                                                                </option>
-                                                                                <option value="In_Transit"
-                                                                                    {{ $detail->order_status === 'In_Transit' ? 'selected' : '' }}>
-                                                                                    In Transit
-                                                                                </option>
-                                                                            </select>
-
+                                                                                <label for="order_status{{ $detail->id }}" class="form-label">Order Status</label>
+                                                                                <select name="order_status" id="order_status{{ $detail->id }}" class="form-select" required>
+                                                                                    <option value="Pod_returned" {{ $detail->order_status === 'Pod_returned' ? 'selected' : '' }}>Pod returned</option>
+                                                                                    <option value="Delivery successful" {{ $detail->order_status === 'Delivery successful' ? 'selected' : '' }}>Delivery successful</option>
+                                                                                    <option value="For Pick-up" {{ $detail->order_status === 'For Pick-up' ? 'selected' : '' }}>For Pick-up</option>
+                                                                                    <option value="First_delivery_attempt" {{ $detail->order_status === 'First_delivery_attempt' ? 'selected' : '' }}>First Delivery Attempt</option>
+                                                                                    <option value="In_Transit" {{ $detail->order_status === 'In_Transit' ? 'selected' : '' }}>In Transit</option>
+                                                                                </select>
                                                                             </div>
                                                                             <div class="modal-footer">
-                                                                                <button type="button"
-                                                                                    class="btn btn-secondary"
-                                                                                    data-bs-dismiss="modal">Close</button>
-                                                                                <button type="submit"
-                                                                                    class="btn btn-primary">Update
-                                                                                    Status</button>
+                                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                                <button type="submit" class="btn btn-primary">Update Status</button>
                                                                             </div>
                                                                         </form>
                                                                     </div>
@@ -211,52 +191,25 @@
                                                             </div>
                                                         </div>
 
-                                                        <!-- Trigger Button for Remarks Modal -->
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#updateRemarksModal{{ $detail->id }}">
-                                                            Add Remarks
-                                                        </button>
-
                                                         <!-- Remarks Modal -->
-                                                        <div class="modal fade"
-                                                            id="updateRemarksModal{{ $detail->id }}" tabindex="-1"
-                                                            aria-labelledby="updateRemarksModalLabel{{ $detail->id }}"
-                                                            aria-hidden="true">
+                                                        <div class="modal fade" id="updateRemarksModal{{ $detail->id }}" tabindex="-1" aria-labelledby="updateRemarksModalLabel{{ $detail->id }}" aria-hidden="true">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="updateRemarksModalLabel{{ $detail->id }}">
-                                                                            Add Remarks</h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
+                                                                        <h5 class="modal-title" id="updateRemarksModalLabel{{ $detail->id }}">Add Remarks</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         <!-- Remarks Form -->
-                                                                        <form
-                                                                            action="{{ route('update.order.remarks', $detail->id) }}"
-                                                                            method="POST">
+                                                                        <form action="{{ route('update.order.remarks', $detail->id) }}" method="POST">
                                                                             @csrf
                                                                             <div class="mb-3">
-                                                                                <label
-                                                                                    for="remarks{{ $detail->id }}"
-                                                                                    class="form-label">Remarks</label>
-                                                                                <input type="text" name="remarks"
-                                                                                    id="remarks{{ $detail->id }}"
-                                                                                    class="form-control"
-                                                                                    placeholder="Add remarks here"
-                                                                                    value="{{ $detail->remarks }}"
-                                                                                    required>
+                                                                                <label for="remarks{{ $detail->id }}" class="form-label">Remarks</label>
+                                                                                <input type="text" name="remarks" id="remarks{{ $detail->id }}" class="form-control" placeholder="Add remarks here" value="{{ $detail->remarks }}" required>
                                                                             </div>
                                                                             <div class="modal-footer">
-                                                                                <button type="button"
-                                                                                    class="btn btn-secondary"
-                                                                                    data-bs-dismiss="modal">Close</button>
-                                                                                <button type="submit"
-                                                                                    class="btn btn-primary">Add
-                                                                                    Remarks</button>
+                                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                                <button type="submit" class="btn btn-primary">Add Remarks</button>
                                                                             </div>
                                                                         </form>
                                                                     </div>
@@ -264,54 +217,25 @@
                                                             </div>
                                                         </div>
 
-                                                        <!-- Trigger Button for Proof of Delivery Modal -->
-                                                        <button type="button" class="btn btn-info btn-secondary"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#updatePicturesModal{{ $detail->id }}">
-                                                        Submit Proof
-                                                    </button>
-
-
                                                         <!-- Proof of Delivery Upload Modal -->
-                                                        <div class="modal fade"
-                                                            id="updatePicturesModal{{ $detail->id }}"
-                                                            tabindex="-1"
-                                                            aria-labelledby="updatePicturesModalLabel{{ $detail->id }}"
-                                                            aria-hidden="true">
+                                                        <div class="modal fade" id="updatePicturesModal{{ $detail->id }}" tabindex="-1" aria-labelledby="updatePicturesModalLabel{{ $detail->id }}" aria-hidden="true">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="updatePicturesModalLabel{{ $detail->id }}">
-                                                                            Upload Proof of Delivery</h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
+                                                                        <h5 class="modal-title" id="updatePicturesModalLabel{{ $detail->id }}">Upload Proof of Delivery</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         <!-- Proof of Delivery Upload Form -->
-                                                                        <form
-                                                                            action="{{ route('update.order.pictures', $detail->id) }}"
-                                                                            method="POST"
-                                                                            enctype="multipart/form-data">
+                                                                        <form action="{{ route('update.order.pictures', $detail->id) }}" method="POST" enctype="multipart/form-data">
                                                                             @csrf
                                                                             <div class="mb-3">
-                                                                                <label
-                                                                                    for="proof_of_delivery{{ $detail->id }}"
-                                                                                    class="form-label">Upload
-                                                                                    Picture</label>
-                                                                                <input type="file"
-                                                                                    name="proof_of_delivery"
-                                                                                    id="proof_of_delivery{{ $detail->id }}"
-                                                                                    class="form-control">
+                                                                                <label for="proof_of_delivery{{ $detail->id }}" class="form-label">Upload Picture</label>
+                                                                                <input type="file" name="proof_of_delivery" id="proof_of_delivery{{ $detail->id }}" class="form-control">
                                                                             </div>
                                                                             <div class="modal-footer">
-                                                                                <button type="button"
-                                                                                    class="btn btn-secondary"
-                                                                                    data-bs-dismiss="modal">Close</button>
-                                                                                <button type="submit"
-                                                                                    class="btn btn-info">Upload
-                                                                                    Picture</button>
+                                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                                <button type="submit" class="btn btn-info">Upload Picture</button>
                                                                             </div>
                                                                         </form>
                                                                     </div>
@@ -319,6 +243,7 @@
                                                             </div>
                                                         </div>
                                                     </td>
+
                                                 </tr>
                                             @empty
                                                 <tr>

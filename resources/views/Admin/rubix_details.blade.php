@@ -181,40 +181,46 @@
                                                 <th>Destination</th>
                                                 <th>Proof of Delivery</th>
                                                 <th>Remarks</th>
+                                                <th>Order Status</th>
+                                                <th>Reference</th>
+                                                <th>Update Status</th> <!-- Moved Update Status column before Actions -->
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($rubixdetails as $detail)
                                                 <tr>
-                                                    <td>{{ \Carbon\Carbon::parse($detail->date)->format('F d, Y g:i A') }}
-                                                    </td>
+                                                    <td>{{ \Carbon\Carbon::parse($detail->date)->format('F d, Y g:i A') }}</td>
                                                     <td>{{ $detail->tracking_number }}</td>
-
                                                     <td>{{ $detail->plate_number }}</td>
                                                     <td>{{ $detail->consignee_address }}</td>
                                                     <td>
-                                                        <!-- Display proof of delivery if available -->
                                                         @if ($detail->proof_of_delivery)
                                                             <a href="{{ asset($detail->proof_of_delivery) }}" target="_blank">View Proof</a>
                                                         @else
-                                                            No proof uploaded
+                                                            No proof uploaded yet
                                                         @endif
                                                     </td>
                                                     <td>{{ $detail->remarks }}</td>
+                                                    <td>{{ $detail->status }}</td>
+                                                    <td>{{ $detail->order_status }}</td>
                                                     <td>
-                                                        <!-- Button to trigger modal -->
-                                                        <button type="button" class="btn btn-info"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#modal{{ $detail->id }}">
+                                                        <!-- Update Status Button to trigger modal -->
+                                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateStatusModal{{ $detail->id }}">
+                                                            Update Status
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <!-- Actions Button to trigger modal -->
+                                                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal{{ $detail->id }}">
                                                             <i class="fas fa-eye"></i>
                                                         </button>
                                                     </td>
                                                 </tr>
                                             @endforeach
-
                                         </tbody>
                                     </table>
+
                                 </div>
                             </div>
                         </div><!-- card end -->
@@ -258,22 +264,26 @@
                                                     <td>Status</td>
                                                     <td>
                                                         <span
-    style="
-        color: {{ $detail->status == 'Pod_returned' ? 'white' :
-                ($detail->status == 'Delivery successful' ? 'white' :
-                ($detail->status == 'For Pick-up' ? 'white' :
-                ($detail->status == 'First_delivery_attempt' ? 'white' :
-                ($detail->status == 'In_Transit' ? 'white' : 'black')))) }};
-        background-color: {{ $detail->status == 'Pod_returned' ? 'red' :
-                            ($detail->status == 'Delivery successful' ? 'green' :
-                            ($detail->status == 'For Pick-up' ? 'blue' :
-                            ($detail->status == 'First_delivery_attempt' ? 'orange' :
-                            ($detail->status == 'In_Transit' ? 'purple' : 'transparent')))) }};
-        padding: 2px 5px;
-        border-radius: 4px;
-    ">
-    {{ $detail->status }}
-</span>
+                                                            style="
+                                                                color: {{ ($detail->status == 'Pod_returned' ? 'white' :
+                                                                        ($detail->status == 'Delivery successful' ? 'white' :
+                                                                        ($detail->status == 'For Pick-up' ? 'white' :
+                                                                        ($detail->status == 'First_delivery_attempt' ? 'white' :
+                                                                        ($detail->status == 'In_Transit' ? 'white' :
+                                                                        ($detail->status == 'Confirmed_delivery' ? 'white' : 'black')))))) }};
+                                                                background-color: {{ ($detail->status == 'Pod_returned' ? 'red' :
+                                                                                    ($detail->status == 'Delivery successful' ? 'green' :
+                                                                                    ($detail->status == 'For Pick-up' ? 'blue' :
+                                                                                    ($detail->status == 'First_delivery_attempt' ? 'orange' :
+                                                                                    ($detail->status == 'In_Transit' ? 'purple' :
+                                                                                    ($detail->status == 'Confirmed_delivery' ? 'teal' : 'transparent')))))) }};
+                                                                padding: 2px 5px;
+                                                                border-radius: 4px;
+                                                            ">
+                                                            {{ $detail->status }}
+                                                        </span>
+                                                    </td>
+
 
                                                     </td>
                                                 </tr>
@@ -316,8 +326,19 @@
                                                 </tr>
                                                 <tr>
                                                     <td>Reference 1</td>
-                                                    <td class="text-wrap">{{ $detail->reference_one }}</td>
+                                                    <td>
+                                                        <span
+                                                            style="
+                                                                color: {{ $detail->order_status == 'Confirmed_delivery' ? 'white' : 'black' }};
+                                                                background-color: {{ $detail->order_status == 'Confirmed_delivery' ? 'teal' : 'transparent' }};
+                                                                padding: 2px 5px;
+                                                                border-radius: 4px;
+                                                            ">
+                                                            {{ $detail->order_status }}
+                                                        </span>
+                                                    </td>
                                                 </tr>
+
                                                 <tr>
                                                     <td>Reference 2</td>
                                                     <td class="text-wrap">{{ $detail->reference_two }}</td>
@@ -450,6 +471,38 @@
                         }
                     }
                 </style>
+                @foreach ($rubixdetails as $detail)
+                <!-- Update Status Modal -->
+                <div class="modal fade" id="updateStatusModal{{ $detail->id }}" tabindex="-1" aria-labelledby="updateStatusModalLabel{{ $detail->id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateStatusModalLabel{{ $detail->id }}">Update Order Status</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Update Status Form -->
+                                <form action="{{ route('update.admin.status', $detail->id) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <div class="mb-3">
+                                        <label for="order_status{{ $detail->id }}" class="form-label">Order Status</label>
+                                        <select name="order_status" id="order_status{{ $detail->id }}" class="form-select" required>
+                                            <option value="Confirmed_delivery" {{ $detail->order_status === 'Confirmed_delivery' ? 'selected' : '' }}>Confirm Delivery</option>
+
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Update Status</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+
                 <script>
                     function printModal(modalId) {
                         var printContent = document.getElementById(modalId).innerHTML;

@@ -44,6 +44,7 @@ use App\Http\Controllers\FeedbackController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+//home
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('ordertracking', [HomeController::class, 'ordertracking'])->name('ordertracking');
 Route::get('/track', [BookingController::class, 'trackBooking'])->name('track.booking');
@@ -54,23 +55,43 @@ Route::get('team', [HomeController::class, 'team'])->name('team');
 Route::get('blog', [HomeController::class, 'blog'])->name('blog');
 Route::get('contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('appointment', [HomeController::class, 'appointment'])->name('appointment');
+
+
 //accounting
-Route::get('allcourier', [AccountingController::class, 'all_courier'])->name('allcourier');
-Route::get('branchlist', [AccountingController::class, 'branch_list'])->name('branchlist');
-Route::get('cashcollection', [AccountingController::class, 'cash_collection'])->name('cashcollection');
-Route::get('deliveryqueue', [AccountingController::class, 'delivery_queue'])->name('deliveryqueue');
-Route::get('package', [AccountingController::class, 'send_courier'])->name('sendcourier');
-Route::get('sentInQueue', [AccountingController::class, 'sentin_queue'])->name('sentInQueue');
-Route::get('shippingcourier', [AccountingController::class, 'shipping_courier'])->name('shippingcourier');
-Route::get('totaldelivered', [AccountingController::class, 'total_delivered'])->name('totaldelivered');
-Route::get('totalsent', [AccountingController::class, 'total_sent'])->name('totalsent');
-Route::get('addexpense', [AccountingController::class, 'addexpense'])->name('addexpense');
-Route::get('paymentproof', [AccountingController::class, 'paymentproof'])->name('paymentproof');
-Route::get('addproofpayment', [AccountingController::class, 'addproofpayment'])->name('addpayment.store');
-Route::get('depositamount', [AccountingController::class, 'depositamount'])->name('depositamount');
-Route::post('depositamounts', [DepositController::class, 'store'])->name('deposit.store');
-Route::post('withdrawamounts', [WithdrawController::class, 'store'])->name('withdraw.store');
-Route::get('loanamount', [LoanController::class, 'loanamount'])->name('loanamount');
+Route::middleware(['auth'])->group(function () {
+    Route::get('allcourier', [AccountingController::class, 'all_courier'])->name('allcourier');
+    Route::get('branchlist', [AccountingController::class, 'branch_list'])->name('branchlist');
+    Route::get('cashcollection', [AccountingController::class, 'cash_collection'])->name('cashcollection');
+    Route::get('deliveryqueue', [AccountingController::class, 'delivery_queue'])->name('deliveryqueue');
+    Route::get('package', [AccountingController::class, 'send_courier'])->name('sendcourier');
+    Route::get('sentInQueue', [AccountingController::class, 'sentin_queue'])->name('sentInQueue');
+    Route::get('shippingcourier', [AccountingController::class, 'shipping_courier'])->name('shippingcourier');
+    Route::get('totaldelivered', [AccountingController::class, 'total_delivered'])->name('totaldelivered');
+    Route::get('totalsent', [AccountingController::class, 'total_sent'])->name('totalsent');
+    Route::get('addexpense', [AccountingController::class, 'addexpense'])->name('addexpense');
+    Route::get('paymentproof', [AccountingController::class, 'paymentproof'])->name('paymentproof');
+    Route::get('addproofpayment', [AccountingController::class, 'addproofpayment'])->name('addproofpayment');
+    Route::get('depositamount', [AccountingController::class, 'depositamount'])->name('depositamount');
+    Route::post('depositamounts', [DepositController::class, 'store'])->name('deposit.store');
+    Route::post('withdrawamounts', [WithdrawController::class, 'store'])->name('withdraw.store');
+    Route::get('loanamount', [LoanController::class, 'loanamount'])->name('loanamount');
+    Route::get('courierdash', [AdminController::class, 'courier_dash'])->name('courierdash');
+    Route::get('accountingdash', [AdminController::class, 'accounting_dash'])->name('accountingdash');
+    Route::post('accounts', [AccountController::class, 'store'])->name('account.store');
+    Route::post('deposit', [InController::class, 'store'])->name('deposit.store');
+    Route::post('withdraw', [OutController::class, 'store'])->name('withdraw.store');
+    Route::get('account-accounting', [AccountingController::class, 'account'])->name('account-accounting');
+    Route::get('/filter-transactions', [AccountingController::class, 'filter'])->name('filter.transactions');
+    Route::post('preventive-store', [RatePerMileController::class, 'submit'])->name('earning.store');
+    Route::get('rate-per-mile', [AdminController::class, 'ratepermile'])->name('rate-per-mile');
+    Route::get('rate-per-month', [AdminController::class, 'ratepermonth'])->name('rate-per-month');
+    Route::get('rate-per-year', [AdminController::class, 'rateperyear'])->name('rate-per-year');
+    Route::get('/rate-per-mile/{id}/edit', [RatePerMileController::class, 'edit'])->name('rate-per-mile.edit');
+    Route::put('/rate-per-mile/{id}', [RatePerMileController::class, 'update'])->name('rate-per-mile.update');
+    Route::delete('/rate-per-mile/{id}', [RatePerMileController::class, 'destroy'])->name('rate-per-mile.destroy');
+
+});
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('rubix_details', [AdminController::class, 'rubix_details'])->name('rubixdetails');
@@ -98,6 +119,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('addtruck', [AdminController::class, 'addtruck'])->name('addtruck');
     Route::get('addsubcon', [AdminController::class, 'addsubcon'])->name('addsubcon');
     Route::get('waybill', [AdminController::class, 'waybill'])->name('waybill');
+    Route::get('add-driver', [AdminController::class, 'Add_driver'])->name('add-driver');
 });
 
 
@@ -115,8 +137,7 @@ Route::post('/register', [RegisterController::class, 'register']);
 
 
 //courierdashboard
-Route::get('courierdash', [AdminController::class, 'courier_dash'])->name('courierdash');
-Route::get('accountingdash', [AdminController::class, 'accounting_dash'])->name('accountingdash');
+
 
 //store branches
 Route::post('/managebranches', [BranchController::class, 'store'])->name('managebranches.store');
@@ -127,7 +148,7 @@ Route::post('/managerbranch', [BranchManagerController::class, 'store'])->name('
 Route::post('/managerbranches/{branch}/update', [BranchManagerController::class, 'update'])->name('branchmanager.update');
 
 //driver
-Route::get('add-driver', [AdminController::class, 'Add_driver'])->name('add-driver');
+
 
 // Route::post('/booking', [BookingController::class, 'submitForm'])->name('booking.submit');
 
@@ -151,6 +172,7 @@ Route::middleware(['auth'])->group(function () {
 // Define a route for updating the payment status with POST method
 // Route::patch('/bookings/{booking}/update-order-status', [BookingController::class, 'updateOrderStatus'])->name('update.order.status');
 Route::patch('/bookings/{id}/status', [BookingController::class, 'updateOrderStatus'])->name('update.order.status');
+Route::patch('/bookings/{id}/statuses', [BookingController::class, 'updateAdminStatus'])->name('update.admin.status');
 // Route::patch('/orders/{id}/remarks', [BookingController::class, 'updateRemarks'])->name('update.order.remarks');
 Route::post('/booking/{id}/remarks', [BookingController::class, 'updateRemarks'])->name('update.order.remarks');
 Route::post('/booking/{id}/pictures', [BookingController::class, 'updatePictures'])->name('update.order.pictures');
@@ -165,15 +187,15 @@ Route::get('/admin-overview', [BookingController::class, 'getStatusCounts']);
 
 
 //plate number
-// web.php or api.php
+
 Route::post('/save-plate-number', [BookingController::class, 'storePlateNumber'])->name('save.plate.number');
 
 //location update
-// In web.php or your routes file
+
 Route::post('/bookings/{booking}/update-location-status', [BookingController::class, 'updateLocationStatus'])->name('update.location.status');
 
 //payment status
-// web.php
+
 Route::put('/bookings/{booking}/update-payment-status', [BookingController::class, 'updatePaymentStatus'])->name('update.payment.status');
 
 //vehicle store
@@ -199,11 +221,7 @@ Route::post('totalExpenses', [ExpenseController::class, 'submit'])->name('totale
 //payment
 Route::post('uploadPayment', [ProofPaymentController::class, 'store'])->name('uploadpayment.store');
 //account
-Route::post('accounts', [AccountController::class, 'store'])->name('account.store');
-Route::post('deposit', [InController::class, 'store'])->name('deposit.store');
-Route::post('withdraw', [OutController::class, 'store'])->name('withdraw.store');
-Route::get('account-accounting', [AccountingController::class, 'account'])->name('account-accounting');
-Route::get('/filter-transactions', [AccountingController::class, 'filter'])->name('filter.transactions');
+
 // web.php
 Route::put('/transactions/{transaction}', [AccountingController::class, 'update'])->name('transactions.update');
 
@@ -247,16 +265,9 @@ Route::put('/maintenance/{id}', [PreventiveController::class, 'update'])->name('
 Route::delete('/maintenance/{id}', [PreventiveController::class, 'destroy'])->name('maintenance.destroy');
 
 //rate per mile
-Route::post('preventive-store', [RatePerMileController::class, 'submit'])->name('earning.store');
-Route::get('rate-per-mile', [AdminController::class, 'ratepermile'])->name('rate-per-mile');
-Route::get('rate-per-month', [AdminController::class, 'ratepermonth'])->name('rate-per-month');
-Route::get('rate-per-year', [AdminController::class, 'rateperyear'])->name('rate-per-year');
-Route::get('/rate-per-mile/{id}/edit', [RatePerMileController::class, 'edit'])->name('rate-per-mile.edit');
-Route::put('/rate-per-mile/{id}', [RatePerMileController::class, 'update'])->name('rate-per-mile.update');
-Route::delete('/rate-per-mile/{id}', [RatePerMileController::class, 'destroy'])->name('rate-per-mile.destroy');
 
 //feedback
-// web.php
+
 Route::post('/submit-feedback', [FeedbackController::class, 'submit'])->name('feedback.store');
 Route::get('/feedback', [AdminController::class, 'feedback'])->name('feedback');
 Route::patch('/feedback/{id}/accept', [FeedbackController::class, 'accept'])->name('feedback.accept');
