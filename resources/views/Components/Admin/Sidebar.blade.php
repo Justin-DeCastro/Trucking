@@ -113,7 +113,9 @@
                     </li>
                     <li class="sidebar-menu-item <?php echo $currentPage == 'driverbooking-count' ? 'active' : ''; ?>">
                         <a href="driverbooking-count" class="nav-link ">
-                            <i class="fa fa-users menu-icon"></i>
+                            <img src="Home/[removal.ai]_58d3e57f-85b1-4b48-aaf8-3064f5e9dbbd-o1nzrl2prkqll1dzvepc0a.png" alt="Bookings per Driver" style="width: 34px; height: 24px;">
+
+
                             <span class="menu-title">Bookings Per Driver</span>
                         </a>
                     </li>

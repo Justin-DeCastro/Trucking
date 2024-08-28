@@ -68,7 +68,7 @@
 
     <a class="scroll-top"><i class="fas fa-angle-double-up"></i></a>
 
-    <div class="header-top d-lg-block d-none">
+    {{-- <div class="header-top d-lg-block d-none">
         <div class="container">
             <div class="top-header-wrapper d-flex justify-content-between align-items-center flex-wrap">
                 <div class="top-contact d-flex align-items-center">
@@ -101,7 +101,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
 
 

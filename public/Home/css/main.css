@@ -2540,7 +2540,7 @@ input[type="number"] {
   z-index: 5;
   z-index: 2;
   width: 100%;
-  top: 70px;
+  /* top: 70px; */
 }
 
 @media screen and (max-width: 991px) {
@@ -2566,7 +2566,7 @@ input[type="number"] {
   }
 }
 
-.header.fixed-header {
+/* .header.fixed-header {
   position: fixed;
   background-color: hsl(var(--black));
   transition: 0.3s linear;
@@ -2574,7 +2574,7 @@ input[type="number"] {
   animation: slide-down 0.8s;
   width: 100%;
   border-bottom: 1px solid hsl(var(--white) / 0.3);
-}
+} */
 
 .header.fixed-header .nav-menu {
   padding-top: 0px;
