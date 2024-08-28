@@ -1,6 +1,115 @@
 <!doctype html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
 <style>
+   .form-container {
+  width: 400px;
+  background: linear-gradient(#212121, #212121) padding-box,
+              linear-gradient(145deg, transparent 35%, #e81cff, #40c9ff) border-box;
+  border: 2px solid transparent;
+  padding: 32px 24px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #e0e0e0; /* Changed text color */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+  border-radius: 16px;
+}
+
+.form-container button:active {
+  scale: 0.95;
+}
+
+.form-container .form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-container .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.form-container .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #b0b0b0; /* Changed label color */
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.form-container .form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: #ffffff; /* Changed input text color */
+  font-family: inherit;
+  background-color: transparent;
+  border: 1px solid #414141;
+}
+
+.form-container .form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  resize: none;
+  color: #ffffff; /* Changed textarea text color */
+  height: 96px;
+  border: 1px solid #414141;
+  background-color: transparent;
+  font-family: inherit;
+}
+
+.form-container .form-group input::placeholder {
+  color: #a0a0a0; /* Changed placeholder color */
+}
+
+.form-container .form-group textarea::placeholder {
+  color: #a0a0a0; /* Changed placeholder color */
+}
+
+.form-container .form-group input:focus {
+  outline: none;
+  border-color: #e81cff;
+}
+
+.form-container .form-group textarea:focus {
+  outline: none;
+  border-color: #e81cff;
+}
+
+.form-container .form-submit-btn {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  align-self: flex-start;
+  font-family: inherit;
+  color: #ffffff; /* Changed button text color */
+  font-weight: 600;
+  width: 40%;
+  background: #313131;
+  border: 1px solid #414141;
+  padding: 12px 16px;
+  font-size: inherit;
+  gap: 8px;
+  margin-top: 8px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.form-container .form-submit-btn:hover {
+  background-color: #ffffff;
+  border-color: #ffffff;
+  color: #000000; /* Changed hover text color */
+}
+
+
+
+
+
 .wave-card {
     position: relative;
     overflow: hidden;
@@ -320,8 +429,7 @@
                     <div class="section-heading style-left">
                         <h3 class="section-heading__title">30+ Years Experiences in Courier Service</h3>
                         <p class="section-heading__desc">
-                            Doloribus debitis dolores amet, minus qui eaque itaque, doloremque at ipsa ab reiciendis
-                            assumenda et labore asperiores, cumque impedit! Corrupti, alias laboriosam!
+                            With over three decades in the courier industry, we have perfected our services to ensure fast, reliable, and secure deliveries. Our experienced team is dedicated to providing top-notch service, meeting all your delivery needs with professionalism and care.
                         </p>
                     </div>
                     <ul class="about-services">
@@ -380,119 +488,88 @@
         <div class="container">
             <div class="row">
                 <div class="section-heading">
-                    <h3 class="section-heading__title"> What We Serve </h3>
+                    <h3 class="section-heading__title">What We Serve</h3>
                     <p class="section-heading__desc">
-                        Provides specialized delivery services for packages, documents, and other items from one
-                        location to another.
+                        We provide specialized delivery services for packages, documents, and other items to meet your every need.
                     </p>
                 </div>
                 <div class="col-12">
                     <div class="service-card-list">
                         <div class="service-card">
                             <div class="service-card__thumb">
-                                <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/service/6652c2151b4551716699669.png"
-                                    alt="service">
+                                <span class="icon"><i class="fas fa-truck"></i></span>
                             </div>
                             <div class="service-card__content">
                                 <h6 class="service-card__title">
                                     Standard Courier
                                 </h6>
                                 <p class="service-card__desc">
-                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos,
-                                    deleniti,
-                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium
-                                    voluptatibus
-                                    illum esse.
+                                    Our Standard Courier service ensures reliable and timely delivery for all your regular parcels. We focus on efficiency and affordability, making it the perfect choice for your everyday shipping needs.
                                 </p>
                             </div>
                         </div>
                         <div class="service-card">
                             <div class="service-card__thumb">
-                                <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/service/6652c220521ad1716699680.png"
-                                    alt="service">
+                                <span class="icon"><i class="fas fa-bolt"></i></span>
                             </div>
                             <div class="service-card__content">
                                 <h6 class="service-card__title">
                                     Express Courier
                                 </h6>
                                 <p class="service-card__desc">
-                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos,
-                                    deleniti,
-                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium
-                                    voluptatibus
-                                    illum esse.
+                                    Need it fast? Our Express Courier service is designed for urgent deliveries, ensuring your packages arrive at their destination as quickly as possible, with the highest priority and care.
                                 </p>
                             </div>
                         </div>
                         <div class="service-card">
                             <div class="service-card__thumb">
-                                <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/service/6652c22c767151716699692.png"
-                                    alt="service">
+                                <span class="icon"><i class="fas fa-pallet"></i></span>
                             </div>
                             <div class="service-card__content">
                                 <h6 class="service-card__title">
                                     Pallet Courier
                                 </h6>
                                 <p class="service-card__desc">
-                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos,
-                                    deleniti,
-                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium
-                                    voluptatibus
-                                    illum esse.
+                                    Our Pallet Courier service is ideal for businesses that need to transport large quantities of goods. We provide secure and efficient pallet delivery to ensure your products reach their destination safely.
                                 </p>
                             </div>
                         </div>
                         <div class="service-card">
                             <div class="service-card__thumb">
-                                <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/service/6652c657a7f9d1716700759.png"
-                                    alt="service">
+                                <span class="icon"><i class="fas fa-moon"></i></span>
                             </div>
                             <div class="service-card__content">
                                 <h6 class="service-card__title">
-                                    Over Night Courier
+                                    Overnight Courier
                                 </h6>
                                 <p class="service-card__desc">
-                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos,
-                                    deleniti,
-                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium
-                                    voluptatibus
-                                    illum esse.
+                                    Get your packages delivered overnight with our Overnight Courier service. Perfect for when you need something delivered first thing in the morning, no matter where it needs to go.
                                 </p>
                             </div>
                         </div>
                         <div class="service-card">
                             <div class="service-card__thumb">
-                                <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/service/6652c6670f4a61716700775.png"
-                                    alt="service">
+                                <span class="icon"><i class="fas fa-globe"></i></span>
                             </div>
                             <div class="service-card__content">
                                 <h6 class="service-card__title">
-                                    International Courier
+                                    Nationwide Courier
                                 </h6>
                                 <p class="service-card__desc">
-                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos,
-                                    deleniti,
-                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium
-                                    voluptatibus
-                                    illum esse.
+                                    Our Nationwide Courier service ensures fast and reliable delivery across the country. We cater to all regions, providing comprehensive coverage and efficient service to get your packages where they need to be, safely and on time.
                                 </p>
                             </div>
                         </div>
                         <div class="service-card">
                             <div class="service-card__thumb">
-                                <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/service/6652c66f3fb341716700783.png"
-                                    alt="service">
+                                <span class="icon"><i class="fas fa-warehouse"></i></span>
                             </div>
                             <div class="service-card__content">
                                 <h6 class="service-card__title">
                                     Warehousing
                                 </h6>
                                 <p class="service-card__desc">
-                                    Beatae rem sapiente dolorum cumque consequuntur quae quasi dignissimos,
-                                    deleniti,
-                                    quia voluptas aliquam nobis sit atque asperiores, debitis accusantium
-                                    voluptatibus
-                                    illum esse.
+                                    We offer comprehensive warehousing services to store your goods safely. Our secure storage facilities and inventory management solutions are perfect for businesses looking to optimize their logistics operations.
                                 </p>
                             </div>
                         </div>
@@ -501,6 +578,7 @@
             </div>
         </div>
     </section>
+
     <section class="team-section py-120">
         <div class="container">
             <div class="section-heading">
@@ -591,705 +669,105 @@
     </section>
 
 
-    <section class="testimonials py-120 section-bg">
-        <div class="container-fluid">
-            <div class="section-overlay">
-                <div class="row g-0 h-100">
-                    <div class="col-xl-7 col-lg-8">
-                        <div class="left-thumb">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/client/666d5752d39bb1718441810.png"
-                                alt="client">
-                        </div>
-                    </div>
-                    <div class="col-xl-5 col-lg-4 d-lg-block d-none">
-                        <div class="right-thumb">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/client/6652c01ba36121716699163.png"
-                                alt="client">
-                        </div>
-                    </div>
-                </div>
+  <section class="testimonials py-120 section-bg">
+    <div class="container-fluid">
+        <div class="section-overlay">
+            <div class="row g-0 h-100">
+                <div class="col-xl-7 col-lg-8">
+    <div class="left-thumb">
+        <!-- Use Bootstrap Icons or any other icon library -->
+        <i class="bi bi-chat-dots" style="font-size: 100px;"></i>
+    </div>
+</div>
+<div class="col-xl-5 col-lg-4 d-lg-block d-none">
+    <div class="right-thumb">
+        <i class="bi bi-chat-dots" style="font-size: 100px;"></i>
+    </div>
+</div>
+
             </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="testimonial-slider">
-                            <div class="testimonails-card">
-                                <div class="testimonial-item">
-                                    <div class="testimonial-item__content">
-                                        <div class="testimonial-item__info">
-                                            <div class="testimonial-item__thumb">
-                                                <img class="fit-image"
-                                                    src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/client/6652c06fba7c91716699247.png"
-                                                    alt="client">
-                                            </div>
-                                            <div class="testimonial-item__details">
-                                                <h6 class="testimonial-item__name">
-                                                    Abu Desnan</h6>
-                                                <span class="testimonial-item__designation">
-                                                    Backend Developer
-                                                </span>
-                                                <div class="testimonial-item__rating">
-                                                    <ul class="rating-list">
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="testimonial-item__desc">
-                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa
-                                        neque
-                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui
-                                        labore
-                                        totam nam? Impedit, doloribus odit. Quo?
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="testimonails-card">
-                                <div class="testimonial-item">
-                                    <div class="testimonial-item__content">
-                                        <div class="testimonial-item__info">
-                                            <div class="testimonial-item__thumb">
-                                                <img class="fit-image"
-                                                    src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/client/6652c07b974651716699259.png"
-                                                    alt="client">
-                                            </div>
-                                            <div class="testimonial-item__details">
-                                                <h6 class="testimonial-item__name">
-                                                    Md Jisan</h6>
-                                                <span class="testimonial-item__designation">
-                                                    Delivery Boy
-                                                </span>
-                                                <div class="testimonial-item__rating">
-                                                    <ul class="rating-list">
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="far fa-star"></i>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="testimonial-item__desc">
-                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa
-                                        neque
-                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui
-                                        labore
-                                        totam nam? Impedit, doloribus odit. Quo?
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="testimonails-card">
-                                <div class="testimonial-item">
-                                    <div class="testimonial-item__content">
-                                        <div class="testimonial-item__info">
-                                            <div class="testimonial-item__thumb">
-                                                <img class="fit-image"
-                                                    src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/client/6652c08397e461716699267.png"
-                                                    alt="client">
-                                            </div>
-                                            <div class="testimonial-item__details">
-                                                <h6 class="testimonial-item__name">
-                                                    Md Demo Sarker</h6>
-                                                <span class="testimonial-item__designation">
-                                                    Courier Customer
-                                                </span>
-                                                <div class="testimonial-item__rating">
-                                                    <ul class="rating-list">
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="testimonial-item__desc">
-                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa
-                                        neque
-                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui
-                                        labore
-                                        totam nam? Impedit, doloribus odit. Quo?
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="testimonails-card">
-                                <div class="testimonial-item">
-                                    <div class="testimonial-item__content">
-                                        <div class="testimonial-item__info">
-                                            <div class="testimonial-item__thumb">
-                                                <img class="fit-image"
-                                                    src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/client/6652c08dbe5ae1716699277.png"
-                                                    alt="client">
-                                            </div>
-                                            <div class="testimonial-item__details">
-                                                <h6 class="testimonial-item__name">
-                                                    Alex Branda</h6>
-                                                <span class="testimonial-item__designation">
-                                                    Merchant
-                                                </span>
-                                                <div class="testimonial-item__rating">
-                                                    <ul class="rating-list">
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="far fa-star"></i>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="testimonial-item__desc">
-                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa
-                                        neque
-                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui
-                                        labore
-                                        totam nam? Impedit, doloribus odit. Quo?
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="testimonails-card">
-                                <div class="testimonial-item">
-                                    <div class="testimonial-item__content">
-                                        <div class="testimonial-item__info">
-                                            <div class="testimonial-item__thumb">
-                                                <img class="fit-image"
-                                                    src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/client/6652c09543b5b1716699285.png"
-                                                    alt="client">
-                                            </div>
-                                            <div class="testimonial-item__details">
-                                                <h6 class="testimonial-item__name">
-                                                    Carlos Rabanda</h6>
-                                                <span class="testimonial-item__designation">
-                                                    Business Owner
-                                                </span>
-                                                <div class="testimonial-item__rating">
-                                                    <ul class="rating-list">
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="fas fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="far fa-star"></i>
-                                                        </li>
-                                                        <li class="rating-list__item"><i class="far fa-star"></i>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="testimonial-item__desc">
-                                        Quas, illo. A commodi officia, eos, laborum expedita aliquid culpa ipsa
-                                        neque
-                                        dignissimos tempore id sed iste odit optio natus deleniti assumenda qui
-                                        labore
-                                        totam nam? Impedit, doloribus odit. Quo?
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="faq py-120 section-bg">
-        <div class="container">
-            <div class="row gy-4">
-                <div class="col-md-6">
-                    <div class="section-heading style-left">
-                        <h3 class="section-heading__title">
-                            Explore Our Services and Solutions
-                        </h3>
-                        <p class="section-heading__desc">
-                            Voluptatem, fugit, facilis iure eligendi doloremque nisi minima ipsam corrupti vero
-                            eaque
-                            quo aut voluptatibus! Necessitatibus minima
-                        </p>
-                    </div>
-                    <a class="btn btn--base" href="contact">
-                        <span class="btn--icon"><i class="icon-View-More"></i></span>
-                        Contact Us
-                    </a>
-                </div>
-                <div class="col-md-6">
-                    <div class="accordion custom--accordion" id="faqList">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" data-bs-toggle="collapse"
-                                    data-bs-target="#faq0" type="button" aria-expanded="true" aria-controls="faq0">
-                                    Explore Our Services and Solutions
-                                </button>
-                            </h2>
-                            <div class="accordion-collapse show collapse" id="faq0" data-bs-parent="#faqList">
-                                <div class="accordion-body">
-                                    <p class="text">
-                                        Voluptatem, fugit, facilis iure eligendi doloremque nisi minima ipsam
-                                        corrupti
-                                        vero eaque quo aut voluptatibus! Necessitatibus minima
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" data-bs-toggle="collapse"
-                                    data-bs-target="#faq1" type="button" aria-expanded="false"
-                                    aria-controls="faq1">
-                                    Cum molestias sequi dignissimos nemo?
-                                </button>
-                            </h2>
-                            <div class="accordion-collapse  collapse" id="faq1" data-bs-parent="#faqList">
-                                <div class="accordion-body">
-                                    <p class="text">
-                                        Quibusdam reprehenderit blanditiis adipisci facilis fugit, harum ab iste
-                                        temporibus eveniet dolore porro ex excepturi consequatur.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" data-bs-toggle="collapse"
-                                    data-bs-target="#faq2" type="button" aria-expanded="false"
-                                    aria-controls="faq2">
-                                    Cum molestias sequi dignissimos nemo?
-                                </button>
-                            </h2>
-                            <div class="accordion-collapse  collapse" id="faq2" data-bs-parent="#faqList">
-                                <div class="accordion-body">
-                                    <p class="text">
-                                        Alias ducimus autem, laudantium rerum quas libero dolorem? Inventore,
-                                        corrupti,
-                                        nihil iste distinctio asperiores
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" data-bs-toggle="collapse"
-                                    data-bs-target="#faq3" type="button" aria-expanded="false"
-                                    aria-controls="faq3">
-                                    harum ab iste temporibus eveniet dolore porro
-                                </button>
-                            </h2>
-                            <div class="accordion-collapse  collapse" id="faq3" data-bs-parent="#faqList">
-                                <div class="accordion-body">
-                                    <p class="text">
-                                        Alias ducimus autem, laudantium rerum quas libero dolorem? Inventore,
-                                        corrupti,
-                                        nihil iste distinctio asperiores
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="our-services py-60">
-        <div class="container">
-            <div class="row gy-5">
-                <div class="col-md-3 col-6 col-xsm-6">
-                    <div class="our-service-card flex-align counterup-item">
-                        <div class="our-service-card__thumb">
-                            <div class="border-vertical"></div>
-                            <div class="border-horizontal"></div>
-                            <span class="icon">
-                                <i class="las la-users"></i> </span>
-                        </div>
-                        <div class="our-service-card__content">
-                            <p class="our-service-card__subtitle">
-                                Satisfied Client
-                            </p>
-                            <h4 class="our-service-card__title flex-align">
-                                <span class="odometer" data-odometer-final="323"></span>
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6 col-xsm-6">
-                    <div class="our-service-card flex-align counterup-item">
-                        <div class="our-service-card__thumb">
-                            <div class="border-vertical"></div>
-                            <div class="border-horizontal"></div>
-                            <span class="icon">
-                                <i class="las la-store-alt"></i> </span>
-                        </div>
-                        <div class="our-service-card__content">
-                            <p class="our-service-card__subtitle">
-                                Total Branches
-                            </p>
-                            <h4 class="our-service-card__title flex-align">
-                                <span class="odometer" data-odometer-final="100"></span>
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6 col-xsm-6">
-                    <div class="our-service-card flex-align counterup-item">
-                        <div class="our-service-card__thumb">
-                            <div class="border-vertical"></div>
-                            <div class="border-horizontal"></div>
-                            <span class="icon">
-                                <i class="las la-user-friends"></i> </span>
-                        </div>
-                        <div class="our-service-card__content">
-                            <p class="our-service-card__subtitle">
-                                Total Staffs
-                            </p>
-                            <h4 class="our-service-card__title flex-align">
-                                <span class="odometer" data-odometer-final="865"></span>
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6 col-xsm-6">
-                    <div class="our-service-card flex-align counterup-item">
-                        <div class="our-service-card__thumb">
-                            <div class="border-vertical"></div>
-                            <div class="border-horizontal"></div>
-                            <span class="icon">
-                                <i class="las la-people-carry"></i> </span>
-                        </div>
-                        <div class="our-service-card__content">
-                            <p class="our-service-card__subtitle">
-                                Total Member
-                            </p>
-                            <h4 class="our-service-card__title flex-align">
-                                <span class="odometer" data-odometer-final="387534"></span>
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="branches-section py-120 section-bg">
-        <div class="branches-animation">
-            <span class="line"></span>
-            <span class="line"></span>
-            <span class="line"></span>
         </div>
         <div class="container">
-            <div class="section-heading">
-                <h3 class="section-heading__title">Our Top Branches</h3>
-                <p class="section-heading__desc">Here is more information about our courier company branches, Where
-                    we
-                    are belong</p>
-            </div>
-            <div class="row gy-3 gx-5">
-                <div class="col-lg-3 col-sm-6 col-xsm-6">
-                    <div class="branch-card">
-                        <h6 class="branch-card__title">India</h6>
-                        <div class="branch-card__content">
-                            <ul class="branch-card__list">
-                                <li class="branch-card__item">
-                                    <span class="icon"><i class="icon-Location-Icon"></i></span>
-                                    <div class="content">
-                                        <p class="title">Location</p>
-                                        <span class="desc d-block">
-                                            Kolkata, India
-                                        </span>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="testimonial-slider">
+                        @foreach ($testimonials as $testimonial)
+    @if ($testimonial->status === 'Accepted')
+                        <div class="testimonails-card">
+                            <div class="testimonial-item">
+                                <div class="testimonial-item__content">
+                                    <div class="testimonial-item__info">
+                                        <div class="testimonial-item__thumb">
+                                            <img class="fit-image" src="Home/user-avatar-male-5.png" alt="client">
+                                        </div>
+                                        <div class="testimonial-item__details">
+                                            <h6 class="testimonial-item__name">{{ $testimonial->name }}</h6>
+                                            <span class="testimonial-item__designation">{{ $testimonial->position }}</span>
+                                            <div class="testimonial-item__rating">
+                                                <ul class="rating-list">
+                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                    <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
-                                </li>
-                                <li class="branch-card__item">
-                                    <span class="icon"><i class="icon-phone-call"></i></span>
-                                    <div class="content">
-                                        <p class="title">Mobile</p>
-                                        <a class="desc d-block" href="tel:(406) 555-0120">
-                                            (406) 555-0120
-                                        </a>
-                                    </div>
-                                </li>
-                                <li class="branch-card__item">
-                                    <span class="icon"><i class="icon-email"></i></span>
-                                    <div class="content">
-                                        <p class="title">Email</p>
-                                        <a class="desc d-block"
-                                            href="/cdn-cgi/l/email-protection#e08598818d908c85a0ce838f8d">
-                                            <span class="__cf_email__"
-                                                data-cfemail="92f7eaf3ffe2fef7d2bcf1fdff">[email&#160;protected]</span>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
+                                </div>
+                                <p class="testimonial-item__desc">
+                                    {{ $testimonial->message }}
+                                </p>
+                            </div>
                         </div>
+                        @endif
+                        @endforeach
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-6 col-xsm-6">
-                    <div class="branch-card">
-                        <h6 class="branch-card__title">United Kingdom</h6>
-                        <div class="branch-card__content">
-                            <ul class="branch-card__list">
-                                <li class="branch-card__item">
-                                    <span class="icon"><i class="icon-Location-Icon"></i></span>
-                                    <div class="content">
-                                        <p class="title">Location</p>
-                                        <span class="desc d-block">
-                                            Old city, United Kingdom
-                                        </span>
-                                    </div>
-                                </li>
-                                <li class="branch-card__item">
-                                    <span class="icon"><i class="icon-phone-call"></i></span>
-                                    <div class="content">
-                                        <p class="title">Mobile</p>
-                                        <a class="desc d-block" href="tel:(406) 555-0122">
-                                            (406) 555-0122
-                                        </a>
-                                    </div>
-                                </li>
-                                <li class="branch-card__item">
-                                    <span class="icon"><i class="icon-email"></i></span>
-                                    <div class="content">
-                                        <p class="title">Email</p>
-                                        <a class="desc d-block"
-                                            href="/cdn-cgi/l/email-protection#ea8f928b879a868faac4898587">
-                                            <span class="__cf_email__"
-                                                data-cfemail="583d20393528343d18763b3735">[email&#160;protected]</span>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                <!-- Add the form here -->
+                <div class="col-lg-6">
+                    <h1 class="text-center mb-4" style="
+        background: linear-gradient(45deg, black, blue, red);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    ">
+        Feedback Form
+    </h1>
+                    <div class="form-container p-4 border rounded shadow-lg bg-light">
+                        <form class="form" action="{{ route('feedback.store') }}" method="post">
+                            @csrf
+
+                            <div class="form-group mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name" required>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="position" class="form-label">Position</label>
+                                <input type="text" id="position" name="position" class="form-control" placeholder="Enter your position" required>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="textarea" class="form-label">How Can We Help You?</label>
+                                <textarea name="message" id="textarea" class="form-control" rows="5" placeholder="Your feedback" required></textarea>
+                            </div>
+
+                            <button class="btn btn-primary btn-lg w-100" type="submit">Submit</button>
+                        </form>
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-6 col-xsm-6">
-                    <div class="branch-card">
-                        <h6 class="branch-card__title">South Africa</h6>
-                        <div class="branch-card__content">
-                            <ul class="branch-card__list">
-                                <li class="branch-card__item">
-                                    <span class="icon"><i class="icon-Location-Icon"></i></span>
-                                    <div class="content">
-                                        <p class="title">Location</p>
-                                        <span class="desc d-block">
-                                            Hanover, South Africa
-                                        </span>
-                                    </div>
-                                </li>
-                                <li class="branch-card__item">
-                                    <span class="icon"><i class="icon-phone-call"></i></span>
-                                    <div class="content">
-                                        <p class="title">Mobile</p>
-                                        <a class="desc d-block" href="tel:(406) 555-1256">
-                                            (406) 555-1256
-                                        </a>
-                                    </div>
-                                </li>
-                                <li class="branch-card__item">
-                                    <span class="icon"><i class="icon-email"></i></span>
-                                    <div class="content">
-                                        <p class="title">Email</p>
-                                        <a class="desc d-block"
-                                            href="/cdn-cgi/l/email-protection#aecbd6cfc3dec2cbee80cdc1c3">
-                                            <span class="__cf_email__"
-                                                data-cfemail="600518010d100c05204e030f0d">[email&#160;protected]</span>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 col-xsm-6">
-                    <div class="branch-card">
-                        <h6 class="branch-card__title">Pakistan</h6>
-                        <div class="branch-card__content">
-                            <ul class="branch-card__list">
-                                <li class="branch-card__item">
-                                    <span class="icon"><i class="icon-Location-Icon"></i></span>
-                                    <div class="content">
-                                        <p class="title">Location</p>
-                                        <span class="desc d-block">
-                                            Islamabad, Pakistan
-                                        </span>
-                                    </div>
-                                </li>
-                                <li class="branch-card__item">
-                                    <span class="icon"><i class="icon-phone-call"></i></span>
-                                    <div class="content">
-                                        <p class="title">Mobile</p>
-                                        <a class="desc d-block" href="tel:(406) 555-0120">
-                                            (406) 555-0120
-                                        </a>
-                                    </div>
-                                </li>
-                                <li class="branch-card__item">
-                                    <span class="icon"><i class="icon-email"></i></span>
-                                    <div class="content">
-                                        <p class="title">Email</p>
-                                        <a class="desc d-block"
-                                            href="/cdn-cgi/l/email-protection#0b6e736a667b676e4b25686466">
-                                            <span class="__cf_email__"
-                                                data-cfemail="680d10090518040d28460b0705">[email&#160;protected]</span>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
-    </section>
-    <section class="blog py-120">
-        <div class="container">
-            <div class="section-heading">
-                <h2 class="section-heading__title">Our Blog Posts</h2>
-                <p class="section-heading__desc">Get our latest news from in here, also get what`s our update about
-                    our
-                    services</p>
-            </div>
-            <div class="row gy-4 justify-content-center">
-                <div class="col-lg-4 col-md-6">
-                    <div class="blog-item section-bg">
-                        <div class="blog-item__thumb">
-                            <a class="blog-item__thumb-link"
-                                href="https://script.viserlab.com/courierlab/demo/blog/praesentium-at-nobis-unde-quis-aut-quaerat-autem-libero-in-consequuntur-recusandae-provident">
-                                <img class="fit-image"
-                                    src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/blog/thumb_6652be942783b1716698772.png"
-                                    alt="blog image">
-                            </a>
-                        </div>
-                        <div class="blog-item__content">
-                            <ul class="text-list flex-between gap-3">
-                                <li class="text-list__item fs-14">
-                                    <span class="text-list__item-icon text--base me-1">
-                                        <i class="las la-clock"></i>
-                                    </span>
-                                    6 months ago
-                                </li>
-                            </ul>
-                            <h6 class="blog-item__title">
-                                <a class="blog-item__title-link border-effect"
-                                    href="https://script.viserlab.com/courierlab/demo/blog/praesentium-at-nobis-unde-quis-aut-quaerat-autem-libero-in-consequuntur-recusandae-provident">
-                                    Praesentium at nobis unde quis aut quaerat autem libero in consequuntur
-                                    recusand...
-                                </a>
-                            </h6>
-                            <div class="blog-item__btn">
-                                <a href="https://script.viserlab.com/courierlab/demo/blog/praesentium-at-nobis-unde-quis-aut-quaerat-autem-libero-in-consequuntur-recusandae-provident"
-                                    class="blog-item__btn-link">
-                                    Read More <span class="blog-item__icon">
-                                        <i class="las la-angle-right"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="blog-item section-bg">
-                        <div class="blog-item__thumb">
-                            <a class="blog-item__thumb-link"
-                                href="https://script.viserlab.com/courierlab/demo/blog/unde-quis-aut-quaerat-autem-libero-in-consequuntur-recusandae-provident-raesentium-at-nobis">
-                                <img class="fit-image"
-                                    src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/blog/thumb_6652bea668b111716698790.png"
-                                    alt="blog image">
-                            </a>
-                        </div>
-                        <div class="blog-item__content">
-                            <ul class="text-list flex-between gap-3">
-                                <li class="text-list__item fs-14">
-                                    <span class="text-list__item-icon text--base me-1">
-                                        <i class="las la-clock"></i>
-                                    </span>
-                                    6 months ago
-                                </li>
-                            </ul>
-                            <h6 class="blog-item__title">
-                                <a class="blog-item__title-link border-effect"
-                                    href="https://script.viserlab.com/courierlab/demo/blog/unde-quis-aut-quaerat-autem-libero-in-consequuntur-recusandae-provident-raesentium-at-nobis">
-                                    Unde quis aut quaerat autem libero in consequuntur recusandae provident
-                                    raesenti...
-                                </a>
-                            </h6>
-                            <div class="blog-item__btn">
-                                <a href="https://script.viserlab.com/courierlab/demo/blog/unde-quis-aut-quaerat-autem-libero-in-consequuntur-recusandae-provident-raesentium-at-nobis"
-                                    class="blog-item__btn-link">
-                                    Read More <span class="blog-item__icon">
-                                        <i class="las la-angle-right"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="blog-item section-bg">
-                        <div class="blog-item__thumb">
-                            <a class="blog-item__thumb-link"
-                                href="https://script.viserlab.com/courierlab/demo/blog/praesentium-at-nobis-unde-quis-aut-quaerat-autem-libero-in-consequuntur-recusandae">
-                                <img class="fit-image"
-                                    src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/blog/thumb_6652befe8dfca1716698878.png"
-                                    alt="blog image">
-                            </a>
-                        </div>
-                        <div class="blog-item__content">
-                            <ul class="text-list flex-between gap-3">
-                                <li class="text-list__item fs-14">
-                                    <span class="text-list__item-icon text--base me-1">
-                                        <i class="las la-clock"></i>
-                                    </span>
-                                    6 months ago
-                                </li>
-                            </ul>
-                            <h6 class="blog-item__title">
-                                <a class="blog-item__title-link border-effect"
-                                    href="https://script.viserlab.com/courierlab/demo/blog/praesentium-at-nobis-unde-quis-aut-quaerat-autem-libero-in-consequuntur-recusandae">
-                                    Praesentium at nobis unde quis aut quaerat autem libero in consequuntur
-                                    recusand...
-                                </a>
-                            </h6>
-                            <div class="blog-item__btn">
-                                <a href="https://script.viserlab.com/courierlab/demo/blog/praesentium-at-nobis-unde-quis-aut-quaerat-autem-libero-in-consequuntur-recusandae"
-                                    class="blog-item__btn-link">
-                                    Read More <span class="blog-item__icon">
-                                        <i class="las la-angle-right"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    </div>
+</section>
+
+
+
+
     <div class="client py-60 section-bg">
         <div class="container">
             <div class="client-logos client-slider">

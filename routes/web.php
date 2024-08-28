@@ -29,6 +29,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\PreventiveController;
 use App\Http\Controllers\RatePerMileController;
+use App\Http\Controllers\FeedbackController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -253,4 +254,11 @@ Route::get('rate-per-year', [AdminController::class, 'rateperyear'])->name('rate
 Route::get('/rate-per-mile/{id}/edit', [RatePerMileController::class, 'edit'])->name('rate-per-mile.edit');
 Route::put('/rate-per-mile/{id}', [RatePerMileController::class, 'update'])->name('rate-per-mile.update');
 Route::delete('/rate-per-mile/{id}', [RatePerMileController::class, 'destroy'])->name('rate-per-mile.destroy');
+
+//feedback
+// web.php
+Route::post('/submit-feedback', [FeedbackController::class, 'submit'])->name('feedback.store');
+Route::get('/feedback', [AdminController::class, 'feedback'])->name('feedback');
+Route::patch('/feedback/{id}/accept', [FeedbackController::class, 'accept'])->name('feedback.accept');
+Route::patch('/feedback/{id}/decline', [FeedbackController::class, 'decline'])->name('feedback.decline');
 

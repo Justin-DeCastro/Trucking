@@ -124,6 +124,13 @@
                             <span class="menu-title">Preventive Maintenance</span>
                         </a>
                     </li>
+                    <li class="sidebar-menu-item <?php echo $currentPage == 'feedback' ? 'active' : ''; ?>">
+                        <a href="feedback" class="nav-link ">
+                            <i class="fas fa-message"></i>
+
+                            <span class="menu-title">Customer Feedback</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
 

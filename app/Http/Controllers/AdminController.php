@@ -11,6 +11,7 @@ use App\Models\Transaction;
 use App\Models\Subcontractor;
 use App\Models\PricingSalary;
 use App\Models\Preventive;
+use App\Models\Feedback;
 use App\Models\RatePerMile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
@@ -188,6 +189,10 @@ public function courier_order()
 public function addtruck(){
     $vehicles = Vehicle::all();
     return view('Admin.Addtruck',compact('vehicles'));
+}
+public function feedback(){
+    $feedbacks = Feedback::all();
+    return view('Admin.Feedback',compact('feedbacks'));
 }
 public function salary()
 {

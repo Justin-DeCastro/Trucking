@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 use App\Models\Vehicle;
 use App\Models\User;
 use App\Models\Employee;
+use App\Models\Feedback;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function home(){
+        $testimonials = Feedback::all();
         $employees = Employee::all();
-        return view('Home.userhome',compact('employees'));
+        return view('Home.userhome',compact('employees','testimonials'));
     }
     public function ordertracking(){
         return view('Home.Ordertracking');
