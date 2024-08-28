@@ -142,6 +142,7 @@
                                 <th>Total Bookings</th>
                                 <th>Status</th>
                                 <th>Reference</th>
+                                <th>Date</th> <!-- Added Date column -->
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -152,6 +153,7 @@
                                 <td>{{ $detail->total_bookings }}</td>
                                 <td>{{ $detail->statuses }}</td>
                                 <td>{{ $detail->order_statuses }}</td>
+                                <td>{{ $detail->dates }}</td> <!-- Display Date -->
                                 <td>
                                     <!-- Button to trigger modal -->
                                     <button type="button" class="btn btn-info" data-bs-toggle="modal"
@@ -162,11 +164,12 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="5">No data available</td> <!-- Adjusted colspan to 5 since there are 5 columns -->
+                                <td colspan="6">No data available</td> <!-- Adjusted colspan to 6 since there are 6 columns -->
                             </tr>
                             @endforelse
                         </tbody>
                     </table>
+
 
 
 
@@ -191,6 +194,7 @@
                                                             <th>Status</th>
                                                             <th>Order Status</th>
                                                             <th>Count</th>
+                                                            <th>Date</th> <!-- Added Date column -->
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -200,6 +204,7 @@
                                                                     <td>{{ $status }}</td>
                                                                     <td>{{ $orderStatus }}</td>
                                                                     <td>{{ $count }}</td>
+                                                                    <td>{{ $detail->dates }}</td> <!-- Display Date -->
                                                                 </tr>
                                                             @endforeach
                                                         @endforeach

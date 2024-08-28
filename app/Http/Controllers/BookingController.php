@@ -102,8 +102,9 @@ class BookingController extends Controller
             ->selectRaw('count(*) as total_bookings')
             ->selectRaw('GROUP_CONCAT(DISTINCT status) as statuses')
             ->selectRaw('GROUP_CONCAT(DISTINCT order_status) as order_statuses')
+            ->selectRaw('GROUP_CONCAT(DISTINCT DATE_FORMAT(bookings.created_at, "%M %d, %Y")) as dates') // Format date
             ->groupBy('users.name') // Group by driver name
-            ->get(['users.name as name', 'total_bookings', 'statuses', 'order_statuses']);
+            ->get(['users.name as name', 'total_bookings', 'statuses', 'order_statuses', 'dates']);
 
         // Prepare data for each status count including order_status
         $driverDetails = $driverDetails->map(function ($driver) {
