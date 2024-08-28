@@ -182,7 +182,7 @@ class BookingController extends Controller
         file_put_contents(public_path($qrCodePath), $qrCodeImage);
 
         // Save QR code path to the booking
-        $booking->update(['qr_code' => $qrCodePath]);
+        $booking->update(['qr_code_path' => $qrCodePath]);
 
         // Update the truck status if truck_type is provided
         $truckId = $request->input('truck_type'); // Ensure 'truck_type' field exists in the form
@@ -212,6 +212,7 @@ class BookingController extends Controller
             'orderNumber' => $validatedData['order_number'],
         ]);
     }
+
 
 
 

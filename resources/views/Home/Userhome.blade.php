@@ -1,6 +1,56 @@
 <!doctype html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
 <style>
+.wave-card {
+    position: relative;
+    overflow: hidden;
+    background: #fff; /* Background color of the card */
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.wave-card .wave-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px; /* Adjust height to control wave size */
+    background: linear-gradient(to right, black, red, blue);
+    border-radius: 0 0 50% 50%;
+    transform: rotate(0deg);
+    z-index: 0;
+}
+
+.team-card__thumb, .team-card__content {
+    position: relative;
+    z-index: 1; /* Ensure the content is above the wave background */
+}
+
+.team-card__thumb img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px 15px 0 0; /* Ensure image fits nicely into the card */
+}
+
+.team-card__content {
+    padding: 1rem 0;
+}
+
+/* Optional: Add wave animation */
+@keyframes wave-animation {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.wave-card .wave-overlay {
+    animation: wave-animation 5s linear infinite;
+}
 
 </style>
 @include('Components.Home.Header')
@@ -34,7 +84,34 @@
 
     <div class="preloader">
         <div class="loader-p"></div>
+        <div class="loading-text">
+
+            <span>G</span>
+            <span>D</span>
+            <span>R</span>
+            <span>&nbsp;</span>
+            <span>W</span>
+            <span>E</span>
+            <span>B</span>
+            <span>S</span>
+            <span>I</span>
+            <span>T</span>
+            <span>E</span>
+            <span>&nbsp;</span>
+            <span>I</span>
+            <span>S</span>
+            <span>&nbsp;</span>
+            <span>L</span>
+            <span>O</span>
+            <span>A</span>
+            <span>D</span>
+            <span>I</span>
+            <span>N</span>
+            <span>G</span>
+        </div>
     </div>
+
+
 
     <div class="body-overlay"></div>
 
@@ -139,16 +216,16 @@
         <div class="container">
             <div class="row gx-0 gy-5">
                 <div class="col-sm-4">
-                    <div class="feature-card ">
+                    <div class="feature-card">
                         <div class="feature-card__thumb flex-center">
                             <span class="icon">
-                                <i class="las la-globe-africa"></i> </span>
+                                <i class="fas fa-globe"></i>
+                            </span>
                         </div>
                         <div class="feature-card__content">
                             <h5 class="feature-card__title"> Apply Online </h5>
                             <p class="feature-card__desc">
-                                Assumenda fugiat neque molestias recusandae nesciunt, ipsam porro expedita impedit
-                                tenetur dolorum sint error est natus ex harum.
+                                Easily apply for our services online from anywhere in the philippines. Enjoy a streamlined process that saves you time and effort.
                             </p>
                         </div>
                     </div>
@@ -157,32 +234,34 @@
                     <div class="feature-card center-card">
                         <div class="feature-card__thumb flex-center">
                             <span class="icon">
-                                <i class="lar la-check-circle"></i> </span>
+                                <i class="fas fa-check-circle"></i>
+                            </span>
                         </div>
                         <div class="feature-card__content">
                             <h5 class="feature-card__title"> Submit Documents </h5>
                             <p class="feature-card__desc">
-                                Assumenda fugiat neque molestias recusandae nesciunt, ipsam porro expedita impedit
-                                tenetur dolorum sint error est natus ex harum.
+                                Upload your documents securely with just a few clicks. Our platform ensures your data is protected at all times.
+
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-4">
-                    <div class="feature-card ">
+                    <div class="feature-card">
                         <div class="feature-card__thumb flex-center">
                             <span class="icon">
-                                <i class="las la-file-invoice"></i> </span>
+                                <i class="fas fa-file-invoice"></i>
+                            </span>
                         </div>
                         <div class="feature-card__content">
                             <h5 class="feature-card__title"> Receive Goods </h5>
                             <p class="feature-card__desc">
-                                Assumenda fugiat neque molestias recusandae nesciunt, ipsam porro expedita impedit
-                                tenetur dolorum sint error est natus ex harum.
+                                Receive your goods swiftly and securely. Our reliable delivery network ensures your order arrives on time, every time.
                             </p>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -249,48 +328,45 @@
                         <li class="about-services__item">
                             <div class="about-services__thumb">
                                 <span class="icon">
-                                    <i class="lab la-delicious"></i> </span>
+                                    <i class="fas fa-shipping-fast"></i>
+                                </span>
                             </div>
                             <div class="about-services__content">
                                 <h6 class="about-services__title">
                                     Fast Delivery
                                 </h6>
                                 <p class="about-services__desc">
-                                    Ut recusandae non veniam obcaecati, sunt earum atque cumque, alias quae
-                                    molestiae
-                                    quo, ad debitis saepe.
+                                    Experience swift and timely deliveries with our top-tier logistics solutions. We ensure your parcels reach their destination quickly and efficiently.
                                 </p>
                             </div>
                         </li>
                         <li class="about-services__item">
                             <div class="about-services__thumb">
                                 <span class="icon">
-                                    <i class="fas fa-money-check-alt"></i> </span>
+                                    <i class="fas fa-dollar-sign"></i>
+                                </span>
                             </div>
                             <div class="about-services__content">
                                 <h6 class="about-services__title">
                                     Lowest Cost
                                 </h6>
                                 <p class="about-services__desc">
-                                    Ut recusandae non veniam obcaecati, sunt earum atque cumque, alias quae
-                                    molestiae
-                                    quo, ad debitis saepe.
+                                    Enjoy the most competitive prices in the market without compromising on service quality. We offer cost-effective solutions for all your courier needs.
                                 </p>
                             </div>
                         </li>
                         <li class="about-services__item">
                             <div class="about-services__thumb">
                                 <span class="icon">
-                                    <i class="lab la-servicestack"></i> </span>
+                                    <i class="fas fa-lock"></i>
+                                </span>
                             </div>
                             <div class="about-services__content">
                                 <h6 class="about-services__title">
                                     Secured Services
                                 </h6>
                                 <p class="about-services__desc">
-                                    Ut recusandae non veniam obcaecati, sunt earum atque cumque, alias quae
-                                    molestiae
-                                    quo, ad debitis saepe.
+                                    Your security is our priority. Our advanced security protocols ensure your parcels are protected throughout the delivery process, providing you peace of mind.
                                 </p>
                             </div>
                         </li>
@@ -299,6 +375,7 @@
             </div>
         </div>
     </section>
+
     <section class="service-section py-60 section-bg">
         <div class="container">
             <div class="row">
@@ -427,100 +504,93 @@
     <section class="team-section py-120">
         <div class="container">
             <div class="section-heading">
-                <h3 class="section-heading__title"> Our Expert Team </h3>
+                <h3 class="section-heading__title">Our Expert Team</h3>
                 <p class="section-heading__desc">
-                    Our expert team efficient and reliable delivery of packages, documents, and goods as part of a
+                    Our expert team is efficient and reliable in the delivery of packages, documents, and goods as part of a
                     courier service.
                 </p>
             </div>
             <div class="row gy-5">
-                <div class="col-xl-3 col-sm-6 col-xsm-6">
-                    <div class="team-card">
+                <!-- Team Member 1 -->
+                @foreach($employees as $employee)
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="wave-card">
+                        <div class="wave-overlay"></div>
                         <div class="team-card__thumb">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/team/6652c6c0d62a01716700864.png"
-                                alt="team member">
+                            <img src="{{ asset($employee->profile_image) }}" alt="team member">
                         </div>
                         <div class="team-card__content">
-                            <h6 class="team-card__title"> Liana Harris </h6>
-                            <p class="team-card__designation">
-                                Delivery Man
-                            </p>
+                            <h6 class="team-card__title">{{ $employee->name }}</h6>
+                            <p class="team-card__designation">{{ $employee->position }}</p>
                             <div class="team-card__footer">
-                                <p class="work-success">Complete Delivery :</p>
-                                <span class="work-count"><span class="icon">
-                                        <i class="fas fa-box"></i> </span>
-                                    2549
+                                <p class="work-success">ID NUMBER :</p>
+                                <span class="work-count">
+                                    <span class="icon"><i class="fas fa-id-card"></i></span> {{ $employee->id_number }}
+
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-sm-6 col-xsm-6">
-                    <div class="team-card">
+            @endforeach
+
+                <!-- Team Member 2 -->
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="wave-card">
+                        <div class="wave-overlay"></div>
                         <div class="team-card__thumb">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/team/6652c6ca6935b1716700874.png"
-                                alt="team member">
+                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/team/6652c6c0d62a01716700864.png" alt="team member">
                         </div>
                         <div class="team-card__content">
-                            <h6 class="team-card__title"> Dew Brisk </h6>
-                            <p class="team-card__designation">
-                                Delivery Man
-                            </p>
+                            <h6 class="team-card__title">John Doe</h6>
+                            <p class="team-card__designation">Courier Specialist</p>
                             <div class="team-card__footer">
                                 <p class="work-success">Complete Delivery :</p>
-                                <span class="work-count"><span class="icon">
-                                        <i class="fas fa-box"></i> </span>
-                                    44856
-                                </span>
+                                <span class="work-count"><span class="icon"><i class="fas fa-box"></i></span> 3210</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-sm-6 col-xsm-6">
-                    <div class="team-card">
+                <!-- Team Member 3 -->
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="wave-card">
+                        <div class="wave-overlay"></div>
                         <div class="team-card__thumb">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/team/6652c6d2180d11716700882.png"
-                                alt="team member">
+                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/team/6652c6c0d62a01716700864.png" alt="team member">
                         </div>
                         <div class="team-card__content">
-                            <h6 class="team-card__title"> Harry Hardson </h6>
-                            <p class="team-card__designation">
-                                Delivery Man
-                            </p>
+                            <h6 class="team-card__title">Emily Smith</h6>
+                            <p class="team-card__designation">Logistics Manager</p>
                             <div class="team-card__footer">
                                 <p class="work-success">Complete Delivery :</p>
-                                <span class="work-count"><span class="icon">
-                                        <i class="fas fa-box"></i> </span>
-                                    5454
-                                </span>
+                                <span class="work-count"><span class="icon"><i class="fas fa-box"></i></span> 1765</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-sm-6 col-xsm-6">
-                    <div class="team-card">
+                <!-- Team Member 4 -->
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="wave-card">
+                        <div class="wave-overlay"></div>
                         <div class="team-card__thumb">
-                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/team/6652c6d94d3711716700889.png"
-                                alt="team member">
+                            <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/team/6652c6c0d62a01716700864.png" alt="team member">
                         </div>
                         <div class="team-card__content">
-                            <h6 class="team-card__title"> John Dew </h6>
-                            <p class="team-card__designation">
-                                Delivery Man
-                            </p>
+                            <h6 class="team-card__title">Michael Brown</h6>
+                            <p class="team-card__designation">Fleet Coordinator</p>
                             <div class="team-card__footer">
                                 <p class="work-success">Complete Delivery :</p>
-                                <span class="work-count"><span class="icon">
-                                        <i class="fas fa-box"></i> </span>
-                                    3563
-                                </span>
+                                <span class="work-count"><span class="icon"><i class="fas fa-box"></i></span> 1423</span>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- Repeat similar structure for other team members -->
             </div>
         </div>
     </section>
+
+
     <section class="testimonials py-120 section-bg">
         <div class="container-fluid">
             <div class="section-overlay">

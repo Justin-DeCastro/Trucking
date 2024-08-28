@@ -239,7 +239,7 @@ Route::post('attendance', [AttendanceController::class, 'recordAttendance']);
 Route::post('/rubix', [RubixController::class, 'submit'])->name('rubix.submit');
 
 //preventive maintenance
-Route::post('preventive-store', [PreventiveController::class, 'submit'])->name('preventive.store');
+Route::post('preventives.store', [PreventiveController::class, 'submit'])->name('preventives.store');
 Route::get('preventive-maintenance', [AdminController::class, 'preventive'])->name('preventive-maintenance');
 Route::get('/maintenance/{id}/edit', [PreventiveController::class, 'edit'])->name('maintenance.edit');
 Route::put('/maintenance/{id}', [PreventiveController::class, 'update'])->name('maintenance.update');

@@ -34,6 +34,31 @@
 
     <div class="preloader">
         <div class="loader-p"></div>
+        <div class="loading-text">
+
+            <span>G</span>
+            <span>D</span>
+            <span>R</span>
+            <span>&nbsp;</span>
+            <span>W</span>
+            <span>E</span>
+            <span>B</span>
+            <span>S</span>
+            <span>I</span>
+            <span>T</span>
+            <span>E</span>
+            <span>&nbsp;</span>
+            <span>I</span>
+            <span>S</span>
+            <span>&nbsp;</span>
+            <span>L</span>
+            <span>O</span>
+            <span>A</span>
+            <span>D</span>
+            <span>I</span>
+            <span>N</span>
+            <span>G</span>
+        </div>
     </div>
 
     <div class="body-overlay"></div>
@@ -101,14 +126,21 @@
             <div class="row g-4">
                 <div class="col-lg-7">
                     <div class="section-heading style-left">
-                        <h4 class="section-heading__title">Office Location</h4>
+                        <h4 class="section-heading__title">Contact</h4>
                         <p class="section-heading__desc">
-                            We are strategically located to enhance our service and cater to your needs more effectively
+                             Roberto S. Jamir Jr., VP Finance
+                            <br><br>
+                            Phone: +639 270 454 343<br>
+                            Mobile: +639 193 455 535<br>
+                            Email: gdrlogisticinc@outlook.com<br>
+                            Alternate Email: robertojamir@gmail.com<br>
+                            <br>
+                            2nd Floor Total Pulo Cabuyao, Pulo Diezmo Rd, Cabuyao, Laguna
                         </p>
                     </div>
                     <div class="maps-section">
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d679210.3204244621!2d-106.17199977396204!3d48.31890268219341!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5322d7d0ee4ea833%3A0x64bc3ea0742c4cc7!2zRm9ydCBQZWNrIEluZGlhbiBSZXNlcnZhdGlvbiwgRm9ydCBQZWNrIFJlc2VydmF0aW9uLCDgpq7gpqjgp43gpp_gpr7gpqjgpr4sIOCmruCmvuCmsOCnjeCmleCmv-CmqCDgpq_gp4HgppXgp43gpqTgprDgpr7gprfgp43gpp_gp43gprA!5e0!3m2!1sbn!2sbd!4v1706419877952!5m2!1sbn!2sbd"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3867.1768141833113!2d121.11556227359348!3d14.24290568573695!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd628c69e9a851%3A0xef819023d0c64888!2sTotal%20(Pulo%2C%20Cabuyao)!5e0!3m2!1sen!2sph!4v1724740237115!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
                             style="border:0;" width="100%" allowfullscreen="" loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
@@ -121,9 +153,8 @@
                             location.
                         </p>
                     </div>
-                    <form  action="{{ route('contact.store') }}" method="post">
+                    <form action="{{ route('contact.store') }}" method="post">
                         @csrf
-
                         <div class="row">
                             <div class="col-sm-12 form-group">
                                 <div class="input--group">
@@ -155,22 +186,20 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-
-
-
-
-                            <div class="col-sm-12">
-                                <button class="btn btn--base w-100" type="submit">
-                                    <span class="btn--icon"><i class="icon-View-More"></i></span>
-                                    Send Message
-                                </button>
+                                <div class="col-sm-12">
+                                    <button class="btn btn--base w-100" type="submit">
+                                        <span class="btn--icon"><i class="icon-View-More"></i></span>
+                                        Send Message
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+
     @if(session('success'))
     <script>
         Swal.fire({

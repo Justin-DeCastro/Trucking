@@ -44,12 +44,12 @@
                         <li class="nav-item {{ Request::is('service') ? 'active' : '' }}">
                             <a class="nav-link" href="service" aria-current="page">Service</a>
                         </li>
-                        <li class="nav-item {{ Request::is('team') ? 'active' : '' }}">
+                        {{-- <li class="nav-item {{ Request::is('team') ? 'active' : '' }}">
                             <a class="nav-link" href="team" aria-current="page">Team</a>
                         </li>
                         <li class="nav-item {{ Request::is('blog') ? 'active' : '' }}">
                             <a class="nav-link" href="blog" aria-current="page">Blog</a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item {{ Request::is('contact') ? 'active' : '' }}">
                             <a class="nav-link" href="contact">Contact</a>
                         </li>

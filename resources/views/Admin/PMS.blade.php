@@ -32,7 +32,7 @@
                 <li>
                     <button type="button" class="primary--layer" data-bs-toggle="tooltip" data-bs-placement="bottom"
                         title="Visit Website">
-                        <a href="https://script.viserlab.com/courierlab/demo" target="_blank"><i
+                        <a href="" target="_blank"><i
                                 class="las la-globe"></i></a>
                     </button>
                 </li>
@@ -49,13 +49,13 @@
                         </div>
                         <div class="dropdown-menu__body  d-flex justify-content-center align-items-center ">
                             <div class="empty-notification text-center">
-                                <img src="https://script.viserlab.com/courierlab/demo/assets/images/empty_list.png"
+                                <img src=""
                                     alt="empty">
                                 <p class="mt-3">No unread notification found</p>
                             </div>
                         </div>
                         <div class="dropdown-menu__footer">
-                            <a href="https://script.viserlab.com/courierlab/demo/admin/notifications"
+                            <a href=""
                                 class="view-all-message">View all notifications</a>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
                 <li>
                     <button type="button" class="primary--layer" data-bs-toggle="tooltip" data-bs-placement="bottom"
                         title="System Setting">
-                        <a href="https://script.viserlab.com/courierlab/demo/admin/system-setting"><i
+                        <a href=""><i
                                 class="las la-wrench"></i></a>
                     </button>
                 </li>
@@ -72,7 +72,7 @@
                         aria-expanded="false">
                         <span class="navbar-user">
                             <span class="navbar-user__thumb"><img
-                                    src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/images/profile/667c14b5145fd1719407797.png"
+                                    src=""
                                     alt="image"></span>
                             <span class="navbar-user__info">
                                 <span class="navbar-user__name">admin</span>
@@ -81,19 +81,19 @@
                         </span>
                     </button>
                     <div class="dropdown-menu dropdown-menu--sm p-0 border-0 box--shadow1 dropdown-menu-right">
-                        <a href="https://script.viserlab.com/courierlab/demo/admin/profile"
+                        <a href=""
                             class="dropdown-menu__item d-flex align-items-center px-3 py-2">
                             <i class="dropdown-menu__icon las la-user-circle"></i>
                             <span class="dropdown-menu__caption">Profile</span>
                         </a>
 
-                        <a href="https://script.viserlab.com/courierlab/demo/admin/password"
+                        <a href=""
                             class="dropdown-menu__item d-flex align-items-center px-3 py-2">
                             <i class="dropdown-menu__icon las la-key"></i>
                             <span class="dropdown-menu__caption">Password</span>
                         </a>
 
-                        <a href="https://script.viserlab.com/courierlab/demo/admin/logout"
+                        <a href="logout"
                             class="dropdown-menu__item d-flex align-items-center px-3 py-2">
                             <i class="dropdown-menu__icon las la-sign-out-alt"></i>
                             <span class="dropdown-menu__caption">Logout</span>
@@ -114,7 +114,7 @@
             <div class="bodywrapper__inner">
 
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                    <h6 class="page-title">All Admin</h6>
+                    <h6 class="page-title"></h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
                     <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal" data-bs-target="#manageAdmin">
     <i class="las la-plus"></i> Add New
@@ -181,7 +181,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
-            <form action="{{ route('preventive.store') }}" method="POST">
+            <form action="{{ route('preventives.store') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">

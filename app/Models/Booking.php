@@ -39,6 +39,7 @@ class Booking extends Model
         'date',
 'order_number',
 'truck_type',
+'qr_code_path',
 
 
         'driver_id', // Add this if you have a driver_id field

@@ -56,7 +56,7 @@
   --base-l-800: var(--base-h) calc(var(--base-s)) calc(var(--base-l) + (100% - var(--base-l)) * 0.8);
   --base-l-900: var(--base-h) calc(var(--base-s)) calc(var(--base-l) + (100% - var(--base-l)) * 0.9);
   --background-gradient: linear-gradient(267deg,
-  #033e8cd4 
+  #033e8cd4
   45.08%,
   #ff2c2c 87.31%);
   /* ========================= Base Two Color ============================= */
@@ -2441,56 +2441,81 @@ input[type="number"] {
 /* ====================================== Alert Css End =============================== */
 /* ================================= preload Css Start =========================== */
 .preloader {
-  position: fixed;
-  z-index: 999999;
-  background-color: hsl(var(--black));
-  width: 100%;
-  height: 100%;
-}
+    position: fixed;
+    z-index: 999999;
+    background-color: hsl(var(--black));
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
 
-.loader-p {
-  border: 0 solid transparent;
-  border-radius: 50%;
-  width: 150px;
-  height: 150px;
-  position: absolute;
-  top: calc(50vh - 75px);
-  left: calc(50vw - 75px);
-}
+  .loader-p {
+    border: 0 solid transparent;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    position: relative;
+    margin-bottom: 20px;
+  }
 
-.loader-p:before,
-.loader-p:after {
-  content: "";
-  border: 1em solid hsl(var(--base));
-  border-radius: 50%;
-  width: inherit;
-  height: inherit;
-  position: absolute;
-  top: 0;
-  left: 0;
-  animation: loader 2s linear infinite;
-  opacity: 0;
-}
-
-.loader-p:before {
-  animation-delay: 0.5s;
-}
-
-@keyframes loader {
-  0% {
-    transform: scale(0);
+  .loader-p:before,
+  .loader-p:after {
+    content: "";
+    border: 1em solid hsl(var(--base));
+    border-radius: 50%;
+    width: inherit;
+    height: inherit;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: loader 2s linear infinite;
     opacity: 0;
   }
 
-  50% {
-    opacity: 1;
+  .loader-p:before {
+    animation-delay: 0.5s;
   }
 
-  100% {
-    transform: scale(1);
-    opacity: 0;
+  @keyframes loader {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+
+    50% {
+      opacity: 1;
+    }
+
+    100% {
+      transform: scale(1);
+      opacity: 0;
+    }
   }
-}
+
+  .loading-text {
+    display: flex;
+    font-size: 2rem;
+    color: hsl(var(--base));
+  }
+
+  .loading-text span {
+    opacity: 0;
+    animation: fade 1.5s linear infinite;
+    animation-delay: calc(0.5s * var(--i));
+  }
+
+  @keyframes fade {
+    0%, 100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
 
 /* ================================= preload Css End ===========================  */
 /* ============= Header Start Here ======================= */

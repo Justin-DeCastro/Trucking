@@ -1,7 +1,7 @@
-
+<style></style>
 <footer class="footer-area">
         <div class="main-footer pt-120 bg-img pb-60"
-            data-background-image="https://script.viserlab.com/courierlab/demo/assets/images/frontend/footer/6652c13f31df61716699455.png">
+            data-background-image="Home/wavefooter.png">
             <div class="container">
                 <div class="row justify-content-center gy-5">
                     <div class="col-xl-3 col-sm-6 col-xsm-6">
@@ -45,32 +45,32 @@
                             <h5 class="footer-item__title">Site Link</h5>
                             <ul class="footer-menu">
                                 <li class="footer-menu__item">
-                                    <a class="footer-menu__link" href="https://script.viserlab.com/courierlab/demo">
+                                    <a class="footer-menu__link" href="/o">
                                         Home </a>
                                 </li>
                                 <li class="footer-menu__item">
                                     <a class="footer-menu__link"
-                                        href="https://script.viserlab.com/courierlab/demo/about-us">
+                                        href="about">
                                         About
                                     </a>
                                 </li>
-                                <li class="footer-menu__item">
+                                {{-- <li class="footer-menu__item">
                                     <a class="footer-menu__link" href="https://script.viserlab.com/courierlab/demo/faq">
                                         FAQ
                                     </a>
-                                </li>
+                                </li> --}}
                                 <li class="footer-menu__item">
                                     <a class="footer-menu__link"
-                                        href="https://script.viserlab.com/courierlab/demo/service">
+                                        href="service">
                                         Service
                                     </a>
                                 </li>
-                                <li class="footer-menu__item">
+                                {{-- <li class="footer-menu__item">
                                     <a class="footer-menu__link"
                                         href="https://script.viserlab.com/courierlab/demo/team">
                                         Team
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
                     </div>
@@ -80,30 +80,13 @@
                             <ul class="footer-menu">
                                 <li class="footer-menu__item">
                                     <a class="footer-menu__link"
-                                        href="https://script.viserlab.com/courierlab/demo/order-tracking">
+                                        href="ordertracking">
                                         Order Tracking </a>
                                 </li>
+
                                 <li class="footer-menu__item">
                                     <a class="footer-menu__link"
-                                        href="https://script.viserlab.com/courierlab/demo/policy/privacy-policy">
-                                        Privacy Policy
-                                    </a>
-                                </li>
-                                <li class="footer-menu__item">
-                                    <a class="footer-menu__link"
-                                        href="https://script.viserlab.com/courierlab/demo/policy/terms-of-service">
-                                        Terms of Service
-                                    </a>
-                                </li>
-                                <li class="footer-menu__item">
-                                    <a class="footer-menu__link"
-                                        href="https://script.viserlab.com/courierlab/demo/policy/refund-policy">
-                                        Refund Policy
-                                    </a>
-                                </li>
-                                <li class="footer-menu__item">
-                                    <a class="footer-menu__link"
-                                        href="https://script.viserlab.com/courierlab/demo/contact">
+                                        href="contact">
                                         Contact </a>
                                 </li>
                             </ul>
