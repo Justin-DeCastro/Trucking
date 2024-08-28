@@ -73,50 +73,10 @@
                     </div>
 
                     <div class="row gy-4">
-                        <div class="col-xxl-3 col-sm-6">
-                            <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=0">
-                                <div class="widget-seven bg--purple  outline ">
-                                    <div class="widget-seven__content">
-                                        <span class="widget-seven__content-icon">
-                                            <span class="icon">
-                                                <i class="fas fa-hourglass-start"></i> <!-- Changed to Font Awesome -->
-                                            </span>
-                                        </span>
-                                        <div class="widget-seven__description">
-                                            <p class="widget-seven__content-title">Sent In Queue</p>
-                                            <h3 class="widget-seven__content-amount">0</h3>
-                                        </div>
-                                    </div>
 
-                                    <span class="widget-seven__arrow">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-xxl-3 col-sm-6">
-                            <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=1">
-                                <div class="widget-seven bg--green  outline ">
-                                    <div class="widget-seven__content">
-                                        <span class="widget-seven__content-icon">
-                                            <span class="icon">
-                                                <i class="fas fa-truck"></i> <!-- Changed to Font Awesome -->
-                                            </span>
-                                        </span>
-                                        <div class="widget-seven__description">
-                                            <p class="widget-seven__content-title">Shipped Courier</p>
-                                            <h3 class="widget-seven__content-amount">344</h3>
-                                        </div>
-                                    </div>
 
-                                    <span class="widget-seven__arrow">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
                         <div class="col-xxl-3 col-sm-6">
-                            <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=2">
+                            <a href="">
                                 <div class="widget-seven bg--deep-purple  outline ">
                                     <div class="widget-seven__content">
                                         <span class="widget-seven__content-icon">
@@ -130,9 +90,7 @@
                                         </div>
                                     </div>
 
-                                    <span class="widget-seven__arrow">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </span>
+
                                 </div>
                             </a>
                         </div>
@@ -151,96 +109,7 @@
                                         </div>
                                     </div>
 
-                                    <span class="widget-seven__arrow">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
 
-                    <div class="row gy-4 mt-2">
-                        <div class="col-xxl-3 col-sm-6">
-                            <a href="https://script.viserlab.com/courierlab/demo/admin/branch">
-                                <div class="widget-seven bg--primary outline">
-                                    <div class="widget-seven__content">
-                                        <span class="widget-seven__content-icon">
-                                            <span class="icon">
-                                                <i class="fas fa-university"></i> <!-- Changed to Font Awesome -->
-                                            </span>
-                                        </span>
-                                        <div class="widget-seven__description">
-                                            <p class="widget-seven__content-title">Total Branch</p>
-                                            <h3 class="widget-seven__content-amount">4</h3>
-                                        </div>
-                                    </div>
-
-                                    <span class="widget-seven__arrow">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-xxl-3 col-sm-6">
-                            <a href="https://script.viserlab.com/courierlab/demo/admin/branch-manager/list">
-                                <div class="widget-seven bg--cyan outline">
-                                    <div class="widget-seven__content">
-                                        <span class="widget-seven__content-icon">
-                                            <span class="icon">
-                                                <i class="fas fa-user-check"></i> <!-- Changed to Font Awesome -->
-                                            </span>
-                                        </span>
-                                        <div class="widget-seven__description">
-                                            <p class="widget-seven__content-title">Total Manager</p>
-                                            <h3 class="widget-seven__content-amount">2</h3>
-                                        </div>
-                                    </div>
-
-                                    <span class="widget-seven__arrow">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-xxl-3 col-sm-6">
-                            <a href="https://script.viserlab.com/courierlab/demo/admin/courier/branch/income">
-                                <div class="widget-seven bg--orange outline">
-                                    <div class="widget-seven__content">
-                                        <span class="widget-seven__content-icon">
-                                            <span class="icon">
-                                                <i class="fas fa-money-bill-wave"></i> <!-- Changed to Font Awesome -->
-                                            </span>
-                                        </span>
-                                        <div class="widget-seven__description">
-                                            <p class="widget-seven__content-title">Total Income</p>
-                                            <h3 class="widget-seven__content-amount">$1,312,583.65</h3>
-                                        </div>
-                                    </div>
-
-                                    <span class="widget-seven__arrow">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-xxl-3 col-sm-6">
-                            <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list">
-                                <div class="widget-seven bg--pink outline">
-                                    <div class="widget-seven__content">
-                                        <span class="widget-seven__content-icon">
-                                            <span class="icon">
-                                                <i class="fas fa-dolly-flatbed"></i> <!-- Changed to Font Awesome -->
-                                            </span>
-                                        </span>
-                                        <div class="widget-seven__description">
-                                            <p class="widget-seven__content-title">Total Courier</p>
-                                            <h3 class="widget-seven__content-amount">465</h3>
-                                        </div>
-                                    </div>
-
-                                    <span class="widget-seven__arrow">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </span>
                                 </div>
                             </a>
                         </div>
@@ -249,32 +118,10 @@
 
 
 
-                    <div class="row mt-4">
-                        <div class="col-xl-4 col-lg-6 ">
-                            <div class="card overflow-hidden">
-                                <div class="card-body">
-                                    <h5 class="card-title">Login By Browser (Last 30 days)</h5>
-                                    <canvas id="userBrowserChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-lg-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Login By OS (Last 30 days)</h5>
-                                    <canvas id="userOsChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-lg-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Login By Country (Last 30 days)</h5>
-                                    <canvas id="userCountryChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+
+
+
 
                 </div>
             </div>

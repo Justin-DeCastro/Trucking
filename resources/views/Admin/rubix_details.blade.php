@@ -148,10 +148,10 @@
 
                 <div class="dt-buttons btn-group d-flex justify-content-end gap-2 ">
                     <div class="dropdown">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                        {{-- <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             <i class='bx bx-export'></i> Export
-                        </button>
+                        </button> --}}
                         <ul class="dropdown-menu">
                             <li><button type="button" id="copyBtn" class="btn dropdown-item"><i
                                         class='bx bx-copy'></i> Copy</button></li>
@@ -179,6 +179,7 @@
                                                 <th>Tracking Number</th>
                                                 <th>Truck Plate Number</th>
                                                 <th>Destination</th>
+                                                <th>Proof of Delivery</th>
                                                 <th>Remarks</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -192,6 +193,14 @@
 
                                                     <td>{{ $detail->plate_number }}</td>
                                                     <td>{{ $detail->consignee_address }}</td>
+                                                    <td>
+                                                        <!-- Display proof of delivery if available -->
+                                                        @if ($detail->proof_of_delivery)
+                                                            <a href="{{ asset($detail->proof_of_delivery) }}" target="_blank">View Proof</a>
+                                                        @else
+                                                            No proof uploaded
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $detail->remarks }}</td>
                                                     <td>
                                                         <!-- Button to trigger modal -->
@@ -249,14 +258,23 @@
                                                     <td>Status</td>
                                                     <td>
                                                         <span
-                                                            style="
-                                                                color: {{ $detail->status == 'Pod_returned' ? 'white' : ($detail->status == 'Delivery successful' ? 'white' : ($detail->status == 'For Pick-up' ? 'white' : ($detail->status == 'First_delivery_attempt' ? 'white' : 'black'))) }};
-                                                                background-color: {{ $detail->status == 'Pod_returned' ? 'red' : ($detail->status == 'Delivery successful' ? 'green' : ($detail->status == 'For Pick-up' ? 'blue' : ($detail->status == 'First_delivery_attempt' ? 'orange' : 'transparent'))) }};
-                                                                padding: 2px 5px;
-                                                                border-radius: 4px;
-                                                            ">
-                                                            {{ $detail->status }}
-                                                        </span>
+    style="
+        color: {{ $detail->status == 'Pod_returned' ? 'white' :
+                ($detail->status == 'Delivery successful' ? 'white' :
+                ($detail->status == 'For Pick-up' ? 'white' :
+                ($detail->status == 'First_delivery_attempt' ? 'white' :
+                ($detail->status == 'In_Transit' ? 'white' : 'black')))) }};
+        background-color: {{ $detail->status == 'Pod_returned' ? 'red' :
+                            ($detail->status == 'Delivery successful' ? 'green' :
+                            ($detail->status == 'For Pick-up' ? 'blue' :
+                            ($detail->status == 'First_delivery_attempt' ? 'orange' :
+                            ($detail->status == 'In_Transit' ? 'purple' : 'transparent')))) }};
+        padding: 2px 5px;
+        border-radius: 4px;
+    ">
+    {{ $detail->status }}
+</span>
+
                                                     </td>
                                                 </tr>
                                                 <tr>

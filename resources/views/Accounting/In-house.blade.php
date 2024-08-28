@@ -20,15 +20,7 @@
 
     <!-- navbar-wrapper start -->
     <nav class="navbar-wrapper bg--dark d-flex flex-wrap">
-        <div class="navbar__left">
-            <button type="button" class="res-sidebar-open-btn me-3"><i class="las la-bars"></i></button>
-            <form class="navbar-search">
-                <input type="search" name="#0" class="navbar-search-field" id="searchInput" autocomplete="off"
-                    placeholder="Search here...">
-                <i class="las la-search"></i>
-                <ul class="search-list"></ul>
-            </form>
-        </div>
+
         <div class="navbar__right">
             <ul class="navbar__action-list">
 
@@ -38,12 +30,12 @@
                         aria-expanded="false">
                         <span class="navbar-user">
                             <span class="navbar-user__thumb"><img
-                                    src=""
+                                    src="Home/stat.jpg"
                                     alt="image"></span>
                             <span class="navbar-user__info">
                                 <span class="navbar-user__name">Accounting</span>
                             </span>
-                            <span class="icon"><i class="las la-chevron-circle-down"></i></span>
+                            <span class="icon"><i class="fas fa-chevron-circle-down"></i></span>
                         </span>
                     </button>
                     <div class="dropdown-menu dropdown-menu--sm p-0 border-0 box--shadow1 dropdown-menu-right">
@@ -51,7 +43,7 @@
 
                         <a href="logout"
                             class="dropdown-menu__item d-flex align-items-center px-3 py-2">
-                            <i class="dropdown-menu__icon las la-sign-out-alt"></i>
+                            <i class="dropdown-menu__icon fas fa-sign-out-alt"></i>
                             <span class="dropdown-menu__caption">Logout</span>
                         </a>
                     </div>

@@ -138,6 +138,7 @@ class BookingController extends Controller
             'plate_number' => 'required|string|max:255',
             'date' => 'required|date',
             'truck_type' => 'required',
+
         ]);
 
         // Generate tracking number
@@ -338,7 +339,7 @@ public function updateOrderStatus(Request $request, $id)
 {
     // Validate the incoming request
     $request->validate([
-        'order_status' => 'required|string|in:Pod_returned,Delivery successful,For Pick-up,First_delivery_attempt',
+        'order_status' => 'required|string|in:Pod_returned,Delivery successful,For Pick-up,First_delivery_attempt,In_Transit',
     ]);
 
     // Find the booking by ID
@@ -364,6 +365,7 @@ public function updateOrderStatus(Request $request, $id)
 
 
 
+
     public function updateRemarks(Request $request, $id)
     {
         // Validate the request
@@ -382,49 +384,54 @@ public function updateOrderStatus(Request $request, $id)
         return redirect()->back()->with('success', 'Remarks added successfully.');
     }
     public function updatePictures(Request $request, $id)
-{
-    // Validate the request to accept only one image file
-    $request->validate([
-        'proof_of_delivery' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust validation as needed
-    ]);
+    {
+        // Validate the request to accept only one image file
+        $request->validate([
+            'proof_of_delivery' => 'required|file|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    // Find the booking
-    $booking = Booking::findOrFail($id);
+        // Find the booking
+        $booking = Booking::findOrFail($id);
 
-    // Define the path where the file will be stored
-    $destinationPath = public_path('pictures'); // Ensure this directory exists or create it
+        // Define the path where the file will be stored
+        $destinationPath = public_path('pictures'); // Ensure this directory exists or create it
 
-    // Check if the directory exists and is writable
-    if (!is_dir($destinationPath)) {
-        mkdir($destinationPath, 0755, true);
-    }
-
-    // Check if a file was uploaded
-    if ($request->hasFile('proof_of_delivery')) {
-        try {
-            $file = $request->file('proof_of_delivery');
-
-            // Generate a unique file name
-            $fileName = time() . '_' . $file->getClientOriginalName();
-
-            // Move the file to the destination path
-            $file->move($destinationPath, $fileName);
-
-            // Save the file path in the database
-            $booking->update(['proof_of_delivery' => 'pictures/' . $fileName]);
-
-            // Redirect back or to a specific route with success message
-            return redirect()->back()->with('success', 'Picture uploaded successfully.');
-
-        } catch (\Exception $e) {
-            // Log the error message for debugging
-            Log::error('File upload error: ' . $e->getMessage());
-            return redirect()->back()->withErrors('An error occurred while uploading the picture.');
+        // Check if the directory exists and is writable
+        if (!is_dir($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
         }
+
+        // Check if a file was uploaded
+        if ($request->hasFile('proof_of_delivery')) {
+            try {
+                $file = $request->file('proof_of_delivery');
+
+                // Generate a unique file name
+                $fileName = time() . '_' . $file->getClientOriginalName();
+
+                // Move the file to the destination path
+                $file->move($destinationPath, $fileName);
+
+                // Save the file path in the database
+                $updated = $booking->update(['proof_of_delivery' => 'pictures/' . $fileName]);
+
+                if ($updated) {
+                    // Redirect back or to a specific route with success message
+                    return redirect()->back()->with('success', 'Picture uploaded successfully.');
+                } else {
+                    return redirect()->back()->withErrors('Failed to update database.');
+                }
+
+            } catch (\Exception $e) {
+                // Log the error message for debugging
+                Log::error('File upload error: ' . $e->getMessage());
+                return redirect()->back()->withErrors('An error occurred while uploading the picture.');
+            }
+        }
+
+        return redirect()->back()->withErrors('No file was uploaded.');
     }
 
-    return redirect()->back()->withErrors('No file was uploaded.');
-}
 
 
 
