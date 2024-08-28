@@ -111,6 +111,12 @@
                             <span class="menu-title">Add Vehicle</span>
                         </a>
                     </li>
+                    <li class="sidebar-menu-item <?php echo $currentPage == 'driverbooking-count' ? 'active' : ''; ?>">
+                        <a href="driverbooking-count" class="nav-link ">
+                            <i class="fa fa-users menu-icon"></i>
+                            <span class="menu-title">Bookings Per Driver</span>
+                        </a>
+                    </li>
                     <li class="sidebar-menu-item <?php echo $currentPage == 'plate-number-counts' ? 'active' : ''; ?>">
                         <a href="plate-number-counts" class="nav-link ">
                             <i class="fa fa-bus menu-icon"></i>

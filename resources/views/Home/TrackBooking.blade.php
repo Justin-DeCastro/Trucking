@@ -86,7 +86,7 @@
                         </li>
                     </ul>
                 </div>
-               
+
             </div>
         </div>
     </div>
@@ -112,7 +112,7 @@
 
             @if(isset($location) && isset($order_status))
                 <div class="status">
-                    <p><strong>Location:</strong> {{ $location }}</p>
+                    <p><strong>Location:</strong> {{ $merchant_address }}</p>
                     <p><strong>Order Status:</strong> {{ $order_status }}</p>
 
                     <!-- Map Container -->

@@ -182,6 +182,7 @@ Route::post('/update-order-amount', [BookingController::class, 'updateSingleOrde
 Route::get('/booking-count', [BookingController::class, 'getBookingCountByPlateNumber']);
 Route::get('/plate-number-counts', [BookingController::class, 'getPlateNumberCounts']);
 Route::get('/admin-overview', [BookingController::class, 'getStatusCounts']);
+Route::get('/driverbooking-count', [BookingController::class, 'getDriverPlateNumberCounts']);
 
 
 

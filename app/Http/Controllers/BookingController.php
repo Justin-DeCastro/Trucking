@@ -93,6 +93,49 @@ class BookingController extends Controller
     }
 
 
+    public function getDriverPlateNumberCounts()
+    {
+        // Retrieve total bookings, status counts, and order_status counts grouped by driver names with role "courier"
+        $driverDetails = Booking::join('users', 'users.id', '=', 'bookings.driver_name') // Join with users table on driver_name (which is an ID)
+            ->where('users.role', 'courier') // Filter by role "courier"
+            ->select('users.name')
+            ->selectRaw('count(*) as total_bookings')
+            ->selectRaw('GROUP_CONCAT(DISTINCT status) as statuses')
+            ->selectRaw('GROUP_CONCAT(DISTINCT order_status) as order_statuses')
+            ->groupBy('users.name') // Group by driver name
+            ->get(['users.name as name', 'total_bookings', 'statuses', 'order_statuses']);
+
+        // Prepare data for each status count including order_status
+        $driverDetails = $driverDetails->map(function ($driver) {
+            // Get booking details for the driver
+            $statusCounts = Booking::join('users', 'users.id', '=', 'bookings.driver_name') // Join with users table on driver_name (which is an ID)
+                ->where('users.name', $driver->name)
+                ->where('users.role', 'courier') // Ensure the role is "courier"
+                ->groupBy('status', 'order_status')
+                ->selectRaw('count(*) as count, status, order_status')
+                ->get()
+                ->groupBy('status')
+                ->map(function ($group) {
+                    return $group->pluck('count', 'order_status')->toArray();
+                })
+                ->toArray();
+
+            $driver->status_counts = $statusCounts;
+            return $driver;
+        });
+
+        // Handle empty result set by ensuring it's an empty collection
+        if ($driverDetails->isEmpty()) {
+            $driverDetails = collect(); // Return an empty collection
+        }
+
+        // Pass the data to the view
+        return view('Admin.DriverBookingCount', [
+            'driverDetails' => $driverDetails,
+        ]);
+    }
+
+
 
 
     public function getBookingCountByPlateNumber(Request $request)
@@ -290,7 +333,7 @@ class BookingController extends Controller
 {
     $trackingNumber = strtoupper($request->query('trackingNumber'));
 
-    $booking = Booking::where('tracking_number', $trackingNumber)->first(['location', 'order_status']);
+    $booking = Booking::where('tracking_number', $trackingNumber)->first(['merchant_address', 'order_status']);
 
     if ($booking) {
         // Assuming $booking->location contains 'latitude,longitude'
