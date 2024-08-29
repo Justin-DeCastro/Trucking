@@ -48,15 +48,59 @@
         font-size: 14px;
         /* Reduced font size */
     }
+    /* Style for profile image */
+.nav-link.dropdown-toggle .profile-image {
+    width: 40px; /* Adjust the size as needed */
+    height: 40px;
+    border-radius: 50%; /* Make the image circular */
+    object-fit: cover; /* Maintain aspect ratio */
+}
+
+/* Style for the dropdown menu */
+.nav-item.dropdown .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1000;
+    margin: 0;
+    padding: 0.5rem 0;
+    list-style: none;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1.5rem;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    background-color: transparent;
+    border: 0;
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #16181b;
+}
+
 </style>
 <header class="header" id="header">
     <div class="col-12">
         <nav class="navbar navbar-expand-lg navbar-light">
             <span class="img">
-                  <img src="Home/navbar2.png" alt="foot" style="width: 100vw; height: auto; object-fit: cover;">
+                <img src="Home/navbar2.png" alt="foot" style="width: 100vw; height: auto; object-fit: cover;">
             </span>
 
-            <foreignObject x="0" y="0" width="90%" >
+            <foreignObject x="0" y="0" width="90%">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="navbar-content">
                     <a class="navbar-brand logo" href="/">
                         <img src="Home/GDR Logo.png" alt="Logo">
@@ -68,6 +112,7 @@
                     </button>
                     <div class="navbar-collapse collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav nav-menu align-items-lg-center ms-auto">
+                            <!-- Existing menu items -->
                             <li class="nav-item d-block d-lg-none">
                                 <div class="top-button d-flex justify-content-between align-items-center flex-wrap">
                                     <div class="language-box">
@@ -78,8 +123,7 @@
                                                         alt="image">
                                                 </div>
                                             </div>
-                                            <ul class="dropdown-list">
-                                            </ul>
+                                            <ul class="dropdown-list"></ul>
                                         </div>
                                     </div>
                                     <a class="nav-button flex-align btn btn--base"
@@ -99,12 +143,14 @@
                             <li class="nav-item {{ Request::is('service') ? 'active' : '' }}">
                                 <a class="nav-link" href="service" aria-current="page">Service</a>
                             </li>
-                            {{-- <li class="nav-item {{ Request::is('team') ? 'active' : '' }}">
+                            <!-- Uncomment if needed
+                            <li class="nav-item {{ Request::is('team') ? 'active' : '' }}">
                                 <a class="nav-link" href="team" aria-current="page">Team</a>
                             </li>
                             <li class="nav-item {{ Request::is('blog') ? 'active' : '' }}">
                                 <a class="nav-link" href="blog" aria-current="page">Blog</a>
-                            </li> --}}
+                            </li>
+                            -->
                             <li class="nav-item {{ Request::is('contact') ? 'active' : '' }}">
                                 <a class="nav-link" href="contact">Contact</a>
                             </li>
@@ -123,6 +169,17 @@
                                     Download App
                                 </a>
                             </li>
+                            <!-- Profile item with dropdown -->
+                            <li class="nav-item dropdown {{ Request::is('login') ? 'active' : '' }}">
+                                <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="Home/user-avatar-male-5.png" alt="Profile" class="profile-image">
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                                    <li><a class="dropdown-item" href="login">Login</a></li>
+                                    {{-- <li><a class="dropdown-item" href="register">Register</a></li> --}}
+                                    <!-- Add more items if needed -->
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -131,6 +188,7 @@
         </nav>
     </div>
 </header>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

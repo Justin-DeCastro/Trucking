@@ -78,7 +78,7 @@
                                         <span class="menu-title">Branch Employee</span>
                                     </a>
                                 </li>
-                                <li class="sidebar-menu-item <?php echo $currentPage == 'branchmanager' ? 'active' : ''; ?>">
+                                {{-- <li class="sidebar-menu-item <?php echo $currentPage == 'branchmanager' ? 'active' : ''; ?>">
                                     <a href="branchmanager" class="nav-link">
                                         <i class="fa fa-dot-circle menu-icon"></i>
                                         <span class="menu-title">Branch Manager</span>
@@ -89,7 +89,7 @@
                                         <i class="fa fa-dot-circle menu-icon"></i>
                                         <span class="menu-title">Branch Income</span>
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
                     </li>
