@@ -199,7 +199,7 @@
 
 
 
-                <div class="row mt-4">
+                {{-- <div class="row mt-4">
                     <div class="col-xl-4 col-lg-6 ">
                         <div class="card overflow-hidden">
                             <div class="card-body">
@@ -225,7 +225,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div> --}}
 
             </div>
         </div>

@@ -58,6 +58,12 @@ class AdminController extends Controller
 
         return view('Admin.rubix_details', compact('rubixdetails'));
     }
+    public function create_driver()
+    {
+        $rubixdetails = Booking::all();
+
+        return view('Admin.createDriver', compact('rubixdetails'));
+    }
     public function showMap()
 {
     // Fetch a specific booking or relevant data
@@ -179,8 +185,8 @@ public function courier_order()
 
     // Fetch bookings assigned to the logged-in courier
     $bookings = Booking::where('driver_name', $currentCourier->id)->get();
-
-    return view('Admin.ManageCourierOrder', compact('bookings', 'drivers'));
+    $orders = Booking::all();
+    return view('Admin.ManageCourierOrder', compact('bookings', 'drivers','orders'));
 }
 
 
@@ -227,19 +233,48 @@ public function salary()
     // Pass the data to the view
     return view('Admin.Salary', compact('computedSalaries'));
 }
-public function preventive(){
-    $preventive = Preventive::all();
-    return view('Admin.PMS',compact('preventive'));
+public function preventive(Request $request) {
+    // Get the selected plate number from the request
+    $plateNumber = $request->input('plate_number');
+
+    // Fetch distinct plate numbers for the dropdown
+    $plateNumbers = Booking::pluck('plate_number')->unique();
+
+    // Filter preventive maintenance records based on the selected plate number
+    $preventive = $plateNumber
+        ? Preventive::where('plate_number', $plateNumber)->get()
+        : Preventive::all();
+
+    // Return the view with preventive records and plate numbers
+    return view('Admin.PMS', compact('preventive', 'plateNumbers'));
 }
+
 public function ratepermile(Request $request)
 {
-    // Retrieve all records from RatePerMile
-    $rates = RatePerMile::all();
+    // Fetch all distinct plate numbers
+    $plateNumbers = DB::table('bookings')->distinct()->pluck('plate_number');
 
+    // Retrieve the plate_number from the request (if filtering by a specific plate_number)
+    $selectedPlateNumber = $request->input('plate_number');
+
+    // Fetch rate_per_mile data grouped by plate_number
+    $query = DB::table('rate_per_miles')
+        ->join('bookings', 'rate_per_miles.plate_number', '=', 'bookings.plate_number')
+        ->select('rate_per_miles.plate_number', 'rate_per_miles.rate_per_mile', 'rate_per_miles.date','rate_per_miles.km', 'rate_per_miles.operational_costs')
+        ->distinct(); // Ensure distinct rows
+
+    // If a specific plate_number is selected, filter the query
+    if ($selectedPlateNumber) {
+        $query->where('rate_per_miles.plate_number', $selectedPlateNumber);
+    }
+
+    $rates = $query->get()->groupBy('plate_number');
 
     // Pass data to the view
-    return view('Accounting.In-house', compact('rates'));
+    return view('Accounting.In-house', compact('rates', 'plateNumbers', 'selectedPlateNumber'));
 }
+
+
 public function ratepermonth(Request $request)
 {
     // Get the start and end dates for the current month
@@ -250,8 +285,8 @@ public function ratepermonth(Request $request)
     $rates = RatePerMile::whereBetween('created_at', [$startOfMonth, $endOfMonth])->get();
 
     // Group records by date
-    $dailyTotals = $rates->groupBy(function ($date) {
-        return Carbon::parse($date->created_at)->format('M j, Y'); // Group by date
+    $dailyTotals = $rates->groupBy(function ($rate) {
+        return Carbon::parse($rate->created_at)->format('M j, Y'); // Group by date
     })->map(function ($group) {
         return $group->sum(function ($rate) {
             return ($rate->rate_per_mile * $rate->km) - $rate->operational_costs;

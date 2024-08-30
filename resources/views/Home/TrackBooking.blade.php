@@ -70,18 +70,17 @@
                     <ul class="contact-list">
                         <li class="contact-list__item flex-align">
                             <span class="contact-list__item-icon flex-center">
-                                <i class="las la-envelope-open"></i> </span>
-                            <a class="contact-list__link"
-                                href="/cdn-cgi/l/email-protection#e1929491918e9395a1828e94938884938d8083cf828e8c">
-                                <span class="__cf_email__"
-                                    data-cfemail="8bf8fefbfbe4f9ffcbe8e4fef9e2eef9e7eae9a5e8e4e6">[email&#160;protected]</span>
-                            </a>
+                                <i class="fas fa-envelope-open"></i> </span>
+                                <a class="contact-list__link" href="mailto:gdrlogisticsinc@outlook.com">
+                                    gdrlogisticsinc@outlook.com
+                                </a>
+
                         </li>
                         <li class="contact-list__item flex-align">
                             <span class="contact-list__item-icon flex-center">
-                                <i class="las la-phone"></i> </span>
+                                <i class="fas fa-phone"></i> </span>
                             <a class="contact-list__link" href="tel:+44 123 1217">
-                                +44 123 1217
+                                +63 917-819-1571
                             </a>
                         </li>
                     </ul>
@@ -106,49 +105,106 @@
         </div>
     </section>
 
-    <section class="tracking py-120">
-        <div class="container">
-            <h1>Track Booking Result</h1>
 
-            @if(isset($location) && isset($order_status))
-                <div class="status">
-                    <p><strong>Location:</strong> {{ $merchant_address }}</p>
-                    <p><strong>Order Status:</strong> {{ $order_status }}</p>
+
+
+
+    <!-- Include Leaflet JavaScript -->
+    <section class="tracking py-120 bg-light">
+        <div class="container">
+            <h1 class="mb-4 text-center">Track Booking Result</h1>
+
+            @if(isset($merchant_address) && isset($status) && isset($trackingNumber) && isset($consignee_address))
+                <div class="status bg-white p-4 rounded shadow">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="text-primary">Location</h5>
+                            <p class="lead">{{ $merchant_address }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="text-primary">Order Status</h5>
+                            <p class="lead">{{ $status }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="text-primary">Consignee Address</h5>
+                            <p class="lead">{{ $consignee_address }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="text-primary">Date of Pick Up</h5>
+                            <p class="lead">{{ \Carbon\Carbon::parse($date_of_pick_up)->format('F d, Y g:i A') }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5 class="text-primary">Product</h5>
+                            <p class="lead">{{ $product_name }}</p>
+                        </div>
+                    </div>
 
                     <!-- Map Container -->
-                    <div id="map"></div>
+                    <div id="map" style="width: 100%; height: 500px; margin-top: 20px;"></div>
                 </div>
             @else
-                <p class="error">{{ $error ?? 'Tracking number not found.' }}</p>
+                <div class="alert alert-danger mt-4" role="alert">
+                    {{ $error ?? 'Tracking number not found.' }}
+                </div>
             @endif
         </div>
     </section>
 
-    <!-- Include Leaflet JavaScript -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-IhA4pI1twy7MJQbTy8wO2V7MA81QzF4zGFRO9jv7sYk=" crossorigin=""></script>
 
     <script>
         function initMap() {
-            @if(isset($location))
-                var location = '{{ $location }}'; // e.g., "37.7749,-122.4194"
-                var latLng = location.split(',');
+            var mapOptions = {
+                zoom: 10,
+                center: { lat: 14.5995, lng: 120.9842 }, // Initial center on Manila, Philippines
+                mapTypeControl: false,
+            };
 
-                var map = L.map('map').setView([parseFloat(latLng[0]), parseFloat(latLng[1])], 14);
+            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+            var directionsService = new google.maps.DirectionsService();
+            var directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setMap(map);
 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(map);
+            // Function to calculate and display the route
+            function calculateAndDisplayRoute() {
+                var start = @json($merchant_address); // Start address from PHP
+                var end = @json($consignee_address); // End address from PHP
 
-                L.marker([parseFloat(latLng[0]), parseFloat(latLng[1])])
-                    .addTo(map)
-                    .bindPopup('Booking Location')
-                    .openPopup();
-            @endif
+                directionsService.route(
+                    {
+                        origin: start,
+                        destination: end,
+                        travelMode: google.maps.TravelMode.DRIVING,
+                    },
+                    function (response, status) {
+                        if (status === google.maps.DirectionsStatus.OK) {
+                            directionsRenderer.setDirections(response);
+                        } else {
+                            console.error('Directions request failed due to ' + status);
+                        }
+                    }
+                );
+            }
+
+            // Initial call to calculate and display the route
+            calculateAndDisplayRoute();
         }
 
-        // Initialize map after window loads
-        window.onload = initMap;
+        // Load Google Maps API and initialize the map
+        document.addEventListener('DOMContentLoaded', function() {
+            var script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4&callback=initMap`;
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        });
     </script>
+
 
 
 

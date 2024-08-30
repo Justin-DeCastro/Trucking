@@ -74,7 +74,6 @@
                 <!-- Display the overall Outstanding Balance and Remaining Balance -->
 
                 <table id="adminTable" class="table--light style--two table">
-
                     <thead>
                         <tr>
                             <th>Date</th>
@@ -94,7 +93,7 @@
                             <td>₱{{ number_format($overallTotal, 2) }}</td>
                         </tr>
                     </tbody>
-                    </table>
+                </table>
 
 
 

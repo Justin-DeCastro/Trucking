@@ -384,7 +384,7 @@
                                 <div class="about-card-content flex-align position-absolute">
                                     <div class="overlay-card">
                                         <h3 class="overlay-card__title">
-                                            28K
+                                            100
                                         </h3>
                                         <p class="overlay-card__desc">
                                             Satisfied Clients
@@ -392,7 +392,7 @@
                                     </div>
                                     <div class="overlay-card">
                                         <h3 class="overlay-card__title">
-                                            500
+                                            50
                                         </h3>
                                         <p class="overlay-card__desc">
                                             Delivery Man

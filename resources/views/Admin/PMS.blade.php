@@ -75,43 +75,74 @@
                         <div class="card">
                             <div class="card-body p-0">
                                 <div class="table-responsive--md table-responsive">
-                                    <table id="adminTable" class="table--light style--two table">
-                                        <thead>
-                                            <tr>
-                                                <th>Parts Replaced</th>
-                                                <th>Price of Part</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($preventive as $maintenance)
-                                                <tr>
-                                                    <td>{{ $maintenance->parts_replaced }}</td>
-                                                    <td>₱{{ number_format($maintenance->price_parts_replaced, 2) }}</td>
-                                                    <td>
-                                                        <!-- Update Button -->
-                                                        <button type="button" class="btn btn-primary btn-sm"
-                                                            data-bs-toggle="modal" data-bs-target="#updateModal"
-                                                            data-id="{{ $maintenance->id }}"
-                                                            data-parts="{{ $maintenance->parts_replaced }}"
-                                                            data-price="{{ $maintenance->price_parts_replaced }}">
-                                                            Update
-                                                        </button>
+                                    <div class="d-flex mb-3 align-items-center">
+                                        {{-- <h6 class="page-title">Preventive Maintenance</h6> --}}
+                                        <div class="ms-auto w-100 d-flex justify-content-start">
+                                            <form method="GET" action="{{ route('preventive-maintenance') }}" class="d-flex align-items-center">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        {{ request('plate_number') ? request('plate_number') : 'Select Plate Number' }}
+                                                    </button>
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <li><a class="dropdown-item" href="{{ route('preventive-maintenance') }}">Select Plate Number</a></li>
+                                                        @foreach($plateNumbers as $plateNumber)
+                                                            <li>
+                                                                <a class="dropdown-item" href="{{ route('preventive-maintenance', ['plate_number' => $plateNumber]) }}">
+                                                                    {{ $plateNumber }}
+                                                                </a>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
 
-                                                        <!-- Delete Button -->
-                                                        <form action="{{ route('maintenance.destroy', $maintenance->id) }}" method="POST" style="display:inline-block;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                                onclick="return confirm('Are you sure you want to delete this item?');">
-                                                                Delete
-                                                            </button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="card">
+                                                <div class="card-body p-0">
+                                                    <div class="table-responsive--md table-responsive">
+                                                        <table id="adminTable" class="table--light style--two table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Plate Number</th>
+                                                                    <th>Parts Replaced</th>
+                                                                    <th>Price of Part</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($preventive as $maintenance)
+                                                                    <tr>
+                                                                        <td>{{ $maintenance->plate_number }}</td>
+                                                                        <td>{{ $maintenance->parts_replaced }}</td>
+                                                                        <td>₱{{ number_format($maintenance->price_parts_replaced, 2) }}</td>
+                                                                        <td>
+                                                                            <!-- Update Button -->
+                                                                            <button type="button" class="btn btn-primary btn-sm"
+                                                                                data-bs-toggle="modal" data-bs-target="#updateModal"
+                                                                                data-id="{{ $maintenance->id }}"
+                                                                                data-plate="{{ $maintenance->plate_number }}"
+                                                                                data-parts="{{ $maintenance->parts_replaced }}"
+                                                                                data-price="{{ $maintenance->price_parts_replaced }}">
+                                                                                Update
+                                                                            </button>
+
+                                                                            <!-- Delete Button -->
+                                                                            <form action="{{ route('maintenance.destroy', $maintenance->id) }}" method="POST" style="display:inline-block;">
+                                                                                @csrf
+                                                                                @method('DELETE')
+                                                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                                                    onclick="return confirm('Are you sure you want to delete this item?');">
+                                                                                    Delete
+                                                                                </button>
+                                                                            </form>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
 
 
 
@@ -120,43 +151,44 @@
     </div>
 
     <!-- Create Vehicle Modal -->
-    <div class="modal fade" id="manageAdmin" tabindex="-1" aria-labelledby="manageAdminLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="manageAdminLabel">Create Vehicle</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+    <div class="modal fade" id="manageAdmin" tabindex="-1" aria-labelledby="manageAdminLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="manageAdminLabel">Create Vehicle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('preventives.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="plate_number" class="form-label">Plate Number</label>
+                            <select id="plate_number" name="plate_number" class="form-control" required>
+                                <option value="">Select Plate Number</option>
+                                @foreach($plateNumbers as $plateNumber)
+                                    <option value="{{ $plateNumber }}">{{ $plateNumber }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="parts_replaced" class="form-label">Parts Replaced</label>
+                            <input type="text" id="parts_replaced" name="parts_replaced" class="form-control" required oninput="this.value = this.value.toUpperCase();">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="price_parts_replaced" class="form-label">Price of Parts Replaced</label>
+                            <input type="number" id="price_parts_replaced" name="price_parts_replaced" class="form-control" placeholder="Don't use comma" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
             </div>
-            <form action="{{ route('preventives.store') }}" method="POST">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="parts_replaced" class="form-label">Parts Replaced</label>
-                        <input type="text" id="parts_replaced" name="parts_replaced"
-                            class="form-control" required
-                            oninput="this.value = this.value.toUpperCase();">
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="price_parts_replaced" class="form-label">Price of Parts
-                            Replaced</label>
-                        <input type="number" id="price_parts_replaced"
-                            name="price_parts_replaced" class="form-control"
-                            placeholder="Dont use comma" required>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                    <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Cancel</button>
-                </div>
-            </form>
         </div>
     </div>
-</div>
 
 <!-- Confirmation Modal -->
 <div class="modal fade" id="confirmationModal" tabindex="-1"

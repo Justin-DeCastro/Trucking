@@ -1,17 +1,56 @@
+<!-- meta tags and other links -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Include SweetAlert2 CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
-<!-- Include SweetAlert2 JS -->
+@include('Components.Admin.Header')
+
+<body>
 
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css">
-    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> --}}
-    <title>Register</title>
+    <div class="page-wrapper default-version">
+
+        @include('Components.Admin.Sidebar')
+        <!-- sidebar end -->
+
+        <!-- navbar-wrapper start -->
+        <nav class="navbar-wrapper bg--dark d-flex flex-wrap">
+            <div class="navbar__left">
+                <button type="button" class="res-sidebar-open-btn me-3"><i class="las la-bars"></i></button>
+
+            </div>
+            <div class="navbar__right">
+                <ul class="navbar__action-list">
+
+
+                    <li class="dropdown d-flex profile-dropdown">
+                        <button type="button" data-bs-toggle="dropdown" data-display="static" aria-haspopup="true"
+                            aria-expanded="false">
+                            <span class="navbar-user">
+                                <span class="navbar-user__thumb"><img
+                                        src="Home/user-avatar-male-5.png"
+                                        alt="image"></span>
+                                <span class="navbar-user__info">
+                                    <span class="navbar-user__name">Admin</span>
+                                </span>
+                                <span class="icon"><i class="fas fa-chevron-circle-down"></i></span>
+                            </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu--sm p-0 border-0 box--shadow1 dropdown-menu-right">
+
+
+                            <a href="logout"
+                                class="dropdown-menu__item d-flex align-items-center px-3 py-2">
+                                <i class="dropdown-menu__icon fas fa-sign-out-alt"></i>
+                                <span class="dropdown-menu__caption">Logout</span>
+                            </a>
+                        </div>
+                        <button type="button" class="breadcrumb-nav-open ms-2 d-none">
+                            <i class="fas fa-sliders-h"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     <style>
         .divider:after,
         .divider:before {
@@ -143,8 +182,8 @@
 
                             <!-- Driver Image upload -->
                             <div class="form-outline">
-                                <input type="file" id="form1Example6" name="driver_image" class="form-control form-control-lg" />
-                                <label class="form-label" for="form1Example6">Upload Driver Image</label>
+                                <input type="file" id="form1Example9" name="driver_image" class="form-control form-control-lg" />
+                                <label class="form-label" for="form1Example9">Upload Driver Image</label>
                                 @error('driver_image')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -152,8 +191,8 @@
 
                             <!-- Driver's License Number -->
                             <div class="form-outline">
-                                <input type="text" id="form1Example7" name="license_number" class="form-control form-control-lg" />
-                                <label class="form-label" for="form1Example7">Driver's License Number</label>
+                                <input type="text" id="form1Example6" name="license_number" class="form-control form-control-lg" />
+                                <label class="form-label" for="form1Example6">Driver's License Number</label>
                                 @error('license_number')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -161,8 +200,8 @@
 
                             <!-- Contact Number -->
                             <div class="form-outline">
-                                <input type="text" id="form1Example8" name="contact_number" class="form-control form-control-lg" />
-                                <label class="form-label" for="form1Example8">Contact Number</label>
+                                <input type="text" id="form1Example7" name="contact_number" class="form-control form-control-lg" />
+                                <label class="form-label" for="form1Example7">Contact Number</label>
                                 @error('contact_number')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -170,8 +209,8 @@
 
                             <!-- Address -->
                             <div class="form-outline">
-                                <input type="text" id="form1Example9" name="address" class="form-control form-control-lg" />
-                                <label class="form-label" for="form1Example9">Address</label>
+                                <input type="text" id="form1Example8" name="address" class="form-control form-control-lg" />
+                                <label class="form-label" for="form1Example8">Address</label>
                                 @error('address')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -191,7 +230,7 @@
             </div>
         </div>
     </section>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
     <script>
         document.getElementById('formRole').addEventListener('change', function() {
@@ -205,16 +244,5 @@
             }
         });
     </script>
- @if (session('swal'))
- <script>
-     Swal.fire({
-         title: "{{ session('swal.title') }}",
-         text: "{{ session('swal.text') }}",
-         icon: "{{ session('swal.icon') }}"
-     });
- </script>
-@endif
-
-
 </body>
 </html>

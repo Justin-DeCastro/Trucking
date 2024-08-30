@@ -30,25 +30,30 @@ class LoginController extends Controller
             // Get the authenticated user
             $user = Auth::user();
 
-            // Redirect based on the user's role
-            if ($user->isAdmin()) {
-                return redirect()->intended('admindash');
-            } elseif ($user->isCourier()) {
-                return redirect()->intended('courierdash');
-            } elseif ($user->isAccounting()) {
-                return redirect()->intended('accountingdash');
-            }
+            // Check if the user is verified
+            if ($user->is_verified) {
+                // Redirect based on the user's role
+                if ($user->isAdmin()) {
+                    return redirect()->intended('admindash');
+                } elseif ($user->isCourier()) {
+                    return redirect()->intended('courierdash');
+                } elseif ($user->isAccounting()) {
+                    return redirect()->intended('accountingdash');
+                }
 
-            // If no matching role is found, redirect to a default route or error page
-            // Example: Redirect to a generic page or show an error message
-            return redirect()->intended('home'); // Make sure 'home' is a valid route
+                // Redirect to a default route if no specific role is found
+                return redirect()->intended('home');
+            } else {
+                // Logout the user if not verified
+                Auth::logout();
+                return redirect()->route('verification.form')->with('error', 'You need to verify your email before logging in.');
+            }
         }
 
         // If login fails, redirect back with an error
-        throw ValidationException::withMessages([
-            'email' => ['The provided credentials do not match our records.'],
-        ]);
+        return redirect()->back()->withErrors(['email' => 'Invalid credentials']);
     }
+
 
     // Log out the user
     public function logout(Request $request)
@@ -56,7 +61,7 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
+
         return redirect('/');
     }
 }

@@ -124,7 +124,7 @@
             <div class="bodywrapper__inner">
 
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                    <h6 class="page-title">In and Out</h6>
+                    <h6 class="page-title">Total Driver Booking</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
 
 
@@ -141,89 +141,93 @@
                                 <th>Driver Name</th>
                                 <th>Total Bookings</th>
                                 <th>Status</th>
-                                <th>Reference</th>
-                                <th>Date</th> <!-- Added Date column -->
+                                <th>Order Status</th>
+                                <th>Date</th>
+                                <th>Product Name</th>
+                                {{-- <th>Count</th> --}}
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($driverDetails as $detail)
-                            <tr>
-                                <td>{{ $detail->name }}</td>
-                                <td>{{ $detail->total_bookings }}</td>
-                                <td>{{ $detail->statuses }}</td>
-                                <td>{{ $detail->order_statuses }}</td>
-                                <td>{{ $detail->dates }}</td> <!-- Display Date -->
-                                <td>
-                                    <!-- Button to trigger modal -->
-                                    <button type="button" class="btn btn-info" data-bs-toggle="modal"
-                                        data-bs-target="#modal{{ $loop->index }}">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <!-- Display driver name and total bookings only once per driver -->
+                                    <td rowspan="{{ count($detail->bookingDetails) }}">{{ $detail->driver_name }}</td>
+                                    <td rowspan="{{ count($detail->bookingDetails) }}">{{ $detail->total_bookings }}</td>
+
+                                    <!-- Display the first booking detail -->
+                                    @foreach ($detail->bookingDetails as $index => $booking)
+                                        @if($index > 0)
+                                            <!-- Create a new row for subsequent booking details -->
+                                            <tr>
+                                        @endif
+                                        <td>{{ $booking['status'] }}</td>
+                                        <td>{{ $booking['order_status'] }}</td>
+                                        <td>{{ $booking['date'] }}</td>
+                                        <td>{{ $booking['product_name'] }}</td>
+                                        {{-- <td>{{ $booking['count'] }}</td> --}}
+                                        @if($index == 0)
+                                            <!-- Display the actions button only in the first row -->
+                                            <td rowspan="{{ count($detail->bookingDetails) }}">
+                                                <!-- Button to trigger modal -->
+                                                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal{{ $loop->parent->index }}">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </td>
+                                        @endif
+                                        </tr>
+                                    @endforeach
                             @empty
-                            <tr>
-                                <td colspan="6">No data available</td> <!-- Adjusted colspan to 6 since there are 6 columns -->
-                            </tr>
+                                <tr>
+                                    <td colspan="8">No data available</td>
+                                </tr>
                             @endforelse
                         </tbody>
                     </table>
 
-
-
-
+                    <!-- Modal Structure -->
                     @foreach ($driverDetails as $detail)
-                    <div class="modal fade" id="modal{{ $loop->index }}" tabindex="-1" aria-labelledby="modalLabel{{ $loop->index }}" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" style="width: 70%; max-width: 1000px; height: 70%;">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalLabel{{ $loop->index }}">Details for Driver: {{ $detail->name }}</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <h2>Booking Details</h2>
-
-                                                <h3>Status and Order Status Counts</h3>
-                                                <table class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Status</th>
-                                                            <th>Order Status</th>
-                                                            <th>Count</th>
-                                                            <th>Date</th> <!-- Added Date column -->
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($detail->status_counts as $status => $orderStatuses)
-                                                            @foreach ($orderStatuses as $orderStatus => $count)
-                                                                <tr>
-                                                                    <td>{{ $status }}</td>
-                                                                    <td>{{ $orderStatus }}</td>
-                                                                    <td>{{ $count }}</td>
-                                                                    <td>{{ $detail->dates }}</td> <!-- Display Date -->
-                                                                </tr>
-                                                            @endforeach
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
+                        <div class="modal fade" id="modal{{ $loop->index }}" tabindex="-1" aria-labelledby="modalLabel{{ $loop->index }}" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalLabel{{ $loop->index }}">Details for Driver: {{ $detail->driver_name }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" onclick="printModal('modal{{ $loop->index }}')">Print</button>
+                                    <div class="modal-body">
+                                        <h2>Booking Details</h2>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Status</th>
+                                                    <th>Order Status</th>
+                                                    <th>Count</th>
+                                                    <th>Date</th>
+                                                    <th>Product Name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($detail->bookingDetails as $booking)
+                                                    <tr>
+                                                        <td>{{ $booking['status'] }}</td>
+                                                        <td>{{ $booking['order_status'] }}</td>
+                                                        <td>{{ $booking['count'] }}</td>
+                                                        <td>{{ $booking['date'] }}</td>
+                                                        <td>{{ $booking['product_name'] }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" onclick="printModal('modal{{ $loop->index }}')">Print</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     @endforeach
-
-
 
 
 

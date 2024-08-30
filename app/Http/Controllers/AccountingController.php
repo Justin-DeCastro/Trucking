@@ -177,18 +177,20 @@ class AccountingController extends Controller
             : Transaction::all();
 
         // Calculate balances
-        $outstandingBalance = $transactions->sum('deposit_amount') + $startingBalance;
+
+
         $totalWithdraw = $transactions->sum('withdraw_amount');
+        $outstandingBalance = ($transactions->sum('deposit_amount') + $startingBalance) - $totalWithdraw;
         $totalExpense = $transactions->sum('expense_amount');
         $netIncome = $outstandingBalance - $totalWithdraw;
-        $remainingBalance = $outstandingBalance - ($totalWithdraw + $totalExpense);
+        // $remainingBalance = $outstandingBalance - ($totalWithdraw + $totalExpense);
 
         // Return view with data
         return view('Accounting.Account_Accounting', [
             'accounts' => $accounts,
             'transactions' => $transactions,
             'outstandingBalance' => $outstandingBalance,
-            'remainingBalance' => $remainingBalance,
+            // 'remainingBalance' => $remainingBalance,
             'totalExpense' => $totalExpense,
             'startingBalance' => $startingBalance,
             'netIncome' => $netIncome,

@@ -78,18 +78,13 @@
                                         <span class="menu-title">Branch Employee</span>
                                     </a>
                                 </li>
-                                {{-- <li class="sidebar-menu-item <?php echo $currentPage == 'branchmanager' ? 'active' : ''; ?>">
-                                    <a href="branchmanager" class="nav-link">
+                                <li class="sidebar-menu-item <?php echo $currentPage == 'create-driver' ? 'active' : ''; ?>">
+                                    <a href="create-driver" class="nav-link">
                                         <i class="fa fa-dot-circle menu-icon"></i>
-                                        <span class="menu-title">Branch Manager</span>
+                                        <span class="menu-title">Add Driver</span>
                                     </a>
                                 </li>
-                                <li class="sidebar-menu-item <?php echo $currentPage == 'branchincome' ? 'active' : ''; ?>">
-                                    <a href="branchincome" class="nav-link">
-                                        <i class="fa fa-dot-circle menu-icon"></i>
-                                        <span class="menu-title">Branch Income</span>
-                                    </a>
-                                </li> --}}
+
                             </ul>
                         </div>
                     </li>

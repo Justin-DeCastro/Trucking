@@ -291,7 +291,7 @@
     </div>
 </section>
 
-    <section class="branches-section py-120 section-bg">
+    {{-- <section class="branches-section py-120 section-bg">
         <div class="branches-animation">
             <span class="line"></span>
             <span class="line"></span>
@@ -456,7 +456,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
     <section class="team-section py-120">
         <div class="container">
             <div class="section-heading">
@@ -555,6 +555,101 @@
         </div>
     </section>
     <section class="testimonials py-120 section-bg">
+        <div class="container-fluid">
+            <div class="section-overlay">
+                <div class="row g-0 h-100">
+                    <div class="col-xl-7 col-lg-8">
+        <div class="left-thumb">
+            <!-- Use Bootstrap Icons or any other icon library -->
+            <i class="bi bi-chat-dots" style="font-size: 100px;"></i>
+        </div>
+    </div>
+    <div class="col-xl-5 col-lg-4 d-lg-block d-none">
+        <div class="right-thumb">
+            <i class="bi bi-chat-dots" style="font-size: 100px;"></i>
+        </div>
+    </div>
+
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="testimonial-slider">
+                            @foreach ($testimonials as $testimonial)
+        @if ($testimonial->status === 'Accepted')
+                            <div class="testimonails-card">
+                                <div class="testimonial-item">
+                                    <div class="testimonial-item__content">
+                                        <div class="testimonial-item__info">
+                                            <div class="testimonial-item__thumb">
+                                                <img class="fit-image" src="Home/user-avatar-male-5.png" alt="client">
+                                            </div>
+                                            <div class="testimonial-item__details">
+                                                <h6 class="testimonial-item__name">{{ $testimonial->name }}</h6>
+                                                <span class="testimonial-item__designation">{{ $testimonial->position }}</span>
+                                                <div class="testimonial-item__rating">
+                                                    <ul class="rating-list">
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                        <li class="rating-list__item"><i class="fas fa-star"></i></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="testimonial-item__desc">
+                                        {{ $testimonial->message }}
+                                    </p>
+                                </div>
+                            </div>
+                            @endif
+                            @endforeach
+                        </div>
+                    </div>
+                    <!-- Add the form here -->
+                    <div class="col-lg-6">
+                        <h1 class="text-center mb-4" style="
+            background: linear-gradient(45deg, black, blue, red);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        ">
+            Feedback Form
+        </h1>
+                        <div class="form-container p-4 border rounded shadow-lg bg-light">
+                            <form class="form" action="{{ route('feedback.store') }}" method="post">
+                                @csrf
+
+                                <div class="form-group mb-3">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name" required>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="position" class="form-label">Position</label>
+                                    <input type="text" id="position" name="position" class="form-control" placeholder="Enter your position" required>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="textarea" class="form-label">How Can We Help You?</label>
+                                    <textarea name="message" id="textarea" class="form-control" rows="5" placeholder="Your feedback" required></textarea>
+                                </div>
+
+                                <button class="btn btn-primary btn-lg w-100" type="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    {{-- <section class="testimonials py-120 section-bg">
         <div class="container-fluid">
             <div class="section-overlay">
                 <div class="row g-0 h-100">
@@ -751,7 +846,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
     <section class="faq py-120 section-bg">
         <div class="container">
             <div class="row gy-4">
@@ -762,7 +857,7 @@
                         </h3>
                         <p class="section-heading__desc">
                             To provide our clients with security GDR Logistics Inc. fleets have 10M coverage inland
-                            marince insurance and GPS tracking device. The trucks are also individually iinsured.
+                            marine insurance and GPS tracking device. The trucks are also individually insured.
                             We also have an ongoing application to PEZA and PHILGEPS.
                         </p>
                     </div>
@@ -772,74 +867,70 @@
                     </a>
                 </div>
                 <div class="col-md-6">
-                    <div class="accordion custom--accordion" id="faqList">
+                    <div class="accordion" id="faqList">
                         <div class="accordion-item">
-                            <div class="accordion" id="faqList">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#faq0" aria-expanded="true"
-                                            aria-controls="faq0">
-                                            Explore Our Services and Solutions
-                                        </button>
-                                    </h2>
-                                    <div id="faq0" class="accordion-collapse collapse show" data-bs-parent="#faqList">
-                                        <div class="accordion-body">
-                                            <p class="text">
-                                                We offer a fleet of 40 units of 10-wheeler aluminum wing vans, designed
-                                                for maximum durability and load capacity, perfect for transporting large
-                                                and heavy goods securely.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="false"
-                                            aria-controls="faq1">
-                                            9 Units of 6-Wheeler Closed Vans
-                                        </button>
-                                    </h2>
-                                    <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqList">
-                                        <div class="accordion-body">
-                                            <p class="text">
-                                                Our 6-wheeler closed vans are available in 9 units, ideal for secure and
-                                                weatherproof transportation of goods. These vans are equipped with
-                                                advanced locking mechanisms and padded interiors to protect your cargo.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false"
-                                            aria-controls="faq2">
-                                            3 Units of 6-Wheeler Tractor Heads
-                                        </button>
-                                    </h2>
-                                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqList">
-                                        <div class="accordion-body">
-                                            <p class="text">
-                                                We also provide 3 units of 6-wheeler tractor heads, which are versatile
-                                                and reliable for towing various types of trailers. These tractor heads
-                                                are equipped with powerful engines and advanced driving systems to
-                                                ensure efficient and safe transport.
-                                            </p>
-                                        </div>
-                                    </div>
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq0" aria-expanded="true" aria-controls="faq0">
+                                    Explore Our Services and Solutions
+                                    {{-- <i class="fas fa-chevron-down float-end"></i> --}}
+                                </button>
+                            </h2>
+                            <div id="faq0" class="accordion-collapse collapse show" data-bs-parent="#faqList">
+                                <div class="accordion-body">
+                                    <p class="text">
+                                        We offer a fleet of 40 units of 10-wheeler aluminum wing vans, designed
+                                        for maximum durability and load capacity, perfect for transporting large
+                                        and heavy goods securely.
+                                    </p>
                                 </div>
                             </div>
+                        </div>
 
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq1" aria-expanded="false" aria-controls="faq1">
+                                    9 Units of 6-Wheeler Closed Vans
+                                    {{-- <i class="fas fa-chevron-down float-end"></i> --}}
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqList">
+                                <div class="accordion-body">
+                                    <p class="text">
+                                        Our 6-wheeler closed vans are available in 9 units, ideal for secure and
+                                        weatherproof transportation of goods. These vans are equipped with
+                                        advanced locking mechanisms and padded interiors to protect your cargo.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
+                                    3 Units of 6-Wheeler Tractor Heads
+                                    {{-- <i class="fas fa-chevron-down float-end"></i> --}}
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqList">
+                                <div class="accordion-body">
+                                    <p class="text">
+                                        We also provide 3 units of 6-wheeler tractor heads, which are versatile
+                                        and reliable for towing various types of trailers. These tractor heads
+                                        are equipped with powerful engines and advanced driving systems to
+                                        ensure efficient and safe transport.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </section>
+
     <div class="client py-60 section-bg">
         <div class="container">
             <div class="client-logos client-slider">

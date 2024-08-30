@@ -11,6 +11,7 @@ class Preventive extends Model
     protected $fillable = [
 
         'parts_replaced',
+        'plate_number',
         'price_parts_replaced',
 
 

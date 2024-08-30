@@ -40,6 +40,7 @@ class Booking extends Model
 'order_number',
 'truck_type',
 'qr_code_path',
+'product_name',
 'proof_of_delivery',
 
 
@@ -55,5 +56,9 @@ class Booking extends Model
     public function vehicle()
 {
     return $this->belongsTo(Vehicle::class, 'vehicle_id'); // Adjust 'vehicle_id' to the actual foreign key if needed
+}
+public function ratePerMile()
+{
+    return $this->belongsTo(RatePerMile::class, 'plate_number', 'plate_number');
 }
 }

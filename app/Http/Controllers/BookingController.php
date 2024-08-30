@@ -94,47 +94,44 @@ class BookingController extends Controller
 
 
     public function getDriverPlateNumberCounts()
-    {
-        // Retrieve total bookings, status counts, and order_status counts grouped by driver names with role "courier"
-        $driverDetails = Booking::join('users', 'users.id', '=', 'bookings.driver_name') // Join with users table on driver_name (which is an ID)
-            ->where('users.role', 'courier') // Filter by role "courier"
-            ->select('users.name')
-            ->selectRaw('count(*) as total_bookings')
-            ->selectRaw('GROUP_CONCAT(DISTINCT status) as statuses')
-            ->selectRaw('GROUP_CONCAT(DISTINCT order_status) as order_statuses')
-            ->selectRaw('GROUP_CONCAT(DISTINCT DATE_FORMAT(bookings.created_at, "%M %d, %Y")) as dates') // Format date
-            ->groupBy('users.name') // Group by driver name
-            ->get(['users.name as name', 'total_bookings', 'statuses', 'order_statuses', 'dates']);
+{
+    // Fetch all drivers with their role as courier
+    $driverDetails = Booking::join('users', 'users.id', '=', 'bookings.driver_name')
+        ->where('users.role', 'courier')
+        ->select('users.name as driver_name')
+        ->selectRaw('COUNT(bookings.id) as total_bookings')
+        ->groupBy('users.name')
+        ->get();
 
-        // Prepare data for each status count including order_status
-        $driverDetails = $driverDetails->map(function ($driver) {
-            // Get booking details for the driver
-            $statusCounts = Booking::join('users', 'users.id', '=', 'bookings.driver_name') // Join with users table on driver_name (which is an ID)
-                ->where('users.name', $driver->name)
-                ->where('users.role', 'courier') // Ensure the role is "courier"
-                ->groupBy('status', 'order_status')
-                ->selectRaw('count(*) as count, status, order_status')
-                ->get()
-                ->groupBy('status')
-                ->map(function ($group) {
-                    return $group->pluck('count', 'order_status')->toArray();
-                })
-                ->toArray();
+    // Prepare booking details grouped by driver
+    $driverDetails = $driverDetails->map(function ($driver) {
+        // Get all bookings for the driver grouped by necessary fields
+        $bookingsByDriver = Booking::join('users', 'users.id', '=', 'bookings.driver_name')
+            ->where('users.name', $driver->driver_name)
+            ->where('users.role', 'courier')
+            ->groupBy('bookings.created_at', 'bookings.product_name', 'status', 'order_status')
+            ->selectRaw('count(*) as count, DATE_FORMAT(bookings.created_at, "%M %d, %Y") as date, bookings.product_name, status, order_status')
+            ->get();
 
-            $driver->status_counts = $statusCounts;
-            return $driver;
+        // Structure data for display
+        $driver->bookingDetails = $bookingsByDriver->map(function ($booking) {
+            return [
+                'date' => $booking->date,
+                'product_name' => $booking->product_name,
+                'status' => $booking->status,
+                'order_status' => $booking->order_status,
+                'count' => $booking->count,
+            ];
         });
 
-        // Handle empty result set by ensuring it's an empty collection
-        if ($driverDetails->isEmpty()) {
-            $driverDetails = collect(); // Return an empty collection
-        }
+        return $driver;
+    });
 
-        // Pass the data to the view
-        return view('Admin.DriverBookingCount', [
-            'driverDetails' => $driverDetails,
-        ]);
-    }
+    return view('Admin.DriverBookingCount', [
+        'driverDetails' => $driverDetails,
+    ]);
+}
+
 
 
 
@@ -167,6 +164,7 @@ class BookingController extends Controller
         $validatedData = $request->validate([
             'sender_name' => 'required|string|max:255',
             'transport_mode' => 'required|string|max:255',
+            'product_name' => 'required',
             'shipping_type' => 'required|string|max:255',
             'delivery_type' => 'required|string|max:255',
             'journey_type' => 'required|string|max:255',
@@ -330,24 +328,31 @@ class BookingController extends Controller
     }
 
 
-   public function trackBooking(Request $request)
-{
-    $trackingNumber = strtoupper($request->query('trackingNumber'));
+  // In your controller method
+  public function trackBooking(Request $request)
+  {
+      $trackingNumber = strtoupper($request->query('trackingNumber'));
 
-    $booking = Booking::where('tracking_number', $trackingNumber)->first(['merchant_address', 'order_status']);
+      $booking = Booking::where('tracking_number', $trackingNumber)
+          ->first(['merchant_address', 'product_name', 'date_of_pick_up', 'consignee_address', 'status', 'tracking_number']);
 
-    if ($booking) {
-        // Assuming $booking->location contains 'latitude,longitude'
-        return view('Home.TrackBooking', [
-            'location' => $booking->location, // Ensure this is in "lat,lng" format
-            'order_status' => $booking->order_status
-        ]);
-    } else {
-        return view('track', [
-            'error' => 'Tracking number not found for the provided tracking number.'
-        ]);
-    }
-}
+      if ($booking) {
+          return view('Home.TrackBooking', [
+              'product_name' => $booking->product_name,
+              'merchant_address' => $booking->merchant_address,
+              'status' => $booking->status,
+              'consignee_address' => $booking->consignee_address,
+              'date_of_pick_up' => $booking->date_of_pick_up,
+              'trackingNumber' => $booking->tracking_number, // Pass tracking number to the view
+          ]);
+      } else {
+          return view('track', [
+              'error' => 'Tracking number not found for the provided tracking number.'
+          ]);
+      }
+  }
+
+
 
 
 
@@ -388,30 +393,61 @@ class BookingController extends Controller
 public function updateOrderStatus(Request $request, $id)
 {
     // Validate the incoming request
-    $request->validate([
-        'order_status' => 'required|string|in:Pod_returned,Delivery successful,For Pick-up,First_delivery_attempt,In_Transit',
-    ]);
+    $validationRules = [
+        'status' => 'required|string|in:Pod_returned,Delivery_successful,For_Pick-up,First_delivery_attempt,In_Transit',
+        'remarks' => 'nullable|string',
+        'proof_of_delivery' => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ];
+
+    // Add date_of_pick_up validation only if status is 'For_Pick-up'
+    if ($request->input('status') === 'For_Pick-up') {
+        $validationRules['date_of_pick_up'] = 'required|date';
+    }
+
+    $request->validate($validationRules);
 
     // Find the booking by ID
     $booking = Booking::findOrFail($id);
 
-    // Get the consignee email
-    $consigneeEmail = $booking->consignee_email;
+    // Update the order status
+    $booking->status = $request->input('status');
 
-    // Define the sender's name and tracking number
-    $senderName = $booking->sender_name; // Ensure this field exists in your Booking model
-    $trackingNumber = $booking->tracking_number; // Ensure this field exists in your Booking model
+    // Update the date_of_pick_up if the status is 'For_Pick-up'
+    if ($request->input('status') === 'For_Pick-up') {
+        $booking->date_of_pick_up = $request->input('date_of_pick_up');
+    }
 
-    // Update the status
-    $booking->status = $request->input('order_status');
+    // Update the remarks if provided
+    if ($request->filled('remarks')) {
+        $booking->remarks = $request->input('remarks');
+    }
+
+    // Handle the picture upload if provided
+    if ($request->hasFile('proof_of_delivery')) {
+        $file = $request->file('proof_of_delivery');
+        $fileName = time() . '_' . $file->getClientOriginalName();
+        $file->move(public_path('pictures'), $fileName);
+        $booking->proof_of_delivery = 'pictures/' . $fileName;
+    }
+
+    // Save the booking updates
     $booking->save();
 
-    // Send the email notification
-    Mail::to($consigneeEmail)->send(new OrderStatusUpdated($booking, $senderName, $trackingNumber));
+    // Send email if status is updated to 'Delivery_successful'
+    if ($booking->status === 'Delivery_successful') {
+        $consigneeEmail = $booking->consignee_email;
+        $senderName = $booking->sender_name;
+        $trackingNumber = $booking->tracking_number;
+        Mail::to($consigneeEmail)->send(new OrderStatusUpdated($booking, $senderName, $trackingNumber));
+    }
 
     // Redirect back with a success message
-    return redirect()->back()->with('success', 'Order status updated and notification sent successfully.');
+    return redirect()->back()->with('success', 'Order updated successfully.');
 }
+
+
+
+
 
 public function updateAdminStatus(Request $request, $id)
 {

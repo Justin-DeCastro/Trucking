@@ -181,7 +181,7 @@
                                                 <th>Destination</th>
                                                 <th>Proof of Delivery</th>
                                                 <th>Remarks</th>
-                                                <th>Order Status</th>
+                                                <th>Status</th>
                                                 <th>Reference</th>
                                                 <th>Update Status</th> <!-- Moved Update Status column before Actions -->
                                                 <th>Actions</th>
@@ -205,11 +205,16 @@
                                                     <td>{{ $detail->status }}</td>
                                                     <td>{{ $detail->order_status }}</td>
                                                     <td>
-                                                        <!-- Update Status Button to trigger modal -->
-                                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateStatusModal{{ $detail->id }}">
-                                                            Update Status
-                                                        </button>
+                                                        <!-- Approve Button -->
+                                                        <form action="{{ route('update.admin.status', ['id' => $detail->id]) }}" method="POST">
+                                                            @csrf
+                                                            @method('PATCH')
+                                                            <input type="hidden" name="order_status" value="Confirmed_delivery">
+                                                            <button type="submit" class="btn btn-success">Approve</button>
+                                                        </form>
                                                     </td>
+
+
                                                     <td>
                                                         <!-- Actions Button to trigger modal -->
                                                         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal{{ $detail->id }}">
@@ -252,9 +257,14 @@
                                         <div class="col-md-6">
                                             <h2>Package Reference</h2>
                                             <table class="table table-bordered">
+
                                                 <tr>
                                                     <td>Tracking Number</td>
                                                     <td class="text-wrap">{{ $detail->tracking_number }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Date of Pick Up</td>
+                                                    <td>{{ \Carbon\Carbon::parse($detail->date_of_pick_up)->format('F d, Y g:i A') }}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Created At</td>
@@ -262,27 +272,39 @@
                                                 </tr>
                                                 <tr>
                                                     <td>Status</td>
-                                                    <td>
-                                                        <span
-                                                            style="
-                                                                color: {{ ($detail->status == 'Pod_returned' ? 'white' :
-                                                                        ($detail->status == 'Delivery successful' ? 'white' :
-                                                                        ($detail->status == 'For Pick-up' ? 'white' :
-                                                                        ($detail->status == 'First_delivery_attempt' ? 'white' :
-                                                                        ($detail->status == 'In_Transit' ? 'white' :
-                                                                        ($detail->status == 'Confirmed_delivery' ? 'white' : 'black')))))) }};
-                                                                background-color: {{ ($detail->status == 'Pod_returned' ? 'red' :
-                                                                                    ($detail->status == 'Delivery successful' ? 'green' :
-                                                                                    ($detail->status == 'For Pick-up' ? 'blue' :
-                                                                                    ($detail->status == 'First_delivery_attempt' ? 'orange' :
-                                                                                    ($detail->status == 'In_Transit' ? 'purple' :
-                                                                                    ($detail->status == 'Confirmed_delivery' ? 'teal' : 'transparent')))))) }};
-                                                                padding: 2px 5px;
-                                                                border-radius: 4px;
-                                                            ">
-                                                            {{ $detail->status }}
-                                                        </span>
-                                                    </td>
+                                                    @php
+    $statusColor = match($detail->status) {
+        'Pod_returned' => 'white',
+        'Delivery_successful' => 'white',
+        'For_Pick-up' => 'white',
+        'First_delivery_attempt' => 'white',
+        'In_Transit' => 'white',
+        'Confirmed_delivery' => 'white',
+        default => 'black',
+    };
+
+    $bgColor = match($detail->status) {
+        'Pod_returned' => 'red',
+        'Delivery_successful' => 'green',
+        'For_Pick-up' => 'blue',
+        'First_delivery_attempt' => 'orange',
+        'In_Transit' => 'purple',
+        'Confirmed_delivery' => 'teal',
+        default => 'transparent',
+    };
+@endphp
+
+<td>
+    <span style="
+        color: {{ $statusColor }};
+        background-color: {{ $bgColor }};
+        padding: 2px 5px;
+        border-radius: 4px;
+    ">
+        {{ $detail->status }}
+    </span>
+</td>
+
 
 
                                                     </td>
@@ -447,9 +469,12 @@
                                         <div class="col-md-12">
                                             <h2>Route Map</h2>
                                             <div id="map{{ $detail->id }}" style="width: 100%; height: 500px;">
+                                                <!-- Map will be displayed here -->
                                             </div>
+
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -584,94 +609,107 @@
                 <script src="https://cdn.datatables.net/buttons/1.7.2/js/buttons.print.min.js"></script>
                 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4&libraries=places">
                 </script>
-                <script>
-                    function initMap(detailId, startAddress, endAddress) {
-                        var map = new google.maps.Map(document.getElementById('map' + detailId), {
-                            zoom: 10,
-                            center: {
-                                lat: -34.397,
-                                lng: 150.644
-                            } // Default center; will update later
-                        });
+               <script>
+                function initMap(detailId, startAddress, endAddress) {
+                    var map = new google.maps.Map(document.getElementById('map' + detailId), {
+                        zoom: 10,
+                        center: { lat: -34.397, lng: 150.644 } // Default center; will update later
+                    });
 
-                        var directionsService = new google.maps.DirectionsService();
-                        var directionsRenderer = new google.maps.DirectionsRenderer();
-                        directionsRenderer.setMap(map);
+                    var directionsService = new google.maps.DirectionsService();
+                    var directionsRenderer = new google.maps.DirectionsRenderer();
+                    directionsRenderer.setMap(map);
 
-                        var request = {
-                            origin: startAddress,
-                            destination: endAddress,
-                            travelMode: 'DRIVING'
-                        };
+                    var request = {
+                        origin: startAddress,
+                        destination: endAddress,
+                        travelMode: 'DRIVING'
+                    };
 
-                        directionsService.route(request, function(result, status) {
-                            if (status === 'OK') {
-                                directionsRenderer.setDirections(result);
-                                map.setCenter(result.routes[0].legs[0].start_location);
+                    directionsService.route(request, function(result, status) {
+                        if (status === 'OK') {
+                            directionsRenderer.setDirections(result);
+                            map.setCenter(result.routes[0].legs[0].start_location);
 
-                                // Define the moving truck marker
-                                var truckIcon = 'https://maps.google.com/mapfiles/kml/shapes/truck.png'; // URL to truck icon
-                                var truckMarker = new google.maps.Marker({
-                                    position: result.routes[0].legs[0].start_location,
-                                    map: map,
-                                    icon: truckIcon,
-                                    title: 'Moving Truck'
-                                });
+                            // Define the moving truck marker
+                            var truckIcon = 'https://maps.google.com/mapfiles/kml/shapes/truck.png'; // URL to truck icon
+                            var truckMarker = new google.maps.Marker({
+                                position: result.routes[0].legs[0].start_location,
+                                map: map,
+                                icon: truckIcon,
+                                title: 'Moving Truck'
+                            });
 
-                                // Animate the truck along the route
-                                var steps = result.routes[0].legs[0].steps;
-                                var stepIndex = 0;
-                                var stepCount = steps.length;
-                                var truckPosition = new google.maps.LatLng(
-                                    steps[stepIndex].start_location.lat(),
-                                    steps[stepIndex].start_location.lng()
-                                );
+                            // Animate the truck along the route
+                            var steps = result.routes[0].legs[0].steps;
+                            var stepIndex = 0;
+                            var stepCount = steps.length;
 
-                                function moveTruck() {
-                                    if (stepIndex < stepCount) {
-                                        var step = steps[stepIndex];
-                                        var path = step.path;
-                                        var pathLength = path.length;
+                            function moveTruck() {
+                                if (stepIndex < stepCount) {
+                                    var step = steps[stepIndex];
+                                    var path = step.path;
+                                    var pathLength = path.length;
+                                    var i = 0;
 
-                                        var i = 0;
-
-                                        function animate() {
-                                            if (i < pathLength) {
-                                                truckMarker.setPosition(path[i]);
-                                                i++;
-                                                setTimeout(animate, 100); // Adjust the speed here
-                                            } else {
-                                                stepIndex++;
-                                                if (stepIndex < stepCount) {
-                                                    moveTruck(); // Move to the next step
-                                                }
+                                    function animate() {
+                                        if (i < pathLength) {
+                                            truckMarker.setPosition(path[i]);
+                                            i++;
+                                            setTimeout(animate, 100); // Adjust the speed here
+                                        } else {
+                                            stepIndex++;
+                                            if (stepIndex < stepCount) {
+                                                moveTruck(); // Move to the next step
                                             }
                                         }
-                                        animate();
                                     }
+
+                                    animate();
                                 }
-
-                                moveTruck(); // Start the animation
-
-                            } else {
-                                console.error('Directions request failed due to ' + status);
                             }
-                        });
-                    }
 
-                    // Function to initialize map for each modal when opened
-                    document.addEventListener('DOMContentLoaded', function() {
-                        @foreach ($rubixdetails as $detail)
-                            document.getElementById('modal{{ $detail->id }}').addEventListener('shown.bs.modal', function() {
-                                initMap(
-                                    '{{ $detail->id }}',
-                                    '{{ $detail->merchant_address }}',
-                                    '{{ $detail->consignee_address }}'
-                                );
-                            });
-                        @endforeach
+                            moveTruck(); // Start the animation
+
+                            // Fetch and display estimated arrival time
+                            fetchEstimatedArrivalTime(startAddress, endAddress, detailId);
+
+                        } else {
+                            console.error('Directions request failed due to ' + status);
+                        }
                     });
-                </script>
+                }
+
+                function fetchEstimatedArrivalTime(startAddress, endAddress, detailId) {
+                    var apiKey = '{{ env('GOOGLE_MAPS_API_KEY') }}';
+                    var url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(startAddress)}&destinations=${encodeURIComponent(endAddress)}&key=${apiKey}`;
+
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'OK') {
+                                var duration = data.rows[0].elements[0].duration.text;
+                                document.getElementById('arrival-time' + detailId).innerText = `Estimated Arrival Time: ${duration}`;
+                            } else {
+                                console.error('Distance Matrix request failed due to ' + data.status);
+                            }
+                        })
+                        .catch(error => console.error('Error fetching arrival time:', error));
+                }
+
+                // Initialize map when modals are shown
+                document.addEventListener('DOMContentLoaded', function() {
+                    @foreach ($rubixdetails as $detail)
+                        document.getElementById('modal{{ $detail->id }}').addEventListener('shown.bs.modal', function() {
+                            initMap(
+                                '{{ $detail->id }}',
+                                '{{ $detail->merchant_address }}',
+                                '{{ $detail->consignee_address }}'
+                            );
+                        });
+                    @endforeach
+                });
+            </script>
 
 
 </body>

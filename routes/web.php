@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\PricingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -45,6 +45,9 @@ use App\Http\Controllers\FeedbackController;
 //     return view('welcome');
 // });
 //home
+// Add this to your routes/web.php
+Route::delete('/couriers/{id}', [LoginController::class, 'terminateEmployee'])->name('couriers.destroy');
+
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('ordertracking', [HomeController::class, 'ordertracking'])->name('ordertracking');
 Route::get('/track', [BookingController::class, 'trackBooking'])->name('track.booking');
@@ -55,8 +58,8 @@ Route::get('team', [HomeController::class, 'team'])->name('team');
 Route::get('blog', [HomeController::class, 'blog'])->name('blog');
 Route::get('contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('appointment', [HomeController::class, 'appointment'])->name('appointment');
-
-
+Route::get('/api/get-truck-location', [HomeController::class, 'getLocation']);
+Route::get('/create-driver', [AdminController::class, 'create_driver'])->name('create-driver');
 //accounting
 Route::middleware(['auth'])->group(function () {
     Route::get('allcourier', [AccountingController::class, 'all_courier'])->name('allcourier');
@@ -83,7 +86,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('account-accounting', [AccountingController::class, 'account'])->name('account-accounting');
     Route::get('/filter-transactions', [AccountingController::class, 'filter'])->name('filter.transactions');
     Route::post('preventive-store', [RatePerMileController::class, 'submit'])->name('earning.store');
-    Route::get('rate-per-mile', [AdminController::class, 'ratepermile'])->name('rate-per-mile');
+    Route::get('rate-per-mile', [AdminController::class, 'ratepermile'])->name('ratepermile');
     Route::get('rate-per-month', [AdminController::class, 'ratepermonth'])->name('rate-per-month');
     Route::get('rate-per-year', [AdminController::class, 'rateperyear'])->name('rate-per-year');
     Route::get('/rate-per-mile/{id}/edit', [RatePerMileController::class, 'edit'])->name('rate-per-mile.edit');
@@ -274,3 +277,5 @@ Route::get('/feedback', [AdminController::class, 'feedback'])->name('feedback');
 Route::patch('/feedback/{id}/accept', [FeedbackController::class, 'accept'])->name('feedback.accept');
 Route::patch('/feedback/{id}/decline', [FeedbackController::class, 'decline'])->name('feedback.decline');
 
+Route::get('/verify', [VerificationController::class, 'showForm'])->name('verification.form');
+Route::post('/verify', [VerificationController::class, 'verifyCode'])->name('verification.verify');

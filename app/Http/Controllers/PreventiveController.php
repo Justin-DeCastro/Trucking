@@ -11,6 +11,7 @@ class PreventiveController extends Controller
     {
         // Validate the request
         $validatedData = $request->validate([
+            'plate_number' => 'required|string',
             'parts_replaced' => 'required',
             'price_parts_replaced' => 'required',
 

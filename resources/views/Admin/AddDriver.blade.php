@@ -81,7 +81,7 @@
             <th>Email</th>
             <th>Driver License</th>
             <th>License Number</th>
-            <!-- <th>Plate Number</th> -->
+           <th>Driver Image</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -100,16 +100,24 @@
                         No License
                     @endif
                 </td>
+
                 <td>{{ $driver->license_number }}</td>
                 <!-- <td>{{ $driver->plate_number }}</td> -->
-
+                <td>
+                    @if ($driver->driver_license)
+                        <a href="{{ asset('driver_images/' . basename($driver->driver_image)) }}"
+                            target="_blank">View License</a>
+                    @else
+                        No License
+                    @endif
+                </td>
                 <!-- Delete Action -->
                 <td>
                     <!-- Delete Form -->
                     <form action="{{ route('couriers.destroy', $driver->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this courier?');">Delete</button>
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to terminate this courier?');">Terminate</button>
                     </form>
                 </td>
             </tr>

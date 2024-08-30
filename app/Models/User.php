@@ -26,6 +26,8 @@ class User extends Authenticatable
         'contact_number',   // New field
         'address',
         'plate_number',        // New field
+        'driver_image',
+        'verification_code', 'is_verified',
     ];
 
     /**

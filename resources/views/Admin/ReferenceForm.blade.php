@@ -94,7 +94,10 @@
                 <input style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="date" name="date" type="datetime-local" placeholder="Enter Date" required>
             </div>
         </div>
-
+        <div style="flex: 1; min-width: 220px;">
+            <label for="product_name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Product Name</label>
+            <textarea id="product_name" name="product_name" rows="4" placeholder="Enter Product Name" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"></textarea>
+        </div>
         <!-- Bottom Section: Client Name, Transport Mode, Shipping Type -->
         <div style="display: flex; flex-wrap: wrap; gap: 20px;">
             <div style="flex: 1; min-width: 220px;">
