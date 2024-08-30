@@ -157,17 +157,14 @@
 
                         <!-- Role selection -->
                         <div class="form-outline">
-                            <select id="formRole" name="role" class="form-control form-control-lg" required>
-                                <option value="" disabled selected>Select your role</option>
-                                <option value="accounting">Accounting</option>
-                                <option value="courier">Courier</option>
-                                <option value="admin">Admin</option>
-                            </select>
+                            <input type="text" id="formRole" name="role" class="form-control form-control-lg" value="Courier" readonly>
                             <label class="form-label" for="formRole">Role</label>
                             @error('role')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
+
+
 
                         <!-- Conditional fields for couriers -->
                         <div id="courierFields" class="hidden">

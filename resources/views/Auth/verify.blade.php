@@ -61,7 +61,12 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-header">Verify Your Email First</div>
+                    <div class="card-header">
+                        Verify Your Email First
+                        <div class="alert alert-info mt-2 mb-0">
+                            Check your email for the verification code.
+                        </div>
+                    </div>
                     <div class="card-body">
                         @if(session('success'))
                             <div class="alert alert-success">
@@ -93,4 +98,5 @@
         </div>
     </div>
 </body>
+
 </html>

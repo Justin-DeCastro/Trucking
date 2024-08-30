@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Rules\StrongPassword;
 
 class RegisterController extends Controller
 {
@@ -56,7 +57,8 @@ class RegisterController extends Controller
     }
 
     // Create a new user
-    $verificationCode = Str::random(6);
+    $verificationCode = 'GDR-' . Str::random(6);
+
     $user = $this->create($request->all(), $driverLicensePath, $driverImagePath, $verificationCode);
     Mail::to($user->email)->send(new VerificationCodeMail($verificationCode));
 
@@ -77,13 +79,25 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'confirmed',
+                new StrongPassword($data['name'], $data['email']),
+                'regex:/[A-Z]/',
+                'regex:/[a-z]/',
+                'regex:/[0-9]/',
+                'regex:/[@$!%*?&]/',
+            ],
             'role' => 'required|string|in:accounting,courier,admin',
             'driver_license' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'driver_image' => 'nullable|file|mimes:jpg,jpeg,png|max:2048', // Validation for driver_image
+            'driver_image' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
             'license_number' => 'nullable|string|max:255',
-            'contact_number' => 'nullable|string|max:20', // New field
-            'address' => 'nullable|string|max:255', // New field
+            'contact_number' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
+        ], [
+            'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
         ]);
     }
 
