@@ -57,7 +57,7 @@
 
 
                     <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-    <h6 class="page-title">Courier Send</h6>
+    <h6 class="page-title"></h6>
     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
             </div>
 </div>
@@ -66,7 +66,7 @@
                 <section style="padding: 60px 0; background: #f9f9f9;">
     <div style="max-width: 900px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
         <div style="text-align: center; margin-bottom: 40px;">
-            <h3 style="margin-top: 0; color: #333; font-size: 28px; font-weight: bold;">RUBIX Form</h3>
+            <h3 style="margin-top: 0; color: #333; font-size: 28px; font-weight: bold;">Booking Form</h3>
             <p style="color: #666; font-size: 16px;">Fill out the form below to arrange for the transportation of your goods.</p>
         </div>
         <form action="{{ route('booking.submit') }}" method="post" enctype="multipart/form-data">

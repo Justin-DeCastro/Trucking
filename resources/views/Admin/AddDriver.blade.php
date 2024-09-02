@@ -14,10 +14,10 @@
 
         <!-- navbar-wrapper start -->
         <nav class="navbar-wrapper bg--dark d-flex flex-wrap">
-            <div class="navbar__left">
-                <button type="button" class="res-sidebar-open-btn me-3"><i class="las la-bars"></i></button>
+            {{-- <div class="navbar__left">
+                <button type="button" class="res-sidebar-open-btn me-3"><i class="fas fa-bars"></i></button>
 
-            </div>
+            </div> --}}
             <div class="navbar__right">
                 <ul class="navbar__action-list">
 
@@ -62,7 +62,7 @@
                         <h6 class="page-title">Manage Driver</h6>
                         <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
 
-                            <!-- <button class="btn  btn-outline--primary h-45 addNewBranch"><i class="las la-plus"></i>Add
+                            <!-- <button class="btn  btn-outline--primary h-45 addNewBranch"><i class="fas fa-plus"></i>Add
                                 New</button> -->
                         </div>
                     </div>
@@ -588,7 +588,7 @@
                 ],
                 "title": "General Setting",
                 "subtitle": "Configure the fundamental information of the site.",
-                "icon": "las la-cog",
+                "icon": "fas fa-cog",
                 "route_name": "admin.setting.general"
             },
             "logo_favicon": {
@@ -597,7 +597,7 @@
                 ],
                 "title": "Logo and Favicon",
                 "subtitle": "Upload your logo and favicon here.",
-                "icon": "las la-images",
+                "icon": "fas fa-images",
                 "route_name": "admin.setting.logo.icon"
             },
             "system_configuration": {
@@ -607,7 +607,7 @@
                 ],
                 "title": "System Configuration",
                 "subtitle": "Control all of the basic modules of the system.",
-                "icon": "las la-cogs",
+                "icon": "fas fa-cogs",
                 "route_name": "admin.setting.system.configuration"
             },
             "notification_setting": {
@@ -619,7 +619,7 @@
                 ],
                 "title": "Notification Setting",
                 "subtitle": "Control and configure overall notification elements of the system.",
-                "icon": "las la-bell",
+                "icon": "fas fa-bell",
                 "route_name": "admin.setting.notification.global.email"
             },
             "seo_configuration": {
@@ -628,7 +628,7 @@
                 ],
                 "title": "SEO Configuration",
                 "subtitle": "Configure proper meta title, meta description, meta keywords, etc to make the system SEO-friendly.",
-                "icon": "las la-globe",
+                "icon": "fas fa-globe",
                 "route_name": "admin.seo"
             },
             "manage_frontend": {
@@ -648,7 +648,7 @@
                 "keyword": ["pages", "manage pages", "home page", "contact page", "blog page"],
                 "title": "Manage Pages",
                 "subtitle": "Control dynamic and static pages of the system.",
-                "icon": "las la-list",
+                "icon": "fas fa-list",
                 "route_name": "admin.frontend.manage.pages"
             },
             "manage_templates": {
@@ -665,7 +665,7 @@
                 ],
                 "title": "Language",
                 "subtitle": "Configure your required languages and keywords to localize the system.",
-                "icon": "las la-language",
+                "icon": "fas fa-language",
                 "route_name": "admin.language.manage"
             },
             "extensions": {
@@ -676,14 +676,14 @@
                 ],
                 "title": "Extensions",
                 "subtitle": "Manage extensions of the system here to extend some extra features of the system.",
-                "icon": "las la-puzzle-piece",
+                "icon": "fas fa-puzzle-piece",
                 "route_name": "admin.extensions.index"
             },
             "policy_pages": {
                 "keyword": ["privacy and policy", "terms and condition", "terms of service"],
                 "title": "Policy Pages",
                 "subtitle": "Configure your policy and terms of the system here.",
-                "icon": "las la-shield-alt",
+                "icon": "fas fa-shield-alt",
                 "route_name": "admin.frontend.sections",
                 "params": {
                     "key": "policy_pages"
@@ -696,7 +696,7 @@
                 ],
                 "title": "Maintenance Mode",
                 "subtitle": "Enable or disable the maintenance mode of the system when required.",
-                "icon": "las la-robot",
+                "icon": "fas fa-robot",
                 "route_name": "admin.maintenance.mode"
             },
             "gdpr_cookie": {
@@ -705,7 +705,7 @@
                 ],
                 "title": "GDPR Cookie",
                 "subtitle": "Set GDPR Cookie policy if required. It will ask visitor of the system to accept if enabled.",
-                "icon": "las la-cookie-bite",
+                "icon": "fas fa-cookie-bite",
                 "route_name": "admin.setting.cookie"
             },
             "custom_css": {
@@ -722,14 +722,14 @@
                 "keyword": ["Site map", "sitemap", "xml", "sitemap.xml"],
                 "title": "Sitemap XML",
                 "subtitle": "Insert the sitemap XML here to enhance SEO performance.",
-                "icon": "las la-sitemap",
+                "icon": "fas fa-sitemap",
                 "route_name": "admin.setting.sitemap"
             },
             "robots": {
                 "keyword": ["Robots", "txt", "robots.txt", "robot.txt"],
                 "title": "Robots txt",
                 "subtitle": "Insert the robots.txt content here to enhance bot web crawlers and instruct them on how to interact with certain areas of the website.",
-                "icon": "las la-robot",
+                "icon": "fas fa-robot",
                 "route_name": "admin.setting.robot"
             }
         }, {
@@ -740,20 +740,20 @@
                     "Main screen", "Administrative dashboard", "Command dashboard", "Main control panel"
                 ],
                 "title": "Dashboard",
-                "icon": "las la-home",
+                "icon": "fas fa-home",
                 "route_name": "admin.dashboard",
                 "menu_active": "admin.dashboard"
             },
             "admin": {
                 "keyword": ["admin"],
                 "title": "Admin",
-                "icon": "las la-users",
+                "icon": "fas fa-users",
                 "route_name": "admin.all",
                 "menu_active": "admin.all"
             },
             "branch_control": {
                 "title": "Branch Control",
-                "icon": "las la-code-branch",
+                "icon": "fas fa-code-branch",
                 "menu_active": ["admin.branch*", "admin.courier.branch.income"],
                 "submenu": [{
                     "keyword": ["manage branch"],
@@ -775,21 +775,21 @@
             "manage_courier": {
                 "keyword": ["manage courier", "courier"],
                 "title": "Manage Courier",
-                "icon": "las la-fax",
+                "icon": "fas fa-fax",
                 "route_name": "admin.courier.info.index",
                 "menu_active": ["admin.courier.info*", "admin.courier.invoice"]
             },
             "staff_list": {
                 "keyword": ["staff info", "staff", "staff list"],
                 "title": "Staff List",
-                "icon": "las la-users-cog",
+                "icon": "fas fa-users-cog",
                 "route_name": "admin.staff.index",
                 "menu_active": ["admin.staff.index"]
             },
             "customer_list": {
                 "keyword": ["customer info", "customer", "customer list"],
                 "title": "Customer List",
-                "icon": "las la-user-friends",
+                "icon": "fas fa-user-friends",
                 "route_name": "admin.customer.index",
                 "menu_active": ["admin.customer.index"]
             },
@@ -867,7 +867,7 @@
                     "Configuration management", "System setup"
                 ],
                 "title": "System Setting",
-                "icon": "las la-life-ring",
+                "icon": "fas fa-life-ring",
                 "route_name": "admin.setting.system",
                 "menu_active": ["admin.setting.system", "admin.setting.general",
                     "admin.setting.system.configuration", "admin.setting.logo.icon", "admin.extensions.index",
@@ -923,7 +923,7 @@
                     "bug report"
                 ],
                 "title": "Report \u0026 Request",
-                "icon": "las la-bug",
+                "icon": "fas fa-bug",
                 "route_name": "admin.request.report",
                 "menu_active": "admin.request.report"
             }

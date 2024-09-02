@@ -1,12 +1,63 @@
 <link rel="stylesheet" href="https://cdn.lineicons.com/2.0/LineIcons.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+<style>
+    /* Hamburger menu styles */
+    .hamburger-menu {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+        background: none;
+        border: none;
+        color: black;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 100%;
+        background-color: #333;
+        transition: transform 0.3s ease;
+        transform: translateX(-100%);
+        z-index: 999;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    /* When sidebar is open */
+    .sidebar .sidebar__inner {
+        padding-top: 60px; /* to avoid content going under the hamburger menu */
+    }
+
+    /* Media query for responsiveness */
+    @media (min-width: 768px) {
+        .sidebar {
+            transform: translateX(0);
+        }
+
+        .hamburger-menu {
+            display: none; /* Hide hamburger on larger screens */
+        }
+    }
+</style>
 
 <!-- Other CSS files -->
 <div class="page-wrapper default-version">
 
+        <!-- Hamburger Menu Button -->
+        <button class="hamburger-menu" id="hamburger-menu">
+            <i class="fas fa-bars"></i>
+        </button>
     <div class="sidebar bg--dark">
-        <button class="res-sidebar-close-btn"><i class="las la-times"></i></button>
+        {{-- <button class="res-sidebar-close-btn"></i></button> --}}
         <div class="sidebar__inner">
 
             <div class="sidebar__logo"
@@ -163,3 +214,27 @@
             });
         });
     </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var hamburgerMenu = document.getElementById("hamburger-menu");
+        var sidebar = document.querySelector(".sidebar");
+        var closeSidebarBtn = document.querySelector(".res-sidebar-close-btn");
+
+        // Toggle sidebar on hamburger button click
+        hamburgerMenu.addEventListener("click", function() {
+            sidebar.classList.toggle("open");
+        });
+
+        // Close sidebar on close button click
+        closeSidebarBtn.addEventListener("click", function() {
+            sidebar.classList.remove("open");
+        });
+
+        // Close sidebar when clicking outside of it
+        document.addEventListener("click", function(event) {
+            if (!sidebar.contains(event.target) && !hamburgerMenu.contains(event.target)) {
+                sidebar.classList.remove("open");
+            }
+        });
+    });
+</script>

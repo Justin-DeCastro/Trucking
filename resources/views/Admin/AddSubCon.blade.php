@@ -18,10 +18,10 @@
 
     <!-- navbar-wrapper start -->
     <nav class="navbar-wrapper bg--dark d-flex flex-wrap">
-        <div class="navbar__left">
-            <button type="button" class="res-sidebar-open-btn me-3"><i class="las la-bars"></i></button>
+        {{-- <div class="navbar__left">
+            <button type="button" class="res-sidebar-open-btn me-3"><i class="fas fa-bars"></i></button>
 
-        </div>
+        </div> --}}
         <div class="navbar__right">
             <ul class="navbar__action-list">
 
@@ -65,12 +65,12 @@
                     <h6 class="page-title">All Admin</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
                     <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal" data-bs-target="#manageSubcontractor">
-    <i class="las la-plus"></i> Add New
+    <i class="fas fa-plus"></i> Add New
 </button>
 
                     </div>
                 </div>
-
+                <div class="table-responsive">
                 <table class="table table--light style--two">
     <thead>
         <tr>
@@ -81,7 +81,7 @@
             <th>Email</th>
             <th>Phone Number</th>
             <th>File</th>
-            <th>Action</th>
+            {{-- <th>Action</th> --}}
         </tr>
     </thead>
     <tbody>

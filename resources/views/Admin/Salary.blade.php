@@ -41,7 +41,7 @@
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
                         <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal"
                             data-bs-target="#manageAdmin">
-                            <i class="las la-plus"></i> Add New
+                            <i class="fas fa-plus"></i> Add New
                         </button>
                     </div>
                 </div>

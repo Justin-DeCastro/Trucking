@@ -21,7 +21,7 @@
                     <ul class="sidebar__menu">
                         <li class="sidebar-menu-item active">
                             <a href="https://script.viserlab.com/courierlab/demo/staff/dashboard" class="nav-link ">
-                                <i class="menu-icon las la-home"></i>
+                                <i class="menu-icon fas fa-home"></i>
                                 <span class="menu-title">Dashboard</span>
                             </a>
                         </li>
@@ -189,7 +189,7 @@
                                     <div class="widget-seven__content">
                                         <span class="widget-seven__content-icon">
                                             <span class="icon">
-                                                <i class="las la-hourglass-start"></i>
+                                                <i class="fas fa-hourglass-start"></i>
                                             </span>
                                         </span>
                                         <div class="widget-seven__description">
