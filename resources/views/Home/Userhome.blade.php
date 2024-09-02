@@ -160,12 +160,7 @@
 .wave-card .wave-overlay {
     animation: wave-animation 5s linear infinite;
 }
-
-</style>
-@include('Components.Home.Header')
-
-<style>
-    .contact-list__item {
+.contact-list__item {
         display: flex;
         align-items: center;
     }
@@ -189,6 +184,13 @@
     }
 </style>
 
+@include('Components.Home.Header')
+
+{{-- <button class="navbar-toggler header-button" data-bs-toggle="collapse"
+data-bs-target="#navbarSupportedContent" type="button" aria-controls="navbarSupportedContent"
+aria-expanded="false" aria-label="Toggle navigation">
+<i class="fa fa-bars"></i> <!-- Font Awesome hamburger icon -->
+</button> --}}
 <body>
 
     <div class="preloader">

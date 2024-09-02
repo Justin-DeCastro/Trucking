@@ -1,54 +1,57 @@
 
 <style>
-    /* Ensure SVG fills its container */
-    svg {
-        width: 100%;
-        height: auto;
-    }
+ /* Ensure SVG fills its container */
+svg {
+    width: 100%;
+    height: auto;
+    position: relative; /* Ensure that the svg container is positioned relatively */
+}
 
-    /* Style for navbar content inside SVG */
-    .navbar-content {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 20px;
-    }
+/* Style for navbar content inside SVG */
+.navbar-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 1000; /* Ensure the navbar content appears above other elements */
+}
 
-    /* Logo Styling */
-    .navbar-brand.logo img {
-        width: 100px;
-        height: 50px;
-    }
+/* Logo Styling */
+.navbar-brand.logo img {
+    width: 100px;
+    height: 50px;
+}
 
-    /* Adjust button and menu styles as needed */
-    .navbar-toggler.header-button {
-        margin: 0;
-    }
+/* Adjust button and menu styles as needed */
+.navbar-toggler.header-button {
+    margin: 0;
+}
 
-    /* Navbar collapse style */
-    .navbar-collapse {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-end;
-    }
+/* Navbar collapse style */
+.navbar-collapse {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    z-index: 2000; /* Ensure the navbar collapse appears above other elements */
+}
 
-    /* Navbar item style */
-    .nav-menu .nav-item {
-        margin-left: 20px;
-    }
+/* Navbar item style */
+.nav-menu .nav-item {
+    margin-left: 20px;
+}
 
-    /* Adjust font size for navbar links */
-    .nav-menu .nav-link {
-        font-size: 14px;
-        /* Reduced font size */
-    }
-    /* Style for profile image */
+/* Adjust font size for navbar links */
+.nav-menu .nav-link {
+    font-size: 14px; /* Reduced font size */
+}
+
+/* Style for profile image */
 .nav-link.dropdown-toggle .profile-image {
     width: 40px; /* Adjust the size as needed */
     height: 40px;
@@ -62,7 +65,7 @@
     position: absolute;
     top: 100%;
     right: 0;
-    z-index: 1000;
+    z-index: 2000; /* Ensure the dropdown menu appears above other elements */
     margin: 0;
     padding: 0.5rem 0;
     list-style: none;
@@ -92,6 +95,7 @@
     color: #16181b;
 }
 
+
 </style>
 <header class="header" id="header">
     <div class="col-12">
@@ -108,7 +112,7 @@
                     <button class="navbar-toggler header-button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" type="button" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
-                        <span id="hiddenNav"><i class="las la-bars"></i></span>
+                        <span id="hiddenNav"><i class="fas fa-bars"></i></span>
                     </button>
                     <div class="navbar-collapse collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav nav-menu align-items-lg-center ms-auto">
