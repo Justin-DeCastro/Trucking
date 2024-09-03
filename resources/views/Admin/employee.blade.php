@@ -80,22 +80,38 @@
                                     <table class="table--light style--two table">
                                         <thead>
                                             <tr>
-                                                <th>Employee Name</th>
                                                 <th>ID Number</th>
                                                 <th>Position</th>
+                                                <th>Employee Name</th>
+                                                <th>Date Hired</th>
+                                                <th>Birthday</th>
+                                                <th>Birth Place</th>
+                                                <th>Civil Status</th>
+                                                <th>Gender</th>
+                                                <th>Mobile</th>
+                                                <th>Address</th>
                                                 <th>Profile Image</th>
+                                                <th>201 Files</th>
                                                 <th>Actions</th> <!-- New column for action buttons -->
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($employees as $employee)
                                                 <tr>
-                                                    <td>{{ $employee->name }}</td>
                                                     <td>{{ $employee->id_number }}</td>
                                                     <td>{{ $employee->position }}</td>
+                                                    <td>{{ $employee->employee_name }}</td>
+                                                    <td>{{ $employee->date_hired }}</td>
+                                                    <td>{{ $employee->birthday }}</td>
+                                                    <td>{{ $employee->birth_place }}</td>
+                                                    <td>{{ $employee->civil_status }}</td>
+                                                    <td>{{ $employee->gender }}</td>
+                                                    <td>{{ $employee->mobile }}</td>
+                                                    <td>{{ $employee->address }}</td>
                                                     <td>
                                                         <img src="{{ asset($employee->profile_image) }}" alt="Profile Image" style="width: 50px; height: 50px; object-fit: cover;">
                                                     </td>
+                                                    <td>{{ $employee->files }}</td>
                                                     <td>
                                                         <!-- Edit Button -->
                                                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ $employee->id }}" data-name="{{ $employee->name }}" data-id_number="{{ $employee->id_number }}" data-position="{{ $employee->position }}" data-profile_image="{{ asset($employee->profile_image) }}">Edit</button>
@@ -132,28 +148,90 @@
                 <form action="{{ route('employee.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
+                        <!-- Employee Name -->
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" id="name" name="name" class="form-control" required>
+                            <label for="employee_name" class="form-label">Employee Name</label>
+                            <input type="text" id="employee_name" name="employee_name" class="form-control" required>
                         </div>
+
+                        <!-- ID Number -->
                         <div class="mb-3">
                             <label for="id_number" class="form-label">ID Number</label>
                             <input type="text" id="id_number" name="id_number" class="form-control" required>
                         </div>
+
+                        <!-- Position -->
                         <div class="mb-3">
                             <label for="position" class="form-label">Position</label>
                             <input type="text" id="position" name="position" class="form-control" required>
                         </div>
+
+                        <!-- Date Hired -->
+                        <div class="mb-3">
+                            <label for="date_hired" class="form-label">Date Hired</label>
+                            <input type="date" id="date_hired" name="date_hired" class="form-control" required>
+                        </div>
+
+                        <!-- Birthday -->
+                        <div class="mb-3">
+                            <label for="birthday" class="form-label">Birthday</label>
+                            <input type="date" id="birthday" name="birthday" class="form-control" required>
+                        </div>
+
+                        <!-- Birth Place -->
+                        <div class="mb-3">
+                            <label for="birth_place" class="form-label">Birth Place</label>
+                            <input type="text" id="birth_place" name="birth_place" class="form-control" required>
+                        </div>
+
+                        <!-- Civil Status -->
+                        <div class="mb-3">
+                            <label for="civil_status" class="form-label">Civil Status</label>
+                            <select id="civil_status" name="civil_status" class="form-control" required>
+                                <option value="" disabled selected>Select Status</option>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="Divorced">Divorced</option>
+                                <option value="Widowed">Widowed</option>
+                            </select>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="mb-3">
+                            <label for="gender" class="form-label">Gender</label>
+                            <select id="gender" name="gender" class="form-control" required>
+                                <option value="" disabled selected>Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <!-- Mobile -->
+                        <div class="mb-3">
+                            <label for="mobile" class="form-label">Mobile</label>
+                            <input type="text" id="mobile" name="mobile" class="form-control" required>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" id="address" name="address" class="form-control" required>
+                        </div>
+
+                        <!-- Profile Image -->
                         <div class="mb-3">
                             <label for="profile_image" class="form-label">Profile Image</label>
                             <input type="file" id="profile_image" name="profile_image" class="form-control" accept="image/*">
                         </div>
                     </div>
+
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>

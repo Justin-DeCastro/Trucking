@@ -26,24 +26,44 @@ class VehicleController extends Controller
        try {
            // Validate the incoming request data
            $request->validate([
+               'plate_number' => 'required|string|max:255',
                'truck_name' => 'required|string|max:255',
+               'truck_model' => 'required|string|max:255',
                'truck_capacity' => 'required|string|max:255',
                'truck_status' => 'required|string|max:255',
-               'quantity' => 'required|integer|min:0', // Add validation for quantity
+               'quantity' => 'required|integer|min:0',
+               'documents.*' => 'sometimes|file|mimes:jpg,jpeg,png,pdf|max:2048', // Validate each document
            ]);
-   
+
            // Find the vehicle by ID
            $vehicle = Vehicle::findOrFail($id);
-   
+
            // Update the vehicle's properties
+           $vehicle->plate_number = $request->input('plate_number');
            $vehicle->truck_name = $request->input('truck_name');
+           $vehicle->truck_model = $request->input('truck_model');
            $vehicle->truck_capacity = $request->input('truck_capacity');
            $vehicle->truck_status = $request->input('truck_status');
-           $vehicle->quantity = $request->input('quantity'); // Update the quantity field
-   
+           $vehicle->quantity = $request->input('quantity');
+
+           // Handle document uploads
+           if ($request->hasFile('documents')) {
+               $documentPaths = [];
+               foreach ($request->file('documents') as $document) {
+                   // Generate a unique file name for each document
+                   $fileName = time() . '_' . $document->getClientOriginalName();
+                   // Move the document to the public/documents directory
+                   $document->move(public_path('documents'), $fileName);
+                   // Save the file path to the documentPaths array
+                   $documentPaths[] = 'documents/' . $fileName;
+               }
+               // Update the vehicle's documents field with the uploaded document paths
+               $vehicle->documents = $documentPaths;
+           }
+
            // Save the updated vehicle
            $vehicle->save();
-   
+
            // Redirect back with a success message
            return redirect()->back()->with('success', 'Vehicle updated successfully.');
        } catch (\Exception $e) {
@@ -51,8 +71,9 @@ class VehicleController extends Controller
            return redirect()->back()->with('error', 'Failed to update vehicle.');
        }
    }
-   
-   
+
+
+
 
 
     // Delete a vehicle
@@ -66,23 +87,48 @@ class VehicleController extends Controller
 
     // Store the vehicle data
     public function store(Request $request)
-{
-    $request->validate([
-        'truck_name' => 'required|string|max:255',
-        'truck_capacity' => 'required|string|max:255',
-        'truck_status' => 'required|string|max:255',
-        'quantity' => 'required|integer|min:0', // Add validation for quantity
-    ]);
+    {
+        // Validate incoming request data
+        $request->validate([
+            'plate_number' => 'required|string|max:255',
+            'truck_name' => 'required|string|max:255',
+            'truck_model' => 'required|string|max:255',
+            'truck_capacity' => 'required|string|max:255',
+            'truck_status' => 'required|string|max:255',
+            'quantity' => 'required|integer|min:0',
+            'documents.*' => 'sometimes|file|mimes:jpg,jpeg,png,pdf|max:2048', // Validate each document
+        ]);
 
-    Vehicle::create([
-        'truck_name' => $request->truck_name,
-        'truck_capacity' => $request->truck_capacity,
-        'truck_status' => $request->truck_status,
-        'quantity' => $request->quantity,
-    ]);
+        // Create a new Vehicle instance and save it to the database
+        $vehicle = Vehicle::create([
+            'plate_number' => $request->plate_number,
+            'truck_name' => $request->truck_name,
+            'truck_model' => $request->truck_model,
+            'truck_capacity' => $request->truck_capacity,
+            'truck_status' => $request->truck_status,
+            'quantity' => $request->quantity,
+            'documents' => [], // Initialize documents as an empty array
+        ]);
 
-    return redirect()->back()->with('success', 'Vehicle created successfully!');
-}
+        // Check if the request has files for 'documents'
+        if ($request->hasFile('documents')) {
+            $documentPaths = []; // Initialize an array to hold document paths
+            foreach ($request->file('documents') as $document) {
+                // Generate a unique file name for each document
+                $fileName = time() . '_' . $document->getClientOriginalName();
+                // Move the document to the public/documents directory
+                $document->move(public_path('documents'), $fileName);
+                // Save the file path to the documentPaths array
+                $documentPaths[] = 'documents/' . $fileName;
+            }
+            // Update the vehicle's documents field with the uploaded document paths
+            $vehicle->update(['documents' => $documentPaths]);
+        }
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Vehicle created successfully!');
+    }
+
 public function useVehicle($id)
 {
     $vehicle = Vehicle::find($id);

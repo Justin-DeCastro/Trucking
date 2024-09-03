@@ -58,7 +58,7 @@
         <div class="body-wrapper">
             <div class="bodywrapper__inner">
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                    <h6 class="page-title">Rate per mile * km - Operational costs = Earnings per trip</h6>
+                    <h6 class="page-title">Rate per km * km = Gross Income<br>Gross Income - Operational costs = Earnings per trip</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
                         <!-- Add Account Button -->
                         <button class="btn btn-sm btn-outline--primary" type="button" data-bs-toggle="modal"
@@ -92,8 +92,9 @@
                         <tr>
                             <th>Date</th>
                             <th>Plate Number</th>
-                            <th>Rate Per Mile/km</th>
+                            <th>Rate Per km</th>
                             <th>Kilometers</th>
+                            <th>Gross Income</th>
                             <th>Operational Costs</th>
                             <th>Earnings Per Trip</th>
                         </tr>
@@ -107,6 +108,7 @@
                                     <td>{{ $inhouse->plate_number }} </td>
                                     <td>₱{{ number_format($inhouse->rate_per_mile, 2) }}</td>
                                     <td>{{ $inhouse->km }} km</td>
+                                    <td>₱{{ number_format($inhouse->rate_per_mile * $inhouse->km, 2) }}
                                     <td>₱{{ number_format($inhouse->operational_costs, 2) }}</td>
                                     <td>₱{{ number_format($inhouse->rate_per_mile * $inhouse->km - $inhouse->operational_costs, 2) }}
                                     </td>

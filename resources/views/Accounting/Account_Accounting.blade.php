@@ -108,7 +108,7 @@
                             <strong>Starting Balance:</strong> {{ number_format($startingBalance, 2) }}
                         </div>
                         <div class="alert alert-info" style="background-color: rgba(255, 0, 0, 0.5); color: white;">
-                            <strong>Outstanding Balance:</strong> {{ number_format($outstandingBalance, 2) }}
+                            <strong>Remaining Balance:</strong> {{ number_format($outstandingBalance, 2) }}
                         </div>
                         {{-- <div class="alert alert-info" style="background-color: rgba(255, 0, 0, 0.5); color: white;">
                             <strong>Total Expenses:</strong> {{ number_format($totalExpense, 2) }}

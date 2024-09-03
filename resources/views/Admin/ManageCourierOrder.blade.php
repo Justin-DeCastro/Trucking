@@ -6,37 +6,169 @@
 
 @include('Components.Admin.Header')
 
-<body>
 
+<style>
+    .logo-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .logo-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 90%;
+        background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+        filter: blur(15px);
+        z-index: -1;
+
+    }
+
+    .logo {
+        border-radius: 0;
+        width: 70%;
+        height: 60px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .res-sidebar-close-btn {
+        background-color: transparent;
+        border: none;
+        color: #fff;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 10px;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .res-sidebar-close-btn:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #ff6b6b;
+    }
+
+    .res-sidebar-close-btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.4);
+    }
+
+    .logout-btn {
+        background-color: transparent;
+        border: none;
+        color: #333;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 10px;
+        border-radius: 50%;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .logout-btn:hover {
+        background-color: #ff6b6b;
+        color: #fff;
+    }
+
+    .logout-btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.4);
+    }
+
+    .res-sidebar-open-btn {
+        background-color: #1258a0;
+        border: none;
+        color: #fff;
+        font-size: 20px;
+        padding: 10px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .res-sidebar-open-btn:hover {
+        background-color: #0e4b8a;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .res-sidebar-open-btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(18, 88, 160, 0.4);
+    }
+
+    .res-sidebar-open-btn i {
+        margin-right: 5px;
+    }
+
+    .navbar-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 10px;
+    }
+
+    .navbar__left,
+    .navbar__right {
+        display: flex;
+        align-items: center;
+    }
+
+    @media (max-width: 768px) {
+
+        .navbar__left,
+        .navbar__right {
+            flex: 1;
+        }
+
+        .res-sidebar-open-btn,
+        .logout-btn {
+            font-size: 20px;
+            padding: 10px;
+        }
+
+        .navbar__right {
+            justify-content: flex-end;
+        }
+
+        .profile-dropdown {
+            margin-left: auto;
+        }
+    }
+</style>
+
+<body>
 
     <div class="page-wrapper default-version">
         <div class="page-wrapper default-version">
 
             <div class="sidebar bg--dark">
-                <button class="res-sidebar-close-btn"><i class="las la-times"></i></button>
+                <button class="res-sidebar-close-btn">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
                 <div class="sidebar__inner">
-                    <div class="sidebar__logo"
-                        style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-                        <img src="proofs/GDR.png" alt="Logo"
-                            style="border-radius: 0; width: 100px; height: 100px;
-                       filter: drop-shadow(0 0 30px rgba(0, 127, 255, 1));">
-                        <h3 style="margin-top: 10px; color: #1F8FFF;"><b>ADMIN</b></h3>
+
+                    <div class="logo-container">
+                        <div class="sidebar__logo"
+                            style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                            <img src="Home/GDR logo.png" alt="Logo" class="logo">
+                            <h3 style="color: #223d54;"><b>Courier</b></h3>
+
+                        </div>
                     </div>
+
 
 
                     <div class="sidebar__menu-wrapper">
                         <ul class="sidebar__menu">
-                            {{-- <li class="sidebar-menu-item active">
-                                <a href="courierdash" class="nav-link">
-                                    <i class="menu-icon fas fa-tachometer-alt"></i> <!-- Updated icon -->
-                                    <span class="menu-title">Dashboard</span>
-                                </a>
-                            </li> --}}
-
                             <li class="sidebar-menu-item">
                                 <a href="order-for-courier" class="nav-link">
-                                    <i class="menu-icon fas fa-truck"></i> <!-- Trucking order icon -->
-                                    <span class="menu-title">Manage Order</span>
+                                    <i class="fa-solid fa-boxes-stacked"></i>
+                                    <span class="menu-title" style="padding-left: 17px">Manage Order</span>
                                 </a>
                             </li>
                         </ul>
@@ -49,36 +181,21 @@
             <!-- sidebar end -->
 
             <!-- navbar-wrapper start -->
-            <nav class="navbar-wrapper bg--dark d-flex flex-wrap">
+            <nav class="navbar-wrapper d-flex flex-wrap">
+                <div class="navbar__left">
+                    <button type="button" class="res-sidebar-open-btn me-3">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
 
                 <div class="navbar__right">
                     <ul class="navbar__action-list">
-
-
-
                         <li class="dropdown d-flex profile-dropdown">
-                            <button type="button" data-bs-toggle="dropdown" data-display="static" aria-haspopup="true"
-                                aria-expanded="false">
-                                <span class="navbar-user">
-                                    <span class="navbar-user__thumb"><img src="Home/user-avatar-male-5.png"
-                                            alt="image"></span>
-                                    <span class="navbar-user__info">
-                                        <span class="navbar-user__name">admin</span>
-                                    </span>
-                                    <span class="icon"><i class="fas fa-chevron-circle-down"></i></span>
-                                </span>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu--sm p-0 border-0 box--shadow1 dropdown-menu-right">
+                            <a href="logout" class="dropdown-menu__item d-flex align-items-center px-3 py-2">
+                                <i class="dropdown-menu__icon fas fa-sign-out-alt"></i>
+                                <span class="dropdown-menu__caption">Logout</span>
+                            </a>
 
-
-                                <a href="logout" class="dropdown-menu__item d-flex align-items-center px-3 py-2">
-                                    <i class="dropdown-menu__icon fas fa-sign-out-alt"></i>
-                                    <span class="dropdown-menu__caption">Logout</span>
-                                </a>
-                            </div>
-                            <button type="button" class="breadcrumb-nav-open ms-2 d-none">
-                                <i class="las la-sliders-h"></i>
-                            </button>
                         </li>
                     </ul>
                 </div>
@@ -89,9 +206,8 @@
             <div class="container-fluid px-3 px-sm-0">
                 <div class="body-wrapper">
                     <div class="bodywrapper__inner">
-
                         <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                            <h6 class="page-title">Courier Information</h6>
+                            <h6 class="page-title p-2">Courier Information</h6>
                             <div
                                 class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
                             </div>
@@ -130,7 +246,8 @@
                                                     <td>
                                                         <!-- Display proof of delivery if available -->
                                                         @if ($detail->proof_of_delivery)
-                                                            <a href="{{ asset($detail->proof_of_delivery) }}" target="_blank">View Proof</a>
+                                                            <a href="{{ asset($detail->proof_of_delivery) }}"
+                                                                target="_blank">View Proof</a>
                                                         @else
                                                             No proof uploaded
                                                         @endif
@@ -138,63 +255,92 @@
 
                                                     <td>
                                                         <!-- Dropdown Button for Actions -->
-                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateStatusModal{{ $detail->id }}">
+                                                        <button type="button" class="btn btn-primary"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#updateStatusModal{{ $detail->id }}">
                                                             Update Status
                                                         </button>
 
                                                         <!-- Status Update Modal -->
-                                                        <div class="modal fade" id="updateStatusModal{{ $detail->id }}" tabindex="-1" aria-labelledby="updateStatusModalLabel{{ $detail->id }}" aria-hidden="true">
+                                                        <div class="modal fade"
+                                                            id="updateStatusModal{{ $detail->id }}" tabindex="-1"
+                                                            aria-labelledby="updateStatusModalLabel{{ $detail->id }}"
+                                                            aria-hidden="true">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title" id="updateStatusModalLabel{{ $detail->id }}">Update Order Status</h5>
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        <h5 class="modal-title"
+                                                                            id="updateStatusModalLabel{{ $detail->id }}">
+                                                                            Update Order Status</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         <!-- Update Status Form -->
-                                                                        <form class="status-form" action="{{ route('update.order.status', $detail->id) }}" method="POST" enctype="multipart/form-data">
+                                                                        <form class="status-form"
+                                                                            action="{{ route('update.order.status', $detail->id) }}"
+                                                                            method="POST"
+                                                                            enctype="multipart/form-data">
                                                                             @csrf
                                                                             @method('PATCH')
 
                                                                             <!-- Hidden field for update type -->
-                                                                            <input type="hidden" name="update_type" value="status">
+                                                                            <input type="hidden" name="update_type"
+                                                                                value="status">
 
                                                                             <div class="mb-3">
-                                                                                <label for="order_status" class="form-label">Order Status</label>
-                                                                                <select name="status" class="order_status form-select" required>
-                                                                                    <option value="Pod_returned">Pod returned</option>
-                                                                                    <option value="Delivery_successful">Delivery successful</option>
-                                                                                    <option value="For_Pick-up">For Pick-up</option>
-                                                                                    <option value="First_delivery_attempt">First Delivery Attempt</option>
-                                                                                    <option value="In_Transit">In Transit</option>
+                                                                                <label for="order_status"
+                                                                                    class="form-label">Order
+                                                                                    Status</label>
+                                                                                <select name="status"
+                                                                                    class="order_status form-select"
+                                                                                    required>
+                                                                                    <option value="Pod_returned">Pod
+                                                                                        returned</option>
+                                                                                    <option value="Delivery_successful">
+                                                                                        Delivery successful</option>
+                                                                                    <option value="For_Pick-up">For
+                                                                                        Pick-up</option>
+                                                                                    <option
+                                                                                        value="First_delivery_attempt">
+                                                                                        First Delivery Attempt</option>
+                                                                                    <option value="In_Transit">In
+                                                                                        Transit</option>
                                                                                 </select>
                                                                             </div>
 
-                                                                            <div class="mb-3 date_of_pick_up_container" style="display: none;">
-                                                                                <label for="date_of_pick_up" class="form-label">Date of Pick-up</label>
-                                                                                <input type="datetime-local" name="date_of_pick_up" class="form-control">
+                                                                            <div class="mb-3 date_of_pick_up_container"
+                                                                                style="display: none;">
+                                                                                <label for="date_of_pick_up"
+                                                                                    class="form-label">Date of
+                                                                                    Pick-up</label>
+                                                                                <input type="datetime-local"
+                                                                                    name="date_of_pick_up"
+                                                                                    class="form-control">
                                                                             </div>
 
                                                                             <div class="mb-3">
-                                                                                <label for="remarks" class="form-label">Add Remarks</label>
-                                                                                <input type="text" name="remarks" class="form-control" placeholder="Add remarks here">
+                                                                                <label for="remarks"
+                                                                                    class="form-label">Add
+                                                                                    Remarks</label>
+                                                                                <input type="text" name="remarks"
+                                                                                    class="form-control"
+                                                                                    placeholder="Add remarks here">
                                                                             </div>
 
                                                                             <div class="mb-3">
-                                                                                <label for="proof_of_delivery" class="form-label">Upload Proof of Delivery</label>
-                                                                                <input type="file" name="proof_of_delivery" class="form-control">
+                                                                                <label for="proof_of_delivery"
+                                                                                    class="form-label">Upload Proof of
+                                                                                    Delivery</label>
+                                                                                <input type="file"
+                                                                                    name="proof_of_delivery"
+                                                                                    class="form-control">
                                                                             </div>
 
-                                                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary">Submit</button>
                                                                         </form>
-
-
-
-
-
-
-
-
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -210,15 +356,7 @@
                                             @endforelse
                                         </tbody>
                                     </table>
-
-
-
-
                                 </div>
-                            </div>
-                            <div class="card-footer py-4">
-
-
                             </div>
                         </div>
                     </div>
@@ -227,38 +365,33 @@
             </div>
         </div>
     </div>
-    </div>
+
     <script>
-       document.addEventListener('DOMContentLoaded', function () {
-    const forms = document.querySelectorAll('.status-form');
+        document.addEventListener('DOMContentLoaded', function() {
+            const forms = document.querySelectorAll('.status-form');
 
-    forms.forEach(form => {
-        const statusSelect = form.querySelector('.order_status');
-        const dateOfPickUpContainer = form.querySelector('.date_of_pick_up_container');
+            forms.forEach(form => {
+                const statusSelect = form.querySelector('.order_status');
+                const dateOfPickUpContainer = form.querySelector('.date_of_pick_up_container');
 
-        function toggleDateOfPickUpField() {
-            if (statusSelect.value === 'For_Pick-up') {
-                dateOfPickUpContainer.style.display = 'block';
-            } else {
-                dateOfPickUpContainer.style.display = 'none';
-            }
-        }
+                function toggleDateOfPickUpField() {
+                    if (statusSelect.value === 'For_Pick-up') {
+                        dateOfPickUpContainer.style.display = 'block';
+                    } else {
+                        dateOfPickUpContainer.style.display = 'none';
+                    }
+                }
 
-        // Initial check on page load
-        toggleDateOfPickUpField();
+                // Initial check on page load
+                toggleDateOfPickUpField();
 
-        // Add event listener to dropdown
-        statusSelect.addEventListener('change', toggleDateOfPickUpField);
-    });
-});
-
+                // Add event listener to dropdown
+                statusSelect.addEventListener('change', toggleDateOfPickUpField);
+            });
+        });
     </script>
-  @include('Components.Admin.Footer')
-     {{-- <script>
-        function setUpdateType(detailId, type) {
-            document.getElementById('update_type' + detailId).value = type;
-        }
-        </script> --}}
+    @include('Components.Admin.Footer')
+
 </body>
 
 </html>

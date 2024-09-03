@@ -13,7 +13,7 @@
 <body>
 
 
-    @include('Components.Admin.Sidebar')
+    @include('Components.Accounting.Sidebar')
     <!-- sidebar end -->
 
     <!-- navbar-wrapper start -->

@@ -79,31 +79,52 @@
                                 <table class="table--light style--two table">
                                 <thead>
                         <tr>
+                            <th>Plate Number</th>
                             <th>Vehicle Name</th>
+                            <th>Truck Model</th>
                             <th>Vehicle Capacity</th>
                             <th>Vehicle Status</th>
                             <th>Vehicle Quantity</th>
+                            <th>Documents</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($vehicles as $vehicle)
                             <tr>
+                                <td>{{ $vehicle->plate_number }}</td>
                                 <td>{{ $vehicle->truck_name }}</td>
+                                <td>{{ $vehicle->truck_model }}</td>
                                 <td>{{ $vehicle->truck_capacity }}</td>
                                 <td>{{ $vehicle->truck_status }}</td>
                                 <td>{{ $vehicle->quantity }}</td>
+                                <td>
+                                    @if(!empty($vehicle->documents) && is_array($vehicle->documents))
+                                        <ul>
+                                            @foreach($vehicle->documents as $document)
+                                                <li><a href="{{ asset($document) }}" target="_blank">{{ basename($document) }}</a></li>
+                                            @endforeach
+                                        </ul>
+                                    @else
+                                        No documents available
+                                    @endif
+                                </td>
+
                                 <td>
                                     <!-- Edit Button -->
                                     <button type="button" class="btn btn-warning btn-sm"
     data-bs-toggle="modal"
     data-bs-target="#editJobModal{{ $vehicle->id }}"
     data-id="{{ $vehicle->id }}"
+    data-plate-number="{{ $vehicle->plate_number }}"
     data-truck-name="{{ $vehicle->truck_name }}"
+    data-truck-model="{{ $vehicle->truck_model }}"
     data-truck-capacity="{{ $vehicle->truck_capacity }}"
     data-truck-status="{{ $vehicle->truck_status }}"
-    data-quantity="{{ $vehicle->quantity }}">Edit
+    data-quantity="{{ $vehicle->quantity }}"
+    data-documents="{{ json_encode($vehicle->documents) }}">Edit
 </button>
+
 
 
                                     <!-- Delete Button -->
@@ -130,27 +151,57 @@
                 <h5 class="modal-title" id="manageAdminLabel">Create Vehicle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('vehicles.store') }}" method="POST">
+            <form action="{{ route('vehicles.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="new_truck_name" class="form-label">Vehicle Name</label>
-                        <input type="text" id="new_truck_name" name="truck_name" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="new_truck_capacity" class="form-label">Vehicle Capacity</label>
-                        <input type="text" id="new_truck_capacity" name="truck_capacity" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="new_truck_status" class="form-label">Vehicle Status</label>
-                        <input type="text" id="new_truck_status" name="truck_status" class="form-control" required>
-                    </div>
+                <!-- Plate Number -->
+                <div class="mb-3">
+                    <label for="plate_number" class="form-label">Plate Number</label>
+                    <input type="text" id="plate_number" name="plate_number" class="form-control" required>
                 </div>
+
+                <!-- Truck Name -->
+                <div class="mb-3">
+                    <label for="truck_name" class="form-label">Truck Name</label>
+                    <input type="text" id="truck_name" name="truck_name" class="form-control" required>
+                </div>
+
+                <!-- Truck Model -->
+                <div class="mb-3">
+                    <label for="truck_model" class="form-label">Truck Model</label>
+                    <input type="text" id="truck_model" name="truck_model" class="form-control" required>
+                </div>
+
+                <!-- Truck Capacity -->
+                <div class="mb-3">
+                    <label for="truck_capacity" class="form-label">Truck Capacity</label>
+                    <input type="text" id="truck_capacity" name="truck_capacity" class="form-control" required>
+                </div>
+
+                <!-- Truck Status -->
+                <div class="mb-3">
+                    <label for="truck_status" class="form-label">Truck Status</label>
+                    <input type="text" id="truck_status" name="truck_status" class="form-control" required>
+                </div>
+
+                <!-- Quantity -->
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" class="form-control" required>
+                </div>
+
+                <!-- Documents -->
+                <div class="mb-3">
+                    <label for="documents" class="form-label">Documents</label>
+                    <input type="file" id="documents" name="documents[]" class="form-control" multiple required>
+                </div>
+
+                <!-- Submit Button -->
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
@@ -166,38 +217,39 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('vehicles.update', $vehicle->id) }}" method="POST">
+                <form action="{{ route('vehicles.update', $vehicle->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-
-                    <!-- Vehicle ID (hidden) -->
-                    <input type="hidden" name="id" id="vehicle-id{{ $vehicle->id }}" value="{{ $vehicle->id }}">
-
-                    <!-- Truck Name -->
-                    <div class="mb-3">
-                        <label for="truck-name{{ $vehicle->id }}" class="form-label">Truck Name</label>
-                        <input type="text" class="form-control" id="truck-name{{ $vehicle->id }}" name="truck_name" value="{{ $vehicle->truck_name }}" required>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="plate_number" class="form-label">Plate Number</label>
+                            <input type="text" class="form-control" id="plate_number" name="plate_number" value="{{ $vehicle->plate_number }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="truck_name" class="form-label">Truck Name</label>
+                            <input type="text" class="form-control" id="truck_name" name="truck_name" value="{{ $vehicle->truck_name }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="truck_model" class="form-label">Truck Model</label>
+                            <input type="text" class="form-control" id="truck_model" name="truck_model" value="{{ $vehicle->truck_model }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="truck_capacity" class="form-label">Truck Capacity</label>
+                            <input type="text" class="form-control" id="truck_capacity" name="truck_capacity" value="{{ $vehicle->truck_capacity }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="truck_status" class="form-label">Truck Status</label>
+                            <input type="text" class="form-control" id="truck_status" name="truck_status" value="{{ $vehicle->truck_status }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" value="{{ $vehicle->quantity }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="documents" class="form-label">Documents</label>
+                            <input type="file" class="form-control" id="documents" name="documents[]" multiple>
+                        </div>
                     </div>
-
-                    <!-- Truck Capacity -->
-                    <div class="mb-3">
-                        <label for="truck-capacity{{ $vehicle->id }}" class="form-label">Truck Capacity</label>
-                        <input type="text" class="form-control" id="truck-capacity{{ $vehicle->id }}" name="truck_capacity" value="{{ $vehicle->truck_capacity }}" required>
-                    </div>
-
-                    <!-- Truck Status -->
-                    <div class="mb-3">
-                        <label for="truck-status{{ $vehicle->id }}" class="form-label">Truck Status</label>
-                        <input type="text" class="form-control" id="truck-status{{ $vehicle->id }}" name="truck_status" value="{{ $vehicle->truck_status }}" required>
-                    </div>
-
-                    <!-- Quantity -->
-                    <div class="mb-3">
-                        <label for="quantity{{ $vehicle->id }}" class="form-label">Quantity</label>
-                        <input type="number" class="form-control" id="quantity{{ $vehicle->id }}" name="quantity" value="{{ $vehicle->quantity }}" required min="0">
-                    </div>
-
-                    <!-- Modal Footer -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>

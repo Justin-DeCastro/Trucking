@@ -14,45 +14,59 @@ class EmployeeController extends Controller
     }
 
     public function store(Request $request)
-    {
-        // Validate the incoming request data
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'id_number' => 'required|string|max:255|unique:employees,id_number',
-            'position' => 'required|string|max:255',
-            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image file
-        ]);
+{
+    // Validate the incoming request data
+    $request->validate([
+        'id_number' => 'required|string|max:255|unique:employees,id_number',
+        'position' => 'required|string|max:255',
+        'employee_name' => 'required|string|max:255',
+        'date_hired' => 'required|date',
+        'birthday' => 'required|date',
+        'birth_place' => 'required|string|max:255',
+        'civil_status' => 'required|string|in:Single,Married,Divorced,Widowed', // Adjust the values as needed
+        'gender' => 'required|string|in:Male,Female,Other', // Adjust the values as needed
+        'mobile' => 'required|string|max:15',
+        'address' => 'required|string|max:255',
+        'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image file
+    ]);
 
-        // Handle the profile image upload
-        $profileImagePath = null;
-        if ($request->hasFile('profile_image')) {
-            $image = $request->file('profile_image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $destinationPath = public_path('profile_images');
+    // Handle the profile image upload
+    $profileImagePath = null;
+    if ($request->hasFile('profile_image')) {
+        $image = $request->file('profile_image');
+        $imageName = time() . '_' . $image->getClientOriginalName();
+        $destinationPath = public_path('profile_images');
 
-            // Ensure the directory exists
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0777, true);
-            }
-
-            // Move the image to the public directory
-            $image->move($destinationPath, $imageName);
-
-            // Set the image path for database storage
-            $profileImagePath = 'profile_images/' . $imageName;
+        // Ensure the directory exists
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0777, true);
         }
 
-        // Create a new employee record
-        Employee::create([
-            'name' => $request->name,
-            'id_number' => $request->id_number,
-            'position' => $request->position,
-            'profile_image' => $profileImagePath, // Save the image path
-        ]);
+        // Move the image to the public directory
+        $image->move($destinationPath, $imageName);
 
-        // Redirect back with a success message
-        return redirect()->back()->with('success', 'Employee details added successfully!');
+        // Set the image path for database storage
+        $profileImagePath = 'profile_images/' . $imageName;
     }
+
+    // Create a new employee record
+    Employee::create([
+        'id_number' => $request->id_number,
+        'position' => $request->position,
+        'employee_name' => $request->employee_name,
+        'date_hired' => $request->date_hired,
+        'birthday' => $request->birthday,
+        'birth_place' => $request->birth_place,
+        'civil_status' => $request->civil_status,
+        'gender' => $request->gender,
+        'mobile' => $request->mobile,
+        'address' => $request->address,
+        'profile_image' => $profileImagePath, // Save the image path
+    ]);
+
+    // Redirect back with a success message
+    return redirect()->back()->with('success', 'Employee details added successfully!');
+}
     public function update(Request $request, $id)
     {
         // Validate the incoming request data

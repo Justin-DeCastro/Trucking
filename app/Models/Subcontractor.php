@@ -12,8 +12,8 @@ class Subcontractor extends Model
     protected $fillable = [
         'company_name',
         'subcontractor_id',
-        'contact_first_name',
-        'contact_last_name',
+        'full_name',
+        'address',
         'email_address',
         'phone_number',
         'file_upload',

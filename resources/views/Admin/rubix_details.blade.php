@@ -8,12 +8,13 @@
 
 <!-- Include jQuery -->
 <style>
-    body {
+     body {
         font-family: 'Arial', sans-serif;
         color: #333;
         background-color: #f9f9f9;
         margin: 0;
         padding: 0;
+
     }
 
     .page-wrapper {
@@ -120,6 +121,157 @@
             /* Remove left margin on smaller screens */
         }
     }
+
+
+
+    .waybill-container {
+    width: 100%;
+    height: 100%;
+    border: 2px solid #000;
+    padding: 20px; /* Ensure enough padding */
+    background-color: #fff;
+    box-sizing: border-box; /* Include padding and border in the width/height */
+    overflow: auto; /* Ensure content is scrollable if it overflows */
+}
+
+/* Other CSS remains unchanged */
+
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #000;
+        padding-bottom: 5px;
+
+    }
+
+    .logo img {
+        width: 100px;
+    }
+
+    .waybill-details {
+        text-align: right;
+    }
+
+    .waybill-number {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .non-dg {
+        font-size: 12px;
+        color: #666;
+    }
+
+    .order-details {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        font-size: 12px;
+    }
+
+    .barcode {
+        text-align: center;
+        margin: 10px 0;
+    }
+
+    .barcode img {
+        width: 50%;
+    }
+
+    .tracking-number {
+        font-weight: bold;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    .address-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.buyer-seller {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.seller, .buyer {
+    flex: 1;
+    text-align: center;
+}
+
+.address {
+    display: flex;
+    justify-content: space-between;
+}
+
+.from-address, .to-address {
+    flex: 1;
+    padding: 0 1rem;
+}
+
+.name, .address-line, .postal-code {
+    margin-bottom: 0.5rem;
+    font-weight: normal; /* Ensure text is not bold */
+}
+
+.name {
+    font-weight: normal; /* Ensure name is not bold */
+}
+
+.address-line, .postal-code {
+    font-weight: normal; /* Ensure other address fields are not bold */
+}
+
+.to-address {
+    margin-left: auto;
+}
+
+
+
+
+    .additional-info {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        font-size: 12px;
+    }
+
+    .qr-section {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .qr-section img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .product-info {
+        margin-top: 10px;
+        font-size: 12px;
+    }
+
+    .attempts {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .attempt {
+        text-align: center;
+        width: 30%;
+        font-size: 12px;
+        border: 1px solid #000;
+        padding: 5px;
+    }
+
+    .attempt-number {
+        font-weight: bold;
+        font-size: 14px;
+    }
 </style>
 @include('Components.Admin.Header')
 
@@ -206,21 +358,35 @@
                                                     <td>{{ $detail->order_status }}</td>
                                                     <td>
                                                         <!-- Approve Button -->
-                                                        <form action="{{ route('update.admin.status', ['id' => $detail->id]) }}" method="POST">
+                                                        <form id="statusForm" action="{{ route('update.admin.status', ['id' => $detail->id]) }}" method="POST">
                                                             @csrf
                                                             @method('PATCH')
                                                             <input type="hidden" name="order_status" value="Confirmed_delivery">
-                                                            <button type="submit" class="btn btn-success">Approve</button>
+                                                            @php
+                                                                $buttonClass = $detail->order_status === 'Confirmed_delivery' ? 'btn-warning' : 'btn-success';
+                                                                $buttonText = $detail->order_status === 'Confirmed_delivery' ? 'Approved' : 'Approve';
+                                                                $isDisabled = $detail->order_status === 'Confirmed_delivery' ? 'disabled' : '';
+                                                            @endphp
+                                                            <button type="submit" id="approveButton" class="btn {{ $buttonClass }}" {{ $isDisabled }}>{{ $buttonText }}</button>
                                                         </form>
+
+
+
+
                                                     </td>
 
 
                                                     <td>
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#waybillModal{{ $detail->id }}">
+                                                            <i class="fas fa-print"></i> Print Waybill
+                                                        </button>
+
                                                         <!-- Actions Button to trigger modal -->
                                                         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal{{ $detail->id }}">
                                                             <i class="fas fa-eye"></i>
                                                         </button>
                                                     </td>
+
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -231,6 +397,7 @@
                         </div><!-- card end -->
                     </div>
                 </div>
+
                 @foreach ($rubixdetails as $detail)
                 <div class="modal fade" id="modal{{ $detail->id }}" tabindex="-1"
                     aria-labelledby="modalLabel{{ $detail->id }}" aria-hidden="true">
@@ -496,6 +663,97 @@
                         }
                     }
                 </style>
+        @foreach ($rubixdetails as $detail)
+    <div class="modal fade" id="waybillModal{{ $detail->id }}" tabindex="-1" aria-labelledby="waybillModalLabel{{ $detail->id }}" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 50%;">
+            <div class="modal-content">
+
+                     <div class="modal-body">
+                         <!-- Waybill Structure Start -->
+                         <div class="waybill-container">
+                             <div class="header">
+                                 <div class="logo">
+                                     <img src="{{ asset('Home/GDR Logo.png') }}" alt="Shopee Xpress Logo">
+                                 </div>
+                                 <div class="waybill-details">
+                                     <div class="waybill-number"> {{ $detail->order_number }}</div>
+                                     <div class="non-dg">Order Number</div>
+                                 </div>
+                             </div>
+
+                             <div class="order-details">
+                                 <div class="order-id">Product Name: {{ $detail->product_name }}</div>
+                                 <div class="order-type">Tracking Number:{{ $detail->tracking_number}}</div>
+                                 <div class="order-home"></div>
+                             </div>
+
+                             <div class="qr-section">
+                                 <img src="{{ asset($detail->qr_code_path) }}" alt="QR Code" class="img-fluid">
+                             </div>
+
+                             <div class="address-section">
+                                 <div class="buyer-seller">
+                                     <div class="seller">SELLER</div>
+                                     <div class="buyer">BUYER</div>
+                                 </div>
+                                 <div class="address">
+                                     <div class="from-address">
+                                         <div class="name">{{ $detail->merchant_name }}</div>
+                                         <div class="address-line">{{ $detail->merchant_address }}</div>
+                                         <div class="postal-code">{{ $detail->merchant_mobile }}</div>
+                                     </div>
+                                     <div class="to-address">
+                                         <div class="name">{{ $detail->consignee_name }}</div>
+                                         <div class="address-line">{{ $detail->consignee_address }}</div>
+                                         <div class="postal-code">{{ $detail->consignee_mobile }}</div>
+                                     </div>
+                                 </div>
+                             </div>
+
+                             <div class="additional-info">
+                                 <div class="pickup">Pickup Date: {{ \Carbon\Carbon::parse($detail->date_of_pick_up)->format('Y-m-d') }}</div>
+                                 <div class="order-date">Order Date: {{ \Carbon\Carbon::parse($detail->order_date)->format('Ymd') }}</div>
+                                 <div class="weight">Weight: 1,000 g</div>
+                             </div>
+
+                             {{-- <div class="barcode">
+                                 <img src="{{ asset('Home/barcode.png') }}" alt="Barcode">
+                                 <div class="tracking-number">SPEPH023893239343</div>
+                             </div> --}}
+
+                             <div class="product-info">
+                                 <div class="product-quantity">Product Quantity: {{ $detail->product_quantity }}</div>
+                             </div>
+
+                             <div class="attempts">
+                                 <div class="attempt">
+                                     <div>Delivery Attempt</div>
+                                     <div class="attempt-number">1</div>
+                                 </div>
+                                 <div class="attempt">
+                                     <div>Delivery Attempt</div>
+                                     <div class="attempt-number">2</div>
+                                 </div>
+                                 <div class="attempt">
+                                     <div>Return Attempt</div>
+                                     <div class="attempt-number">2</div>
+                                 </div>
+                             </div>
+                         </div>
+                         <!-- Waybill Structure End -->
+                     </div>
+
+                     <div class="modal-footer">
+                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                         <button type="button" class="btn btn-primary" onclick="printModal('waybillModal{{ $detail->id }}')">Print Waybill</button>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     @endforeach
+
+
+
                 @foreach ($rubixdetails as $detail)
                 <!-- Update Status Modal -->
                 <div class="modal fade" id="updateStatusModal{{ $detail->id }}" tabindex="-1" aria-labelledby="updateStatusModalLabel{{ $detail->id }}" aria-hidden="true">
@@ -554,6 +812,62 @@
                         };
                     }
                 </script>
+<script>
+    function printModal(modalId) {
+        var printContents = document.getElementById(modalId).innerHTML;
+
+        // Create a new window for printing
+        var printWindow = window.open('', '', 'width=800,height=800'); // Adjusted width and added height
+
+        // Write the HTML to the print window
+        printWindow.document.write('<html><head><title>Print Waybill</title>');
+
+        // Include the styles for printing
+        printWindow.document.write('<style>');
+        printWindow.document.write('body, html { margin: 0; padding: 0; font-family: Arial, sans-serif; }'); // Remove default margins and padding
+        printWindow.document.write('.waybill-container { width: 100%; max-width: 800px; margin: 0; border: 2px solid #000; padding: 20px; background-color: #fff; box-sizing: border-box; overflow: hidden; }'); // Adjusted width for container and box-sizing
+        printWindow.document.write('.header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 5px; }');
+        printWindow.document.write('.logo img { width: 100px; }');
+        printWindow.document.write('.waybill-details { text-align: right; }');
+        printWindow.document.write('.waybill-number { font-weight: bold; font-size: 14px; }');
+        printWindow.document.write('.non-dg { font-size: 12px; color: #666; }');
+        printWindow.document.write('.order-details { display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; }');
+        printWindow.document.write('.barcode { text-align: center; margin: 10px 0; }');
+        printWindow.document.write('.barcode img { width: 50%; }');
+        printWindow.document.write('.tracking-number { font-weight: bold; font-size: 14px; margin-top: 5px; }');
+        printWindow.document.write('.address-section { border-top: 2px solid #000; padding-top: 10px; margin-top: 10px; font-size: 12px; }');
+        printWindow.document.write('.buyer-seller { display: flex; justify-content: space-between; font-weight: bold; }');
+        printWindow.document.write('.address { display: flex; justify-content: space-between; margin-top: 5px; }');
+        printWindow.document.write('.from-address, .to-address { width: 48%; }');
+        printWindow.document.write('.name { font-weight: bold; }');
+        printWindow.document.write('.additional-info { display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; }');
+        printWindow.document.write('.qr-section { text-align: center; margin-top: 10px; }');
+        printWindow.document.write('.qr-section img { width: 50px; height: 50px; }');
+        printWindow.document.write('.product-info { margin-top: 10px; font-size: 12px; }');
+        printWindow.document.write('.attempts { display: flex; justify-content: space-between; margin-top: 10px; }');
+        printWindow.document.write('.attempt { text-align: center; width: 30%; font-size: 12px; border: 1px solid #000; padding: 5px; }');
+        printWindow.document.write('.attempt-number { font-weight: bold; font-size: 14px; }');
+
+        // Media query for print
+        printWindow.document.write('@media print {');
+        printWindow.document.write('.waybill-container { width: 100%; max-width: 100%; margin: 0; padding: 20px; box-sizing: border-box; }'); // Adjust width for print
+        printWindow.document.write('.modal-footer, .modal-footer * { display: none !important; }');
+        printWindow.document.write('.modal-header, .modal-header * { display: none !important; }'); // Hide footer and header in print preview
+        printWindow.document.write('body { margin: 0; }');
+        printWindow.document.write('html { width: 100%; }');
+        printWindow.document.write('</style>');
+
+        printWindow.document.write('</head><body>');
+        printWindow.document.write('<div class="waybill-container">' + printContents + '</div>');
+        printWindow.document.write('</body></html>');
+
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+    }
+</script>
+
+
                 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
                 <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/jquery-3.7.1.min.js"></script>
                 <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>

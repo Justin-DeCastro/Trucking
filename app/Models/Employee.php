@@ -9,7 +9,20 @@ class Employee extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'id_number', 'position','profile_image'];
+    // Add all the new fields to the $fillable array
+    protected $fillable = [
+        'employee_name', // Updated from 'name' to 'employee_name' based on your provided table headers
+        'id_number',
+        'position',
+        'date_hired',
+        'birthday',
+        'birth_place',
+        'civil_status',
+        'gender',
+        'mobile',
+        'address',
+        'profile_image'
+    ];
 
     public function attendance()
     {

@@ -76,11 +76,13 @@
         <tr>
             <th>Company Name</th>
             <th>Subcontractor ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
+            <th>Address</th>
             <th>Phone Number</th>
-            <th>File</th>
+            <th>Full Name</th>
+
+            <th>Email</th>
+
+            <th>Driver License</th>
             {{-- <th>Action</th> --}}
         </tr>
     </thead>
@@ -89,10 +91,12 @@
         <tr>
             <td>{{ $subcontractor->company_name }}</td>
             <td>{{ $subcontractor->subcontractor_id }}</td>
-            <td>{{ $subcontractor->contact_first_name }}</td>
-            <td>{{ $subcontractor->contact_last_name }}</td>
-            <td>{{ $subcontractor->email_address }}</td>
+            <td>{{ $subcontractor->address }}</td>
             <td>{{ $subcontractor->phone_number }}</td>
+            <td>{{ $subcontractor->full_name }}</td>
+
+            <td>{{ $subcontractor->email_address }}</td>
+
             <td>
     @if($subcontractor->file_upload)
         <a href="{{ asset($subcontractor->file_upload) }}" target="_blank">View File</a>
@@ -131,12 +135,12 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="contact-first-name" class="form-label">Contact First Name</label>
-                            <input type="text" id="contact-first-name" name="contact_first_name" class="form-control" required>
+                            <label for="contact-first-name" class="form-label">Full Name</label>
+                            <input type="text" id="contact-first-name" name="full_name" class="form-control" required>
                         </div>
                         <div class="col-md-6">
-                            <label for="contact-last-name" class="form-label">Contact Last Name</label>
-                            <input type="text" id="contact-last-name" name="contact_last_name" class="form-control" required>
+                            <label for="contact-last-name" class="form-label">Address</label>
+                            <input type="text" id="contact-last-name" name="address" class="form-control" required>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -151,7 +155,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12">
-                            <label for="file-upload" class="form-label">Upload File</label>
+                            <label for="file-upload" class="form-label">Upload Driver License</label>
                             <input type="file" id="file-upload" name="file_upload" class="form-control" required>
                         </div>
                     </div>
@@ -161,6 +165,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>

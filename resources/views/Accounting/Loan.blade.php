@@ -5,7 +5,7 @@
 
     <!-- Include SweetAlert2 CSS (optional) -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-  
+
     <!-- Include jQuery -->
 
 @include('Components.Admin.Header')
@@ -17,7 +17,7 @@
     <!-- sidebar end -->
 
     <!-- navbar-wrapper start -->
-    <nav class="navbar-wrapper bg--dark d-flex flex-wrap">
+
         <div class="navbar__left">
             <button type="button" class="res-sidebar-open-btn me-3"><i class="las la-bars"></i></button>
             <form class="navbar-search">
@@ -29,80 +29,7 @@
         </div>
         <div class="navbar__right">
             <ul class="navbar__action-list">
-                <li>
-                    <button type="button" class="primary--layer" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                        title="Visit Website">
-                        <a href="https://script.viserlab.com/courierlab/demo" target="_blank"><i
-                                class="las la-globe"></i></a>
-                    </button>
-                </li>
-                <li class="dropdown">
-                    <button type="button" class="primary--layer notification-bell" data-bs-toggle="dropdown"
-                        data-display="static" aria-haspopup="true" aria-expanded="false">
-                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unread Notifications">
-                            <i class="las la-bell "></i>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu--md p-0 border-0 box--shadow1 dropdown-menu-right">
-                        <div class="dropdown-menu__header">
-                            <span class="caption">Notification</span>
-                        </div>
-                        <div class="dropdown-menu__body  d-flex justify-content-center align-items-center ">
-                            <div class="empty-notification text-center">
-                                <img src="https://script.viserlab.com/courierlab/demo/assets/images/empty_list.png"
-                                    alt="empty">
-                                <p class="mt-3">No unread notification found</p>
-                            </div>
-                        </div>
-                        <div class="dropdown-menu__footer">
-                            <a href="https://script.viserlab.com/courierlab/demo/admin/notifications"
-                                class="view-all-message">View all notifications</a>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <button type="button" class="primary--layer" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                        title="System Setting">
-                        <a href="https://script.viserlab.com/courierlab/demo/admin/system-setting"><i
-                                class="las la-wrench"></i></a>
-                    </button>
-                </li>
-                <li class="dropdown d-flex profile-dropdown">
-                    <button type="button" data-bs-toggle="dropdown" data-display="static" aria-haspopup="true"
-                        aria-expanded="false">
-                        <span class="navbar-user">
-                            <span class="navbar-user__thumb"><img
-                                    src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/images/profile/667c14b5145fd1719407797.png"
-                                    alt="image"></span>
-                            <span class="navbar-user__info">
-                                <span class="navbar-user__name">admin</span>
-                            </span>
-                            <span class="icon"><i class="las la-chevron-circle-down"></i></span>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu--sm p-0 border-0 box--shadow1 dropdown-menu-right">
-                        <a href="https://script.viserlab.com/courierlab/demo/admin/profile"
-                            class="dropdown-menu__item d-flex align-items-center px-3 py-2">
-                            <i class="dropdown-menu__icon las la-user-circle"></i>
-                            <span class="dropdown-menu__caption">Profile</span>
-                        </a>
 
-                        <a href="https://script.viserlab.com/courierlab/demo/admin/password"
-                            class="dropdown-menu__item d-flex align-items-center px-3 py-2">
-                            <i class="dropdown-menu__icon las la-key"></i>
-                            <span class="dropdown-menu__caption">Password</span>
-                        </a>
-
-                        <a href="https://script.viserlab.com/courierlab/demo/admin/logout"
-                            class="dropdown-menu__item d-flex align-items-center px-3 py-2">
-                            <i class="dropdown-menu__icon las la-sign-out-alt"></i>
-                            <span class="dropdown-menu__caption">Logout</span>
-                        </a>
-                    </div>
-                    <button type="button" class="breadcrumb-nav-open ms-2 d-none">
-                        <i class="las la-sliders-h"></i>
-                    </button>
-                </li>
             </ul>
         </div>
     </nav>
@@ -114,20 +41,20 @@
             <div class="bodywrapper__inner">
 
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                    <h6 class="page-title">In and Out</h6>
+                    <h6 class="page-title">Loan Table</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
                     <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal" data-bs-target="#manageSubcontractor">
-    <i class="las la-plus"></i> IN
+    <i class="las la-plus"></i> Loan
 </button>
-<button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal" data-bs-target="#manageWithdraw">
+{{-- <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal" data-bs-target="#manageWithdraw">
     <i class="las la-plus"></i> OUT
-</button>
+</button> --}}
 
                     </div>
                 </div>
 
 <div class="dt-buttons btn-group d-flex justify-content-end gap-2 ">
-										<div class="dropdown">
+										{{-- <div class="dropdown">
 											<button type="button" class="btn btn-primary dropdown-toggle"
 												data-bs-toggle="dropdown" aria-expanded="false">
 												<i class='bx bx-export'></i> Export
@@ -142,91 +69,52 @@
 												<li><button type="button" id="pdfBtn" class="btn dropdown-item"><i
 															class='bx bxs-file-pdf'></i> Pdf</button></li>
 											</ul>
-										</div>
+										</div> --}}
 										<div class="dropdown">
 
 </div>
 									 </div>
                                      <table class="jobOffersTable">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Borrower</th>
-            <th>Initial Amount</th>
-            <th>Interest Rate (%)</th>
-            <th>Installment Payment (Per Month)</th>
-            <th>Payment Terms</th>
-            <th>Total Payment</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($loans as $loan)
-        @php
-    // Default values
-    $initialAmount = $loan->initial_amount;
-    $paymentTerms = $loan->payment_terms;
-    $interestRate = $loan->interest;
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Borrower</th>
+                                                <th>Initial Amount</th>
+                                                <th>Interest Rate (%)</th>
+                                                <th>Installment Payment (Per Month)</th>
+                                                <th>Payment Terms</th>
+                                                <th>Total Payment</th>
+                                                <th>Mode of Payment</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($loans as $loan)
+                                            <tr>
+                                                <td>{{ \Carbon\Carbon::parse($loan->date)->format('F d, Y') }}</td>
+                                                <td>{{ $loan->borrower }}</td>
+                                                <td>{{ number_format($loan->initial_amount, 2) }}</td>
+                                                <td>{{ number_format((float) $loan->interest_percentage, 2) }}</td>
+                                                <td>{{ number_format((float) $loan->payment_per_month, 2) }}</td>
+                                                <td>{{ $loan->payment_terms }} Month/s</td>
+                                                <td>{{ number_format((float) $loan->total_payment, 2) }}</td>
+                                                <td>{{ $loan->mode_of_payment }}</td>
+                                                <td>
+                                                    @if($loan->status === 'Paid')
+                                                        <button type="button" class="btn btn-secondary" disabled>Paid</button>
+                                                    @elseif($loan->status === 'Unpaid')
+                                                        <form action="{{ route('loans.markAsPaid', $loan->id) }}" method="POST" style="display:inline;">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-success">Mark as Paid</button>
+                                                        </form>
+                                                    @endif
+                                                </td>
 
-    // Calculate monthly interest rate and number of payments
-    $monthlyInterestRate = $interestRate / 100 / 12;
-    $numberOfPayments = $paymentTerms;
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
 
-    // Initialize default values
-    $installmentPayment = 0;
-    $totalPayment = 0;
-
-    if ($numberOfPayments > 0 && $monthlyInterestRate > 0) {
-        // Calculate monthly payment using compound interest formula
-        $installmentPayment = ($initialAmount * $monthlyInterestRate * pow(1 + $monthlyInterestRate, $numberOfPayments)) / (pow(1 + $monthlyInterestRate, $numberOfPayments) - 1);
-        $totalPayment = $installmentPayment * $numberOfPayments;
-    } elseif ($numberOfPayments > 0) {
-        // Calculate simple payment if interest rate is 0
-        $installmentPayment = $initialAmount / $numberOfPayments;
-        $totalPayment = $initialAmount;
-    }
-
-    // Format values with commas as thousands separators
-    $formattedInitialAmount = number_format($initialAmount, 2, '.', ',');
-    $formattedInstallmentPayment = number_format($installmentPayment, 2, '.', ',');
-    $formattedTotalPayment = number_format($totalPayment, 2, '.', ',');
-@endphp
-
-            <tr>
-            <td>{{ $loan->date->format('F d, Y') }}</td>
-
-                <td>{{ $loan->borrower }}</td>
-                <td>₱{{ $formattedInitialAmount }}</td>
-                <td>
-                    <input type="number" class="form-control interest-input" 
-                           data-loan-id="{{ $loan->id }}" 
-                           data-initial-amount="{{ $initialAmount }}" 
-                           data-payment-terms="{{ $paymentTerms }}" 
-                           value="{{ $interestRate }}" 
-                           step="0.01" 
-                           min="0">
-                </td>
-                <td id="installment-{{ $loan->id }}">₱{{ $formattedInstallmentPayment }}</td>
-                <td>
-                    <select class="form-control payment-terms-dropdown" 
-                            data-loan-id="{{ $loan->id }}" 
-                            data-initial-amount="{{ $initialAmount }}" 
-                            data-interest="{{ $interestRate }}">
-                        @for($i = 1; $i <= 12; $i++)
-                            <option value="{{ $i }}" {{ $i == $paymentTerms ? 'selected' : '' }}>
-                                {{ $i }} month{{ $i > 1 ? 's' : '' }}
-                            </option>
-                        @endfor
-                    </select>
-                </td>
-                <td id="total-{{ $loan->id }}">₱{{ $formattedTotalPayment }}</td>
-                <td>
-                    <!-- Add action buttons (Edit, Delete, etc.) here -->
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
 
 
 
@@ -234,38 +122,73 @@
 
     <!-- Create Vehicle Modal -->
     <div class="modal fade" id="manageSubcontractor" tabindex="-1" aria-labelledby="manageSubcontractorLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="manageSubcontractorLabel">Deposit</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('loan.store') }}" method="POST" enctype="multipart/form-data">
-    @csrf
-    <div class="modal-body">
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="date" class="form-label">Date</label>
-                <input type="date" id="date" name="date" class="form-control" required>
-            </div>
-            <div class="col-md-6">
-                <label for="borrower" class="form-label">Borrower</label>
-                <input type="text" id="borrower" name="borrower" class="form-control" required>
-            </div>
-            <div class="col-md-6">
-                <label for="initial_amount" class="form-label">Initial Amount</label>
-                <input type="number" id="initial_amount" name="initial_amount" class="form-control" placeholder="Enter Amount" required>
-            </div>
-            
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="manageSubcontractorLabel">Loan Form</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('loan.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="date" class="form-label">Date</label>
+                                <input type="date" id="date" name="date" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="borrower" class="form-label">Borrower</label>
+                                <input type="text" id="borrower" name="borrower" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="initial_amount" class="form-label">Initial Amount</label>
+                                <input type="number" id="initial_amount" name="initial_amount" class="form-control" placeholder="Enter Amount" required>
+                            </div>
+                            <!-- Input for Interest Percentage -->
+                            <div class="col-md-6">
+                                <label for="interest_percentage" class="form-label">Interest Percentage (%)</label>
+                                <input type="number" id="interest_percentage" name="interest_percentage" class="form-control" placeholder="Enter Interest %" required>
+                            </div>
 
-            
+                            <!-- Payment Per Month -->
+                            <div class="col-md-6">
+                                <label for="payment_per_month" class="form-label">Payment Per Month</label>
+                                <input type="number" id="payment_per_month" name="payment_per_month" class="form-control" readonly>
+                            </div>
+
+                            <!-- Payment Terms -->
+                            <div class="col-md-6">
+                                <label for="payment_terms" class="form-label">Payment Terms (Months)</label>
+                                <input type="number" id="payment_terms" name="payment_terms" class="form-control" placeholder="Enter Terms in Months" required>
+                            </div>
+
+                            <!-- Total Payment -->
+                            <div class="col-md-6">
+                                <label for="total_payment" class="form-label">Total Payment</label>
+                                <input type="number" id="total_payment" name="total_payment" class="form-control" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="mode_of_payment" class="form-label">Mode of Payment</label>
+                                <select id="mode_of_payment" name="mode_of_payment" class="form-control">
+                                    <option value="" disabled selected>Select Mode of Payment</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="cheque">Cheque</option>
+                                </select>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-    </div>
-</form>
+
+
 
 
         </div>
@@ -305,7 +228,7 @@
                 <label for="notes" class="form-label">Notes</label>
                 <input type="text" id="notes" name="notes" class="form-control" required>
             </div>
-            
+
         </div>
     </div>
     <div class="modal-footer">
@@ -320,7 +243,7 @@
 
 
 
-    
+
 
 
     <!-- Confirmation Modal -->
@@ -346,6 +269,36 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const initialAmount = document.getElementById('initial_amount');
+        const interestPercentage = document.getElementById('interest_percentage');
+        const paymentPerMonth = document.getElementById('payment_per_month');
+        const paymentTerms = document.getElementById('payment_terms');
+        const totalPayment = document.getElementById('total_payment');
+
+        function calculatePayments() {
+            const initialAmountValue = parseFloat(initialAmount.value) || 0;
+            const interestRate = parseFloat(interestPercentage.value) / 100 || 0;
+            const terms = parseInt(paymentTerms.value) || 0;
+
+            // Calculate monthly interest payment and total payment
+            const monthlyInterestPayment = initialAmountValue * interestRate;
+            const monthlyPayment = initialAmountValue / terms + monthlyInterestPayment;
+            const totalPaymentAmount = monthlyPayment * terms;
+
+            // Set calculated values
+            paymentPerMonth.value = monthlyPayment.toFixed(2);
+            totalPayment.value = totalPaymentAmount.toFixed(2);
+        }
+
+        // Add event listeners
+        interestPercentage.addEventListener('input', calculatePayments);
+        initialAmount.addEventListener('input', calculatePayments);
+        paymentTerms.addEventListener('input', calculatePayments);
+    });
+    </script>
+
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/jquery-3.7.1.min.js"></script>
@@ -379,12 +332,12 @@
                 const paymentTerms = parseInt(paymentTermsDropdown.value, 10);
                 const interestInput = document.querySelector(`.interest-input[data-loan-id="${loanId}"]`);
                 const interestRate = parseFloat(interestInput.value) || 0; // Handle empty or invalid input
-                
+
                 if (paymentTerms > 0) {
                     const totalInterest = initialAmount * (interestRate / 100) * paymentTerms;
                     const totalPayment = initialAmount + totalInterest;
                     const installmentPayment = totalPayment / paymentTerms;
-                    
+
                     document.getElementById('total-' + loanId).textContent = '₱' + totalPayment.toFixed(2);
                     document.getElementById('installment-' + loanId).textContent = '₱' + installmentPayment.toFixed(2);
                 } else {
@@ -593,7 +546,7 @@ $(document).ready(function() {
     </script>
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/search.js"></script>
-   
+
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- Include Bootstrap JS -->

@@ -267,7 +267,7 @@ Route::get('preventive-maintenance', [AdminController::class, 'preventive'])->na
 Route::get('/maintenance/{id}/edit', [PreventiveController::class, 'edit'])->name('maintenance.edit');
 Route::put('/maintenance/{id}', [PreventiveController::class, 'update'])->name('maintenance.update');
 Route::delete('/maintenance/{id}', [PreventiveController::class, 'destroy'])->name('maintenance.destroy');
-
+Route::get('accounting-pms', [AccountingController::class, 'preventive'])->name('accounting-pms');
 //rate per mile
 
 //feedback
@@ -279,3 +279,5 @@ Route::patch('/feedback/{id}/decline', [FeedbackController::class, 'decline'])->
 
 Route::get('/verify', [VerificationController::class, 'showForm'])->name('verification.form');
 Route::post('/verify', [VerificationController::class, 'verifyCode'])->name('verification.verify');
+Route::post('/loans/{id}/mark-as-paid', [LoanController::class, 'markAsPaid'])->name('loans.markAsPaid');
+Route::post('/loans/{id}/mark-as-unpaid', [LoanController::class, 'markAsUnpaid'])->name('loans.markAsUnpaid');

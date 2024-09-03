@@ -45,6 +45,12 @@
                         <span class="menu-title">Loan</span>
                     </a>
                 </li>
+                <li class="sidebar-menu-item">
+                    <a href="accounting-pms" class="nav-link">
+                        <i class="fas fa-user menu-icon"></i>
+                        <span class="menu-title">PMS</span>
+                    </a>
+                </li>
 
 
             </ul>

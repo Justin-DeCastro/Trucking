@@ -8,12 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Preventive extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-
-        'parts_replaced',
         'plate_number',
+        'truck_model',
+        'parts_replaced',
         'price_parts_replaced',
+        'proof_of_need_to_fixed',
+        'proof_of_payment',
+    ];
 
-
+    // Casting attributes to handle JSON arrays
+    protected $casts = [
+        'proof_of_need_to_fixed' => 'array',
+        'proof_of_payment' => 'array',
     ];
 }

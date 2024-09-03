@@ -66,6 +66,7 @@ h2 {
     <div class="page-wrapper default-version">
 
        @include('Components.Accounting.Sidebar')
+       {{-- @include('Components.Accounting.Navbar') --}}
 
         {{-- <nav class="navbar-wrapper bg--dark d-flex flex-wrap"> --}}
 

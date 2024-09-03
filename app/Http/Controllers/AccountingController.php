@@ -10,12 +10,29 @@ use App\Models\Deposit;
 use App\Models\Withdraw;
 use App\Models\Account;
 use App\Models\Transaction;
+use App\Models\Preventive;
 use App\Models\StartingBalance;
 class AccountingController extends Controller
 {
     public function accounting_dash(){
         return view('Accounting.Accountingdash');
     }
+    public function preventive(Request $request) {
+        // Get the selected plate number from the request
+        $plateNumber = $request->input('plate_number');
+
+        // Fetch distinct plate numbers for the dropdown
+        $plateNumbers = Booking::pluck('plate_number')->unique();
+
+        // Filter preventive maintenance records based on the selected plate number
+        $preventive = $plateNumber
+            ? Preventive::where('plate_number', $plateNumber)->get()
+            : Preventive::all();
+
+        // Return the view with preventive records and plate numbers
+        return view('Accounting.PMS', compact('preventive', 'plateNumbers'));
+    }
+
     public function addexpense(){
         $deposits = Deposit::all();
         $withdraws = Withdraw::all();
