@@ -67,7 +67,7 @@ h2 {
 
        @include('Components.Accounting.Sidebar')
 
-        <nav class="navbar-wrapper bg--dark d-flex flex-wrap">
+        {{-- <nav class="navbar-wrapper bg--dark d-flex flex-wrap"> --}}
 
             <div class="navbar__right">
                 <ul class="navbar__action-list">

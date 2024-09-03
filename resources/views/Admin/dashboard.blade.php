@@ -8,7 +8,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 300px;
+        width: 320px;
         z-index: 1050;
         /* Ensure it's on top of other content */
         padding: 10px;
@@ -19,7 +19,17 @@
         border-radius: 15px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         overflow: hidden;
-        background: linear-gradient(135deg, #ff0000, #0000ff);
+        background: linear-gradient(-135deg,
+                #014f9a,
+                #1359a0,
+                #1e61a7,
+                #3166a1,
+                #296cb4,
+                #4a7db6,
+                #5783b9,
+                #5a85bd,
+                #8ba6ce,
+                #c8d1e5);
         /* Red to Blue Gradient */
     }
 
@@ -74,9 +84,8 @@
 
     @include('Components.Admin.Sidebar')
 
-    <!-- navbar-wrapper start -->
     @include('Components.Admin.Navbar')
-    <!-- navbar-wrapper end -->
+
 
 
     <div class="container-fluid px-3 px-sm-0">

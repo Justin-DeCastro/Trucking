@@ -12,12 +12,12 @@
 
 <body>
 
-
+    @include('Components.Admin.Navbar')
     @include('Components.Admin.Sidebar')
     <!-- sidebar end -->
 
     <!-- navbar-wrapper start -->
-    <nav class="navbar-wrapper bg--dark d-flex flex-wrap">
+    {{-- <nav class="navbar-wrapper bg--dark d-flex flex-wrap"> --}}
         {{-- <div class="navbar__left">
             <button type="button" class="res-sidebar-open-btn me-3"><i class="fas fa-bars"></i></button>
 

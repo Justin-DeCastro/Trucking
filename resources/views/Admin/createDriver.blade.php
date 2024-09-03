@@ -8,16 +8,13 @@
 
 
     <div class="page-wrapper default-version">
-
+        @include('Components.Admin.Navbar')
         @include('Components.Admin.Sidebar')
         <!-- sidebar end -->
 
         <!-- navbar-wrapper start -->
-        <nav class="navbar-wrapper bg--dark d-flex flex-wrap">
-            <div class="navbar__left">
-                <button type="button" class="res-sidebar-open-btn me-3"><i class="las la-bars"></i></button>
+        {{-- <nav class="navbar-wrapper bg--dark d-flex flex-wrap"> --}}
 
-            </div>
             <div class="navbar__right">
                 <ul class="navbar__action-list">
 
@@ -114,18 +111,16 @@
     <section class="vh-100">
         <div class="container py-5 h-100">
             <div class="row d-flex align-items-center justify-content-center h-100">
-                <div class="col-md-8 col-lg-7 col-xl-6">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-                        class="img-fluid" alt="Phone image">
-                </div>
+
                 <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
                     <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                         @csrf
 
                         <!-- Name input -->
                         <div class="form-outline">
-                            <input type="text" id="form1Example1" name="name" class="form-control form-control-lg" required />
                             <label class="form-label" for="form1Example1">Name</label>
+                            <input type="text" id="form1Example1" name="name" class="form-control form-control-lg" required />
+
                             @error('name')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -133,8 +128,9 @@
 
                         <!-- Email input -->
                         <div class="form-outline">
-                            <input type="email" id="form1Example2" name="email" class="form-control form-control-lg" required />
                             <label class="form-label" for="form1Example2">Email address</label>
+                            <input type="email" id="form1Example2" name="email" class="form-control form-control-lg" required />
+
                             @error('email')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -142,8 +138,9 @@
 
                         <!-- Password input -->
                         <div class="form-outline">
-                            <input type="password" id="form1Example3" name="password" class="form-control form-control-lg" required />
                             <label class="form-label" for="form1Example3">Password</label>
+                            <input type="password" id="form1Example3" name="password" class="form-control form-control-lg" required />
+
                             @error('password')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -151,27 +148,33 @@
 
                         <!-- Confirm Password input -->
                         <div class="form-outline">
-                            <input type="password" id="form1Example4" name="password_confirmation" class="form-control form-control-lg" required />
                             <label class="form-label" for="form1Example4">Confirm Password</label>
+                            <input type="password" id="form1Example4" name="password_confirmation" class="form-control form-control-lg" required />
+
                         </div>
 
                         <!-- Role selection -->
                         <div class="form-outline">
-                            <input type="text" id="formRole" name="role" class="form-control form-control-lg" value="Courier" readonly>
                             <label class="form-label" for="formRole">Role</label>
+                            <select id="formRole" name="role" class="form-control form-control-lg" required>
+                                <option value="" disabled selected>Select your role</option>
+                                <option value="accounting">Accounting</option>
+                                <option value="courier">Driver</option>
+                                {{-- <option value="admin">Admin</option> --}}
+                            </select>
+
                             @error('role')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
 
-
-
                         <!-- Conditional fields for couriers -->
                         <div id="courierFields" class="hidden">
                             <!-- Driver's License upload -->
                             <div class="form-outline">
-                                <input type="file" id="form1Example5" name="driver_license" class="form-control form-control-lg" />
                                 <label class="form-label" for="form1Example5">Upload Driver's License</label>
+                                <input type="file" id="form1Example5" name="driver_license" class="form-control form-control-lg" />
+
                                 @error('driver_license')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -179,8 +182,9 @@
 
                             <!-- Driver Image upload -->
                             <div class="form-outline">
-                                <input type="file" id="form1Example9" name="driver_image" class="form-control form-control-lg" />
-                                <label class="form-label" for="form1Example9">Upload Driver Image</label>
+                                <label class="form-label" for="form1Example6">Upload Driver Image</label>
+                                <input type="file" id="form1Example6" name="driver_image" class="form-control form-control-lg" />
+
                                 @error('driver_image')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -188,8 +192,9 @@
 
                             <!-- Driver's License Number -->
                             <div class="form-outline">
-                                <input type="text" id="form1Example6" name="license_number" class="form-control form-control-lg" />
-                                <label class="form-label" for="form1Example6">Driver's License Number</label>
+                                <label class="form-label" for="form1Example7">Driver's License Number</label>
+                                <input type="text" id="form1Example7" name="license_number" class="form-control form-control-lg" />
+
                                 @error('license_number')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -197,8 +202,9 @@
 
                             <!-- Contact Number -->
                             <div class="form-outline">
-                                <input type="text" id="form1Example7" name="contact_number" class="form-control form-control-lg" />
-                                <label class="form-label" for="form1Example7">Contact Number</label>
+                                <label class="form-label" for="form1Example8">Contact Number</label>
+                                <input type="text" id="form1Example8" name="contact_number" class="form-control form-control-lg" />
+
                                 @error('contact_number')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -206,8 +212,9 @@
 
                             <!-- Address -->
                             <div class="form-outline">
-                                <input type="text" id="form1Example8" name="address" class="form-control form-control-lg" />
-                                <label class="form-label" for="form1Example8">Address</label>
+                                <label class="form-label" for="form1Example9">Address</label>
+                                <input type="text" id="form1Example9" name="address" class="form-control form-control-lg" />
+
                                 @error('address')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -222,6 +229,7 @@
                         </a> --}}
 
                     </form>
+
 
                 </div>
             </div>

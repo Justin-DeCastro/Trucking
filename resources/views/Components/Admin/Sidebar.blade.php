@@ -2,71 +2,74 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-    /* Hamburger menu styles */
-    .hamburger-menu {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        z-index: 1000;
-        background: none;
-        border: none;
-        color: black;
-        font-size: 24px;
-        cursor: pointer;
+    .logo-container {
+        position: relative;
+        display: inline-block;
     }
 
-    /* Sidebar styles */
-    .sidebar {
-        position: fixed;
+    .logo-container::before {
+        content: "";
+        position: absolute;
         top: 0;
         left: 0;
-        width: 250px;
-        height: 100%;
-        background-color: #333;
-        transition: transform 0.3s ease;
-        transform: translateX(-100%);
-        z-index: 999;
+        width: 100%;
+        height: 90%;
+        background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+        filter: blur(15px);
+        z-index: -1;
+
     }
 
-    .sidebar.open {
-        transform: translateX(0);
+    .logo {
+        border-radius: 0;
+        width: 70%;
+        height: 60px;
+        position: relative;
+        z-index: 1;
     }
 
-    /* When sidebar is open */
-    .sidebar .sidebar__inner {
-        padding-top: 60px; /* to avoid content going under the hamburger menu */
+    .res-sidebar-close-btn {
+        background-color: transparent;
+        border: none;
+        color: #fff;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 10px;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    /* Media query for responsiveness */
-    @media (min-width: 768px) {
-        .sidebar {
-            transform: translateX(0);
-        }
+    .res-sidebar-close-btn:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #ff6b6b;
+    }
 
-        .hamburger-menu {
-            display: none; /* Hide hamburger on larger screens */
-        }
+    .res-sidebar-close-btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.4);
     }
 </style>
 
 <!-- Other CSS files -->
 <div class="page-wrapper default-version">
 
-        <!-- Hamburger Menu Button -->
-        <button class="hamburger-menu" id="hamburger-menu">
-            <i class="fas fa-bars"></i>
-        </button>
     <div class="sidebar bg--dark">
-        {{-- <button class="res-sidebar-close-btn"></i></button> --}}
+        <button class="res-sidebar-close-btn">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
         <div class="sidebar__inner">
 
-            <div class="sidebar__logo"
-            style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-           <img src="proofs/GDR.png" alt="Logo"
-                style="border-radius: 0; width: 100px; height: 100px;
-                       filter: drop-shadow(0 0 30px rgba(0, 127, 255, 1));">
-           <h3 style="margin-top: 10px; color: #1F8FFF;"><b>ADMIN</b></h3>
-       </div>
+            <div class="logo-container">
+                <div class="sidebar__logo"
+                    style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                    <img src="Home/GDR logo.png" alt="Logo" class="logo">
+                    <h3 style="color: #223d54;"><b>ADMIN</b></h3>
+
+                </div>
+            </div>
 
 
             <?php
@@ -125,14 +128,14 @@
                             <ul>
                                 <li class="sidebar-menu-item <?php echo $currentPage == 'managebranch' ? 'active' : ''; ?>">
                                     <a href="employee-details" class="nav-link">
-                                        <i class="fa fa-dot-circle menu-icon"></i>
-                                        <span class="menu-title">Branch Employee</span>
+                                        <i class="fa-solid fa-user-tie"></i>
+                                        <span class="menu-title" style = "padding-left: 17px">Branch Employee</span>
                                     </a>
                                 </li>
                                 <li class="sidebar-menu-item <?php echo $currentPage == 'create-driver' ? 'active' : ''; ?>">
                                     <a href="create-driver" class="nav-link">
-                                        <i class="fa fa-dot-circle menu-icon"></i>
-                                        <span class="menu-title">Add Driver</span>
+                                        <i class="fa-solid fa-users-gear"></i>
+                                        <span class="menu-title" style = "padding-left: 17px">Add Driver</span>
                                     </a>
                                 </li>
 
@@ -141,28 +144,26 @@
                     </li>
                     <li class="sidebar-menu-item <?php echo $currentPage == 'addsubcon' ? 'active' : ''; ?>">
                         <a href="addsubcon" class="nav-link ">
-                            <i class="fa fa-bus menu-icon"></i>
-                            <span class="menu-title">Add Subcontractor</span>
+                            <i class="fa-solid fa-users"></i>
+                            <span class="menu-title" style = "padding-left: 17px">Add Subcontractor</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item <?php echo $currentPage == 'add-driver' ? 'active' : ''; ?>">
                         <a href="add-driver" class="nav-link ">
-                            <i class="fa fa-user menu-icon"></i>
-                            <span class="menu-title">Manage Driver</span>
+                            <i class="fa-solid fa-id-card"></i>
+                            <span class="menu-title" style = "padding-left: 17px">Manage Driver</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item <?php echo $currentPage == 'addtruck' ? 'active' : ''; ?>">
                         <a href="addtruck" class="nav-link ">
-                            <i class="fa fa-bus menu-icon"></i>
-                            <span class="menu-title">Add Vehicle</span>
+                            <i class="fa-solid fa-truck-monster"></i>
+                            <span class="menu-title" style = "padding-left: 17px">Add Vehicle</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item <?php echo $currentPage == 'driverbooking-count' ? 'active' : ''; ?>">
                         <a href="driverbooking-count" class="nav-link ">
-                            <img src="Home/[removal.ai]_58d3e57f-85b1-4b48-aaf8-3064f5e9dbbd-o1nzrl2prkqll1dzvepc0a.png" alt="Bookings per Driver" style="width: 34px; height: 24px;">
-
-
-                            <span class="menu-title">Bookings Per Driver</span>
+                            <i class="fa-solid fa-truck"></i>
+                            <span class="menu-title" style = "padding-left: 17px">Bookings Per Driver</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item <?php echo $currentPage == 'plate-number-counts' ? 'active' : ''; ?>">
@@ -178,20 +179,17 @@
                             <span class="menu-title">Preventive Maintenance</span>
                         </a>
                     </li>
+
                     <li class="sidebar-menu-item <?php echo $currentPage == 'feedback' ? 'active' : ''; ?>">
                         <a href="feedback" class="nav-link ">
                             <i class="fas fa-message"></i>
-
-                            <span class="menu-title">Customer Feedback</span>
+                            <span class="menu-title" style = "padding-left: 17px">Customer Feedback</span>
                         </a>
                     </li>
                 </ul>
             </div>
 
-            <div class="version-info text-center text-uppercase">
-                <span class="text--primary">Infinitech Advertising Corporation</span>
-                <span class="text--success">V1.1 </span>
-            </div>
+
         </div>
     </div>
     <!-- sidebar end -->
@@ -214,27 +212,3 @@
             });
         });
     </script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var hamburgerMenu = document.getElementById("hamburger-menu");
-        var sidebar = document.querySelector(".sidebar");
-        var closeSidebarBtn = document.querySelector(".res-sidebar-close-btn");
-
-        // Toggle sidebar on hamburger button click
-        hamburgerMenu.addEventListener("click", function() {
-            sidebar.classList.toggle("open");
-        });
-
-        // Close sidebar on close button click
-        closeSidebarBtn.addEventListener("click", function() {
-            sidebar.classList.remove("open");
-        });
-
-        // Close sidebar when clicking outside of it
-        document.addEventListener("click", function(event) {
-            if (!sidebar.contains(event.target) && !hamburgerMenu.contains(event.target)) {
-                sidebar.classList.remove("open");
-            }
-        });
-    });
-</script>

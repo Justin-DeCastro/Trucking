@@ -24,13 +24,13 @@
 
                 <div class="sidebar__menu-wrapper">
                     <ul class="sidebar__menu">
-                        <li class="sidebar-menu-item active">
+                        {{-- <li class="sidebar-menu-item active">
                             <a href="admindash" class="nav-link ">
                                 <i class="menu-icon fas fa-home"></i>
 
                                 <span class="menu-title">Dashboard</span>
                             </a>
-                        </li>
+                        </li> --}}
 
 
                         <li class="sidebar-menu-item ">
@@ -49,10 +49,7 @@
 
                     </ul>
                 </div>
-                <div class="version-info text-center text-uppercase">
-                    <span class="text--primary">Infinitech Advertising</span>
-                    <span class="text--success">V1.1 </span>
-                </div>
+
             </div>
         </div>
         <!-- sidebar end -->

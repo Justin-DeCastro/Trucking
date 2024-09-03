@@ -124,7 +124,7 @@
 @include('Components.Admin.Header')
 
 <body>
-
+    @include('Components.Admin.Navbar')
 
     @include('Components.Admin.Sidebar')
 

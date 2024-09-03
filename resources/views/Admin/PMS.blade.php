@@ -17,11 +17,13 @@
     <!-- sidebar end -->
 
     <!-- navbar-wrapper start -->
-    <nav class="navbar-wrapper bg--dark d-flex flex-wrap">
+    {{-- <nav class="navbar-wrapper bg--dark d-flex flex-wrap"> --}}
         <div class="navbar__left">
-            <button type="button" class="res-sidebar-open-btn me-3"><i class="las la-bars"></i></button>
-
+            <button type="button" class="res-sidebar-open-btn me-3">
+                <i class="fas fa-bars" style="color: blue;"></i>
+            </button>
         </div>
+
         <div class="navbar__right">
             <ul class="navbar__action-list">
 

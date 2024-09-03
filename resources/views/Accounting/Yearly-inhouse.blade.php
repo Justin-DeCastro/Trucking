@@ -19,7 +19,7 @@
     <!-- sidebar end -->
 
     <!-- navbar-wrapper start -->
-    <nav class="navbar-wrapper bg--dark d-flex flex-wrap">
+    {{-- <nav class="navbar-wrapper bg--dark d-flex flex-wrap"> --}}
 
         <div class="navbar__right">
             <ul class="navbar__action-list">

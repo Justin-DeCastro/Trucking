@@ -117,6 +117,7 @@
 @include('Components.Admin.Header')
 
 <body>
+    @include('Components.Admin.Navbar')
     @include('Components.Admin.Sidebar')
 
     <div class="container-fluid px-3 px-sm-0">

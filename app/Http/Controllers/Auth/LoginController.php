@@ -36,7 +36,7 @@ class LoginController extends Controller
                 if ($user->isAdmin()) {
                     return redirect()->intended('admindash');
                 } elseif ($user->isCourier()) {
-                    return redirect()->intended('courierdash');
+                    return redirect()->intended('order-for-courier');
                 } elseif ($user->isAccounting()) {
                     return redirect()->intended('accountingdash');
                 }

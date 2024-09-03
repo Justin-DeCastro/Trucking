@@ -39,6 +39,12 @@
                         <span class="menu-title">Accounts</span>
                     </a>
                 </li>
+                <li class="sidebar-menu-item">
+                    <a href="loanamount" class="nav-link">
+                        <i class="fas fa-user menu-icon"></i>
+                        <span class="menu-title">Loan</span>
+                    </a>
+                </li>
 
 
             </ul>

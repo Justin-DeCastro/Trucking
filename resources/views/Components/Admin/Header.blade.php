@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="Admin/css/line-awesome.min.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <link rel="stylesheet" href="Admin/css/select2.min.css">
     <link rel="stylesheet" href="Admin/css/app.css">

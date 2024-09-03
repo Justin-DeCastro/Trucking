@@ -18,8 +18,8 @@
     @include('Components.Accounting.Sidebar')
     <!-- sidebar end -->
 
-    <!-- navbar-wrapper start -->
-    <nav class="navbar-wrapper bg--dark d-flex flex-wrap">
+    {{-- <!-- navbar-wrapper start -->
+    <nav class="navbar-wrapper bg--dark d-flex flex-wrap"> --}}
 
         <div class="navbar__right">
             <ul class="navbar__action-list">

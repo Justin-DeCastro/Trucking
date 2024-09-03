@@ -26,12 +26,12 @@
 
                     <div class="sidebar__menu-wrapper">
                         <ul class="sidebar__menu">
-                            <li class="sidebar-menu-item active">
+                            {{-- <li class="sidebar-menu-item active">
                                 <a href="courierdash" class="nav-link">
                                     <i class="menu-icon fas fa-tachometer-alt"></i> <!-- Updated icon -->
                                     <span class="menu-title">Dashboard</span>
                                 </a>
-                            </li>
+                            </li> --}}
 
                             <li class="sidebar-menu-item">
                                 <a href="order-for-courier" class="nav-link">
@@ -42,10 +42,7 @@
                         </ul>
 
                     </div>
-                    <div class="version-info text-center text-uppercase">
-                        <span class="text--primary">courierlab</span>
-                        <span class="text--success">V3.0 </span>
-                    </div>
+
                 </div>
             </div>
 

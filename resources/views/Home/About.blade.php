@@ -33,33 +33,9 @@
 <body>
 
     <div class="preloader">
-        <div class="loader-p"></div>
-        <div class="loading-text">
-
-            <span>G</span>
-            <span>D</span>
-            <span>R</span>
-            <span>&nbsp;</span>
-            <span>W</span>
-            <span>E</span>
-            <span>B</span>
-            <span>S</span>
-            <span>I</span>
-            <span>T</span>
-            <span>E</span>
-            <span>&nbsp;</span>
-            <span>I</span>
-            <span>S</span>
-            <span>&nbsp;</span>
-            <span>L</span>
-            <span>O</span>
-            <span>A</span>
-            <span>D</span>
-            <span>I</span>
-            <span>N</span>
-            <span>G</span>
-        </div>
+        @include('Components.Home.Preloader')
     </div>
+
 
 
     <div class="body-overlay"></div>

@@ -463,9 +463,21 @@ a {
 }
 
 .bg--dark {
-  --color: #071251;
-  background-color: var(--color) !important;
+  background: linear-gradient(
+    to top,
+    #014f9a,
+    #1359a0,
+    #1e61a7,
+    #3166a1,
+    #296cb4,
+    #4a7db6,
+    #5783b9,
+    #5a85bd,
+    #8ba6ce,
+    #c8d1e5
+  ) !important;
 }
+
 
 .bg--white {
   --color: #ffffff;
@@ -4971,7 +4983,6 @@ th.w-85 {
 .sidebar {
   width: 250px;
   background: #ffffff;
-  border-right: 1px solid #66666675;
   position: fixed;
   top: 0;
   left: 0;
@@ -4980,6 +4991,7 @@ th.w-85 {
   -webkit-transition: all 0.3s;
   -o-transition: all 0.3s;
   transition: all 0.3s;
+  padding-top: 10px;
 }
 
 @media (max-width: 991px) {
