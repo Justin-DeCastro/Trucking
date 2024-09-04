@@ -73,26 +73,51 @@
 
                 <!-- Display the overall Outstanding Balance and Remaining Balance -->
 
-                <table id="adminTable" class="table--light style--two table">
+                <table id="monthlyTotals" class="table--light style--two table">
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Total Amount</th>
+                            <th>Rate per Mile</th>
+                            <th>Kilometers</th>
+                            <th>Operational Costs</th>
+                            <th>Gross Income</th>
+                            <th>Net</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($dailyTotals as $date => $total)
+                        @forelse($rates as $rate)
+                            @php
+                                $grossIncome = $rate->rate_per_mile * $rate->km;
+                                $netAmount = $grossIncome - $rate->operational_costs;
+                            @endphp
                             <tr>
-                                <td>{{ $date }}</td>
-                                <td>₱{{ number_format($total, 2) }}</td>
+                                <td>{{ $rate->created_at->format('M j, Y') }}</td>
+                                <td>₱{{ number_format($rate->rate_per_mile, 2) }}</td>
+                                <td>{{ number_format($rate->km, 2) }}</td>
+                                <td>₱{{ number_format($rate->operational_costs, 2) }}</td>
+                                <td>₱{{ number_format($grossIncome, 2) }}</td>
+                                <td>₱{{ number_format($netAmount, 2) }}</td>
                             </tr>
-                        @endforeach
-                        <!-- Display the overall total for all days -->
-                        <tr>
-                            <td><strong>Overall Total:</strong></td>
-                            <td>₱{{ number_format($overallTotal, 2) }}</td>
-                        </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center">No data available.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Total</th>
+                            <th>{{ number_format($rates->sum('rate_per_mile'), 2) }}</th>
+                            <th>{{ number_format($rates->sum('km'), 2) }}</th>
+                            <th>₱{{ number_format($rates->sum('operational_costs'), 2) }}</th>
+                            <th>₱{{ number_format($rates->sum(function ($rate) {
+                                return $rate->rate_per_mile * $rate->km;
+                            }), 2) }}</th>
+                            <th>₱{{ number_format($rates->sum(function ($rate) {
+                                return ($rate->rate_per_mile * $rate->km) - $rate->operational_costs;
+                            }), 2) }}</th>
+                        </tr>
+                    </tfoot>
                 </table>
 
 

@@ -15,6 +15,7 @@ class RatePerMile extends Model
         'km',
         'proof_of_payment',
         'date',
+        'gross_income',
         'plate_number',
     ];
 

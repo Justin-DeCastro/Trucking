@@ -277,29 +277,12 @@ public function ratepermile(Request $request)
 
 public function ratepermonth(Request $request)
 {
-    // Get the start and end dates for the current month
-    $startOfMonth = Carbon::now()->startOfMonth();
-    $endOfMonth = Carbon::now()->endOfMonth();
-
-    // Retrieve records from RatePerMile that fall within the current month
-    $rates = RatePerMile::whereBetween('created_at', [$startOfMonth, $endOfMonth])->get();
-
-    // Group records by date
-    $dailyTotals = $rates->groupBy(function ($rate) {
-        return Carbon::parse($rate->created_at)->format('M j, Y'); // Group by date
-    })->map(function ($group) {
-        return $group->sum(function ($rate) {
-            return ($rate->rate_per_mile * $rate->km) - $rate->operational_costs;
-        });
-    });
-
-    // Calculate the grand total for the current month
-    $overallTotal = $dailyTotals->sum();
+    // Fetch all records from RatePerMile
+    $rates = RatePerMile::all();
 
     // Pass data to the view
     return view('Accounting.Monthly-inhouse', [
-        'dailyTotals' => $dailyTotals,
-        'overallTotal' => $overallTotal,
+        'rates' => $rates,
     ]);
 }
 

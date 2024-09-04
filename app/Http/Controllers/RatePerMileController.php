@@ -13,17 +13,16 @@ class RatePerMileController extends Controller
             'plate_number' => 'required|exists:bookings,plate_number',
             'rate_per_mile' => 'required|numeric',
             'km' => 'required|numeric',
+            'gross_income' => 'required|numeric', // Add numeric validation
             'date' => 'required|date',
-            'proof_of_payment' => 'required|file|mimes:jpeg,png,pdf', // Add validation for file type
+            'proof_of_payment' => 'nullable|file|mimes:jpeg,png,pdf', // Nullable if the file is optional
             'operational_costs' => 'required|numeric',
         ]);
 
         // Handle file upload
-        if ($request->hasFile('proof_of_payment')) {
-            $proofOfPaymentPath = $request->file('proof_of_payment')->store('proofs_of_payment', 'public');
-        } else {
-            $proofOfPaymentPath = null; // Or handle the case where the file is not provided
-        }
+        $proofOfPaymentPath = $request->hasFile('proof_of_payment')
+            ? $request->file('proof_of_payment')->store('proofs_of_payment', 'public')
+            : null;
 
         // Find or create a RatePerMile record
         RatePerMile::updateOrCreate(
@@ -33,12 +32,14 @@ class RatePerMileController extends Controller
                 'date' => $request->date,
                 'rate_per_mile' => $request->rate_per_mile,
                 'km' => $request->km,
+                'gross_income' => $request->gross_income,
                 'operational_costs' => $request->operational_costs,
             ]
         );
 
         return redirect()->back()->with('success', 'Data saved successfully!');
     }
+
 
 
     public function edit($id)

@@ -182,14 +182,13 @@
                 <!-- Add Account Modal -->
                 <!-- Add Account Modal -->
                 <!-- Add Account Modal -->
-                <div class="modal fade" id="manageAccount" tabindex="-1" aria-labelledby="manageAccountLabel"
-                    aria-hidden="true">
+                <!-- Modal -->
+                <div class="modal fade" id="manageAccount" tabindex="-1" aria-labelledby="manageAccountLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="manageAccountLabel">In-house Earning</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <form action="{{ route('earning.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
@@ -213,13 +212,19 @@
                                     <!-- Rate Per Mile/KM -->
                                     <div class="mb-3">
                                         <label for="rate_per_mile" class="form-label">Rate Per Mile/KM</label>
-                                        <input type="text" id="rate_per_mile" name="rate_per_mile" class="form-control" required>
+                                        <input type="text" id="rate_per_mile" name="rate_per_mile" class="form-control" >
                                     </div>
 
                                     <!-- Input KM -->
                                     <div class="mb-3">
                                         <label for="km" class="form-label">Input KM</label>
                                         <input type="text" id="km" name="km" class="form-control" required>
+                                    </div>
+
+                                    <!-- Gross Income -->
+                                    <div class="mb-3">
+                                        <label for="gross_income" class="form-label">Gross Income</label>
+                                        <input type="text" id="gross_income" name="gross_income" class="form-control" readonly>
                                     </div>
 
                                     <!-- Operational Costs -->
@@ -231,7 +236,7 @@
                                     <!-- Proof of Payment -->
                                     <div class="mb-3">
                                         <label for="proof_of_payment" class="form-label">Proof of Payment</label>
-                                        <input type="file" class="form-control" id="proof_of_payment" name="proof_of_payment" accept="image/*,application/pdf" required>
+                                        <input type="file" class="form-control" id="proof_of_payment" name="proof_of_payment" accept="image/*,application/pdf">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -239,10 +244,45 @@
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 </div>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var plateNumberSelect = document.getElementById('plate_number');
+                        var ratePerMileInput = document.getElementById('rate_per_mile');
+                        var kmInput = document.getElementById('km');
+                        var grossIncomeInput = document.getElementById('gross_income');
+                        var operationalCostsInput = document.getElementById('operational_costs');
+
+                        // Update fields when plate number changes
+                        plateNumberSelect.addEventListener('change', function () {
+                            var selectedOption = plateNumberSelect.options[plateNumberSelect.selectedIndex];
+                            var ratePerMile = selectedOption.getAttribute('data-rate');
+                            ratePerMileInput.value = ratePerMile;
+
+                            // Clear previous values
+                            grossIncomeInput.value = '';
+
+                            // Recalculate gross income if KM is already filled
+                            calculateGrossIncome();
+                        });
+
+                        // Calculate gross income based on rate per mile and km
+                        kmInput.addEventListener('input', function () {
+                            calculateGrossIncome();
+                        });
+
+                        function calculateGrossIncome() {
+                            var ratePerMile = parseFloat(ratePerMileInput.value) || 0;
+                            var km = parseFloat(kmInput.value) || 0;
+                            var grossIncome = ratePerMile * km;
+                            grossIncomeInput.value = isNaN(grossIncome) ? '' : grossIncome.toFixed(2);
+                        }
+                    });
+                </script>
+
 
 
                 <!-- Deposit Modal -->
