@@ -284,8 +284,8 @@
 
             // Calculate monthly interest payment and total payment
             const monthlyInterestPayment = initialAmountValue * interestRate;
-            const monthlyPayment = initialAmountValue / terms + monthlyInterestPayment;
-            const totalPaymentAmount = monthlyPayment * terms;
+            const monthlyPayment = initialAmountValue * interestRate;
+            const totalPaymentAmount = monthlyPayment * terms + initialAmountValue ;
 
             // Set calculated values
             paymentPerMonth.value = monthlyPayment.toFixed(2);
@@ -334,9 +334,9 @@
                 const interestRate = parseFloat(interestInput.value) || 0; // Handle empty or invalid input
 
                 if (paymentTerms > 0) {
-                    const totalInterest = initialAmount * (interestRate / 100) * paymentTerms;
+                    const totalInterest = initialAmount * (interestRate) * paymentTerms;
                     const totalPayment = initialAmount + totalInterest;
-                    const installmentPayment = totalPayment / paymentTerms;
+                    const installmentPayment = initialAmount * interestRate;
 
                     document.getElementById('total-' + loanId).textContent = '₱' + totalPayment.toFixed(2);
                     document.getElementById('installment-' + loanId).textContent = '₱' + installmentPayment.toFixed(2);

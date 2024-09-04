@@ -13,6 +13,7 @@ class RatePerMile extends Model
         'rate_per_mile',
         'operational_costs',
         'km',
+        'proof_of_payment',
         'date',
         'plate_number',
     ];

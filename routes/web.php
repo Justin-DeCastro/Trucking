@@ -281,3 +281,4 @@ Route::get('/verify', [VerificationController::class, 'showForm'])->name('verifi
 Route::post('/verify', [VerificationController::class, 'verifyCode'])->name('verification.verify');
 Route::post('/loans/{id}/mark-as-paid', [LoanController::class, 'markAsPaid'])->name('loans.markAsPaid');
 Route::post('/loans/{id}/mark-as-unpaid', [LoanController::class, 'markAsUnpaid'])->name('loans.markAsUnpaid');
+Route::post('/upload-proof-of-payment', [RatePerMileController::class, 'uploadProofOfPayment'])->name('upload.proofOfPayment');

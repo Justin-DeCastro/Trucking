@@ -87,6 +87,9 @@
 
                 <!-- Table -->
                 <!-- Table -->
+                {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#proofOfPaymentModal" style="position: fixed; top: 20px; right: 20px;">
+                    Add Proof of Payment
+                </button> --}}
                 <table id="adminTable" class="table--light style--two table">
                     <thead>
                         <tr>
@@ -96,6 +99,7 @@
                             <th>Kilometers</th>
                             <th>Gross Income</th>
                             <th>Operational Costs</th>
+                            <th>Proof of Payment</th>
                             <th>Earnings Per Trip</th>
                         </tr>
                     </thead>
@@ -104,14 +108,32 @@
                             @foreach ($items as $inhouse)
                                 <tr>
                                     <td>{{ \Carbon\Carbon::parse($inhouse->date)->format('F d, Y g:i A') }}</td>
-
-                                    <td>{{ $inhouse->plate_number }} </td>
+                                    <td>{{ $inhouse->plate_number }}</td>
                                     <td>₱{{ number_format($inhouse->rate_per_mile, 2) }}</td>
                                     <td>{{ $inhouse->km }} km</td>
-                                    <td>₱{{ number_format($inhouse->rate_per_mile * $inhouse->km, 2) }}
+                                    <td>₱{{ number_format($inhouse->rate_per_mile * $inhouse->km, 2) }}</td>
                                     <td>₱{{ number_format($inhouse->operational_costs, 2) }}</td>
-                                    <td>₱{{ number_format($inhouse->rate_per_mile * $inhouse->km - $inhouse->operational_costs, 2) }}
+                                    <td>
+                                        @if (isset($inhouse->proof_of_payment) && $inhouse->proof_of_payment)
+                                            @php
+                                                $imageUrl = asset('storage/' . $inhouse->proof_of_payment);
+                                            @endphp
+                                            <img src="{{ $imageUrl }}" alt="Proof of Payment" style="width: 50px; height: 50px; object-fit: cover;">
+                                            <!-- Uncomment this line to debug the URL -->
+                                            <!-- <p>{{ $imageUrl }}</p> -->
+                                        @else
+                                            No proof of payment available
+                                        @endif
                                     </td>
+
+
+
+
+
+
+
+
+                                    <td>₱{{ number_format($inhouse->rate_per_mile * $inhouse->km - $inhouse->operational_costs, 2) }}</td>
                                 </tr>
                             @endforeach
                         @endforeach
@@ -122,9 +144,41 @@
 
 
 
+
                 <!-- Modal Structure -->
 
-
+<!-- Modal -->
+<div class="modal fade" id="proofOfPaymentModal" tabindex="-1" aria-labelledby="proofOfPaymentLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-end">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="proofOfPaymentLabel">Upload Proof of Payment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="proofOfPaymentForm" action="{{ route('upload.proofOfPayment') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="paymentDate" class="form-label">Payment Date</label>
+                        <input type="date" class="form-control" id="paymentDate" name="payment_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="plateNumber" class="form-label">Plate Number</label>
+                        <input type="text" class="form-control" id="plateNumber" name="plate_number" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="proofOfPayment" class="form-label">Proof of Payment</label>
+                        <input type="file" class="form-control" id="proofOfPayment" name="proof_of_payment" accept="image/*,application/pdf" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="proofOfPaymentForm" class="btn btn-primary">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
                 <!-- Add Account Modal -->
                 <!-- Add Account Modal -->
                 <!-- Add Account Modal -->
@@ -137,7 +191,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <form action="{{ route('earning.store') }}" method="POST">
+                            <form action="{{ route('earning.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="modal-body">
                                     <!-- Plate Number Dropdown -->
@@ -150,38 +204,42 @@
                                         </select>
                                     </div>
 
-                                    <!-- Rate Per Mile/KM -->
+                                    <!-- Input Date -->
                                     <div class="mb-3">
                                         <label for="date" class="form-label">Input Date</label>
-                                        <input type="datetime-local" id="date" name="date"
-                                            class="form-control" required>
+                                        <input type="datetime-local" id="date" name="date" class="form-control" required>
                                     </div>
+
+                                    <!-- Rate Per Mile/KM -->
                                     <div class="mb-3">
                                         <label for="rate_per_mile" class="form-label">Rate Per Mile/KM</label>
-                                        <input type="text" id="rate_per_mile" name="rate_per_mile"
-                                            class="form-control" required>
+                                        <input type="text" id="rate_per_mile" name="rate_per_mile" class="form-control" required>
                                     </div>
 
                                     <!-- Input KM -->
                                     <div class="mb-3">
                                         <label for="km" class="form-label">Input KM</label>
-                                        <input type="text" id="km" name="km" class="form-control"
-                                            required>
+                                        <input type="text" id="km" name="km" class="form-control" required>
                                     </div>
 
                                     <!-- Operational Costs -->
                                     <div class="mb-3">
                                         <label for="operational_costs" class="form-label">Operational Costs</label>
-                                        <input type="text" id="operational_costs" name="operational_costs"
-                                            class="form-control" required>
+                                        <input type="text" id="operational_costs" name="operational_costs" class="form-control" required>
+                                    </div>
+
+                                    <!-- Proof of Payment -->
+                                    <div class="mb-3">
+                                        <label for="proof_of_payment" class="form-label">Proof of Payment</label>
+                                        <input type="file" class="form-control" id="proof_of_payment" name="proof_of_payment" accept="image/*,application/pdf" required>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Create</button>
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>
