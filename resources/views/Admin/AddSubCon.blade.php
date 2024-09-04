@@ -74,11 +74,12 @@
                 <table class="table table--light style--two">
     <thead>
         <tr>
-            <th>Company Name</th>
             <th>Subcontractor ID</th>
+            <th>Company Name</th>
+            <th>Full Name</th>
+
             <th>Address</th>
             <th>Phone Number</th>
-            <th>Full Name</th>
 
             <th>Email</th>
 
@@ -89,11 +90,12 @@
     <tbody>
         @foreach($subcon as $subcontractor)
         <tr>
-            <td>{{ $subcontractor->company_name }}</td>
             <td>{{ $subcontractor->subcontractor_id }}</td>
+            <td>{{ $subcontractor->company_name }}</td>
+            <td>{{ $subcontractor->full_name }}</td>
             <td>{{ $subcontractor->address }}</td>
             <td>{{ $subcontractor->phone_number }}</td>
-            <td>{{ $subcontractor->full_name }}</td>
+
 
             <td>{{ $subcontractor->email_address }}</td>
 

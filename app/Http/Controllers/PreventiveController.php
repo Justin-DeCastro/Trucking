@@ -15,6 +15,7 @@ class PreventiveController extends Controller
         'plate_number' => 'required|string',
         'truck_model' => 'required|string',
         'parts_replaced' => 'required|string',
+        'quantity' => 'required|string',
         'price_parts_replaced' => 'required|numeric',
         'proof_of_need_to_fixed.*' => 'required|image|mimes:jpg,png,jpeg',
         'proof_of_payment.*' => 'required|image|mimes:jpg,png,jpeg',
@@ -63,47 +64,53 @@ class PreventiveController extends Controller
         $validatedData = $request->validate([
             'plate_number' => 'required|string',
             'truck_model' => 'required|string',
+            'quantity' => 'required|string',
             'parts_replaced' => 'required|string',
             'price_parts_replaced' => 'required|numeric',
             'proof_of_need_to_fixed.*' => 'nullable|image|mimes:jpg,png,jpeg',
             'proof_of_payment.*' => 'nullable|image|mimes:jpg,png,jpeg',
         ]);
 
-        // Handle file uploads
+        // Handle file uploads for proof_of_need_to_fixed
         if ($request->hasFile('proof_of_need_to_fixed')) {
             // Delete old files
-            foreach (json_decode($maintenance->proof_of_need_to_fixed, true) as $filePath) {
+            $oldFiles = is_array($maintenance->proof_of_need_to_fixed) ? $maintenance->proof_of_need_to_fixed : json_decode($maintenance->proof_of_need_to_fixed, true) ?? [];
+            foreach ($oldFiles as $filePath) {
                 if (file_exists(public_path($filePath))) {
                     unlink(public_path($filePath));
                 }
             }
 
+            // Process new files
             $validatedData['proof_of_need_to_fixed'] = [];
             foreach ($request->file('proof_of_need_to_fixed') as $file) {
                 $path = $file->move(public_path('proofs'), $file->getClientOriginalName());
-                $validatedData['proof_of_need_to_fixed'][] = $path;
+                $validatedData['proof_of_need_to_fixed'][] = 'proofs/' . $file->getClientOriginalName();
             }
         } else {
             // Preserve existing file paths if no new files are uploaded
-            $validatedData['proof_of_need_to_fixed'] = json_decode($maintenance->proof_of_need_to_fixed, true);
+            $validatedData['proof_of_need_to_fixed'] = is_array($maintenance->proof_of_need_to_fixed) ? $maintenance->proof_of_need_to_fixed : json_decode($maintenance->proof_of_need_to_fixed, true) ?? [];
         }
 
+        // Handle file uploads for proof_of_payment
         if ($request->hasFile('proof_of_payment')) {
             // Delete old files
-            foreach (json_decode($maintenance->proof_of_payment, true) as $filePath) {
+            $oldFiles = is_array($maintenance->proof_of_payment) ? $maintenance->proof_of_payment : json_decode($maintenance->proof_of_payment, true) ?? [];
+            foreach ($oldFiles as $filePath) {
                 if (file_exists(public_path($filePath))) {
                     unlink(public_path($filePath));
                 }
             }
 
+            // Process new files
             $validatedData['proof_of_payment'] = [];
             foreach ($request->file('proof_of_payment') as $file) {
                 $path = $file->move(public_path('proofs'), $file->getClientOriginalName());
-                $validatedData['proof_of_payment'][] = $path;
+                $validatedData['proof_of_payment'][] = 'proofs/' . $file->getClientOriginalName();
             }
         } else {
             // Preserve existing file paths if no new files are uploaded
-            $validatedData['proof_of_payment'] = json_decode($maintenance->proof_of_payment, true);
+            $validatedData['proof_of_payment'] = is_array($maintenance->proof_of_payment) ? $maintenance->proof_of_payment : json_decode($maintenance->proof_of_payment, true) ?? [];
         }
 
         // Update the maintenance record
@@ -120,24 +127,6 @@ class PreventiveController extends Controller
     $maintenance = Preventive::findOrFail($id);
 
     // Decode the file paths from JSON
-    $proofOfNeedToFixedPaths = json_decode($maintenance->proof_of_need_to_fixed, true) ?? [];
-    $proofOfPaymentPaths = json_decode($maintenance->proof_of_payment, true) ?? [];
-
-    // Delete files for proof_of_need_to_fixed
-    foreach ($proofOfNeedToFixedPaths as $filePath) {
-        $fullPath = public_path($filePath);
-        if (file_exists($fullPath)) {
-            unlink($fullPath);
-        }
-    }
-
-    // Delete files for proof_of_payment
-    foreach ($proofOfPaymentPaths as $filePath) {
-        $fullPath = public_path($filePath);
-        if (file_exists($fullPath)) {
-            unlink($fullPath);
-        }
-    }
 
     // Delete the record
     $maintenance->delete();
@@ -145,5 +134,6 @@ class PreventiveController extends Controller
     // Redirect with success message
     return redirect()->back()->with('success', 'Record deleted successfully!');
 }
+
 
 }

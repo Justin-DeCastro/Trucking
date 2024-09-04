@@ -112,7 +112,8 @@
                                                                     <th>Truck Model</th>
 
                                                                     <th>Parts Replaced</th>
-                                                                    <th>Price of Quantity</th>
+                                                                    <th>Quantity</th>
+                                                                    <th>Price per Quantity</th>
                                                                     <th>Proof of Need to Fixed</th>
                                                                     <th>Proof of Payment</th>
                                                                     <th>Action</th>
@@ -124,6 +125,7 @@
                                                                         <td>{{ $maintenance->plate_number }}</td>
                                                                         <td>{{ $maintenance->truck_model }}</td>
                                                                         <td>{{ $maintenance->parts_replaced }}</td>
+                                                                        <td>{{ $maintenance->quantity }}</td>
                                                                         <td>₱{{ number_format($maintenance->price_parts_replaced, 2) }}</td>
                                                                         <td>
                                                                             @if(is_array($maintenance->proof_of_need_to_fixed))
@@ -148,14 +150,14 @@
 
                                                                         <td>
                                                                             <!-- Update Button -->
-                                                                            <button type="button" class="btn btn-primary btn-sm"
+                                                                            {{-- <button type="button" class="btn btn-primary btn-sm"
                                                                                 data-bs-toggle="modal" data-bs-target="#updateModal"
                                                                                 data-id="{{ $maintenance->id }}"
                                                                                 data-plate="{{ $maintenance->plate_number }}"
                                                                                 data-parts="{{ $maintenance->parts_replaced }}"
                                                                                 data-price="{{ $maintenance->price_parts_replaced }}">
                                                                                 Update
-                                                                            </button>
+                                                                            </button> --}}
 
                                                                             <!-- Delete Button -->
                                                                             <form action="{{ route('maintenance.destroy', $maintenance->id) }}" method="POST" style="display:inline-block;">
@@ -208,7 +210,10 @@
                             <label for="parts_replaced" class="form-label">Parts Replaced</label>
                             <input type="text" id="parts_replaced" name="parts_replaced" class="form-control" required oninput="this.value = this.value.toUpperCase();">
                         </div>
-
+                        <div class="mb-3">
+                            <label for="parts_replaced" class="form-label">Quantity</label>
+                            <input type="text" id="parts_replaced" name="quantity" class="form-control" required oninput="this.value = this.value.toUpperCase();">
+                        </div>
                         <div class="mb-3">
                             <label for="price_parts_replaced" class="form-label">Price of Parts Replaced</label>
                             <input type="number" id="price_parts_replaced" name="price_parts_replaced" class="form-control" placeholder="Don't use comma" required>
@@ -260,34 +265,61 @@
     </div>
 </div>
 <!-- Modal for Update -->
-<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="updateModalLabel">Update Maintenance Record</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="updateForm" method="POST">
+            <form id="updateForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="modal-body">
+                    <!-- Plate Number -->
+                    <div class="mb-3">
+                        <label for="plate_number" class="form-label">Plate Number</label>
+                        <input type="text" class="form-control" id="plate_number" name="plate_number" required>
+                    </div>
+
+                    <!-- Truck Model -->
+                    <div class="mb-3">
+                        <label for="truck_model" class="form-label">Truck Model</label>
+                        <input type="text" class="form-control" id="truck_model" name="truck_model" required>
+                    </div>
+
+                    <!-- Parts Replaced -->
                     <div class="mb-3">
                         <label for="parts_replaced" class="form-label">Parts Replaced</label>
-                        <input type="text" class="form-control" id="parts_replaced"
-                            name="parts_replaced" required>
+                        <input type="text" class="form-control" id="parts_replaced" name="parts_replaced" required>
                     </div>
+
+                    <!-- Quantity -->
                     <div class="mb-3">
-                        <label for="price_parts_replaced" class="form-label">Price of
-                            Part</label>
-                        <input type="number" class="form-control" id="price_parts_replaced"
-                            name="price_parts_replaced" step="0.01" required>
+                        <label for="quantity" class="form-label">Quantity</label>
+                        <input type="text" class="form-control" id="quantity" name="quantity" required>
+                    </div>
+
+                    <!-- Price of Parts Replaced -->
+                    <div class="mb-3">
+                        <label for="price_parts_replaced" class="form-label">Price of Part</label>
+                        <input type="number" class="form-control" id="price_parts_replaced" name="price_parts_replaced" step="0.01" required>
+                    </div>
+
+                    <!-- Proof of Need to Fix -->
+                    <div class="mb-3">
+                        <label for="proof_of_need_to_fixed" class="form-label">Proof of Need to Fix (Images)</label>
+                        <input type="file" class="form-control" id="proof_of_need_to_fixed" name="proof_of_need_to_fixed[]" multiple accept="image/*" required>
+                    </div>
+
+                    <!-- Proof of Payment -->
+                    <div class="mb-3">
+                        <label for="proof_of_payment" class="form-label">Proof of Payment (Images)</label>
+                        <input type="file" class="form-control" id="proof_of_payment" name="proof_of_payment[]" multiple accept="image/*" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save changes</button>
                 </div>
             </form>
@@ -326,20 +358,43 @@
         updateModal.addEventListener('show.bs.modal', function(event) {
             var button = event.relatedTarget;
             var id = button.getAttribute('data-id');
+            var plateNumber = button.getAttribute('data-plate-number');
+            var truckModel = button.getAttribute('data-truck-model');
             var parts = button.getAttribute('data-parts');
+            var quantity = button.getAttribute('data-quantity');
             var price = button.getAttribute('data-price');
+            var proofNeedToFix = button.getAttribute('data-proof-need-to-fix'); // Assuming a URL or file path
+            var proofPayment = button.getAttribute('data-proof-payment'); // Assuming a URL or file path
 
             var form = document.getElementById('updateForm');
             form.action = '/maintenance/' + id; // Update form action URL
 
-            var partsInput = document.getElementById('parts_replaced');
-            var priceInput = document.getElementById('price_parts_replaced');
+            document.getElementById('plate_number').value = plateNumber;
+            document.getElementById('truck_model').value = truckModel;
+            document.getElementById('parts_replaced').value = parts;
+            document.getElementById('quantity').value = quantity;
+            document.getElementById('price_parts_replaced').value = price;
 
-            partsInput.value = parts;
-            priceInput.value = price;
+            // Handle file inputs for proof_of_need_to_fix and proof_of_payment
+            // Note: File inputs cannot be pre-populated with files via JavaScript for security reasons.
+            // Consider displaying current files or providing a way to remove or add new files.
+
+            // Example of handling proof display:
+            if (proofNeedToFix) {
+                // Assuming proofNeedToFix contains URLs or file paths
+                // You could create image previews or similar elements to display the current proofs
+                console.log('Proof of Need to Fix:', proofNeedToFix);
+            }
+
+            if (proofPayment) {
+                // Assuming proofPayment contains URLs or file paths
+                // You could create image previews or similar elements to display the current proofs
+                console.log('Proof of Payment:', proofPayment);
+            }
         });
     });
 </script>
+
     <script>
         "use strict";
         const colors = {

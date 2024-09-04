@@ -85,7 +85,7 @@
                             <th>Vehicle Capacity</th>
                             <th>Vehicle Status</th>
                             <th>Vehicle Quantity</th>
-                            <th>Documents</th>
+                            <th>Documents/Certificates</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -111,6 +111,14 @@
                                 </td>
 
                                 <td>
+                                    <button type="button" class="btn btn-info btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#viewVehicleModal{{ $vehicle->id }}"
+                                    data-id="{{ $vehicle->id }}"
+
+                                    data-documents="{{ json_encode($vehicle->documents) }}">
+                                    <i class="fa fa-eye"></i> View
+                                </button>
                                     <!-- Edit Button -->
                                     <button type="button" class="btn btn-warning btn-sm"
     data-bs-toggle="modal"
@@ -142,6 +150,56 @@
             </div>
         </div>
     </div>
+    @foreach($vehicles as $vehicle)
+    <div class="modal fade" id="viewVehicleModal{{ $vehicle->id }}" tabindex="-1" aria-labelledby="viewVehicleModalLabel{{ $vehicle->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewVehicleModalLabel{{ $vehicle->id }}">
+                        <strong>Plate Number:</strong> {{ $vehicle->plate_number }}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <strong>Documents and Certificates:</strong>
+                                @if(!empty($vehicle->documents) && is_array($vehicle->documents))
+                                    <div class="row">
+                                        @foreach($vehicle->documents as $document)
+                                            <div class="col-md-4 mb-3">
+                                                <div class="d-flex align-items-center">
+                                                    @if(str_ends_with($document, '.pdf'))
+                                                        <a href="{{ asset($document) }}" target="_blank" class="btn btn-secondary btn-sm me-2" download>
+                                                            <i class="fa fa-download"></i> Download PDF
+                                                        </a>
+                                                    @endif
+                                                    <a href="{{ asset($document) }}" target="_blank" class="me-2">
+                                                        @if(str_ends_with($document, '.pdf'))
+                                                            <i class="fa fa-file-pdf-o"></i>
+                                                        @else
+                                                            <img src="{{ asset($document) }}" alt="{{ basename($document) }}" class="img-fluid rounded shadow-sm">
+                                                        @endif
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <p class="text-muted">No documents available.</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endforeach
 
     <!-- Create Vehicle Modal -->
     <div class="modal fade" id="manageAdmin" tabindex="-1" aria-labelledby="manageAdminLabel" aria-hidden="true">

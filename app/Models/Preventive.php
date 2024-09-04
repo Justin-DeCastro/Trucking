@@ -12,6 +12,7 @@ class Preventive extends Model
     protected $fillable = [
         'plate_number',
         'truck_model',
+        'quantity',
         'parts_replaced',
         'price_parts_replaced',
         'proof_of_need_to_fixed',

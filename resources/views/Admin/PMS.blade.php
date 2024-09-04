@@ -110,7 +110,6 @@
                                                                 <tr>
                                                                     <th>Plate Number</th>
                                                                     <th>Truck Model</th>
-
                                                                     <th>Parts Replaced</th>
                                                                     <th>Price of Quantity</th>
                                                                     <th>Proof of Need to Fixed</th>
@@ -143,40 +142,69 @@
                                                                                 @endforeach
                                                                             @endif
                                                                         </td>
-
-
-
                                                                         <td>
-                                                                            <!-- Update Button -->
-                                                                            <button type="button" class="btn btn-primary btn-sm"
-                                                                                data-bs-toggle="modal" data-bs-target="#updateModal"
+                                                                            <!-- View Button with Eye Icon -->
+                                                                            <button type="button" class="btn btn-info btn-sm"
+                                                                                data-bs-toggle="modal" data-bs-target="#viewModal"
                                                                                 data-id="{{ $maintenance->id }}"
                                                                                 data-plate="{{ $maintenance->plate_number }}"
                                                                                 data-parts="{{ $maintenance->parts_replaced }}"
-                                                                                data-price="{{ $maintenance->price_parts_replaced }}">
-                                                                                Update
+                                                                                data-price="{{ $maintenance->price_parts_replaced }}"
+                                                                                data-proof-of-need-to-fixed="{{ json_encode($maintenance->proof_of_need_to_fixed) }}"
+                                                                                data-proof-of-payment="{{ json_encode($maintenance->proof_of_payment) }}">
+                                                                                <i class="fas fa-eye"></i> View
                                                                             </button>
-
-                                                                            <!-- Delete Button -->
-                                                                            <form action="{{ route('maintenance.destroy', $maintenance->id) }}" method="POST" style="display:inline-block;">
-                                                                                @csrf
-                                                                                @method('DELETE')
-                                                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                                                    onclick="return confirm('Are you sure you want to delete this item?');">
-                                                                                    Delete
-                                                                                </button>
-                                                                            </form>
                                                                         </td>
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>
                                                         </table>
 
+                                                        <!-- Add View Modal HTML Here -->
+
+
 
 
             </div>
         </div>
     </div>
+<!-- View Modal -->
+<!-- View Modal -->
+<!-- View Modal -->
+<div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-primary">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="viewModalLabel">View Maintenance Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2"><strong>Plate Number:</strong> <span id="viewPlateNumber" class="fw-semibold"></span></p>
+                <p class="mb-2"><strong>Parts Replaced:</strong> <span id="viewPartsReplaced" class="fw-semibold"></span></p>
+                <p class="mb-2"><strong>Price of Quantity:</strong> ₱<span id="viewPrice" class="fw-semibold"></span></p>
+
+                <div id="proofOfNeedToFixed" class="mt-3">
+                    <strong>Proof of Need to Be Fixed:</strong>
+                    <div id="proofOfNeedToFixedImages" class="d-flex flex-wrap gap-2 mt-2">
+                        <!-- Images will be inserted here -->
+                    </div>
+                </div>
+
+                <div id="proofOfPayment" class="mt-3">
+                    <strong>Proof of Payment:</strong>
+                    <div id="proofOfPaymentImages" class="d-flex flex-wrap gap-2 mt-2">
+                        <!-- Images will be inserted here -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
     <!-- Create Vehicle Modal -->
     <div class="modal fade" id="manageAdmin" tabindex="-1" aria-labelledby="manageAdminLabel" aria-hidden="true">
@@ -294,7 +322,66 @@
         </div>
     </div>
 </div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var viewModal = document.getElementById('viewModal');
+    viewModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget; // Button that triggered the modal
+        var plateNumber = button.getAttribute('data-plate');
+        var partsReplaced = button.getAttribute('data-parts');
+        var price = button.getAttribute('data-price');
+        var proofOfNeedToFixed = JSON.parse(button.getAttribute('data-proof-of-need-to-fixed'));
+        var proofOfPayment = JSON.parse(button.getAttribute('data-proof-of-payment'));
 
+        // Update the modal's content.
+        var viewPlateNumber = viewModal.querySelector('#viewPlateNumber');
+        var viewPartsReplaced = viewModal.querySelector('#viewPartsReplaced');
+        var viewPrice = viewModal.querySelector('#viewPrice');
+        var proofOfNeedToFixedImages = viewModal.querySelector('#proofOfNeedToFixedImages');
+        var proofOfPaymentImages = viewModal.querySelector('#proofOfPaymentImages');
+
+        viewPlateNumber.textContent = plateNumber;
+        viewPartsReplaced.textContent = partsReplaced;
+        viewPrice.textContent = price;
+
+        // Clear previous images
+        proofOfNeedToFixedImages.innerHTML = '';
+        proofOfPaymentImages.innerHTML = '';
+
+        // Add new images for proof of need to be fixed
+        if (Array.isArray(proofOfNeedToFixed)) {
+            proofOfNeedToFixed.forEach(function (path) {
+                if (typeof path === 'string') {
+                    var img = document.createElement('img');
+                    img.src = path;
+                    img.alt = 'Proof of Need to Be Fixed';
+                    img.style.maxWidth = '150px';
+                    img.style.maxHeight = '150px';
+                    img.classList.add('m-2');
+                    proofOfNeedToFixedImages.appendChild(img);
+                }
+            });
+        }
+
+        // Add new images for proof of payment
+        if (Array.isArray(proofOfPayment)) {
+            proofOfPayment.forEach(function (path) {
+                if (typeof path === 'string') {
+                    var img = document.createElement('img');
+                    img.src = path;
+                    img.alt = 'Proof of Payment';
+                    img.style.maxWidth = '150px';
+                    img.style.maxHeight = '150px';
+                    img.classList.add('m-2');
+                    proofOfPaymentImages.appendChild(img);
+                }
+            });
+        }
+    });
+});
+
+
+</script>
 
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
