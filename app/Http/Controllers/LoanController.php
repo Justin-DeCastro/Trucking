@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Loan;
+use App\Models\Budget;
 
 class LoanController extends Controller
 {
@@ -51,4 +52,10 @@ public function markAsUnpaid($id)
         $loans = Loan::all();
         return view('Accounting.Loan',compact('loans'));
     }
+    public function requestbudget()
+    {
+        $budgets = Budget::all();
+        return view('Accounting.RequestBudget',compact('budgets'));
+    }
+
 }

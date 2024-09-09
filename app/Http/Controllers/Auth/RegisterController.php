@@ -1,6 +1,6 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
+
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationCodeMail;
 use Illuminate\Support\Str;
@@ -28,50 +28,77 @@ class RegisterController extends Controller
 
     // Handle the registration request
     public function register(Request $request)
-{
-    // Validate the form data
-    $this->validator($request->all())->validate();
+    {
+        // Validate the form data
+        $this->validator($request->all())->validate();
 
-    // Check if the request is for an admin account and enforce the limit
-    if ($request->input('role') === 'admin') {
-        $adminCount = User::where('role', 'admin')->count();
-        if ($adminCount >= 2) {
-            return redirect()->back()->withErrors(['role' => 'Cannot create more than 2 admin accounts.']);
+        // Check if the request is for an admin account and enforce the limit
+        if ($request->input('role') === 'admin') {
+            $adminCount = User::where('role', 'admin')->count();
+            if ($adminCount >= 3) {
+                return redirect()->back()->withErrors(['role' => 'Cannot create more than 3 admin accounts.']);
+            }
         }
+
+        // Handle the file upload for driver's license if present
+        $driverLicensePath = null;
+        if ($request->hasFile('driver_license')) {
+            $file = $request->file('driver_license');
+            $driverLicensePath = 'driver_licenses/' . time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('driver_licenses'), $driverLicensePath);
+        }
+
+        // Handle the file upload for driver image if present
+        $driverImagePath = null;
+        if ($request->hasFile('driver_image')) {
+            $image = $request->file('driver_image');
+            $driverImagePath = 'driver_images/' . time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('driver_images'), $driverImagePath);
+        }
+
+        // Create a new user
+        $verificationCode = 'GDR-' . Str::random(6);
+
+        $user = $this->create($request->all(), $driverLicensePath, $driverImagePath, $verificationCode);
+        Mail::to($user->email)->send(new VerificationCodeMail($verificationCode));
+
+        // Log in the user
+        Auth::login($user);
+
+        // Redirect based on the user's role
+        if ($user->isAdmin()) {
+            return redirect()->route('admindash')->with('swal', [
+                'title' => 'Registration Successful',
+                'text' => 'In order to continue registration, we have sent a verification code to your email. Please verify your email first.',
+                'icon' => 'success'
+            ]);
+        } elseif ($user->isCoordinator()) {
+            return redirect()->route('coordinatordash')->with('swal', [
+                'title' => 'Registration Successful',
+                'text' => 'In order to continue registration, we have sent a verification code to your email. Please verify your email first.',
+                'icon' => 'success'
+            ]);
+        } elseif ($user->isCourier()) {
+            return redirect()->route('courierdash')->with('swal', [
+                'title' => 'Registration Successful',
+                'text' => 'In order to continue registration, we have sent a verification code to your email. Please verify your email first.',
+                'icon' => 'success'
+            ]);
+        } elseif ($user->isAccounting()) {
+            return redirect()->route('accountingdash')->with('swal', [
+                'title' => 'Registration Successful',
+                'text' => 'In order to continue registration, we have sent a verification code to your email. Please verify your email first.',
+                'icon' => 'success'
+            ]);
+        }
+
+        // Default redirect
+        return redirect()->route('home')->with('swal', [
+            'title' => 'Registration Successful',
+            'text' => 'In order to continue registration, we have sent a verification code to your email. Please verify your email first.',
+            'icon' => 'success'
+        ]);
     }
-
-    // Handle the file upload for driver's license if present
-    $driverLicensePath = null;
-    if ($request->hasFile('driver_license')) {
-        $file = $request->file('driver_license');
-        $driverLicensePath = 'driver_licenses/' . time() . '_' . $file->getClientOriginalName();
-        $file->move(public_path('driver_licenses'), $driverLicensePath);
-    }
-
-    // Handle the file upload for driver image if present
-    $driverImagePath = null;
-    if ($request->hasFile('driver_image')) {
-        $image = $request->file('driver_image');
-        $driverImagePath = 'driver_images/' . time() . '_' . $image->getClientOriginalName();
-        $image->move(public_path('driver_images'), $driverImagePath);
-    }
-
-    // Create a new user
-    $verificationCode = 'GDR-' . Str::random(6);
-
-    $user = $this->create($request->all(), $driverLicensePath, $driverImagePath, $verificationCode);
-    Mail::to($user->email)->send(new VerificationCodeMail($verificationCode));
-
-    // Log in the user
-    Auth::login($user);
-
-    // Pass a success message to the view
-    return redirect()->intended('login')->with('swal', [
-        'title' => 'Registration Successful',
-        'text' => 'In order to continue registration, we have sent a verification code to your email. Please verify your email first.',
-        'icon' => 'success'
-    ]);
-}
 
     // Validate the registration data
     protected function validator(array $data)
@@ -90,11 +117,12 @@ class RegisterController extends Controller
                 'regex:/[0-9]/',
                 'regex:/[@$!%*?&]/',
             ],
-            'role' => 'required|string|in:accounting,courier,admin',
+            'role' => 'required|string|in:accounting,courier,admin,coordinator',
             'driver_license' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'driver_image' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
             'license_number' => 'nullable|string|max:255',
-            'contact_number' => 'nullable|string|max:20',
+            'license_expiration' => 'nullable|string|max:255',
+            'contact_number' => 'nullable|string|max:11',
             'address' => 'nullable|string|max:255',
         ], [
             'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
@@ -112,6 +140,7 @@ class RegisterController extends Controller
             'driver_license' => $driverLicensePath,
             'driver_image' => $driverImagePath,
             'license_number' => $data['license_number'] ?? null,
+            'license_expiration' => $data['license_expiration'] ?? null,
             'contact_number' => $data['contact_number'] ?? null,
             'address' => $data['address'] ?? null,
             'verification_code' => $verificationCode,

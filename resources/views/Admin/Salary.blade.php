@@ -38,6 +38,7 @@
                         <div class="card">
                             <div class="card-body p-0">
                                 <div class="table-responsive--md table-responsive">
+                                    <h4>Updated Driver Salary = Driver Salary - 2% Holding tax</h4>
                                     <table id="adminTable" class="table--light style--two table">
                                         <thead>
                                             <tr>
@@ -45,24 +46,27 @@
                                                 <th>Driver Salary</th>
                                                 <th>Helper Salary</th>
                                                 <th>Rates</th>
-                                                <th>Action</th>
+                                                <th>Updated Driver Salary</th> <!-- New column header -->
+
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($computedSalaries as $id => $salaries)
+                                                @php
+                                                    $driverSalaryWithholdingTax = $salaries['driver_salary'] * 0.98; // Apply 2% withholding tax
+                                                @endphp
                                                 <tr>
                                                     <td>{{ $salaries['delivery_routes'] }}</td>
                                                     <td>₱{{ number_format($salaries['driver_salary'], 2) }}</td>
                                                     <td>₱{{ number_format($salaries['helper_salary'], 2) }}</td>
                                                     <td>₱{{ number_format($salaries['total_salary'], 2) }}</td>
-                                                    <td>
-                                                        <!-- Edit Button -->
-                                                        <!-- Delete Button -->
-                                                    </td>
+                                                    <td>₱{{ number_format($driverSalaryWithholdingTax, 2) }}</td> <!-- New column data -->
+
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
+
                                 </div>
                             </div>
                         </div>

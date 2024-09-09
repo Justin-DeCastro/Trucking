@@ -30,6 +30,10 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\PreventiveController;
 use App\Http\Controllers\RatePerMileController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\TripController;
+use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\ReturnItemsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -78,6 +82,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('depositamounts', [DepositController::class, 'store'])->name('deposit.store');
     Route::post('withdrawamounts', [WithdrawController::class, 'store'])->name('withdraw.store');
     Route::get('loanamount', [LoanController::class, 'loanamount'])->name('loanamount');
+    Route::get('requestbudget', [LoanController::class, 'requestbudget'])->name('requestbudget');
     Route::get('courierdash', [AdminController::class, 'courier_dash'])->name('courierdash');
     Route::get('accountingdash', [AdminController::class, 'accounting_dash'])->name('accountingdash');
     Route::post('accounts', [AccountController::class, 'store'])->name('account.store');
@@ -99,10 +104,13 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('rubix_details', [AdminController::class, 'rubix_details'])->name('rubixdetails');
     Route::get('/details/{id}', [AdminController::class, 'showDetails'])->name('rubixdetails.show');
-
+    Route::get('booking_details', [AdminController::class, 'booking_details'])->name('booking_details');
     Route::get('salary', [AdminController::class, 'salary'])->name('salary');
     Route::get('reference', [AdminController::class, 'reference'])->name('reference');
+    Route::get('reference-form', [AdminController::class, 'reference_form'])->name('reference-form');
     Route::get('admindash', [AdminController::class, 'dashboard'])->name('admindash');
+    Route::get('coordinatordash', [AdminController::class, 'coordinatordash'])->name('coordinatordash');
+    Route::get('coordinatorReturnItems', [AdminController::class, 'coordinatorReturnItems'])->name('coordinatorReturnItems');
     Route::get('adminside', [AdminController::class, 'adminside'])->name('adminside');
     Route::get('managebranch', [AdminController::class, 'managebranch'])->name('managebranch');
     Route::get('branchmanager', [AdminController::class, 'branchmanager'])->name('branchmanager');
@@ -126,6 +134,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
+Route::post('log_action', [AdminController::class, 'logAction'])->name('log_action');
 
 Route::post('loanamount-store', [LoanController::class, 'store'])->name('loan.store');
 //login and register
@@ -186,6 +195,9 @@ Route::get('/booking-count', [BookingController::class, 'getBookingCountByPlateN
 Route::get('/plate-number-counts', [BookingController::class, 'getPlateNumberCounts']);
 Route::get('/admin-overview', [BookingController::class, 'getStatusCounts']);
 Route::get('/driverbooking-count', [BookingController::class, 'getDriverPlateNumberCounts']);
+// In web.php
+Route::post('/log-activity', [ActivityLogController::class, 'logActivity'])->name('log.activity');
+Route::get('/calendar-acc', [AdminController::class, 'calendar_acc'])->name('calendar-acc');
 
 
 
@@ -282,3 +294,22 @@ Route::post('/verify', [VerificationController::class, 'verifyCode'])->name('ver
 Route::post('/loans/{id}/mark-as-paid', [LoanController::class, 'markAsPaid'])->name('loans.markAsPaid');
 Route::post('/loans/{id}/mark-as-unpaid', [LoanController::class, 'markAsUnpaid'])->name('loans.markAsUnpaid');
 Route::post('/upload-proof-of-payment', [RatePerMileController::class, 'uploadProofOfPayment'])->name('upload.proofOfPayment');
+
+// web.php or api.php
+Route::get('/api/getAccountData', [BookingController::class, 'getAccountData']);
+Route::post('/trips', [TripController::class, 'store'])->name('trip.store');
+Route::get('/trips-get', [TripController::class, 'index'])->name('trip.get');
+Route::put('/update/{id}', [TripController::class, 'update'])->name('trip.update');
+
+Route::get('/return-items', [AdminController::class, 'return_items'])->name('return-items');
+Route::post('/return-items-store', [ReturnItemsController::class, 'store'])->name('returns.store');
+// In web.php
+Route::post('/return/approve/{id}', [ReturnItemsController::class, 'approve'])->name('return.approve');
+Route::post('/return/reject/{id}', [ReturnItemsController::class, 'reject'])->name('return.reject');
+Route::get('/calendars', [AdminController::class, 'calendar'])->name('calendars');
+
+Route::post('budget-request', [BudgetController::class, 'store'])->name('budget.request');
+Route::post('/budgets/{id}/approve', [BudgetController::class, 'approve'])->name('budgets.approve');
+Route::post('/budgets/{id}/deny', [BudgetController::class, 'deny'])->name('budgets.deny');
+
+Route::get('request-budget', [AdminController::class, 'requestbudget'])->name('request-budget');

@@ -324,6 +324,65 @@
                         <div class="card">
                             <div class="card-body p-0">
                                 <div class="table-responsive--sm table-responsive">
+<!-- Section for Activity Logs -->
+<div class="container mt-4">
+    <!-- Button to Open Modal -->
+    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#infoModal">
+        View Activity Logs and User Details
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel">Activity Logs and User Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- User Details -->
+                    <div class="user-info mb-4">
+                        @if(auth()->check())
+                            <p><strong class="text-dark">Name:</strong> <span class="text-dark">{{ auth()->user()->name }}</span></p>
+                            <p><strong class="text-dark">Email:</strong> <span class="text-dark">{{ auth()->user()->email }}</span></p>
+                        @else
+                            <p class="text-danger">User not logged in.</p>
+                        @endif
+                        <!-- Add other user details here if needed -->
+                    </div>
+
+                    <!-- Activity Logs -->
+                    <div class="activity-logs">
+                        <h4 class="text-primary mb-3">Activity Logs</h4>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Activity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($activityLogs as $logs)
+                                    <tr>
+                                        <td>{{ $logs->activity }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Existing Table -->
+
+
                                     <table class="table table--light style--two">
                                         <thead>
                                             <tr>
@@ -335,7 +394,9 @@
                                                 <th>Remarks</th>
                                                 <th>Status</th>
                                                 <th>Reference</th>
-                                                <th>Update Status</th> <!-- Moved Update Status column before Actions -->
+                                                <th>Update Status</th>
+                                                <th>Updated By</th> <!-- New column for Updated By -->
+
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -369,10 +430,15 @@
                                                             @endphp
                                                             <button type="submit" id="approveButton" class="btn {{ $buttonClass }}" {{ $isDisabled }}>{{ $buttonText }}</button>
                                                         </form>
-
-
-
-
+                                                    </td>
+                                                    <td>
+                                                        @if ($detail->updater)
+                                                            Approved by: {{ $detail->updater->name }} <!-- Display the name of the user who updated -->
+                                                            <br>
+                                                            Updated on: {{ $detail->updated_at->format('F d, Y g:i A') }} <!-- Display the date of the last update -->
+                                                        @else
+                                                            Not updated
+                                                        @endif
                                                     </td>
 
 
@@ -380,17 +446,16 @@
                                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#waybillModal{{ $detail->id }}">
                                                             <i class="fas fa-print"></i> Print Waybill
                                                         </button>
-
                                                         <!-- Actions Button to trigger modal -->
                                                         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal{{ $detail->id }}">
                                                             <i class="fas fa-eye"></i>
                                                         </button>
                                                     </td>
-
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
+
 
                                 </div>
                             </div>
@@ -866,6 +931,31 @@
         printWindow.print();
     }
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function logActivity(activity) {
+            fetch('{{ route('log.activity') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ activity: activity })
+            });
+        }
+
+        // Capture click events
+        document.body.addEventListener('click', function(event) {
+            let element = event.target;
+            let activity = `Clicked on ${element.tagName} (${element.className}) at ${new Date().toLocaleString()}`;
+            logActivity(activity);
+        });
+
+        // Capture page load or refresh
+        logActivity('Page loaded or refreshed');
+    });
+    </script>
+
 
 
                 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>

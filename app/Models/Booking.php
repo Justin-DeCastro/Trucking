@@ -15,6 +15,7 @@ class Booking extends Model
     // Specify which attributes are mass assignable
     protected $fillable = [
         'sender_name',
+        'trip_ticket',
         'transport_mode',
         'shipping_type',
         'delivery_type',
@@ -37,14 +38,14 @@ class Booking extends Model
         'plate_number',
         'tracking_number',
         'date',
-'order_number',
-'truck_type',
-'qr_code_path',
-'product_name',
-'proof_of_delivery',
-
-
+        'order_number',
+        'truck_type',
+        'qr_code_path',
+        'product_name',
+        'proof_of_delivery',
         'driver_id', // Add this if you have a driver_id field
+        'updated_by',
+        'created_by' // Add the updated_by field
     ];
 
     // Relationship with the User model for the driver
@@ -53,12 +54,60 @@ class Booking extends Model
         return $this->belongsTo(User::class, 'driver_id');
     }
 
+    // Relationship with the User model for the user who updated the record
+    public function updater()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
     public function vehicle()
+    {
+        return $this->belongsTo(Vehicle::class, 'vehicle_id'); // Adjust 'vehicle_id' to the actual foreign key if needed
+    }
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    public function ratePerMile()
+    {
+        return $this->belongsTo(RatePerMile::class, 'plate_number', 'plate_number');
+    }
+    // In Booking.php
+public function activityLogs()
 {
-    return $this->belongsTo(Vehicle::class, 'vehicle_id'); // Adjust 'vehicle_id' to the actual foreign key if needed
+    return $this->hasMany(ActivityLog::class);
 }
-public function ratePerMile()
-{
-    return $this->belongsTo(RatePerMile::class, 'plate_number', 'plate_number');
-}
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($booking) {
+            Logs::create([
+                'booking_id' => $booking->id,
+                'user_id' => auth()->id(),
+                'action' => 'created',
+                'details' => json_encode($booking->getAttributes()),
+            ]);
+        });
+
+        static::updated(function ($booking) {
+            Logs::create([
+                'booking_id' => $booking->id,
+                'user_id' => auth()->id(),
+                'action' => 'updated',
+                'details' => json_encode($booking->getChanges()),
+            ]);
+        });
+    }
+    public function logs()
+    {
+        return $this->hasMany(Logs::class, 'booking_id');
+    }
+    public function booking()
+    {
+        return $this->belongsTo(Booking::class);
+    }
+
+
 }

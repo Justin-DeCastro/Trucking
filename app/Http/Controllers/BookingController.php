@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\Logs;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderStatusUpdated;
@@ -155,6 +155,53 @@ class BookingController extends Controller
             'booking_count' => $bookingCount,
         ]);
     }
+// In your controller
+
+public function getAccountData(Request $request)
+{
+    // Validate the request
+    $request->validate([
+        'account' => 'required|string'
+    ]);
+
+    // Fetch all data based on the selected account
+    $account = $request->query('account');
+    $data = Booking::where('sender_name', $account)->get(); // Use get() to retrieve all matching records
+
+    // Format the data as an array of arrays
+    $formattedData = $data->map(function ($item) {
+        return [
+            'trip_ticket' => $item->trip_ticket,
+            'driver_name' => $item->driver_name,
+            'plate_number' => $item->plate_number,
+            'delivery_type' => $item->delivery_type,
+            'journey_type' => $item->journey_type,
+            'date' => $item->date,
+            'product_name' => $item->product_name,
+
+            'consignee_name' => $item->consignee_name,
+            'consignee_address' => $item->consignee_address,
+            'consignee_email' => $item->consignee_email,
+            'consignee_mobile' => $item->consignee_mobile,
+            'consignee_city' => $item->consignee_city,
+            'consignee_province' => $item->consignee_province,
+            'consignee_barangay' => $item->consignee_barangay,
+            'consignee_building_type' => $item->consignee_building_type,
+            'merchant_name' => $item->merchant_name,
+            'merchant_address' => $item->merchant_address,
+            'merchant_email' => $item->merchant_email,
+            'merchant_mobile' => $item->merchant_mobile,
+            'merchant_city' => $item->merchant_city,
+            'merchant_province' => $item->merchant_province,
+            'truck_type' => $item->truck_type,
+            // Add more fields if necessary
+        ];
+    });
+
+    // Return the data as JSON
+    return response()->json($formattedData);
+}
+
 
 
     // Handle form submission
@@ -162,6 +209,7 @@ class BookingController extends Controller
     {
         // Validate the request
         $validatedData = $request->validate([
+            'trip_ticket' => 'required',
             'sender_name' => 'required|string|max:255',
             'transport_mode' => 'required|string|max:255',
             'product_name' => 'required',
@@ -186,12 +234,14 @@ class BookingController extends Controller
             'plate_number' => 'required|string|max:255',
             'date' => 'required|date',
             'truck_type' => 'required',
-
         ]);
 
         // Generate tracking number
         $trackingNumber = 'GDR-' . strtoupper(uniqid(mt_rand(), true));
         $validatedData['tracking_number'] = $trackingNumber;
+
+        // Add the created_by field with the authenticated user's ID
+        $validatedData['created_by'] = auth()->id();  // This is where you add the created_by field
 
         // Generate order number with the format '2024-(order_number)'
         $currentYear = date('Y'); // Gets the current year
@@ -261,6 +311,7 @@ class BookingController extends Controller
             'orderNumber' => $validatedData['order_number'],
         ]);
     }
+
 
 
 
@@ -389,6 +440,26 @@ class BookingController extends Controller
     // Redirect back with a success message including the driver's name
     return redirect()->back()->with('success', 'Driver ' . $driver->name . ' assigned successfully.');
 }
+public function updateStatus(Request $request, $id)
+{
+    // Validate and update the booking status
+    $booking = Booking::find($id);
+    $booking->update([
+        'order_status' => $request->input('order_status'),
+        'updated_by' => auth()->id(), // Assuming you have an updated_by field
+    ]);
+
+    // Create a new log entry
+    Logs::create([
+        'booking_id' => $booking->id,
+        'user_id' => auth()->id(), // ID of the user performing the action
+        'action' => 'Status updated to ' . $request->input('order_status'),
+        'details' => 'Additional details if any',
+    ]);
+
+    // Redirect or return response
+    return redirect()->back()->with('success', 'Status updated successfully.');
+}
 
 public function updateOrderStatus(Request $request, $id)
 {
@@ -466,8 +537,9 @@ public function updateAdminStatus(Request $request, $id)
     $senderName = $booking->sender_name; // Ensure this field exists in your Booking model
     $trackingNumber = $booking->tracking_number; // Ensure this field exists in your Booking model
 
-    // Update the status
+    // Update the status and the user who updated the booking
     $booking->order_status = $request->input('order_status');
+    $booking->updated_by = auth()->id(); // Set the logged-in user's ID
     $booking->save();
 
     // Send the email notification

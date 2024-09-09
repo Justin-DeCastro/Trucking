@@ -52,17 +52,28 @@
                                 <p style="color: #666; font-size: 16px;">Fill out the form below to arrange for the
                                     transportation of your goods.</p>
                             </div>
-                            <form action="{{ route('booking.submit') }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('booking.submit') }}" method="post" enctype="multipart/form-data" id="myForm">
                                 @csrf
 
                                 <!-- Sender Information -->
                                 <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px;">
-                                    <!-- Top Section: Driver Name and Plate Number -->
+                                    <!-- Top Section: Trip Ticket, Driver Name, and Plate Number -->
                                     <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                                        <!-- Trip Ticket -->
                                         <div style="flex: 1; min-width: 220px;">
-                                            <label for="driver_name"
-                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Driver
-                                                Name</label>
+                                            <label for="trip_ticket" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                                                Trip Ticket
+                                            </label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="trip_ticket" name="trip_ticket" type="text" placeholder="Enter Trip Ticket Number" required>
+                                        </div>
+
+                                        <!-- Driver Name -->
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="driver_name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                                                Driver Name
+                                            </label>
                                             <select id="driver_name" name="driver_name"
                                                 style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);">
                                                 @foreach ($users as $user)
@@ -71,22 +82,35 @@
                                             </select>
                                         </div>
 
+                                        <!-- Plate Number -->
                                         <div style="flex: 1; min-width: 220px;">
-                                            <label for="plate_number"
-                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Plate
-                                                Number</label>
+                                            <label for="plate_number" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                                                Plate Number
+                                            </label>
                                             <input
                                                 style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                id="plate_number" name="plate_number" type="text"
-                                                placeholder="Enter Plate Number" required>
+                                                id="plate_number" name="plate_number" type="text" placeholder="Enter Plate Number" required>
+                                        </div>
+
+                                        <!-- Date -->
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="Date" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Date</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="date" name="date" type="datetime-local" placeholder="Enter Date" required>
                                         </div>
                                         <div style="flex: 1; min-width: 220px;">
-                                            <label for="Date"
-                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Date</label>
-                                            <input
-                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                id="date" name="date" type="datetime-local"
-                                                placeholder="Enter Date" required>
+                                            <label for="accountName"
+    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Account Name</label>
+<select
+    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+    id="accountName" name="sender_name" required>
+    <option value="">Select Account Name</option>
+    <option value="DSWD">DSWD</option>
+    <option value="XDE">XDE</option>
+
+</select>
+
                                         </div>
                                     </div>
                                     <div style="flex: 1; min-width: 220px;">
@@ -98,38 +122,30 @@
                                     </div>
                                     <!-- Bottom Section: Client Name, Transport Mode, Shipping Type -->
                                     <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+
+
                                         <div style="flex: 1; min-width: 220px;">
-                                            <label for="sender_name"
-                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Client
-                                                Name</label>
-                                            <input
-                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                id="sender_name" name="sender_name" type="text"
-                                                placeholder="Enter Sender's Name" required>
+                                            <label for="transport-mode" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                                                Transport Mode
+                                            </label>
+                                            <div id="transport-mode" style="padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);">
+                                                <label style="margin-right: 10px;">
+                                                    <input type="radio" name="transport_mode" value="Land Transport" checked> Land Transport
+                                                </label>
+                                            </div>
                                         </div>
 
                                         <div style="flex: 1; min-width: 220px;">
-                                            <label for="shipping-mode"
-                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Transport
-                                                Mode</label>
-                                            <select id="shipping-mode" name="transport_mode"
-                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);">
-                                                <option value="Air Transport">Air Transport </option>
-                                                <option value="Water Transport">Water Transport</option>
-                                                <option value="Land Transport">Land Transport</option>
-                                            </select>
+                                            <label for="shipping-type" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                                                Shipping Type
+                                            </label>
+                                            <div id="shipping-type" style="padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);">
+                                                <label style="margin-right: 10px;">
+                                                    <input type="radio" name="shipping_type" value="road" checked> Road Transport
+                                                </label>
+                                            </div>
                                         </div>
-                                        <div style="flex: 1; min-width: 220px;">
-                                            <label for="shipping-mode"
-                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Shipping
-                                                Type</label>
-                                            <select id="shipping-mode" name="shipping_type"
-                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);">
-                                                <option value="air">Air Freight</option>
-                                                <option value="sea">Sea Freight</option>
-                                                <option value="road">Road Transport</option>
-                                            </select>
-                                        </div>
+
 
                                     </div>
                                 </div>
@@ -137,26 +153,28 @@
 
                                 <!-- Item List and Weight -->
                                 <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
+                                    <!-- Delivery Type Dropdown -->
                                     <div style="flex: 1; min-width: 220px;">
-                                        <label for="pickup-address"
-                                            style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Delivery
-                                            Type</label>
-                                        <input
-                                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                            id="delivery_type" name="delivery_type" type="text"
-                                            placeholder="Enter delivery type" required>
+                                        <label for="delivery_type" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Delivery Type</label>
+                                        <select style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="delivery_type" name="delivery_type" required>
+                                            <option value="">Select delivery type</option>
+                                            <option value="Direct Delivery">Direct Delivery</option>
+                                            <option value="Warehouse Transfer">Warehouse Transfer</option>
+                                            <option value="Backload">Backload</option>
+                                        </select>
                                     </div>
 
+                                    <!-- Journey Type Dropdown -->
                                     <div style="flex: 1; min-width: 220px;">
-                                        <label for="quantity"
-                                            style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Journey
-                                            Type</label>
-                                        <input
-                                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                            id="journey_type" name="journey_type" type="text"
-                                            placeholder="Enter journey type" required>
+                                        <label for="journey_type" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Journey Type</label>
+                                        <select style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="journey_type" name="journey_type" required>
+                                            <option value="">Select journey type</option>
+                                            <option value="Interisland">Interisland</option>
+                                            <option value="Local">Local</option>
+                                        </select>
                                     </div>
                                 </div>
+
 
                                 <div style="margin-bottom: 40px;">
                                     <h4 style="color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">
@@ -668,6 +686,53 @@
             }, 500);
         }
     </script>
+    <script>
+        document.getElementById('accountName').addEventListener('change', function() {
+            var account = this.value;
+
+            if (account) {
+                // Fetch data based on the selected account
+                fetch(`/api/getAccountData?account=${account}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Clear previous entries
+                        var form = document.getElementById('myForm');
+
+                        // Populate form fields for each entry
+                        data.forEach(item => {
+                            // Set values for various fields
+                            document.getElementById('trip_ticket').value = item.trip_ticket || '';
+                            document.getElementById('driver_name').value = item.driver_name || '';
+                            document.getElementById('plate_number').value = item.plate_number || '';
+                            document.getElementById('date').value = item.date || '';
+                            document.getElementById('product_name').value = item.product_name || '';
+                            document.getElementById('delivery_type').value = item.delivery_type || '';
+                            document.getElementById('journey_type').value = item.journey_type || '';
+                            // Populate other fields similarly
+
+                            document.getElementById('consignee_name').value = item.consignee_name || '';
+                            document.getElementById('consignee_address').value = item.consignee_address || '';
+                            document.getElementById('consignee_email').value = item.consignee_email || '';
+                            document.getElementById('consignee_mobile').value = item.consignee_mobile || '';
+                            document.getElementById('consignee_city').value = item.consignee_city || '';
+                            document.getElementById('consignee_province').value = item.consignee_province || '';
+                            document.getElementById('consignee_barangay').value = item.consignee_barangay || '';
+                            document.getElementById('consignee_building_type').value = item.consignee_building_type || '';
+                            document.getElementById('merchant_name').value = item.merchant_name || '';
+                            document.getElementById('merchant_address').value = item.merchant_address || '';
+                            document.getElementById('merchant_email').value = item.merchant_email || '';
+                            document.getElementById('merchant_mobile').value = item.merchant_mobile || '';
+                            document.getElementById('merchant_city').value = item.merchant_city || '';
+                            document.getElementById('merchant_province').value = item.merchant_province || '';
+                            document.getElementById('truck_type').value = item.truck_type || '';
+                            // Populate other fields similarly
+                        });
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+            }
+        });
+        </script>
+
     <script>
         "use strict";
         var routes = [{

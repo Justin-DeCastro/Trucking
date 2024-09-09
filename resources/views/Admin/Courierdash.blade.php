@@ -41,6 +41,14 @@
                             </a>
                         </li>
 
+                        <li class="sidebar-menu-item ">
+                            <a href="return-items" class="nav-link ">
+                                <i class="menu-icon fas fa-clipboard-list"></i>
+
+                                <span class="menu-title">Return Items</span>
+                            </a>
+                        </li>
+
 
 
 

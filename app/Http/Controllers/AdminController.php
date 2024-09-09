@@ -13,6 +13,10 @@ use App\Models\PricingSalary;
 use App\Models\Preventive;
 use App\Models\Feedback;
 use App\Models\RatePerMile;
+use App\Models\ActivityLog;
+use App\Models\Loan;
+use App\Models\ReturnItem;
+use App\Models\Budget;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +35,12 @@ class AdminController extends Controller
 
 
         $todayBookings = Booking::whereDate('created_at', $today)->count();
+        $today = now()->toDateString(); // Ensure $today is in the correct format
+
+        $outboundTruck = Booking::whereIn('status', ['For_Pick-up', 'First_delivery_attempt', 'In_Transit'])
+        ->count();
+        $inboundTruck = Booking::whereIn('status', ['Delivery_successful'])
+        ->count();
 
 
         $deliverySuccessfulCount = Booking::where('status', 'Delivery successful')->count();
@@ -39,13 +49,25 @@ class AdminController extends Controller
         $totalAvailableTrucks = Vehicle::sum('quantity');
         $totalCouriers = User::where('role', 'courier')->count();
 
-        return view('Admin.dashboard', compact('totalBookings', 'todayBookings', 'formattedDate', 'deliverySuccessfulCount', 'totalAvailableTrucks','totalCouriers'));
+        return view('Admin.dashboard', compact('totalBookings','outboundTruck','inboundTruck', 'todayBookings', 'formattedDate', 'deliverySuccessfulCount', 'totalAvailableTrucks','totalCouriers'));
     }
 
      public function waybill(){
         $vehicles = Vehicle::all();
         return view('Admin.Waybill',compact('vehicles'));
     }
+    public function requestbudget()
+    {
+        // Get the currently authenticated user
+        $user = auth()->id();
+
+        // Fetch all budget details
+        $budgets = Budget::all();
+
+        // Pass the data to the view
+        return view('Accounting.AdminRequest', compact('budgets', 'user'));
+    }
+
     public function showDetails($id)
     {
         $detail = Booking::findOrFail($id); // Fetch the record based on the ID
@@ -53,10 +75,53 @@ class AdminController extends Controller
         return view('Admin.show', compact('detail'));
     }
     public function rubix_details()
+{
+    // Get the currently authenticated user
+    $user = auth()->user();
+    $userId = $user ? $user->id : null;
+
+    // Fetch all booking details
+    $rubixdetails = Booking::all();
+
+    // Fetch activity logs related to the currently authenticated user
+    $activityLogs = ActivityLog::where('user_id', $userId)->get();
+
+    // Log the user's activity
+    if ($user) {
+        ActivityLog::log($user->id, 'Viewed rubix details page');
+    }
+
+    // Fetch all activity logs for the booking model (if needed)
+    $activity_logs = Booking::with('activityLogs')->get();
+
+    // Pass the data to the view
+    return view('Admin.rubix_details', compact('rubixdetails', 'activityLogs', 'activity_logs'));
+}
+
+
+    public function logStatusUpdate(Request $request, $id)
+{
+    $detail = Booking::findOrFail($id);
+
+    // Update the status
+    $detail->order_status = $request->input('order_status');
+    $detail->save();
+
+    // Log the activity
+    ActivityLog::create([
+        'user_id' => auth()->id(),
+        'action' => 'updated',
+        'description' => 'Updated order status to ' . $request->input('order_status') . ' for tracking number ' . $detail->tracking_number,
+    ]);
+
+    return redirect()->back()->with('success', 'Status updated successfully!');
+}
+
+    public function booking_details()
     {
         $rubixdetails = Booking::all();
 
-        return view('Admin.rubix_details', compact('rubixdetails'));
+        return view('Admin.booking_details', compact('rubixdetails'));
     }
     public function create_driver()
     {
@@ -64,6 +129,25 @@ class AdminController extends Controller
 
         return view('Admin.createDriver', compact('rubixdetails'));
     }
+
+    public function return_items()
+    {
+        // Get the ID of the currently logged-in user
+        $currentUserId = auth()->id();
+
+        // Fetch return items and include the driver relation
+        $returnItems = ReturnItem::with('driver')->get();
+
+        // Fetch the logged-in user only if they are a 'courier'
+        $currentDriver = User::where('id', $currentUserId)->where('role', 'courier')->first();
+
+        // Pass the current driver's name to the view
+        return view('Admin.ReturnItems', [
+            'returnItems' => $returnItems,
+            'currentDriverName' => $currentDriver ? $currentDriver->name : 'No driver'
+        ]);
+    }
+
     public function showMap()
 {
     // Fetch a specific booking or relevant data
@@ -85,6 +169,11 @@ class AdminController extends Controller
         $vehicles = Vehicle::where('truck_status', 'Available')->get();
         $users = User::where('role', 'courier')->get();
         return view('Admin.ReferenceForm',compact('users','vehicles'));
+    }
+    public function reference_form(){
+        $vehicles = Vehicle::where('truck_status', 'Available')->get();
+        $users = User::where('role', 'courier')->get();
+        return view('Admin.reference-form',compact('users','vehicles'));
     }
     public function managebranch(){
         $branches = ManageBranch::all();
@@ -130,6 +219,24 @@ class AdminController extends Controller
     }
     public function courier_dash(){
         return view('Admin.Courierdash');
+    }
+    public function coordinatordash(){
+        return view('Admin.Coordinatordash');
+    }
+    public function coordinatorReturnItems(){
+        $currentUserId = auth()->id();
+
+        // Fetch return items and include the driver relation
+        $returnItems = ReturnItem::with('driver')->get();
+
+        // Fetch the logged-in user only if they are a 'courier'
+        $currentDriver = User::where('id', $currentUserId)->where('role', 'courier')->first();
+
+        // Pass the current driver's name to the view
+        return view('Admin.CoordinatorReturnItems', [
+            'returnItems' => $returnItems,
+            'currentDriverName' => $currentDriver ? $currentDriver->name : 'No driver'
+        ]);
     }
     public function accounting_dash()
 {
@@ -309,6 +416,15 @@ public function rateperyear(Request $request)
         'monthlyTotals' => $monthlyTotals,
         'yearlyTotal' => $yearlyTotal,
     ]);
+}
+public function calendar(){
+    $interviews = Booking::all();
+    return view('admin.calendar',compact('interviews'));
+ }
+ public function calendar_acc() {
+    $interviews = Booking::all(); // Assuming you need this as well
+    $loans = Loan::where('status', 'Unpaid')->get(); // Fetch only loans with pending status
+    return view('admin.Calendar-acc', compact('interviews', 'loans'));
 }
 
 }

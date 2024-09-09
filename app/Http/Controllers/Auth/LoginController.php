@@ -40,6 +40,9 @@ class LoginController extends Controller
                 } elseif ($user->isAccounting()) {
                     return redirect()->intended('accountingdash');
                 }
+                    elseif ($user->isCoordinator()) {
+                        return redirect()->intended('coordinatordash');
+                }
 
                 // Redirect to a default route if no specific role is found
                 return redirect()->intended('home');

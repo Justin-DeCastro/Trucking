@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Include SweetAlert2 CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
-<!-- Include SweetAlert2 JS -->
-
-
+    <!-- Include MDB UI Kit CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css">
-    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> --}}
+
     <title>Register</title>
     <style>
         .divider:after,
@@ -76,8 +74,7 @@
         <div class="container py-5 h-100">
             <div class="row d-flex align-items-center justify-content-center h-100">
                 <div class="col-md-8 col-lg-7 col-xl-6">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-                        class="img-fluid" alt="Phone image">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" class="img-fluid" alt="Phone image">
                 </div>
                 <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
                     <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
@@ -121,8 +118,9 @@
                             <select id="formRole" name="role" class="form-control form-control-lg" required>
                                 <option value="" disabled selected>Select your role</option>
                                 <option value="accounting">Accounting</option>
-                                <option value="courier">Courier</option>
                                 <option value="admin">Admin</option>
+                                <option value="coordinator">Coordinator</option>
+                                <option value="courier">Courier</option>
                             </select>
                             <label class="form-label" for="formRole">Role</label>
                             @error('role')
@@ -205,16 +203,14 @@
             }
         });
     </script>
- @if (session('swal'))
- <script>
-     Swal.fire({
-         title: "{{ session('swal.title') }}",
-         text: "{{ session('swal.text') }}",
-         icon: "{{ session('swal.icon') }}"
-     });
- </script>
-@endif
-
-
+    @if (session('swal'))
+    <script>
+        Swal.fire({
+            title: "{{ session('swal.title') }}",
+            text: "{{ session('swal.text') }}",
+            icon: "{{ session('swal.icon') }}"
+        });
+    </script>
+    @endif
 </body>
 </html>

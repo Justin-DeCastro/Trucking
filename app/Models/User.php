@@ -27,6 +27,7 @@ class User extends Authenticatable
         'address',
         'plate_number',        // New field
         'driver_image',
+        'license_expiration',
         'verification_code', 'is_verified',
     ];
 
@@ -70,6 +71,15 @@ class User extends Authenticatable
     {
         return $this->hasRole('admin');
     }
+    public function bookingsUpdated()
+    {
+        return $this->hasMany(Booking::class, 'updated_by');
+    }
+// Add this method to check if the user is a coordinator
+public function isCoordinator()
+{
+    return $this->hasRole('coordinator');
+}
 
     /**
      * Check if the user is a courier.
@@ -97,6 +107,10 @@ class User extends Authenticatable
     public function bookings()
     {
         return $this->hasMany(Booking::class, 'driver_id');
+    }
+    public function createdBookings()
+    {
+        return $this->hasMany(Booking::class, 'created_by');
     }
     public function courier()
     {

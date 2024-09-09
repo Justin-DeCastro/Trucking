@@ -51,6 +51,18 @@
                         <span class="menu-title">PMS</span>
                     </a>
                 </li>
+                <li class="sidebar-menu-item">
+                    <a href="calendar-acc" class="nav-link">
+                        <i class="fas fa-calendar menu-icon"></i>
+                        <span class="menu-title">Calendar</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="requestbudget" class="nav-link">
+                        <i class="fas fa-calendar menu-icon"></i>
+                        <span class="menu-title">Request Budget</span>
+                    </a>
+                </li>
 
 
             </ul>

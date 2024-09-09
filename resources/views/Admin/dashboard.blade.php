@@ -100,7 +100,7 @@
 
                 <div class="row gy-4">
                     <div class="col-xxl-3 col-sm-6">
-                        <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=0">
+                        <a href="">
                             <div class="widget-seven bg--purple  outline ">
                                 <div class="widget-seven__content">
                                     <span class="widget-seven__content-icon">
@@ -122,7 +122,7 @@
                         </a>
                     </div>
                     <div class="col-xxl-3 col-sm-6">
-                        <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=1">
+                        <a href="">
                             <div class="widget-seven bg--green  outline ">
                                 <div class="widget-seven__content">
                                     <span class="widget-seven__content-icon">
@@ -144,7 +144,7 @@
                         </a>
                     </div>
                     <div class="col-xxl-3 col-sm-6">
-                        <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=2">
+                        <a href="">
                             <div class="widget-seven bg--deep-purple  outline ">
                                 <div class="widget-seven__content">
                                     <span class="widget-seven__content-icon">
@@ -164,7 +164,7 @@
                         </a>
                     </div>
                     <div class="col-xxl-3 col-sm-6">
-                        <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=2">
+                        <a href="">
                             <div class="widget-seven bg--deep-purple  outline ">
                                 <div class="widget-seven__content">
                                     <span class="widget-seven__content-icon">
@@ -184,7 +184,7 @@
                         </a>
                     </div>
                     <div class="col-xxl-3 col-sm-6">
-                        <a href="https://script.viserlab.com/courierlab/demo/admin/courier/list?status=2">
+                        <a href="">
                             <div class="widget-seven bg--deep-purple  outline ">
                                 <div class="widget-seven__content">
                                     <span class="widget-seven__content-icon">
@@ -196,6 +196,46 @@
                                     <div class="widget-seven__description">
                                         <p class="widget-seven__content-title">Total Drivers</p>
                                         <h3 class="widget-seven__content-amount">{{ $totalCouriers }}</h3>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xxl-3 col-sm-6">
+                        <a href="">
+                            <div class="widget-seven bg--deep-purple  outline ">
+                                <div class="widget-seven__content">
+                                    <span class="widget-seven__content-icon">
+                                        <span class="icon">
+                                            <i class="fas fa-car"></i>
+
+                                        </span>
+                                    </span>
+                                    <div class="widget-seven__description">
+                                        <p class="widget-seven__content-title">Outbound Truck</p>
+                                        <h3 class="widget-seven__content-amount">{{ $outboundTruck }}</h3>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xxl-3 col-sm-6">
+                        <a href="">
+                            <div class="widget-seven bg--deep-purple  outline ">
+                                <div class="widget-seven__content">
+                                    <span class="widget-seven__content-icon">
+                                        <span class="icon">
+                                            <i class="fas fa-car"></i>
+
+                                        </span>
+                                    </span>
+                                    <div class="widget-seven__description">
+                                        <p class="widget-seven__content-title">Inbound Truck</p>
+                                        <h3 class="widget-seven__content-amount">{{ $inboundTruck }}</h3>
                                     </div>
                                 </div>
 

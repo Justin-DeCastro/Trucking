@@ -116,7 +116,7 @@
                     <li class="sidebar-menu-item <?php echo $currentPage == 'rubix_details' ? 'active' : ''; ?>">
                         <a href="rubix_details" class="nav-link ">
                             <i class="fa fa-info menu-icon"></i>
-                            <span class="menu-title">Waybill Details</span>
+                            <span class="menu-title">Booking History</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item sidebar-dropdown <?php echo in_array($currentPage, ['managebranch', 'branchmanager', 'branchincome']) ? 'active' : ''; ?>">
@@ -184,6 +184,18 @@
                         <a href="feedback" class="nav-link ">
                             <i class="fas fa-message"></i>
                             <span class="menu-title" style = "padding-left: 17px">Customer Feedback</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item <?php echo $currentPage == 'calendars' ? 'active' : ''; ?>">
+                        <a href="calendars" class="nav-link ">
+                            <i class="fas fa-calendar"></i>
+                            <span class="menu-title" style = "padding-left: 17px">Calendar</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item <?php echo $currentPage == 'request-budget' ? 'active' : ''; ?>">
+                        <a href="request-budget" class="nav-link ">
+                            <i class="fas fa-calendar"></i>
+                            <span class="menu-title" style = "padding-left: 17px">Request Budget</span>
                         </a>
                     </li>
                 </ul>
