@@ -210,16 +210,16 @@
                                     <!-- Driver's License Number -->
                                     <div class="form-outline">
                                         <label class="form-label" for="form1Example10">Driver's License Number</label>
-                                        <input type="text" id="form1Example10" name="license_expiration"
+                                        <input type="text" id="form1Example10" name="license_number"
                                             class="form-control form-control-lg" />
 
-                                        @error('license_expiration')
+                                        @error('license_number')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-outline">
                                         <label class="form-label" for="form1Example7">License Expiration Date</label>
-                                        <input type="text" id="form1Example7" name="license_number"
+                                        <input type="date" id="form1Example7" name="license_expiration"
                                             class="form-control form-control-lg" />
 
                                         @error('license_number')

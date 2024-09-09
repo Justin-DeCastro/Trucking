@@ -210,9 +210,12 @@ public function getAccountData(Request $request)
         // Validate the request
         $validatedData = $request->validate([
             'trip_ticket' => 'required',
+            'driver_name' => 'required|string|max:255',
+            'plate_number' => 'required|string|max:255',
+            'date' => 'required|date',
             'sender_name' => 'required|string|max:255',
+            'product_name' => 'required|string|max:255',
             'transport_mode' => 'required|string|max:255',
-            'product_name' => 'required',
             'shipping_type' => 'required|string|max:255',
             'delivery_type' => 'required|string|max:255',
             'journey_type' => 'required|string|max:255',
@@ -230,9 +233,6 @@ public function getAccountData(Request $request)
             'merchant_mobile' => 'required|string|max:255',
             'merchant_city' => 'required|string|max:255',
             'merchant_province' => 'required|string|max:255',
-            'driver_name' => 'required|string|max:255',
-            'plate_number' => 'required|string|max:255',
-            'date' => 'required|date',
             'truck_type' => 'required',
         ]);
 
@@ -241,7 +241,7 @@ public function getAccountData(Request $request)
         $validatedData['tracking_number'] = $trackingNumber;
 
         // Add the created_by field with the authenticated user's ID
-        $validatedData['created_by'] = auth()->id();  // This is where you add the created_by field
+        $validatedData['created_by'] = auth()->id();
 
         // Generate order number with the format '2024-(order_number)'
         $currentYear = date('Y'); // Gets the current year
@@ -311,6 +311,7 @@ public function getAccountData(Request $request)
             'orderNumber' => $validatedData['order_number'],
         ]);
     }
+
 
 
 

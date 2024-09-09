@@ -165,6 +165,12 @@
 
                     <div class="sidebar__menu-wrapper">
                         <ul class="sidebar__menu">
+                            <li class="sidebar-menu-item ">
+                                <a href="courierdash" class="nav-link ">
+                                    <i class="menu-icon fas fa-clipboard-list"></i>
+                                    <span class="menu-title">Courier Dashboard</span>
+                                </a>
+                            </li>
                             <li class="sidebar-menu-item">
                                 <a href="order-for-courier" class="nav-link">
                                     <i class="fa-solid fa-boxes-stacked"></i>
@@ -177,6 +183,12 @@
                                 <i class="menu-icon fas fa-clipboard-list"></i>
 
                                 <span class="menu-title">Return Items</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a href="delay" class="nav-link">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                                <span class="menu-title" style="padding-left: 17px">Delay Report</span>
                             </a>
                         </li>
                         </ul>

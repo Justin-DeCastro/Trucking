@@ -34,6 +34,8 @@ use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\ReturnItemsController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\DelayReportController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -313,3 +315,6 @@ Route::post('/budgets/{id}/approve', [BudgetController::class, 'approve'])->name
 Route::post('/budgets/{id}/deny', [BudgetController::class, 'deny'])->name('budgets.deny');
 
 Route::get('request-budget', [AdminController::class, 'requestbudget'])->name('request-budget');
+Route::post('/locations', [LocationController::class, 'store'])->name('locations.store');
+Route::get('/delay', [DelayReportController::class, 'create'])->name('delay');
+Route::post('/delay/submit', [DelayReportController::class, 'store'])->name('delay.submit');

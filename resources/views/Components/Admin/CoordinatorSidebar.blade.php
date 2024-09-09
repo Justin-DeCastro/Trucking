@@ -77,8 +77,8 @@
             ?>
             <div class="sidebar__menu-wrapper">
                 <ul class="sidebar__menu">
-                    <li class="sidebar-menu-item <?php echo $currentPage == 'admindash' ? 'active' : ''; ?>">
-                        <a href="admindash" class="nav-link ">
+                    <li class="sidebar-menu-item <?php echo $currentPage == 'coordinatordash' ? 'active' : ''; ?>">
+                        <a href="coordinatordash" class="nav-link ">
                             <i class="fa fa-home menu-icon"></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
@@ -108,6 +108,7 @@
                             <span class="menu-title">Return Items</span>
                         </a>
                     </li>
+
 
 
                 </ul>

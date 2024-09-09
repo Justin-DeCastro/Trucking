@@ -78,32 +78,32 @@ public function activityLogs()
     return $this->hasMany(ActivityLog::class);
 }
 
-    public static function boot()
-    {
-        parent::boot();
+    // public static function boot()
+    // {
+    //     parent::boot();
 
-        static::created(function ($booking) {
-            Logs::create([
-                'booking_id' => $booking->id,
-                'user_id' => auth()->id(),
-                'action' => 'created',
-                'details' => json_encode($booking->getAttributes()),
-            ]);
-        });
+    //     static::created(function ($booking) {
+    //         Logs::create([
+    //             'booking_id' => $booking->id,
+    //             'user_id' => auth()->id(),
+    //             'action' => 'created',
+    //             'details' => json_encode($booking->getAttributes()),
+    //         ]);
+    //     });
 
-        static::updated(function ($booking) {
-            Logs::create([
-                'booking_id' => $booking->id,
-                'user_id' => auth()->id(),
-                'action' => 'updated',
-                'details' => json_encode($booking->getChanges()),
-            ]);
-        });
-    }
-    public function logs()
-    {
-        return $this->hasMany(Logs::class, 'booking_id');
-    }
+    //     static::updated(function ($booking) {
+    //         Logs::create([
+    //             'booking_id' => $booking->id,
+    //             'user_id' => auth()->id(),
+    //             'action' => 'updated',
+    //             'details' => json_encode($booking->getChanges()),
+    //         ]);
+    //     });
+    // }
+    // public function logs()
+    // {
+    //     return $this->hasMany(Logs::class, 'booking_id');
+    // }
     public function booking()
     {
         return $this->belongsTo(Booking::class);

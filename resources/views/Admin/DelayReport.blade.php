@@ -191,7 +191,6 @@
                                     <span class="menu-title" style="padding-left: 17px">Delay Report</span>
                                 </a>
                             </li>
-
                         </ul>
 
                     </div>
@@ -228,131 +227,120 @@
                 <div class="body-wrapper">
                     <div class="bodywrapper__inner">
                         <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                            <h6 class="page-title p-2">Return Information</h6>
+                            <h6 class="page-title p-2">Delay Report</h6>
                             <div
                                 class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
                             </div>
                         </div>
 
 
-                        <div class="card">
-                            <div class="card-body p-0">
-                                <div class="d-flex justify-content-end p-2">
-                                    <!-- Button to trigger modal -->
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#addReturnModal">
-                                        Add Return Item
-                                    </button>
-                                </div>
-                                <div class="table-responsive--sm table-responsive">
-                                    <div class="table-responsive--sm table-responsive">
-                                        <table id="returnTable" class="table table--light style--two">
-                                            <thead>
-                                                <tr>
-                                                    <th>Return Date</th>
-                                                    <th>Product Name</th>
-                                                    <th>Return Reason</th>
-                                                    <th>Return Quantity</th>
-                                                    <th>Condition</th>
-                                                    <th>Driver Name</th>
-                                                    <th>Return Status</th>
-                                                    <th>Proof of Return</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($returnItems as $return)
-                                                    <tr>
-                                                        <td>{{ $return->return_date }}</td>
-                                                        <td>{{ $return->product_name }}</td>
-                                                        <td>{{ $return->return_reason }}</td>
-                                                        <td>{{ $return->return_quantity }}</td>
-                                                        <td>{{ $return->condition }}</td>
-                                                        <td>{{ $currentDriverName }}</td>
-                                                        <td>{{ $return->status }}</td>
-                                                        <td>
-                                                            @if($return->proof_of_return)
-                                                                <img src="{{ asset('storage/proofs/' . $return->proof_of_return) }}" alt="Proof of Return" style="max-width: 100px; max-height: 100px; object-fit: cover;">
-                                                            @else
-                                                                No Image
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            <!-- Approve Form -->
-                                                            <form action="{{ route('return.approve', $return->id) }}" method="POST" style="display:inline;">
-                                                                @csrf
-                                                                <button type="submit" class="btn btn-success btn-sm">Approve</button>
-                                                            </form>
 
-                                                            <!-- Reject Form -->
-                                                            <form action="{{ route('return.reject', $return->id) }}" method="POST" style="display:inline;">
-                                                                @csrf
-                                                                <button type="submit" class="btn btn-danger btn-sm">Reject</button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
 
-                                </div>
-                            </div>
-                        </div>
+    <section style="padding: 60px 0;">
+        <div
+            style="max-width: 900px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h3 style="margin-top: 0; color: #333; font-size: 28px; font-weight: bold;">Booking Form
+                </h3>
+                <p style="color: #666; font-size: 16px;">Fill out the form below to arrange for the
+                    transportation of your goods.</p>
+            </div>
+            @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+        <form action="{{ route('delay.submit') }}" method="post" enctype="multipart/form-data" id="myForm">
+            @csrf
+
+            <!-- Delay Report Information -->
+            <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px;">
+                <!-- Top Section: Trip Ticket, Driver Name, Plate Number -->
+                <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                    <!-- Trip Ticket -->
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="trip_ticket" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                            Trip Ticket
+                        </label>
+                        <input
+                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                            id="trip_ticket" name="trip_ticket" type="text" placeholder="Enter Trip Ticket Number" required>
+                    </div>
+
+                    <!-- Driver Name (Read-only) -->
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="driver_name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                            Driver Name
+                        </label>
+                        <input
+                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                            id="driver_name" name="driver_name" type="text" value="{{ auth()->user()->name }}" readonly>
+                    </div>
+
+                    <!-- Plate Number -->
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="plate_number" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                            Plate Number
+                        </label>
+                        <input
+                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                            id="plate_number" name="plate_number" type="text" placeholder="Enter Plate Number" required>
+                    </div>
+
+                    <!-- Date -->
+                    <div style="flex: 1; min-width: 220px;">
+                        <label for="date" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Date</label>
+                        <input
+                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                            id="date" name="date" type="datetime-local" placeholder="Enter Date" required>
                     </div>
                 </div>
 
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal for Adding Return Items -->
-    <div class="modal fade" id="addReturnModal" tabindex="-1" aria-labelledby="addReturnModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addReturnModalLabel">Add Return Item</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <!-- Delay Details -->
+                <!-- Delay Duration -->
+                <div style="flex: 1; min-width: 220px;">
+                    <label for="delay_duration" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                        Delay Duration
+                    </label>
+                    <input
+                        style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                        id="delay_duration" name="delay_duration" type="text" placeholder="Enter Delay Duration (e.g., 2 hours)" required>
                 </div>
-                <div class="modal-body">
-                    <!-- Form to Add Return Item -->
-                    <form action="{{ route('returns.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="return_date" class="form-label">Return Date</label>
-                            <input type="date" class="form-control" id="return_date" name="return_date" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="product_name" class="form-label">Product Name</label>
-                            <input type="text" class="form-control" id="product_name" name="product_name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="return_reason" class="form-label">Return Reason</label>
-                            <textarea class="form-control" id="return_reason" name="return_reason" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="return_quantity" class="form-label">Return Quantity</label>
-                            <input type="number" class="form-control" id="return_quantity" name="return_quantity" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="condition" class="form-label">Condition</label>
-                            <input type="text" class="form-control" id="condition" name="condition" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="driver_name" class="form-label">Driver Name</label>
-                            <input type="text" class="form-control" id="driver_name" name="driver_name" value="{{ $currentDriverName }}" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="proof_of_return" class="form-label">Proof of Return (Image/PDF)</label>
-                            <input type="file" class="form-control" id="proof_of_return" name="proof_of_return" accept=".jpg,.png,.pdf" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
 
+                <!-- Cause of Delay -->
+                <div style="flex: 1; min-width: 220px;">
+                    <label for="delay_cause" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                        Cause of Delay
+                    </label>
+                    <textarea id="delay_cause" name="delay_cause" rows="4" placeholder="Enter Cause of Delay"
+                        style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"></textarea>
+                </div>
+
+                <!-- Additional Notes -->
+                <div style="flex: 1; min-width: 220px;">
+                    <label for="additional_notes" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                        Additional Notes
+                    </label>
+                    <textarea id="additional_notes" name="additional_notes" rows="4" placeholder="Enter any additional notes"
+                        style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <div style="margin-top: 20px;">
+                    <button type="submit" style="padding: 12px 20px; border-radius: 6px; border: none; background-color: #007bff; color: #fff; font-weight: bold; cursor: pointer;">
+                        Submit
+                    </button>
                 </div>
             </div>
-        </div>
+        </form>
+
+
+
     </div>
+
+
+
+        </div>
+    </section>
 
     @include('Components.Admin.Footer')
 

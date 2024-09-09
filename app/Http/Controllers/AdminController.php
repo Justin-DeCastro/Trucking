@@ -17,6 +17,8 @@ use App\Models\ActivityLog;
 use App\Models\Loan;
 use App\Models\ReturnItem;
 use App\Models\Budget;
+use App\Models\Location;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -25,32 +27,79 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
     public function dashboard()
-    {
-        // Count the total number of bookings
-        $totalBookings = Booking::count();
+{
+    // Get the current logged-in user ID
+    $currentUserId = auth()->id();
 
+    // Count the total number of bookings
+    $totalBookings = Booking::count();
 
-        $today = Carbon::today();
-        $formattedDate = $today->format('F j, Y');
+    $today = Carbon::today();
+    $formattedDate = $today->format('F j, Y');
 
+    $todayBookings = Booking::whereDate('created_at', $today)->count();
 
-        $todayBookings = Booking::whereDate('created_at', $today)->count();
-        $today = now()->toDateString(); // Ensure $today is in the correct format
+    $outboundTruck = Booking::whereIn('status', ['For_Pick-up', 'First_delivery_attempt', 'In_Transit'])->count();
+    $inboundTruck = Booking::whereIn('status', ['Delivery_successful'])->count();
 
-        $outboundTruck = Booking::whereIn('status', ['For_Pick-up', 'First_delivery_attempt', 'In_Transit'])
-        ->count();
-        $inboundTruck = Booking::whereIn('status', ['Delivery_successful'])
-        ->count();
+    $deliverySuccessfulCount = Booking::where('status', 'Delivery successful')->count();
 
+    $totalAvailableTrucks = Vehicle::sum('quantity');
+    $totalCouriers = User::where('role', 'courier')->count();
 
-        $deliverySuccessfulCount = Booking::where('status', 'Delivery successful')->count();
+    // Get couriers' license expiration dates
+    $couriers = User::where('role', 'courier')->get(['name', 'license_expiration']);
 
+    // Fetch the latest location for each user
+    $latestLocations = Location::select('user_id', 'latitude', 'longitude')
+        ->whereIn('id', function ($query) {
+            $query->selectRaw('MAX(id)')
+                ->from('locations')
+                ->groupBy('user_id');
+        })
+        ->get();
 
-        $totalAvailableTrucks = Vehicle::sum('quantity');
-        $totalCouriers = User::where('role', 'courier')->count();
+    // Define your Google Maps API key
+    $apiKey = 'AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4';
 
-        return view('Admin.dashboard', compact('totalBookings','outboundTruck','inboundTruck', 'todayBookings', 'formattedDate', 'deliverySuccessfulCount', 'totalAvailableTrucks','totalCouriers'));
+    // Initialize an empty array to store the locations with addresses
+    $locationsWithAddresses = [];
+
+    foreach ($latestLocations as $location) {
+        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
+            'latlng' => "{$location->latitude},{$location->longitude}",
+            'key' => $apiKey
+        ]);
+
+        $data = $response->json();
+
+        // Extract address from the API response
+        $address = $data['results'][0]['formatted_address'] ?? 'Address not found';
+
+        // Get the user's name
+        $user = User::find($location->user_id);
+
+        $locationsWithAddresses[] = [
+            'latitude' => $location->latitude,
+            'longitude' => $location->longitude,
+            'address' => $address,
+            'creator' => $user ? $user->name : 'Unknown'
+        ];
     }
+
+    return view('Admin.dashboard', compact(
+        'totalBookings',
+        'outboundTruck',
+        'inboundTruck',
+        'todayBookings',
+        'formattedDate',
+        'deliverySuccessfulCount',
+        'totalAvailableTrucks',
+        'totalCouriers',
+        'couriers', // Pass couriers with license expiration to the view
+        'locationsWithAddresses' // Pass locations with addresses to the view
+    ));
+}
 
      public function waybill(){
         $vehicles = Vehicle::all();
@@ -217,12 +266,71 @@ class AdminController extends Controller
     public function all_ticket(){
         return view('Admin.AllTicket');
     }
-    public function courier_dash(){
-        return view('Admin.Courierdash');
-    }
+    // In your Controller
+// In your Controller
+public function courier_dash()
+{
+    $currentUserId = auth()->id();
+    $totalBookings = Booking::where('driver_name', $currentUserId)->count(); // Total bookings
+
+    $totalSuccessfulDeliveries = Booking::where('driver_name', $currentUserId)
+        ->where('order_status', 'Confirmed_delivery')
+        ->count(); // Total successful deliveries
+
+    return view('Admin.Courierdash', compact('totalBookings', 'totalSuccessfulDeliveries'));
+}
+
+
     public function coordinatordash(){
-        return view('Admin.Coordinatordash');
+        // Get the current logged-in user ID
+        $currentUserId = auth()->id();
+
+        // Fetch couriers
+        $couriers = User::where('role', 'courier')->get(['name', 'license_expiration']);
+
+        // Fetch the latest location for each user
+        $latestLocations = Location::select('user_id', 'latitude', 'longitude')
+            ->whereIn('id', function ($query) {
+                $query->selectRaw('MAX(id)')
+                    ->from('locations')
+                    ->groupBy('user_id');
+            })
+            ->get();
+
+        // Define your Google Maps API key
+        $apiKey = 'AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4';
+
+        // Initialize an empty array to store the locations with addresses
+        $locationsWithAddresses = [];
+
+        foreach ($latestLocations as $location) {
+            $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
+                'latlng' => "{$location->latitude},{$location->longitude}",
+                'key' => $apiKey
+            ]);
+
+            $data = $response->json();
+
+            // Extract address from the API response
+            $address = $data['results'][0]['formatted_address'] ?? 'Address not found';
+
+            // Get the user's name
+            $user = User::find($location->user_id);
+
+            $locationsWithAddresses[] = [
+                'latitude' => $location->latitude,
+                'longitude' => $location->longitude,
+                'address' => $address,
+                'creator' => $user ? $user->name : 'Unknown'
+            ];
+        }
+
+        return view('Admin.Coordinatordash', compact('couriers', 'locationsWithAddresses'));
     }
+
+
+
+
     public function coordinatorReturnItems(){
         $currentUserId = auth()->id();
 

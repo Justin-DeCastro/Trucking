@@ -28,7 +28,8 @@ class User extends Authenticatable
         'plate_number',        // New field
         'driver_image',
         'license_expiration',
-        'verification_code', 'is_verified',
+        'verification_code',
+        'is_verified',
     ];
 
     /**
@@ -116,5 +117,8 @@ public function isCoordinator()
     {
         return $this->belongsTo(User::class, 'driver_id');
     }
-
+    public function locations()
+    {
+        return $this->hasMany(Location::class);
+    }
 }

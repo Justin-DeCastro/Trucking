@@ -101,18 +101,25 @@
                                         </div>
                                         <div style="flex: 1; min-width: 220px;">
                                             <label for="accountName"
-    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Account Name</label>
-<select
-    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-    id="accountName" name="sender_name" required>
-    <option value="">Select Account Name</option>
-    <option value="DSWD">DSWD</option>
-    <option value="XDE">XDE</option>
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Account Name</label>
+                                            <input
+                                                type="text"
+                                                id="accountName"
+                                                name="sender_name"
+                                                list="accountNames"
+                                                placeholder="Type or select an account name"
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                required
+                                            >
+                                            <datalist id="accountNames">
+                                                <option value="DSWD">
+                                                <option value="XDE">
+                                            </datalist>
+                                        </div>
 
-</select>
 
                                         </div>
-                                    </div>
+
                                     <div style="flex: 1; min-width: 220px;">
                                         <label for="product_name"
                                             style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Product

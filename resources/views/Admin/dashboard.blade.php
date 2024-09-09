@@ -100,181 +100,129 @@
 
                 <div class="row gy-4">
                     <div class="col-xxl-3 col-sm-6">
-                        <a href="">
-                            <div class="widget-seven bg--purple  outline ">
-                                <div class="widget-seven__content">
-                                    <span class="widget-seven__content-icon">
-                                        <span class="icon">
-                                            <i class="fas fa-hourglass-start"></i>
-
-                                        </span>
-                                    </span>
-                                    <div class="widget-seven__description">
-                                        <!-- In your Blade template -->
-                                        <p class="widget-seven__content-title">Total Booking</p>
-                                        <h3 class="widget-seven__content-amount">{{ $totalBookings }}</h3>
-
-                                    </div>
+                        <a href="#" class="text-decoration-none">
+                            <div class="bg-info text-white p-3 rounded d-flex align-items-center shadow-sm">
+                                <div class="me-3">
+                                    <i class="fas fa-hourglass-start fa-2x"></i>
                                 </div>
-
-
+                                <div>
+                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Total Booking</p>
+                                    <h3 class="mb-0">{{ $totalBookings }}</h3>
+                                </div>
                             </div>
                         </a>
                     </div>
                     <div class="col-xxl-3 col-sm-6">
-                        <a href="">
-                            <div class="widget-seven bg--green  outline ">
-                                <div class="widget-seven__content">
-                                    <span class="widget-seven__content-icon">
-                                        <span class="icon">
-                                            <i class="fas fa-dolly"></i>
-
-                                        </span>
-                                    </span>
-                                    <div class="widget-seven__description">
-                                        <p class="widget-seven__content-title">Bookings Today</p>
-                                        <p class="widget-seven__content-amount">Date: {{ $formattedDate }}</p>
-                                        <h3 class="widget-seven__content-amount">{{ $todayBookings }}</h3>
-
-                                    </div>
+                        <a href="#" class="text-decoration-none">
+                            <div class="bg-info text-white p-3 rounded d-flex align-items-center shadow-sm">
+                                <div class="me-3">
+                                    <i class="fas fa-dolly fa-2x"></i>
                                 </div>
-
-
+                                <div>
+                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Bookings Today</p>
+                                    <p class="mb-0">Date: {{ $formattedDate }}</p>
+                                    <h3 class="mb-0">{{ $todayBookings }}</h3>
+                                </div>
                             </div>
                         </a>
                     </div>
                     <div class="col-xxl-3 col-sm-6">
-                        <a href="">
-                            <div class="widget-seven bg--deep-purple  outline ">
-                                <div class="widget-seven__content">
-                                    <span class="widget-seven__content-icon">
-                                        <span class="icon">
-                                            <i class="fas fa-check-circle"></i>
-
-                                        </span>
-                                    </span>
-                                    <div class="widget-seven__description">
-                                        <p class="widget-seven__content-title"> Successful Delivery</p>
-                                        <h3 class="widget-seven__content-amount">{{ $deliverySuccessfulCount }}</h3>
-                                    </div>
+                        <a href="#" class="text-decoration-none">
+                            <div class="bg-info text-white p-3 rounded d-flex align-items-center shadow-sm">
+                                <div class="me-3">
+                                    <i class="fas fa-check-circle fa-2x"></i>
                                 </div>
-
-
+                                <div>
+                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Successful Delivery</p>
+                                    <h3 class="mb-0">{{ $deliverySuccessfulCount }}</h3>
+                                </div>
                             </div>
                         </a>
                     </div>
                     <div class="col-xxl-3 col-sm-6">
-                        <a href="">
-                            <div class="widget-seven bg--deep-purple  outline ">
-                                <div class="widget-seven__content">
-                                    <span class="widget-seven__content-icon">
-                                        <span class="icon">
-                                            <i class="fas fa-bus"></i>
-
-                                        </span>
-                                    </span>
-                                    <div class="widget-seven__description">
-                                        <p class="widget-seven__content-title">Total Available Truck</p>
-                                        <h3 class="widget-seven__content-amount">{{ $totalAvailableTrucks }}</h3>
-                                    </div>
+                        <a href="#" class="text-decoration-none">
+                            <div class="bg-info text-white p-3 rounded d-flex align-items-center shadow-sm">
+                                <div class="me-3">
+                                    <i class="fas fa-bus fa-2x"></i>
                                 </div>
-
-
+                                <div>
+                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Total Available Truck</p>
+                                    <h3 class="mb-0">{{ $totalAvailableTrucks }}</h3>
+                                </div>
                             </div>
                         </a>
                     </div>
                     <div class="col-xxl-3 col-sm-6">
-                        <a href="">
-                            <div class="widget-seven bg--deep-purple  outline ">
-                                <div class="widget-seven__content">
-                                    <span class="widget-seven__content-icon">
-                                        <span class="icon">
-                                            <i class="fas fa-car"></i>
-
-                                        </span>
-                                    </span>
-                                    <div class="widget-seven__description">
-                                        <p class="widget-seven__content-title">Total Drivers</p>
-                                        <h3 class="widget-seven__content-amount">{{ $totalCouriers }}</h3>
-                                    </div>
+                        <a href="#" class="text-decoration-none">
+                            <div class="bg-info text-white p-3 rounded d-flex align-items-center shadow-sm">
+                                <div class="me-3">
+                                    <i class="fas fa-car fa-2x"></i>
                                 </div>
-
-
+                                <div>
+                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Total Drivers</p>
+                                    <h3 class="mb-0">{{ $totalCouriers }}</h3>
+                                </div>
                             </div>
                         </a>
                     </div>
                     <div class="col-xxl-3 col-sm-6">
-                        <a href="">
-                            <div class="widget-seven bg--deep-purple  outline ">
-                                <div class="widget-seven__content">
-                                    <span class="widget-seven__content-icon">
-                                        <span class="icon">
-                                            <i class="fas fa-car"></i>
-
-                                        </span>
-                                    </span>
-                                    <div class="widget-seven__description">
-                                        <p class="widget-seven__content-title">Outbound Truck</p>
-                                        <h3 class="widget-seven__content-amount">{{ $outboundTruck }}</h3>
-                                    </div>
+                        <a href="#" class="text-decoration-none">
+                            <div class="bg-info text-white p-3 rounded d-flex align-items-center shadow-sm">
+                                <div class="me-3">
+                                    <i class="fas fa-car fa-2x"></i>
                                 </div>
-
-
+                                <div>
+                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Outbound Truck</p>
+                                    <h3 class="mb-0">{{ $outboundTruck }}</h3>
+                                </div>
                             </div>
                         </a>
                     </div>
                     <div class="col-xxl-3 col-sm-6">
-                        <a href="">
-                            <div class="widget-seven bg--deep-purple  outline ">
-                                <div class="widget-seven__content">
-                                    <span class="widget-seven__content-icon">
-                                        <span class="icon">
-                                            <i class="fas fa-car"></i>
-
-                                        </span>
-                                    </span>
-                                    <div class="widget-seven__description">
-                                        <p class="widget-seven__content-title">Inbound Truck</p>
-                                        <h3 class="widget-seven__content-amount">{{ $inboundTruck }}</h3>
-                                    </div>
+                        <a href="#" class="text-decoration-none">
+                            <div class="bg-info text-white p-3 rounded d-flex align-items-center shadow-sm">
+                                <div class="me-3">
+                                    <i class="fas fa-car fa-2x"></i>
                                 </div>
-
-
+                                <div>
+                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Inbound Truck</p>
+                                    <h3 class="mb-0">{{ $inboundTruck }}</h3>
+                                </div>
                             </div>
                         </a>
                     </div>
+                </div>
 
+                <!-- Latest Locations Section -->
+                <div class="row mt-4">
+                    <div class="col-6">
+                        <a href="#" class="text-decoration-none">
+                            <div class="bg-info text-white p-4 rounded d-flex flex-column align-items-start shadow-sm" style="width: 100%; max-width: 1000px; margin: auto;">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-map-marker-alt fa-3x me-3"></i>
+                                    <div>
+                                        <p class="mb-1" style="font-size: 1.5rem; font-weight: 600;">Latest Drivers Locations</p>
+                                    </div>
+                                </div>
+                                <div class="w-100">
+                                    <p class="mb-0">
+                                        @forelse ($locationsWithAddresses as $location)
+                                            Address: {{ $location['address'] }},
+                                            <br>
+                                            Updated by: {{ $location['creator'] }}
+                                            <br><br>
+                                        @empty
+                                            No location data available.
+                                        @endforelse
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
 
 
 
-                {{-- <div class="row mt-4">
-                    <div class="col-xl-4 col-lg-6 ">
-                        <div class="card overflow-hidden">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Bookings</h5>
-                                <canvas id="userBrowserChart">{{ $totalBookings }}</canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Today`s Booking:{{ $formattedDate }}<h5>
-                                        <canvas id="userOsChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Successful Delivery</h5>
-                                <canvas id="userCountryChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                </div> --}}
 
             </div>
         </div>
@@ -284,15 +232,24 @@
     <!-- Notification Card -->
     <!-- Notification Card -->
     <div id="notificationCard" class="notification-card d-none">
-        <div class="cards p-3">
-            <img src="Home/6371679.webp" class="card-img-top" alt="Booking Image">
+        <div class="cards p-3 bg-warning border-warning">
+            <img src="Home/360_F_512063511_tspgHXYtRcpd9A05MFaWZv8nCTxL8WXP.jpg" class="card-img-top" alt="License Expiration Image">
             <div class="card-body">
-                <h5 class="card-title">Today's Booking</h5>
-                <p class="card-text">You have {{ $todayBookings }} booking(s) today ({{ $formattedDate }}).</p>
+                <h5 class="card-title">⚠️ Driver's License Expiration Warning</h5>
+                @foreach($couriers as $courier)
+                    @php
+                        $expirationDate = \Carbon\Carbon::parse($courier->license_expiration);
+                        $today = \Carbon\Carbon::today();
+                        $statusText = $expirationDate->isPast() ? 'expired' : 'expires on';
+                    @endphp
+                    <p class="card-text">{{ $courier->name }}'s license {{ $statusText }} {{ $expirationDate->format('F j, Y') }}.</p>
+                @endforeach
                 <button type="button" class="btn btn-secondary" id="closeNotification">Close</button>
             </div>
         </div>
     </div>
+
+
 
 
     <script>
