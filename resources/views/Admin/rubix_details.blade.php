@@ -394,8 +394,9 @@
                                                 <th>Remarks</th>
                                                 <th>Status</th>
                                                 <th>Reference</th>
+                                                <th>Updated By</th>
                                                 <th>Update Status</th>
-                                                <th>Updated By</th> <!-- New column for Updated By -->
+                                               <!-- New column for Updated By -->
 
                                                 <th>Actions</th>
                                             </tr>
@@ -418,6 +419,16 @@
                                                     <td>{{ $detail->status }}</td>
                                                     <td>{{ $detail->order_status }}</td>
                                                     <td>
+                                                        @if ($detail->updater)
+                                                            Approved by: {{ $detail->updater->name }} <!-- Display the name of the user who updated -->
+                                                            <br>
+                                                            Updated on: {{ $detail->updated_at->format('F d, Y g:i A') }} <!-- Display the date of the last update -->
+                                                        @else
+                                                            Not updated
+                                                        @endif
+                                                    </td>
+
+                                                    <td>
                                                         <!-- Approve Button -->
                                                         <form id="statusForm" action="{{ route('update.admin.status', ['id' => $detail->id]) }}" method="POST">
                                                             @csrf
@@ -430,15 +441,6 @@
                                                             @endphp
                                                             <button type="submit" id="approveButton" class="btn {{ $buttonClass }}" {{ $isDisabled }}>{{ $buttonText }}</button>
                                                         </form>
-                                                    </td>
-                                                    <td>
-                                                        @if ($detail->updater)
-                                                            Approved by: {{ $detail->updater->name }} <!-- Display the name of the user who updated -->
-                                                            <br>
-                                                            Updated on: {{ $detail->updated_at->format('F d, Y g:i A') }} <!-- Display the date of the last update -->
-                                                        @else
-                                                            Not updated
-                                                        @endif
                                                     </td>
 
 
@@ -691,6 +693,21 @@
                                                 <tr>
                                                     <td>Province</td>
                                                     <td class="text-wrap">{{ $detail->merchant_province }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Travel Time</td>
+                                                    <td class="text-wrap">
+                                                        <span class="countdown-timer" id="timer{{ $detail->id }}">
+                                                            <span id="hours{{ $detail->id }}">00</span>:<span id="minutes{{ $detail->id }}">00</span>:<span id="seconds{{ $detail->id }}">00</span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Travel Timeline</td>
+                                                    <td class="text-wrap">
+                                                        <ul id="timelineHistory{{ $detail->id }}" class="timeline-list"></ul>
+                                                    </td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -1013,7 +1030,39 @@
                 <script src="https://cdn.datatables.net/buttons/1.7.2/js/buttons.print.min.js"></script>
                 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4&libraries=places">
                 </script>
-               <script>
+              <script>
+                var timerIntervals = {}; // Store interval references
+
+                function startTimer(detailId, duration) {
+                    var hoursElement = document.getElementById('hours' + detailId);
+                    var minutesElement = document.getElementById('minutes' + detailId);
+                    var secondsElement = document.getElementById('seconds' + detailId);
+
+                    var startTime = Date.now();
+                    var endTime = startTime + duration * 1000;
+
+                    // Timer interval
+                    timerIntervals[detailId] = setInterval(function() {
+                        var now = Date.now();
+                        var elapsedTime = Math.max(now - startTime, 0);
+
+                        var hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+                        var minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
+                        var seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+
+                        hoursElement.textContent = String(hours).padStart(2, '0');
+                        minutesElement.textContent = String(minutes).padStart(2, '0');
+                        secondsElement.textContent = String(seconds).padStart(2, '0');
+
+                    }, 1000); // Update every second
+                }
+
+                function stopTimer(detailId) {
+                    // Clear the interval to stop the timer
+                    clearInterval(timerIntervals[detailId]);
+                    console.log('Timer stopped for detail ID:', detailId);
+                }
+
                 function initMap(detailId, startAddress, endAddress) {
                     var map = new google.maps.Map(document.getElementById('map' + detailId), {
                         zoom: 10,
@@ -1035,8 +1084,10 @@
                             directionsRenderer.setDirections(result);
                             map.setCenter(result.routes[0].legs[0].start_location);
 
-                            // Define the moving truck marker
-                            var truckIcon = 'https://maps.google.com/mapfiles/kml/shapes/truck.png'; // URL to truck icon
+                            // Define the truck icon URL
+                            var truckIcon = 'https://maps.google.com/mapfiles/kml/shapes/truck.png';
+
+                            // Create the truck marker
                             var truckMarker = new google.maps.Marker({
                                 position: result.routes[0].legs[0].start_location,
                                 map: map,
@@ -1044,39 +1095,42 @@
                                 title: 'Moving Truck'
                             });
 
-                            // Animate the truck along the route
-                            var steps = result.routes[0].legs[0].steps;
-                            var stepIndex = 0;
-                            var stepCount = steps.length;
+                            // Set timer
+                            var durationInSeconds = result.routes[0].legs[0].duration.value;
+                            startTimer(detailId, durationInSeconds);
+
+                            // Move the truck marker as the truck moves
+                            var route = result.routes[0].legs[0];
+                            var step = 0;
+
+                            // Get the timeline element where we will record each place the truck encounters
+                            var timelineListElement = document.getElementById('timelineHistory' + detailId);
 
                             function moveTruck() {
-                                if (stepIndex < stepCount) {
-                                    var step = steps[stepIndex];
-                                    var path = step.path;
-                                    var pathLength = path.length;
-                                    var i = 0;
+                                if (step < route.steps.length) {
+                                    truckMarker.setPosition(route.steps[step].end_location); // Move the truck marker
 
-                                    function animate() {
-                                        if (i < pathLength) {
-                                            truckMarker.setPosition(path[i]);
-                                            i++;
-                                            setTimeout(animate, 100); // Adjust the speed here
-                                        } else {
-                                            stepIndex++;
-                                            if (stepIndex < stepCount) {
-                                                moveTruck(); // Move to the next step
-                                            }
-                                        }
-                                    }
+                                    // Record the step in the timeline
+                                    var placeDescription = route.steps[step].instructions;
+                                    var placeElement = document.createElement('li');
+                                    placeElement.innerHTML = placeDescription;
+                                    timelineListElement.appendChild(placeElement); // Add place to the timeline
 
-                                    animate();
+                                    step++;
+                                    setTimeout(moveTruck, 2000); // Simulate truck movement every 2 seconds
+                                } else {
+                                    // Truck has reached the destination
+                                    console.log("Truck has arrived at the destination. Stopping timer.");
+                                    stopTimer(detailId); // Stop the timer when truck reaches the destination
+
+                                    // Record final timeline entry
+                                    var arrivalElement = document.createElement('li');
+                                    arrivalElement.innerHTML = "<strong>Truck has arrived at the destination.</strong>";
+                                    timelineListElement.appendChild(arrivalElement);
                                 }
                             }
 
-                            moveTruck(); // Start the animation
-
-                            // Fetch and display estimated arrival time
-                            fetchEstimatedArrivalTime(startAddress, endAddress, detailId);
+                            moveTruck(); // Start moving the truck
 
                         } else {
                             console.error('Directions request failed due to ' + status);
@@ -1084,24 +1138,6 @@
                     });
                 }
 
-                function fetchEstimatedArrivalTime(startAddress, endAddress, detailId) {
-                    var apiKey = '{{ env('GOOGLE_MAPS_API_KEY') }}';
-                    var url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(startAddress)}&destinations=${encodeURIComponent(endAddress)}&key=${apiKey}`;
-
-                    fetch(url)
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.status === 'OK') {
-                                var duration = data.rows[0].elements[0].duration.text;
-                                document.getElementById('arrival-time' + detailId).innerText = `Estimated Arrival Time: ${duration}`;
-                            } else {
-                                console.error('Distance Matrix request failed due to ' + data.status);
-                            }
-                        })
-                        .catch(error => console.error('Error fetching arrival time:', error));
-                }
-
-                // Initialize map when modals are shown
                 document.addEventListener('DOMContentLoaded', function() {
                     @foreach ($rubixdetails as $detail)
                         document.getElementById('modal{{ $detail->id }}').addEventListener('shown.bs.modal', function() {

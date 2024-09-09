@@ -318,3 +318,11 @@ Route::get('request-budget', [AdminController::class, 'requestbudget'])->name('r
 Route::post('/locations', [LocationController::class, 'store'])->name('locations.store');
 Route::get('/delay', [DelayReportController::class, 'create'])->name('delay');
 Route::post('/delay/submit', [DelayReportController::class, 'store'])->name('delay.submit');
+// In web.php (routes file)
+Route::get('/proofs/{filename}', function ($filename) {
+    $path = public_path('proofs/' . $filename);
+    if (file_exists($path)) {
+        return response()->file($path);
+    }
+    abort(404);
+});

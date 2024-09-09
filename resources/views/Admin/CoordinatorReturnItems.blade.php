@@ -221,11 +221,12 @@
                                                         <td>{{ $return->return_status }}</td>
                                                         <td>
                                                             @if($return->proof_of_return)
-                                                                <img src="{{ asset($return->proof_of_return) }}" alt="Proof of Return" style="max-width: 100px; max-height: 100px; object-fit: cover;">
+                                                                <img src="{{ asset('proofs/' . $return->proof_of_return) }}" alt="Proof of Return" style="max-width: 100px; max-height: 100px; object-fit: cover;">
                                                             @else
-                                                                No Image
+                                                                <p>No proof available</p>
                                                             @endif
                                                         </td>
+
                                                         <td>
                                                             <form action="{{ route('return.approve', $return->id) }}" method="POST" style="display: inline;">
                                                                 @csrf

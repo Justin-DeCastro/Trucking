@@ -15,14 +15,22 @@ class ReturnItemsController extends Controller
             'return_quantity' => 'required|integer',
             'condition' => 'required|string',
             'driver_id' => 'nullable|exists:users,id',
-            'proof_of_return' => 'required|file|mimes:jpg,png,pdf|max:2048', // Add validation for file upload
+            'proof_of_return' => 'required|file|mimes:jpg,png,pdf|max:2048',
         ]);
 
         // Handle file upload
         if ($request->hasFile('proof_of_return')) {
             $file = $request->file('proof_of_return');
             $fileName = time() . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('public/proofs', $fileName); // Save file to 'storage/app/public/proofs'
+            $filePath = public_path('proofs');
+
+            // Create directory if it doesn't exist
+            if (!file_exists($filePath)) {
+                mkdir($filePath, 0755, true);
+            }
+
+            // Move file to public directory
+            $file->move($filePath, $fileName);
             $validatedData['proof_of_return'] = $fileName;
         }
 
@@ -30,6 +38,7 @@ class ReturnItemsController extends Controller
 
         return redirect()->back()->with('success', 'Return item created successfully.');
     }
+
     public function approve($id)
     {
         $returnItem = ReturnItem::findOrFail($id);

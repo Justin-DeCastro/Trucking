@@ -147,7 +147,7 @@
                                 <i class="fas fa-map-marker-alt fa-2x"></i>
                             </div>
                             <div>
-                                <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Latest Locations</p>
+                                <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Latest Drivers Locations</p>
                                 <p class="mb-0">
                                     @forelse ($locationsWithAddresses as $location)
                                         Address: {{ $location['address'] }},
