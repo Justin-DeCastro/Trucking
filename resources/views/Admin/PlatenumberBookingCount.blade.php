@@ -5,6 +5,24 @@
 
 <!-- Include SweetAlert2 CSS (optional) -->
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+<style>
+    .notification-card {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1050; /* Ensure it's above other content */
+        width: 300px; /* Adjust width as needed */
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .notification-card.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .notification-card.d-none {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+</style>
 
 <!-- Include jQuery -->
 <style>
@@ -125,7 +143,7 @@
             <div class="bodywrapper__inner">
 
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                    <h6 class="page-title">Plate Number Booking</h6>
+                    <h6 class="page-title">Plate Number Bookings</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
 
 
@@ -140,7 +158,6 @@
                         <thead>
                             <tr>
                                 <th>Plate Number</th>
-                                <th>Month</th>
                                 <th>Total Bookings</th>
                                 <th>Status</th>
                                 <th>Reference</th>
@@ -151,7 +168,6 @@
                             @forelse ($plateNumberCounts as $detail)
                             <tr>
                                 <td>{{ $detail->plate_number }}</td>
-                                <td>{{ $detail->month }}</td>
                                 <td>{{ $detail->total_bookings }}</td>
                                 <td>{{ $detail->statuses }}</td>
                                 <td>{{ $detail->order_statuses }}</td>
@@ -165,18 +181,33 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6">No data available</td>
+                                <td colspan="4">No data available</td>
                             </tr>
                             @endforelse
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div><!-- card end -->
     </div>
 </div>
-
+<div id="notificationCard" class="notification-card d-none">
+    <div class="card p-3 bg-info text-white border-info">
+        <div class="card-body">
+            <h5 class="card-title">📊 Monthly Bookings Summary</h5>
+            <ul class="list-unstyled">
+                @foreach (range(1, 12) as $month)
+                    @php
+                        $monthName = \Carbon\Carbon::create()->month($month)->format('F');
+                        $formattedMonth = date('Y') . '-' . str_pad($month, 2, '0', STR_PAD_LEFT);
+                    @endphp
+                    <li class="mb-1"><strong>{{ $monthName }}:</strong> {{ $monthlyBookings->get($formattedMonth, 0) }} bookings</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn btn-light mt-3" id="closeNotification">Close</button>
+        </div>
+    </div>
+</div>
 @foreach ($plateNumberCounts as $detail)
 <div class="modal fade" id="modal{{ $loop->index }}" tabindex="-1" aria-labelledby="modalLabel{{ $loop->index }}" aria-hidden="true">
     <div class="modal-dialog modal-lg" style="width: 70%; max-width: 1000px; height: 70%;">
@@ -257,6 +288,25 @@
         };
     }
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var notificationCard = document.getElementById('notificationCard');
+            var closeButton = document.getElementById('closeNotification');
+
+            // Show the notification card on page load
+            if (notificationCard) {
+                notificationCard.classList.remove('d-none'); // Show the notification card
+
+                // Hide the notification card when the close button is clicked
+                if (closeButton) {
+                    closeButton.addEventListener('click', function () {
+                        notificationCard.classList.add('d-none'); // Hide the notification card
+                    });
+                }
+            }
+        });
+    </script>
+
                 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
                 <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/jquery-3.7.1.min.js"></script>
                 <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>

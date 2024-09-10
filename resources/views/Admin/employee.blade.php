@@ -5,7 +5,7 @@
 
     <!-- Include SweetAlert2 CSS (optional) -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
     <!-- Include jQuery -->
 
 @include('Components.Admin.Header')
@@ -109,12 +109,45 @@
                                                     <td>{{ $employee->mobile }}</td>
                                                     <td>{{ $employee->address }}</td>
                                                     <td>
-                                                        <img src="{{ asset($employee->profile_image) }}" alt="Profile Image" style="width: 50px; height: 50px; object-fit: cover;">
+                                                        <a href="{{ asset($employee->profile_image) }}" data-lightbox="profile" data-title="Profile Image">
+                                                            <img src="{{ asset($employee->profile_image) }}" alt="Profile Image" style="width: 50px; height: 50px; object-fit: cover;">
+                                                        </a>
                                                     </td>
-                                                    <td>{{ $employee->files }}</td>
+                                                    <td>
+                                                        @if($employee->files)
+                                                            @php
+                                                                $filePaths = json_decode($employee->files, true);
+                                                            @endphp
+                                                            @foreach($filePaths as $filePath)
+                                                                <a href="{{ asset($filePath) }}" data-lightbox="files" data-title="File Image">
+                                                                    <img src="{{ asset($filePath) }}" alt="File Image" style="width: 50px; height: 50px; object-fit: cover; margin-right: 5px;">
+                                                                </a>
+                                                            @endforeach
+                                                        @else
+                                                            <p>No images available</p>
+                                                        @endif
+                                                    </td>
+
+
+
                                                     <td>
                                                         <!-- Edit Button -->
-                                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ $employee->id }}" data-name="{{ $employee->name }}" data-id_number="{{ $employee->id_number }}" data-position="{{ $employee->position }}" data-profile_image="{{ asset($employee->profile_image) }}">Edit</button>
+                                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal"
+                                                        data-id="{{ $employee->id }}"
+                                                        data-name="{{ $employee->employee_name }}"
+                                                        data-id_number="{{ $employee->id_number }}"
+                                                        data-position="{{ $employee->position }}"
+                                                        data-date_hired="{{ $employee->date_hired }}"
+                                                        data-birthday="{{ $employee->birthday }}"
+                                                        data-birth_place="{{ $employee->birth_place }}"
+                                                        data-civil_status="{{ $employee->civil_status }}"
+                                                        data-gender="{{ $employee->gender }}"
+                                                        data-mobile="{{ $employee->mobile }}"
+                                                        data-address="{{ $employee->address }}"
+                                                        data-profile_image="{{ asset($employee->profile_image) }}"
+                                                        data-files="{{ json_encode($employee->files) }}"> <!-- Adjust based on how you store files -->
+                                                        Edit
+                                                    </button>
 
                                                         <!-- Delete Button -->
                                                         <form action="{{ route('employee.destroy', $employee->id) }}" method="POST" style="display:inline-block;">
@@ -224,6 +257,11 @@
                             <label for="profile_image" class="form-label">Profile Image</label>
                             <input type="file" id="profile_image" name="profile_image" class="form-control" accept="image/*">
                         </div>
+                        <div class="mb-3">
+                            <label for="files" class="form-label">Files</label>
+                            <input type="file" id="files" name="files[]" class="form-control" accept="image/*" multiple>
+                        </div>
+
                     </div>
 
                     <div class="modal-footer">
@@ -249,22 +287,90 @@
                 @method('PUT')
                 <div class="modal-body">
                     <input type="hidden" id="editId" name="id">
+
+                    <!-- Employee Name -->
                     <div class="mb-3">
-                        <label for="editName" class="form-label">Name</label>
-                        <input type="text" id="editName" name="name" class="form-control" required>
+                        <label for="editName" class="form-label">Employee Name</label>
+                        <input type="text" id="editName" name="employee_name" class="form-control" required>
                     </div>
+
+                    <!-- ID Number -->
                     <div class="mb-3">
                         <label for="editIdNumber" class="form-label">ID Number</label>
                         <input type="text" id="editIdNumber" name="id_number" class="form-control" required>
                     </div>
+
+                    <!-- Position -->
                     <div class="mb-3">
                         <label for="editPosition" class="form-label">Position</label>
                         <input type="text" id="editPosition" name="position" class="form-control" required>
                     </div>
+
+                    <!-- Date Hired -->
+                    <div class="mb-3">
+                        <label for="editDateHired" class="form-label">Date Hired</label>
+                        <input type="date" id="editDateHired" name="date_hired" class="form-control" required>
+                    </div>
+
+                    <!-- Birthday -->
+                    <div class="mb-3">
+                        <label for="editBirthday" class="form-label">Birthday</label>
+                        <input type="date" id="editBirthday" name="birthday" class="form-control" required>
+                    </div>
+
+                    <!-- Birth Place -->
+                    <div class="mb-3">
+                        <label for="editBirthPlace" class="form-label">Birth Place</label>
+                        <input type="text" id="editBirthPlace" name="birth_place" class="form-control" required>
+                    </div>
+
+                    <!-- Civil Status -->
+                    <div class="mb-3">
+                        <label for="editCivilStatus" class="form-label">Civil Status</label>
+                        <select id="editCivilStatus" name="civil_status" class="form-control" required>
+                            <option value="" disabled selected>Select Status</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Divorced">Divorced</option>
+                            <option value="Widowed">Widowed</option>
+                        </select>
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="mb-3">
+                        <label for="editGender" class="form-label">Gender</label>
+                        <select id="editGender" name="gender" class="form-control" required>
+                            <option value="" disabled selected>Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Mobile -->
+                    <div class="mb-3">
+                        <label for="editMobile" class="form-label">Mobile</label>
+                        <input type="text" id="editMobile" name="mobile" class="form-control" required>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="mb-3">
+                        <label for="editAddress" class="form-label">Address</label>
+                        <input type="text" id="editAddress" name="address" class="form-control" required>
+                    </div>
+
+                    <!-- Profile Image -->
                     <div class="mb-3">
                         <label for="editProfileImage" class="form-label">Profile Image</label>
-                        <input type="file" id="editProfileImage" name="profile_image" class="form-control">
+                        <input type="file" id="editProfileImage" name="profile_image" class="form-control" accept="image/*">
                     </div>
+
+                    <!-- Files -->
+                    <div class="mb-3">
+                        <label for="editFiles" class="form-label">Files</label>
+                        <input type="file" id="editFiles" name="files[]" class="form-control" accept="image/*" multiple>
+                    </div>
+
                     <img id="editProfileImagePreview" src="" alt="Profile Image" style="width: 100%; object-fit: cover;">
                 </div>
                 <div class="modal-footer">
@@ -584,7 +690,7 @@
 
 <!-- Include Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 <!-- Include SweetAlert2 JS (optional) -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 </body>

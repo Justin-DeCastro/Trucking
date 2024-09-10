@@ -82,6 +82,7 @@
             <th>Driver License</th>
             <th>License Number</th>
            <th>Driver Image</th>
+           <th>Driver Status</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -111,15 +112,34 @@
                         No License
                     @endif
                 </td>
+                <td>
+                    @if($driver->status === 'terminated')
+                        <span style="background-color: red; color: white; padding: 2px;">{{ $driver->status }}</span>
+                    @elseif($driver->status === 'renewed')
+                        <span style="background-color: green; color: white; padding: 2px;">{{ $driver->status }}</span>
+                    @else
+                        {{ $driver->status }}
+                    @endif
+                </td>
+
                 <!-- Delete Action -->
                 <td>
-                    <!-- Delete Form -->
-                    <form action="{{ route('couriers.destroy', $driver->id) }}" method="POST" style="display:inline;">
+                    <!-- Update Status Form -->
+                    <form action="{{ route('couriers.updateStatus', $driver->id) }}" method="POST" style="display:inline;">
                         @csrf
-                        @method('DELETE')
+                        @method('PATCH')
+                        <input type="hidden" name="status" value="terminated">
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to terminate this courier?');">Terminate</button>
                     </form>
+
+                    <form action="{{ route('couriers.updateStatus', $driver->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('PATCH')
+                        <input type="hidden" name="status" value="renewed">
+                        <button type="submit" class="btn btn-success" onclick="return confirm('Are you sure you want to renew this courier?');">Renew</button>
+                    </form>
                 </td>
+
             </tr>
         @endforeach
     </tbody>

@@ -55,21 +55,29 @@ class BookingController extends Controller
 
     public function getPlateNumberCounts()
     {
-        // Retrieve all unique plate numbers with their counts, status counts, and order_status counts by month
+        $monthlyBookings = Booking::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as count')
+        ->groupBy('year', 'month')
+        ->get()
+        ->keyBy(function ($item) {
+            return $item->year . '-' . str_pad($item->month, 2, '0', STR_PAD_LEFT);
+        })
+        ->map(function ($item) {
+            return $item->count;
+        });
+
+        // Retrieve all unique plate numbers with their counts, status counts, and order_status counts
         $plateNumberCounts = Booking::select('plate_number')
-            ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month')
             ->selectRaw('count(*) as total_bookings')
             ->selectRaw('GROUP_CONCAT(DISTINCT status) as statuses')
             ->selectRaw('GROUP_CONCAT(DISTINCT order_status) as order_statuses')
-            ->groupBy('plate_number', 'month')
+            ->groupBy('plate_number')
             ->get();
 
         // Prepare data for each status count including order_status
         $plateNumberDetails = $plateNumberCounts->map(function ($plate) {
-            // Get booking details for the plate number and month
+            // Get booking details for the plate number
             $statusCounts = Booking::select('status', 'order_status')
                 ->where('plate_number', $plate->plate_number)
-                ->whereRaw('DATE_FORMAT(created_at, "%Y-%m") = ?', [$plate->month])
                 ->groupBy('status', 'order_status')
                 ->selectRaw('count(*) as count')
                 ->get()
@@ -91,6 +99,7 @@ class BookingController extends Controller
         // Pass the data to the view
         return view('Admin.PlatenumberBookingCount', [
             'plateNumberCounts' => $plateNumberDetails,
+            'monthlyBookings' => $monthlyBookings,
         ]);
     }
 

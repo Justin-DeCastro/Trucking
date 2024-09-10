@@ -45,19 +45,16 @@
             <div class="bodywrapper__inner">
 
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                    <div class="alert alert-info">
-                        <strong>Balance:</strong> {{ number_format($startingBalance, 2) }}
-                    </div>
+                    <h4>Total Balance - Approved Budget Request = Remaining Balance</h4>
+
                     <h6 class="page-title"></h6>
-
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-
-                        <button class="btn btn-sm btn-outline--primary" type="button" data-bs-toggle="modal"
-                            data-bs-target="#manageDeposit">
+                        <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#manageDeposit">
                             <i class="las la-plus"></i> IN
                         </button>
                     </div>
                 </div>
+<br>
                 <h4>Select To Summarize</h4>
                 <div class="d-flex mb-3 align-items-center">
                     <div class="form-group me-3">
@@ -89,6 +86,9 @@
                     </div>
                 </div>
 
+                <div >
+                    <strong style="color: #007bff;">Remaining Balance:</strong> <span style="color: #28a745;">₱{{ number_format($startingBalance, 2) }}</span>
+                </div>
 
                 <table class="jobOffersTable">
                     <thead>

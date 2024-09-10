@@ -9,9 +9,8 @@ class Employee extends Model
 {
     use HasFactory;
 
-    // Add all the new fields to the $fillable array
     protected $fillable = [
-        'employee_name', // Updated from 'name' to 'employee_name' based on your provided table headers
+        'employee_name',
         'id_number',
         'position',
         'date_hired',
@@ -21,7 +20,12 @@ class Employee extends Model
         'gender',
         'mobile',
         'address',
-        'profile_image'
+        'profile_image',
+        'files',
+    ];
+
+    protected $casts = [
+        'files' => 'array', // Cast 'files' to an array for easier manipulation
     ];
 
     public function attendance()

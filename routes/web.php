@@ -37,6 +37,7 @@ use App\Http\Controllers\ReturnItemsController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\DelayReportController;
 use App\Http\Controllers\GDRAccountingController;
+use App\Http\Controllers\CourierOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -323,3 +324,4 @@ Route::post('/delay/submit', [DelayReportController::class, 'store'])->name('del
 // In web.php (routes file)
 Route::post('/gdr-accounting/store', [GDRAccountingController::class, 'store'])->name('GDRAccounting.store');
 Route::get('GDRAccounting', [AccountingController::class, 'GDR_Accounting'])->name('GDRAccounting');
+Route::patch('/couriers/{id}/status', [CourierOrderController::class, 'updateStatus'])->name('couriers.updateStatus');
