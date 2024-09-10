@@ -7,6 +7,57 @@ use Illuminate\Http\Request;
 
 class RatePerMileController extends Controller
 {
+    public function store(Request $request)
+    {
+        // Validate the request inputs
+        $validated = $request->validate([
+            'plate_number' => 'required|exists:bookings,plate_number',
+            'rate_per_mile' => 'required|numeric',
+            'km' => 'required|numeric',
+            'gross_income' => 'required|numeric',
+            'date' => 'required|date',
+            'operational_costs' => 'required|numeric',
+            'payment_screenshot' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Changed to nullable
+        ]);
+
+        // Handle the payment screenshot file upload
+        if ($request->hasFile('payment_screenshot')) {
+            // Get file from request
+            $file = $request->file('payment_screenshot');
+
+            // Generate a unique name for the file before saving it
+            $filename = time() . '_' . $file->getClientOriginalName();
+
+            // Define the destination path for the file
+            $destinationPath = public_path('payment_screenshots');
+
+            // Create the directory if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move the file to the public directory
+            $file->move($destinationPath, $filename);
+
+            // Store the filename in the database
+            $validated['payment_screenshot'] = 'payment_screenshots/' . $filename;
+        } else {
+            $validated['payment_screenshot'] = null; // Handle cases where no file is uploaded
+        }
+
+        // Calculate gross income if needed (assuming rate_per_mile and km are set)
+        if (isset($validated['rate_per_mile']) && isset($validated['km'])) {
+            $validated['gross_income'] = $validated['rate_per_mile'] * $validated['km'];
+        }
+
+        // Store the validated data in the database
+        RatePerMile::create($validated);
+
+        // Redirect or return a response
+        return redirect()->back()->with('success', 'Payment record created successfully!');
+    }
+
+
     public function submit(Request $request)
     {
         // Validate request data
@@ -17,7 +68,7 @@ class RatePerMileController extends Controller
             'gross_income' => 'required|numeric',
             'date' => 'required|date',
             'proof_of_payment' => 'nullable|file|mimes:jpeg,png,pdf|max:2048', // Add max file size
-            'operational_costs' => 'required|numeric',
+            'operational_costs' =>  'required|numeric',
         ]);
 
         // Handle file upload
@@ -44,6 +95,8 @@ class RatePerMileController extends Controller
 
         return redirect()->back()->with('success', 'Data saved successfully!');
     }
+
+
 
 
 

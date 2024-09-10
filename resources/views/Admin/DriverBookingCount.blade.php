@@ -8,6 +8,12 @@
 
 <!-- Include jQuery -->
 <style>
+    .table td {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
     body {
         font-family: 'Arial', sans-serif;
         color: #333;
@@ -141,11 +147,10 @@
                             <tr>
                                 <th>Driver Name</th>
                                 <th>Total Bookings</th>
-                                <th>Status</th>
-                                <th>Order Status</th>
                                 <th>Date</th>
                                 <th>Product Name</th>
-                                {{-- <th>Count</th> --}}
+                                <th>Consignee Address</th>
+
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -162,11 +167,11 @@
                                             <!-- Create a new row for subsequent booking details -->
                                             <tr>
                                         @endif
-                                        <td>{{ $booking['status'] }}</td>
-                                        <td>{{ $booking['order_status'] }}</td>
+
                                         <td>{{ $booking['date'] }}</td>
                                         <td>{{ $booking['product_name'] }}</td>
-                                        {{-- <td>{{ $booking['count'] }}</td> --}}
+                                        <td class="text-start">{{ $booking['consignee_address'] }}</td>
+
                                         @if($index == 0)
                                             <!-- Display the actions button only in the first row -->
                                             <td rowspan="{{ count($detail->bookingDetails) }}">
@@ -185,50 +190,47 @@
                             @endforelse
                         </tbody>
                     </table>
+<!-- Modal Structure -->
+@foreach ($driverDetails as $detail)
+    <div class="modal fade" id="modal{{ $loop->index }}" tabindex="-1" aria-labelledby="modalLabel{{ $loop->index }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel{{ $loop->index }}">Details for Driver: {{ $detail->driver_name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h2>Booking Details</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Count</th>
+                                <th>Date</th>
+                                <th>Product Name</th>
+                                <th>Destination</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($detail->bookingDetails as $booking)
+                                <tr>
+                                    <td>{{ $booking['count'] }}</td>
+                                    <td>{{ $booking['date'] }}</td>
+                                    <td>{{ $booking['product_name'] }}</td>
+                                    <td class="text-start">{{ $booking['consignee_address'] }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
 
-                    <!-- Modal Structure -->
-                    @foreach ($driverDetails as $detail)
-                        <div class="modal fade" id="modal{{ $loop->index }}" tabindex="-1" aria-labelledby="modalLabel{{ $loop->index }}" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="modalLabel{{ $loop->index }}">Details for Driver: {{ $detail->driver_name }}</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <h2>Booking Details</h2>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Status</th>
-                                                    <th>Order Status</th>
-                                                    <th>Count</th>
-                                                    <th>Date</th>
-                                                    <th>Product Name</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($detail->bookingDetails as $booking)
-                                                    <tr>
-                                                        <td>{{ $booking['status'] }}</td>
-                                                        <td>{{ $booking['order_status'] }}</td>
-                                                        <td>{{ $booking['count'] }}</td>
-                                                        <td>{{ $booking['date'] }}</td>
-                                                        <td>{{ $booking['product_name'] }}</td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" onclick="printModal('modal{{ $loop->index }}')">Print</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="printModal('modal{{ $loop->index }}')">Print</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endforeach
 
 
 

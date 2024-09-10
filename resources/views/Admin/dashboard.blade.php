@@ -191,6 +191,20 @@
                             </div>
                         </a>
                     </div>
+                    <div class="col-xxl-3 col-sm-6">
+                        <a href="#" class="text-decoration-none">
+                            <div class="bg-info text-white p-3 rounded d-flex align-items-center shadow-sm">
+                                <div class="me-3">
+                                    <i class="fas fa-tools fa-2x"></i> <!-- Icon changed to tools -->
+                                </div>
+                                <div>
+                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">For Maintenance Truck</p>
+                                    <h3 class="mb-0">{{ $MaintenanceTruck }}</h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
                 </div>
 
                 <!-- Latest Locations Section -->

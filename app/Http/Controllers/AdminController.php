@@ -41,7 +41,7 @@ class AdminController extends Controller
 
     $outboundTruck = Booking::whereIn('status', ['For_Pick-up', 'First_delivery_attempt', 'In_Transit'])->count();
     $inboundTruck = Booking::whereIn('status', ['Delivery_successful'])->count();
-
+    $MaintenanceTruck = Vehicle::whereIn('truck_status', ['maintenance'])->count();
     $deliverySuccessfulCount = Booking::where('status', 'Delivery successful')->count();
 
     $totalAvailableTrucks = Vehicle::sum('quantity');
@@ -97,7 +97,9 @@ class AdminController extends Controller
         'totalAvailableTrucks',
         'totalCouriers',
         'couriers', // Pass couriers with license expiration to the view
-        'locationsWithAddresses' // Pass locations with addresses to the view
+        'locationsWithAddresses',
+        'MaintenanceTruck'
+         // Pass locations with addresses to the view
     ));
 }
 
@@ -494,23 +496,23 @@ public function preventive(Request $request) {
 
 public function ratepermile(Request $request)
 {
-    // Fetch all distinct plate numbers
-    $plateNumbers = DB::table('bookings')->distinct()->pluck('plate_number');
+    // Fetch all distinct plate numbers from the 'bookings' table
+    $plateNumbers = Booking::distinct()->pluck('plate_number');
 
     // Retrieve the plate_number from the request (if filtering by a specific plate_number)
     $selectedPlateNumber = $request->input('plate_number');
 
-    // Fetch rate_per_mile data grouped by plate_number
-    $query = DB::table('rate_per_miles')
-        ->join('bookings', 'rate_per_miles.plate_number', '=', 'bookings.plate_number')
-        ->select('rate_per_miles.plate_number', 'rate_per_miles.rate_per_mile', 'rate_per_miles.date','rate_per_miles.km', 'rate_per_miles.operational_costs')
+    // Create a query for fetching rate_per_mile data grouped by plate_number
+    $query = RatePerMile::with('booking') // Use Eloquent relationship if you have one defined
+        ->select('plate_number', 'rate_per_mile', 'date', 'km', 'operational_costs','proof_of_payment')
         ->distinct(); // Ensure distinct rows
 
     // If a specific plate_number is selected, filter the query
     if ($selectedPlateNumber) {
-        $query->where('rate_per_miles.plate_number', $selectedPlateNumber);
+        $query->where('plate_number', $selectedPlateNumber);
     }
 
+    // Get the results and group them by plate_number
     $rates = $query->get()->groupBy('plate_number');
 
     // Pass data to the view

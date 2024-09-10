@@ -315,7 +315,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div
+                                <div id="vehicleChoices"
                                     style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px;">
                                     @foreach ($vehicles as $vehicle)
                                         <div
@@ -950,7 +950,16 @@
     </script>
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/search.js"></script>
-
+    <script>
+        document.getElementById('delivery_type').addEventListener('change', function() {
+            var vehicleChoices = document.getElementById('vehicleChoices');
+            if (this.value === 'Backload') {
+                vehicleChoices.style.display = 'none';
+            } else {
+                vehicleChoices.style.display = 'flex';
+            }
+        });
+    </script>
     <script>
         "use strict";
 

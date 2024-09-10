@@ -12,6 +12,7 @@ use App\Models\Account;
 use App\Models\Transaction;
 use App\Models\Preventive;
 use App\Models\StartingBalance;
+use App\Models\RatePerMile;
 use App\Models\GDRAccounting;
 use App\Models\Budget;
 class AccountingController extends Controller
@@ -31,9 +32,18 @@ class AccountingController extends Controller
             ? Preventive::where('plate_number', $plateNumber)->get()
             : Preventive::all();
 
-        // Return the view with preventive records and plate numbers
-        return view('Accounting.PMS', compact('preventive', 'plateNumbers'));
+        // Calculate total kilometers per plate number
+        $totalKilometersByPlate = RatePerMile::selectRaw('plate_number, SUM(km) as total_kilometers')
+            ->groupBy('plate_number')
+            ->get()
+            ->pluck('total_kilometers', 'plate_number')
+            ->toArray();
+
+        // Return the view with preventive records, plate numbers, and total kilometers by plate
+        return view('Accounting.PMS', compact('preventive', 'plateNumbers', 'totalKilometersByPlate'));
     }
+
+
 
     public function addexpense(){
         $deposits = Deposit::all();

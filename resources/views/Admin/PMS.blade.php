@@ -111,6 +111,7 @@
                                                                     <th>Plate Number</th>
                                                                     <th>Truck Model</th>
                                                                     <th>Parts Replaced</th>
+                                                                    <th>Quantity</th>
                                                                     <th>Price of Quantity</th>
                                                                     <th>Proof of Need to Fixed</th>
                                                                     <th>Proof of Payment</th>
@@ -123,6 +124,7 @@
                                                                         <td>{{ $maintenance->plate_number }}</td>
                                                                         <td>{{ $maintenance->truck_model }}</td>
                                                                         <td>{{ $maintenance->parts_replaced }}</td>
+                                                                        <td>{{ $maintenance->quantity }}</td>
                                                                         <td>₱{{ number_format($maintenance->price_parts_replaced, 2) }}</td>
                                                                         <td>
                                                                             @if(is_array($maintenance->proof_of_need_to_fixed))

@@ -43,9 +43,9 @@
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
                     <h6 class="page-title">Budget Table</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#requestBudgetModal">
+                        {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#requestBudgetModal">
                             Request Budget
-                        </button>
+                        </button> --}}
 {{-- <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal" data-bs-target="#manageWithdraw">
     <i class="las la-plus"></i> OUT
 </button> --}}

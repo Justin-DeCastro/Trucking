@@ -113,22 +113,21 @@
                                     <td>{{ $inhouse->km }} km</td>
                                     <td>₱{{ number_format($inhouse->rate_per_mile * $inhouse->km, 2) }}</td>
                                     <td>₱{{ number_format($inhouse->operational_costs, 2) }}</td>
-                                 <td>
+
+
+<td>
     @if (isset($inhouse->proof_of_payment) && $inhouse->proof_of_payment)
         @php
             $imageUrl = asset($inhouse->proof_of_payment); // Directly access the public path
         @endphp
-        <img src="{{ $imageUrl }}" alt="Proof of Payment" style="width: 50px; height: 50px; object-fit: cover;">
+        <img src="{{ $imageUrl }}" alt="Proof of Payment"
+            style="width: 50px; height: 50px; object-fit: cover; cursor: pointer;"
+            data-bs-toggle="modal" data-bs-target="#imageModal"
+            onclick="showImageModal('{{ $imageUrl }}')">
     @else
         No proof of payment available
     @endif
 </td>
-
-
-
-
-
-
 
 
 
@@ -141,7 +140,23 @@
 
 
 
-
+<!-- Modal for Proof of Payment -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="imageModalLabel">Proof of Payment</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+            <img id="modalImage" src="" alt="Proof of Payment"
+                style="width: 100%; height: auto;">
+        </div>
+    </div>
+</div>
+</div>
 
 
                 <!-- Modal Structure -->
@@ -302,6 +317,13 @@
                 <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast_custom.css"
                     rel="stylesheet">
                 <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/iziToast.min.js"></script>
+
+<script>
+    function showImageModal(imageUrl) {
+        // Set the src of the image in the modal to the clicked image's URL
+        document.getElementById('modalImage').src = imageUrl;
+    }
+</script>
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
                         var deleteButtons = document.querySelectorAll('.btn-delete');

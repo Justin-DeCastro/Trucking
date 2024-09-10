@@ -238,8 +238,14 @@
                 <!-- Truck Status -->
                 <div class="mb-3">
                     <label for="truck_status" class="form-label">Truck Status</label>
-                    <input type="text" id="truck_status" name="truck_status" class="form-control" required>
+                    <select id="truck_status" name="truck_status" class="form-control" required>
+                        <option value="">Select Status</option>
+                        <option value="available">Available</option>
+                        <option value="not_available">Not Available</option>
+                        <option value="maintenance">Maintenance</option>
+                    </select>
                 </div>
+
 
                 <!-- Quantity -->
                 <div class="mb-3">
@@ -297,7 +303,12 @@
                         </div>
                         <div class="mb-3">
                             <label for="truck_status" class="form-label">Truck Status</label>
-                            <input type="text" class="form-control" id="truck_status" name="truck_status" value="{{ $vehicle->truck_status }}" required>
+                            <select id="truck_status" name="truck_status" class="form-control" required>
+                                <option value="">Select Status</option>
+                                <option value="available">Available</option>
+                                <option value="not_available">Not Available</option>
+                                <option value="maintenance">Maintenance</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="quantity" class="form-label">Quantity</label>

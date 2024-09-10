@@ -23,4 +23,9 @@ class RatePerMile extends Model
     {
         return $this->hasMany(Booking::class, 'plate_number', 'plate_number');
     }
+    public function booking()
+{
+    return $this->belongsTo(Booking::class, 'plate_number', 'plate_number');
+}
+
 }

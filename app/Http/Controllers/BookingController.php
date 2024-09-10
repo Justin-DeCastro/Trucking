@@ -99,49 +99,49 @@ class BookingController extends Controller
         // Pass the data to the view
         return view('Admin.PlatenumberBookingCount', [
             'plateNumberCounts' => $plateNumberDetails,
-            'monthlyBookings' => $monthlyBookings,
         ]);
     }
 
 
     public function getDriverPlateNumberCounts()
-{
-    // Fetch all drivers with their role as courier
-    $driverDetails = Booking::join('users', 'users.id', '=', 'bookings.driver_name')
-        ->where('users.role', 'courier')
-        ->select('users.name as driver_name')
-        ->selectRaw('COUNT(bookings.id) as total_bookings')
-        ->groupBy('users.name')
-        ->get();
-
-    // Prepare booking details grouped by driver
-    $driverDetails = $driverDetails->map(function ($driver) {
-        // Get all bookings for the driver grouped by necessary fields
-        $bookingsByDriver = Booking::join('users', 'users.id', '=', 'bookings.driver_name')
-            ->where('users.name', $driver->driver_name)
+    {
+        // Fetch all drivers with their role as courier
+        $driverDetails = Booking::join('users', 'users.id', '=', 'bookings.driver_name')
             ->where('users.role', 'courier')
-            ->groupBy('bookings.created_at', 'bookings.product_name', 'status', 'order_status')
-            ->selectRaw('count(*) as count, DATE_FORMAT(bookings.created_at, "%M %d, %Y") as date, bookings.product_name, status, order_status')
+            ->select('users.name as driver_name')
+            ->selectRaw('COUNT(bookings.id) as total_bookings')
+            ->groupBy('users.name')
             ->get();
 
-        // Structure data for display
-        $driver->bookingDetails = $bookingsByDriver->map(function ($booking) {
-            return [
-                'date' => $booking->date,
-                'product_name' => $booking->product_name,
-                'status' => $booking->status,
-                'order_status' => $booking->order_status,
-                'count' => $booking->count,
-            ];
+        // Prepare booking details grouped by driver
+        $driverDetails = $driverDetails->map(function ($driver) {
+            // Get all bookings for the driver grouped by necessary fields
+            $bookingsByDriver = Booking::join('users', 'users.id', '=', 'bookings.driver_name')
+                ->where('users.name', $driver->driver_name)
+                ->where('users.role', 'courier')
+                ->groupBy('bookings.created_at', 'bookings.product_name', 'bookings.consignee_address')
+                ->selectRaw('count(*) as count, DATE_FORMAT(bookings.created_at, "%M %d, %Y") as date, bookings.product_name, bookings.consignee_address')
+                ->get();
+
+            // Structure data for display
+            $driver->bookingDetails = $bookingsByDriver->map(function ($booking) {
+                return [
+                    'date' => $booking->date,
+                    'product_name' => $booking->product_name,
+                    'count' => $booking->count,
+                    'consignee_address' => $booking->consignee_address,
+
+                ];
+            });
+
+            return $driver;
         });
 
-        return $driver;
-    });
+        return view('Admin.DriverBookingCount', [
+            'driverDetails' => $driverDetails,
+        ]);
+    }
 
-    return view('Admin.DriverBookingCount', [
-        'driverDetails' => $driverDetails,
-    ]);
-}
 
 
 
