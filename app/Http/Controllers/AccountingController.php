@@ -12,6 +12,8 @@ use App\Models\Account;
 use App\Models\Transaction;
 use App\Models\Preventive;
 use App\Models\StartingBalance;
+use App\Models\GDRAccounting;
+use App\Models\Budget;
 class AccountingController extends Controller
 {
     public function accounting_dash(){
@@ -99,6 +101,23 @@ class AccountingController extends Controller
     public function sentin_queue(){
         return view('Accounting.SentInQueue');
     }
+    public function GDR_Accounting() {
+        // Fetch all approved budgets
+        $approvedBudgets = Budget::where('status', 'Approved')->get();
+
+        // Calculate the total amount to deduct
+        $totalDeduction = $approvedBudgets->sum('budget_amount');
+
+        // Fetch all GDRAccounting records
+        $GDR = GDRAccounting::all();
+
+        // Calculate the starting balance
+        $startingBalance = GDRAccounting::sum('payment_amount') - $totalDeduction;
+
+        // Pass data to the view
+        return view('Accounting.GDRAccounting', compact('GDR', 'startingBalance'));
+    }
+
     public function total_delivered(){
         return view('Accounting.TotalDelivered');
     }

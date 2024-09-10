@@ -63,6 +63,12 @@
                         <span class="menu-title">Request Budget</span>
                     </a>
                 </li>
+                <li class="sidebar-menu-item">
+                    <a href="GDRAccounting" class="nav-link">
+                        <i class="fas fa-calendar menu-icon"></i>
+                        <span class="menu-title">GDR ACCOUNT</span>
+                    </a>
+                </li>
 
 
             </ul>

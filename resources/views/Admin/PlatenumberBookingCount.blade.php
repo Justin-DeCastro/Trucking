@@ -125,7 +125,7 @@
             <div class="bodywrapper__inner">
 
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                    <h6 class="page-title">In and Out</h6>
+                    <h6 class="page-title">Plate Number Booking</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
 
 
@@ -140,6 +140,7 @@
                         <thead>
                             <tr>
                                 <th>Plate Number</th>
+                                <th>Month</th>
                                 <th>Total Bookings</th>
                                 <th>Status</th>
                                 <th>Reference</th>
@@ -150,6 +151,7 @@
                             @forelse ($plateNumberCounts as $detail)
                             <tr>
                                 <td>{{ $detail->plate_number }}</td>
+                                <td>{{ $detail->month }}</td>
                                 <td>{{ $detail->total_bookings }}</td>
                                 <td>{{ $detail->statuses }}</td>
                                 <td>{{ $detail->order_statuses }}</td>
@@ -163,11 +165,12 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="4">No data available</td>
+                                <td colspan="6">No data available</td>
                             </tr>
                             @endforelse
                         </tbody>
                     </table>
+
                 </div>
             </div>
         </div><!-- card end -->

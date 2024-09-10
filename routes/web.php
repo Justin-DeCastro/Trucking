@@ -36,6 +36,8 @@ use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\ReturnItemsController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\DelayReportController;
+use App\Http\Controllers\GDRAccountingController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -319,10 +321,5 @@ Route::post('/locations', [LocationController::class, 'store'])->name('locations
 Route::get('/delay', [DelayReportController::class, 'create'])->name('delay');
 Route::post('/delay/submit', [DelayReportController::class, 'store'])->name('delay.submit');
 // In web.php (routes file)
-Route::get('/proofs/{filename}', function ($filename) {
-    $path = public_path('proofs/' . $filename);
-    if (file_exists($path)) {
-        return response()->file($path);
-    }
-    abort(404);
-});
+Route::post('/gdr-accounting/store', [GDRAccountingController::class, 'store'])->name('GDRAccounting.store');
+Route::get('GDRAccounting', [AccountingController::class, 'GDR_Accounting'])->name('GDRAccounting');

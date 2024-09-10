@@ -109,80 +109,115 @@
 
 <body>
 
-@include('Components.Admin.CoordinatorSidebar')
-@include('Components.Admin.Navbar')
+    @include('Components.Admin.CoordinatorSidebar')
+    @include('Components.Admin.Navbar')
 
-<div class="container-fluid px-3 px-sm-0">
-    <div class="body-wrapper">
-        <div class="bodywrapper__inner">
+    <div class="container-fluid px-3 px-sm-0">
+        <div class="body-wrapper">
+            <div class="bodywrapper__inner">
 
-            <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                <h6 class="page-title">Dashboard</h6>
-                <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                </div>
-            </div>
-
-            <!-- Notification Card -->
-            <div id="notificationCard" class="notification-card d-none">
-                <div class="cards p-3 bg-warning border-warning">
-                    <img src="Home/360_F_512063511_tspgHXYtRcpd9A05MFaWZv8nCTxL8WXP.jpg" class="card-img-top"
-                        alt="License Expiration Image">
-                    <div class="card-body">
-                        <h5 class="card-title">⚠️ Driver's License Expiration Warning</h5>
-                        @foreach ($couriers as $courier)
-                            <p class="card-text">{{ $courier->name }}'s license expires on
-                                {{ \Carbon\Carbon::parse($courier->license_expiration)->format('F j, Y') }}.</p>
-                        @endforeach
-                        <button type="button" class="btn btn-secondary" id="closeNotification">Close</button>
+                <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
+                    <h6 class="page-title">Dashboard</h6>
+                    <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
                     </div>
                 </div>
-            </div>
 
-            <!-- Latest Location Widget -->
-            <div class="row mt-4">
-                <div class="col-xxl-3 col-sm-6">
-                    <a href="#" class="text-decoration-none">
-                        <div class="bg-info text-white p-3 rounded d-flex align-items-center shadow-sm">
-                            <div class="me-3">
-                                <i class="fas fa-map-marker-alt fa-2x"></i>
-                            </div>
-                            <div>
-                                <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Latest Drivers Locations</p>
-                                <p class="mb-0">
-                                    @forelse ($locationsWithAddresses as $location)
-                                        Address: {{ $location['address'] }},
-                                        <br>
-                                        Updated by: {{ $location['creator'] }}
-                                        <br><br>
-                                    @empty
-                                        No location data available.
-                                    @endforelse
-                                </p>
-                            </div>
-
+                <!-- Notification Card 1 -->
+                <div id="notificationCard1" class="notification-card d-none">
+                    <div class="cards p-3 bg-warning border-warning">
+                        <img src="Home/360_F_512063511_tspgHXYtRcpd9A05MFaWZv8nCTxL8WXP.jpg" class="card-img-top"
+                            alt="License Expiration Image">
+                        <div class="card-body">
+                            <h5 class="card-title">⚠️ Driver's License Expiration Warning</h5>
+                            @foreach ($couriers as $courier)
+                                <p class="card-text">{{ $courier->name }}'s license expires on
+                                    {{ \Carbon\Carbon::parse($courier->license_expiration)->format('F j, Y') }}.</p>
+                            @endforeach
+                            <button type="button" class="btn btn-secondary"  id="closeNotification1">Close</button>
                         </div>
-                    </a>
+                    </div>
                 </div>
+
+                <!-- Notification Card 2 -->
+                <div id="notificationCard2" class="notification-card d-none">
+                    <div class="card p-3 bg-danger text-white border-danger">
+                        <img src="Home/jJSs0vhUQdOpWUjV4cdQRg.webp" class="card-img-top mb-3" alt="Backload Bookings Image">
+                        <div class="card-body">
+                            <h5 class="card-title">⚠️ New Backload Bookings</h5>
+                            @forelse ($newBackloadBookings as $location)
+                                <ul class="list-unstyled">
+                                    <li class="mb-1"><strong>Created on:</strong> {{ $location->created_at }}</li>
+                                    <li class="mb-1"><strong>Tracking Number:</strong> {{ $location->tracking_number }}</li>
+                                    <li class="mb-1"><strong>Delivery Type:</strong> {{ $location->delivery_type }}</li>
+                                    <li class="mb-1"><strong>From:</strong> {{ $location->merchant_address }}</li>
+                                    <li class="mb-1"><strong>To:</strong> {{ $location->consignee_address }}</li>
+                                    <li class="mb-1"><strong>Product:</strong> {{ $location->product_name }}</li>
+                                </ul>
+                            @empty
+                                <p class="card-text">No new backload bookings available.</p>
+                            @endforelse
+                            <button type="button" class="btn btn-light mt-3" id="closeNotification2">Close</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Latest Location Widget -->
+                <div class="row mt-4">
+                    <div class="col-xxl-3 col-sm-6">
+                        <a href="#" class="text-decoration-none">
+                            <div class="bg-info text-white p-3 rounded d-flex align-items-center shadow-sm">
+                                <div class="me-3">
+                                    <i class="fas fa-map-marker-alt fa-2x"></i>
+                                </div>
+                                <div>
+                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Latest Drivers
+                                        Locations</p>
+                                    <p class="mb-0">
+                                        @forelse ($locationsWithAddresses as $location)
+                                            Address: {{ $location['address'] }},
+                                            <br>
+                                            Updated by: {{ $location['creator'] }}
+                                            <br><br>
+                                        @empty
+                                            No location data available.
+                                        @endforelse
+                                    </p>
+                                </div>
+
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+
             </div>
-
-
         </div>
     </div>
-</div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Show the notification card
-        document.getElementById('notificationCard').classList.remove('d-none');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show the first notification card
+            document.getElementById('notificationCard1').classList.remove('d-none');
 
-        // Handle closing the notification card
-        document.getElementById('closeNotification').addEventListener('click', function() {
-            document.getElementById('notificationCard').classList.add('d-none');
+            // Handle closing the first notification card
+            document.getElementById('closeNotification1').addEventListener('click', function() {
+                document.getElementById('notificationCard1').classList.add('d-none');
+                // Show the second notification card after the first one is closed
+                setTimeout(function() {
+                    document.getElementById('notificationCard2').classList.remove('d-none');
+                }, 300); // Delay to ensure the first card is hidden before showing the second one
+            });
+
+            // Handle closing the second notification card
+            document.getElementById('closeNotification2').addEventListener('click', function() {
+                document.getElementById('notificationCard2').classList.add('d-none');
+            });
         });
-    });
-</script>
+    </script>
 
-@include('Components.Admin.Footer')
+    @include('Components.Admin.Footer')
 
 </body>
+
 </html>

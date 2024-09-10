@@ -113,18 +113,17 @@
                                     <td>{{ $inhouse->km }} km</td>
                                     <td>₱{{ number_format($inhouse->rate_per_mile * $inhouse->km, 2) }}</td>
                                     <td>₱{{ number_format($inhouse->operational_costs, 2) }}</td>
-                                    <td>
-                                        @if (isset($inhouse->proof_of_payment) && $inhouse->proof_of_payment)
-                                            @php
-                                                $imageUrl = asset('storage/' . $inhouse->proof_of_payment);
-                                            @endphp
-                                            <img src="{{ $imageUrl }}" alt="Proof of Payment" style="width: 50px; height: 50px; object-fit: cover;">
-                                            <!-- Uncomment this line to debug the URL -->
-                                            <!-- <p>{{ $imageUrl }}</p> -->
-                                        @else
-                                            No proof of payment available
-                                        @endif
-                                    </td>
+                                 <td>
+    @if (isset($inhouse->proof_of_payment) && $inhouse->proof_of_payment)
+        @php
+            $imageUrl = asset($inhouse->proof_of_payment); // Directly access the public path
+        @endphp
+        <img src="{{ $imageUrl }}" alt="Proof of Payment" style="width: 50px; height: 50px; object-fit: cover;">
+    @else
+        No proof of payment available
+    @endif
+</td>
+
 
 
 

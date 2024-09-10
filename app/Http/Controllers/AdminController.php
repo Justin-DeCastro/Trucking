@@ -281,55 +281,83 @@ public function courier_dash()
 }
 
 
-    public function coordinatordash(){
-        // Get the current logged-in user ID
-        $currentUserId = auth()->id();
+public function coordinatordash()
+{
+    // Get the current logged-in user ID
+    $currentUserId = auth()->id();
 
-        // Fetch couriers
-        $couriers = User::where('role', 'courier')->get(['name', 'license_expiration']);
+    // Fetch new backload bookings
+    $newBackloadBookings = Booking::where('delivery_type', 'Backload')
+    ->whereDate('created_at', Carbon::today())
+    ->orderBy('created_at', 'desc')
+    ->get();
 
-        // Fetch the latest location for each user
-        $latestLocations = Location::select('user_id', 'latitude', 'longitude')
-            ->whereIn('id', function ($query) {
-                $query->selectRaw('MAX(id)')
-                    ->from('locations')
-                    ->groupBy('user_id');
-            })
-            ->get();
+    // Fetch couriers
+    $couriers = User::where('role', 'courier')->get(['name', 'license_expiration']);
 
-        // Define your Google Maps API key
-        $apiKey = 'AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4';
+    // Fetch the latest location for each user
+    $latestLocations = Location::select('user_id', 'latitude', 'longitude')
+        ->whereIn('id', function ($query) {
+            $query->selectRaw('MAX(id)')
+                  ->from('locations')
+                  ->groupBy('user_id');
+        })
+        ->get();
 
-        // Initialize an empty array to store the locations with addresses
-        $locationsWithAddresses = [];
+    // Define your Google Maps API key
+    $apiKey = 'AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4';
 
-        foreach ($latestLocations as $location) {
+    // Initialize an empty array to store the locations with addresses
+    $locationsWithAddresses = [];
+
+    // Iterate through each latest location to get the address
+    foreach ($latestLocations as $location) {
+        try {
+            // Make API request to get the address
             $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
                 'latlng' => "{$location->latitude},{$location->longitude}",
                 'key' => $apiKey
             ]);
 
-            $data = $response->json();
-
-            // Extract address from the API response
-            $address = $data['results'][0]['formatted_address'] ?? 'Address not found';
-
-            // Get the user's name
-            $user = User::find($location->user_id);
-
-            $locationsWithAddresses[] = [
-                'latitude' => $location->latitude,
-                'longitude' => $location->longitude,
-                'address' => $address,
-                'creator' => $user ? $user->name : 'Unknown'
-            ];
+            // Check if the response is successful
+            if ($response->successful()) {
+                $data = $response->json();
+                // Extract address from the API response
+                $address = $data['results'][0]['formatted_address'] ?? 'Address not found';
+            } else {
+                $address = 'Address not found';
+            }
+        } catch (\Exception $e) {
+            // Handle exceptions
+            $address = 'Address not found';
         }
 
-        return view('Admin.Coordinatordash', compact('couriers', 'locationsWithAddresses'));
+        // Get the user's name
+        $user = User::find($location->user_id);
+
+        $locationsWithAddresses[] = [
+            'latitude' => $location->latitude,
+            'longitude' => $location->longitude,
+            'address' => $address,
+            'creator' => $user ? $user->name : 'Unknown'
+        ];
     }
 
+    // Return view with the necessary data
+    return view('Admin.Coordinatordash', compact('couriers', 'locationsWithAddresses', 'newBackloadBookings'));
+}
+    public function getNewBackloadBookings()
+    {
+        $today = Carbon::today(); // Get the start of today
+        $endOfDay = Carbon::today()->endOfDay(); // Get the end of today
 
+        $newBookings = DB::table('bookings')
+            ->where('delivery_type', 'Backload')
+            ->whereBetween('created_at', [$today, $endOfDay])
+            ->get();
 
+        return $newBookings;
+    }
 
     public function coordinatorReturnItems(){
         $currentUserId = auth()->id();

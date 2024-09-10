@@ -55,19 +55,21 @@ class BookingController extends Controller
 
     public function getPlateNumberCounts()
     {
-        // Retrieve all unique plate numbers with their counts, status counts, and order_status counts
+        // Retrieve all unique plate numbers with their counts, status counts, and order_status counts by month
         $plateNumberCounts = Booking::select('plate_number')
+            ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month')
             ->selectRaw('count(*) as total_bookings')
             ->selectRaw('GROUP_CONCAT(DISTINCT status) as statuses')
             ->selectRaw('GROUP_CONCAT(DISTINCT order_status) as order_statuses')
-            ->groupBy('plate_number')
+            ->groupBy('plate_number', 'month')
             ->get();
 
         // Prepare data for each status count including order_status
         $plateNumberDetails = $plateNumberCounts->map(function ($plate) {
-            // Get booking details for the plate number
+            // Get booking details for the plate number and month
             $statusCounts = Booking::select('status', 'order_status')
                 ->where('plate_number', $plate->plate_number)
+                ->whereRaw('DATE_FORMAT(created_at, "%Y-%m") = ?', [$plate->month])
                 ->groupBy('status', 'order_status')
                 ->selectRaw('count(*) as count')
                 ->get()

@@ -9,36 +9,43 @@ class RatePerMileController extends Controller
 {
     public function submit(Request $request)
     {
-        $request->validate([
+        // Validate request data
+        $validatedData = $request->validate([
             'plate_number' => 'required|exists:bookings,plate_number',
             'rate_per_mile' => 'required|numeric',
             'km' => 'required|numeric',
-            'gross_income' => 'required|numeric', // Add numeric validation
+            'gross_income' => 'required|numeric',
             'date' => 'required|date',
-            'proof_of_payment' => 'nullable|file|mimes:jpeg,png,pdf', // Nullable if the file is optional
+            'proof_of_payment' => 'nullable|file|mimes:jpeg,png,pdf|max:2048', // Add max file size
             'operational_costs' => 'required|numeric',
         ]);
 
         // Handle file upload
-        $proofOfPaymentPath = $request->hasFile('proof_of_payment')
-            ? $request->file('proof_of_payment')->store('proofs_of_payment', 'public')
-            : null;
+        if ($request->hasFile('proof_of_payment')) {
+            $file = $request->file('proof_of_payment');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $filePath = public_path('proofs_of_payment');
+
+            // Create directory if it doesn't exist
+            if (!file_exists($filePath)) {
+                mkdir($filePath, 0755, true);
+            }
+
+            // Move file to public directory
+            $file->move($filePath, $fileName);
+            $validatedData['proof_of_payment'] = 'proofs_of_payment/' . $fileName;
+        }
 
         // Find or create a RatePerMile record
         RatePerMile::updateOrCreate(
-            ['plate_number' => $request->plate_number],
-            [
-                'proof_of_payment' => $proofOfPaymentPath,
-                'date' => $request->date,
-                'rate_per_mile' => $request->rate_per_mile,
-                'km' => $request->km,
-                'gross_income' => $request->gross_income,
-                'operational_costs' => $request->operational_costs,
-            ]
+            ['plate_number' => $validatedData['plate_number']],
+            $validatedData
         );
 
         return redirect()->back()->with('success', 'Data saved successfully!');
     }
+
+
 
 
 
