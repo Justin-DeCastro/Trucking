@@ -43,6 +43,7 @@
                         <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
                         </div>
                     </div>
+
                     <section style="padding: 60px 0;">
                         <div
                             style="max-width: 900px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">

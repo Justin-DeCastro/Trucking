@@ -38,7 +38,7 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\DelayReportController;
 use App\Http\Controllers\GDRAccountingController;
 use App\Http\Controllers\CourierOrderController;
-
+use App\Http\Controllers\ReceivableController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -325,3 +325,15 @@ Route::post('/delay/submit', [DelayReportController::class, 'store'])->name('del
 Route::post('/gdr-accounting/store', [GDRAccountingController::class, 'store'])->name('GDRAccounting.store');
 Route::get('GDRAccounting', [AccountingController::class, 'GDR_Accounting'])->name('GDRAccounting');
 Route::patch('/couriers/{id}/status', [CourierOrderController::class, 'updateStatus'])->name('couriers.updateStatus');
+
+Route::post('/update-driver-license', [AdminController::class, 'storeDriverLicenseDetails'])->name('updateLicense');
+
+Route::get('receivable', [AccountingController::class, 'GDR_receivable'])->name('receivable');
+Route::get('financialreport', [AccountingController::class, 'financialreport'])->name('financialreport');
+Route::post('receivables', [ReceivableController::class, 'store'])->name('receivables.store');
+
+Route::put('/vehicles/{id}/status', [VehicleController::class, 'updateStatus'])->name('vehicles.updateStatus');
+Route::post('/documents/update-or', [VehicleController::class, 'updateOr'])->name('documents.updateOr');
+Route::post('/vehicles/update-cr', [VehicleController::class, 'updateCr'])->name('vehicles.updateCr');
+// web.php
+Route::post('/trips/{id}/close', [TripController::class, 'closeTrip'])->name('trips.close');

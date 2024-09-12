@@ -97,7 +97,26 @@
                                                 <td>{{ number_format($budget->budget_amount, 2) }}</td>
                                                 <td>{{ $budget->expense_details }}</td>
                                                 <td>{{ $budget->voucher }}</td>
-                                                <td id="status-{{ $budget->id }}">{{ $budget->status }}</td>
+                                                <td id="status-{{ $budget->id }}">
+                                                    @if ($budget->status === 'Pending')
+                                                        <span style="background-color: yellow; box-shadow: 0 4px 8px rgba(255, 255, 0, 0.5); padding: 2px 4px;">
+                                                            {{ $budget->status }}
+                                                        </span>
+                                                    @elseif ($budget->status === 'Approved')
+                                                        <span style="background-color: green; color: white; box-shadow: 0 4px 8px rgba(0, 255, 0, 0.5); padding: 2px 4px;">
+                                                            {{ $budget->status }}
+                                                        </span>
+                                                    @elseif ($budget->status === 'Denied')
+                                                        <span style="background-color: red; color: white; box-shadow: 0 4px 8px rgba(255, 0, 0, 0.5); padding: 2px 4px;">
+                                                            {{ $budget->status }}
+                                                        </span>
+                                                    @else
+                                                        {{ $budget->status }}
+                                                    @endif
+                                                </td>
+
+
+
                                                 <td>{{ $budget->approved_by ? \App\Models\User::find($budget->approved_by)->name : 'N/A' }}</td> <!-- Display approved by -->
                                                 <td>
                                                     <form action="{{ route('budgets.approve', $budget->id) }}" method="POST" style="display:inline;" class="approve-form">

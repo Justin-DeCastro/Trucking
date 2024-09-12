@@ -22,5 +22,13 @@ class Loan extends Model
     ];
 
     // Optionally, you can specify which attributes should be cast to specific types
+    // public function receivables()
+    // {
+    //     return $this->hasMany(Receivable::class);
+    // }
+    public function receivables()
+    {
+        return $this->hasMany(Receivable::class, 'borrower', 'borrower'); // Link via borrower
+    }
 
 }

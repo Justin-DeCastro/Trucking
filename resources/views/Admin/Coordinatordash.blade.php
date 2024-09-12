@@ -2,6 +2,25 @@
 <html lang="en">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
+    @keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 193, 7, 0.6);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(255, 193, 7, 0.8);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 193, 7, 0.6);
+    }
+}
+
+.warning-card {
+    animation: pulse 2s infinite;
+}
+
     .notification-card {
         position: fixed;
         top: 50%;
@@ -123,47 +142,52 @@
                 </div>
 
                 <!-- Notification Card 1 -->
-                <div id="notificationCard1" class="notification-card d-none">
+                <!-- Notification Card for License Expiration -->
+                <div id="notificationCard1" class="notification-card {{ $expiringCouriers->isEmpty() ? 'd-none' : '' }}">
                     <div class="cards p-3 bg-warning border-warning">
-                        <img src="Home/360_F_512063511_tspgHXYtRcpd9A05MFaWZv8nCTxL8WXP.jpg" class="card-img-top"
-                            alt="License Expiration Image">
+                        <img src="Home/360_F_512063511_tspgHXYtRcpd9A05MFaWZv8nCTxL8WXP.jpg" class="card-img-top" alt="License Expiration Image">
                         <div class="card-body">
                             <h5 class="card-title">⚠️ Driver's License Expiration Warning</h5>
-                            @foreach ($couriers as $courier)
-                                <p class="card-text">{{ $courier->name }}'s license expires on
-                                    {{ \Carbon\Carbon::parse($courier->license_expiration)->format('F j, Y') }}.</p>
+                            @foreach ($expiringCouriers as $courier)
+                                <p class="card-text"><strong>{{ $courier->name }}</strong>'s license expires on <strong>{{ \Carbon\Carbon::parse($courier->license_expiration)->format('F j, Y') }}</strong>.</p>
                             @endforeach
-                            <button type="button" class="btn btn-secondary"  id="closeNotification1">Close</button>
+                            <button type="button" class="btn btn-secondary" id="closeNotification1">Close</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Notification Card 2 -->
-                <div id="notificationCard2" class="notification-card d-none">
-                    <div class="card p-3 bg-danger text-white border-danger">
-                        <img src="Home/jJSs0vhUQdOpWUjV4cdQRg.webp" class="card-img-top mb-3" alt="Backload Bookings Image">
-                        <div class="card-body">
-                            <h5 class="card-title">⚠️ New Backload Bookings</h5>
-                            @forelse ($newBackloadBookings as $location)
-                                <ul class="list-unstyled">
-                                    <li class="mb-1"><strong>Created on:</strong> {{ $location->created_at }}</li>
-                                    <li class="mb-1"><strong>Tracking Number:</strong> {{ $location->tracking_number }}</li>
-                                    <li class="mb-1"><strong>Delivery Type:</strong> {{ $location->delivery_type }}</li>
-                                    <li class="mb-1"><strong>From:</strong> {{ $location->merchant_address }}</li>
-                                    <li class="mb-1"><strong>To:</strong> {{ $location->consignee_address }}</li>
-                                    <li class="mb-1"><strong>Product:</strong> {{ $location->product_name }}</li>
-                                </ul>
-                            @empty
-                                <p class="card-text">No new backload bookings available.</p>
-                            @endforelse
-                            <button type="button" class="btn btn-light mt-3" id="closeNotification2">Close</button>
-                        </div>
-                    </div>
-                </div>
+
+<!-- Notification Card for New Backload Bookings -->
+<!-- Notification Card for New Backload Bookings -->
+@if($newBackloadBookings->isNotEmpty())
+<div id="notificationCard2" class="notification-card">
+    <div class="card p-3 bg-danger text-white border-danger">
+        <img src="Home/jJSs0vhUQdOpWUjV4cdQRg.webp" class="card-img-top mb-3" alt="Backload Bookings Image">
+        <div class="card-body">
+            <h5 class="card-title">⚠️ New Backload Bookings</h5>
+            @foreach ($newBackloadBookings as $location)
+                <ul class="list-unstyled">
+                    <li class="mb-1"><strong>Created on:</strong> {{ $location->created_at }}</li>
+                    <li class="mb-1"><strong>Tracking Number:</strong> {{ $location->tracking_number }}</li>
+                    <li class="mb-1"><strong>Delivery Type:</strong> {{ $location->delivery_type }}</li>
+                    <li class="mb-1"><strong>From:</strong> {{ $location->merchant_address }}</li>
+                    <li class="mb-1"><strong>To:</strong> {{ $location->consignee_address }}</li>
+                    <li class="mb-1"><strong>Product:</strong> {{ $location->product_name }}</li>
+                </ul>
+            @endforeach
+            <button type="button" class="btn btn-light mt-3" id="closeNotification2">Close</button>
+        </div>
+    </div>
+</div>
+@endif
+
+
 
 
                 <!-- Latest Location Widget -->
+
                 <div class="row mt-4">
+                    <!-- Display Latest Drivers Locations -->
                     <div class="col-xxl-3 col-sm-6">
                         <a href="#" class="text-decoration-none">
                             <div class="bg-info text-white p-3 rounded d-flex align-items-center shadow-sm">
@@ -171,8 +195,7 @@
                                     <i class="fas fa-map-marker-alt fa-2x"></i>
                                 </div>
                                 <div>
-                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Latest Drivers
-                                        Locations</p>
+                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Latest Drivers Locations</p>
                                     <p class="mb-0">
                                         @forelse ($locationsWithAddresses as $location)
                                             Address: {{ $location['address'] }},
@@ -184,11 +207,37 @@
                                         @endforelse
                                     </p>
                                 </div>
-
                             </div>
                         </a>
                     </div>
+
+                    <!-- Display Plate Numbers with Fewer than 5 Bookings -->
+                    <div class="col-xxl-3 col-sm-6 mt-4 mt-sm-0">
+                        <a href="#" class="text-decoration-none">
+                            <div class="bg-warning text-dark p-3 rounded d-flex align-items-center shadow-sm border border-danger warning-card">
+                                <div class="me-3">
+                                    <i class="fas fa-car fa-2x"></i>
+                                </div>
+                                <div>
+                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Trucks with Less Than 5 Bookings</p>
+                                    <p class="mb-0">
+                                        @forelse ($plateNumbersWithFewBookings as $plate)
+                                            <strong class="text-dark">Plate Number:</strong> <span class="fw-bold">{{ $plate->plate_number }}</span>
+                                            <br>
+                                            <strong class="text-dark">Total Bookings:</strong> <span class="fw-bold">{{ $plate->booking_count }}</span>
+                                            <br><br>
+                                        @empty
+                                            <span class="text-muted">No trucks with fewer than 5 bookings.</span>
+                                        @endforelse
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+
                 </div>
+
 
 
             </div>
@@ -197,23 +246,30 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Show the first notification card
-            document.getElementById('notificationCard1').classList.remove('d-none');
+    const notificationCard1 = document.getElementById('notificationCard1');
 
-            // Handle closing the first notification card
-            document.getElementById('closeNotification1').addEventListener('click', function() {
-                document.getElementById('notificationCard1').classList.add('d-none');
-                // Show the second notification card after the first one is closed
-                setTimeout(function() {
-                    document.getElementById('notificationCard2').classList.remove('d-none');
-                }, 300); // Delay to ensure the first card is hidden before showing the second one
-            });
+    // Check if the notification card is already hidden (no expiring licenses)
+    if (!notificationCard1.classList.contains('d-none')) {
+        // Show the notification card if not hidden
+        notificationCard1.classList.remove('d-none');
+    }
 
-            // Handle closing the second notification card
-            document.getElementById('closeNotification2').addEventListener('click', function() {
-                document.getElementById('notificationCard2').classList.add('d-none');
-            });
-        });
+    // Handle closing the first notification card
+    document.getElementById('closeNotification1').addEventListener('click', function() {
+        notificationCard1.classList.add('d-none');
+
+        // Show the second notification card after the first one is closed
+        setTimeout(function() {
+            document.getElementById('notificationCard2').classList.remove('d-none');
+        }, 300); // Delay to ensure the first card is hidden before showing the second one
+    });
+
+    // Handle closing the second notification card
+    document.getElementById('closeNotification2').addEventListener('click', function() {
+        document.getElementById('notificationCard2').classList.add('d-none');
+    });
+});
+
     </script>
 
     @include('Components.Admin.Footer')

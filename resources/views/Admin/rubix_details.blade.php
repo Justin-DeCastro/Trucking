@@ -430,10 +430,10 @@
                                                 <th>Destination</th>
                                                 <th>Proof of Delivery</th>
                                                 <th>Remarks</th>
-                                                <th>Status</th>
-                                                <th>Reference</th>
+                                                <th>Driver Status</th>
+                                                <th>Admin Status</th>
                                                 <th>Updated By</th>
-                                                <th>Update Status</th>
+                                                <th>Update Admin Status</th>
 
                                                 <th>Actions</th>
                                             </tr>
@@ -1228,7 +1228,6 @@
                 }
 
                 function stopTimer(detailId) {
-                    // Clear the interval to stop the timer
                     clearInterval(timerIntervals[detailId]);
                     console.log('Timer stopped for detail ID:', detailId);
                 }
@@ -1239,8 +1238,17 @@
                         center: { lat: -34.397, lng: 150.644 } // Default center; will update later
                     });
 
+                    // Add traffic layer to show real-time traffic conditions
+                    var trafficLayer = new google.maps.TrafficLayer();
+                    trafficLayer.setMap(map);
+
                     var directionsService = new google.maps.DirectionsService();
-                    var directionsRenderer = new google.maps.DirectionsRenderer();
+                    var directionsRenderer = new google.maps.DirectionsRenderer({
+                        polylineOptions: {
+                            strokeColor: '#00FF00', // Green as default road color
+                            strokeWeight: 6
+                        }
+                    });
                     directionsRenderer.setMap(map);
 
                     var request = {
@@ -1265,43 +1273,72 @@
                                 title: 'Moving Truck'
                             });
 
-                            // Set timer
                             var durationInSeconds = result.routes[0].legs[0].duration.value;
                             startTimer(detailId, durationInSeconds);
 
-                            // Move the truck marker as the truck moves
                             var route = result.routes[0].legs[0];
                             var step = 0;
 
-                            // Get the timeline element where we will record each place the truck encounters
                             var timelineListElement = document.getElementById('timelineHistory' + detailId);
 
                             function moveTruck() {
                                 if (step < route.steps.length) {
-                                    truckMarker.setPosition(route.steps[step].end_location); // Move the truck marker
+                                    truckMarker.setPosition(route.steps[step].end_location);
 
-                                    // Record the step in the timeline
                                     var placeDescription = route.steps[step].instructions;
                                     var placeElement = document.createElement('li');
                                     placeElement.innerHTML = placeDescription;
-                                    timelineListElement.appendChild(placeElement); // Add place to the timeline
+                                    timelineListElement.appendChild(placeElement);
+
+                                    // Add marker for each step (including last stop)
+                                    var placeMarker = new google.maps.Marker({
+                                        position: route.steps[step].end_location,
+                                        map: map,
+                                        title: placeDescription
+                                    });
+
+                                    // Info window for hover details
+                                    var infoWindow = new google.maps.InfoWindow({
+                                        content: placeDescription
+                                    });
+
+                                    placeMarker.addListener('mouseover', function() {
+                                        infoWindow.open(map, placeMarker);
+                                    });
+                                    placeMarker.addListener('mouseout', function() {
+                                        infoWindow.close();
+                                    });
 
                                     step++;
-                                    setTimeout(moveTruck, 2000); // Simulate truck movement every 2 seconds
+                                    setTimeout(moveTruck, 2000);
                                 } else {
-                                    // Truck has reached the destination
-                                    console.log("Truck has arrived at the destination. Stopping timer.");
-                                    stopTimer(detailId); // Stop the timer when truck reaches the destination
+                                    stopTimer(detailId);
 
-                                    // Record final timeline entry
                                     var arrivalElement = document.createElement('li');
                                     arrivalElement.innerHTML = "<strong>Truck has arrived at the destination.</strong>";
                                     timelineListElement.appendChild(arrivalElement);
+
+                                    // Add hover effect for final destination marker
+                                    var finalMarker = new google.maps.Marker({
+                                        position: route.steps[step - 1].end_location,
+                                        map: map,
+                                        title: 'Final Destination'
+                                    });
+
+                                    var finalInfoWindow = new google.maps.InfoWindow({
+                                        content: 'Final Destination'
+                                    });
+
+                                    finalMarker.addListener('mouseover', function() {
+                                        finalInfoWindow.open(map, finalMarker);
+                                    });
+                                    finalMarker.addListener('mouseout', function() {
+                                        finalInfoWindow.close();
+                                    });
                                 }
                             }
 
-                            moveTruck(); // Start moving the truck
-
+                            moveTruck();
                         } else {
                             console.error('Directions request failed due to ' + status);
                         }
@@ -1320,6 +1357,7 @@
                     @endforeach
                 });
             </script>
+
 
 
 </body>

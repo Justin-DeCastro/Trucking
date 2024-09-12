@@ -124,20 +124,23 @@
 
                 <!-- Delete Action -->
                 <td>
-                    <!-- Update Status Form -->
-                    <form action="{{ route('couriers.updateStatus', $driver->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('PATCH')
-                        <input type="hidden" name="status" value="terminated">
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to terminate this courier?');">Terminate</button>
-                    </form>
-
-                    <form action="{{ route('couriers.updateStatus', $driver->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('PATCH')
-                        <input type="hidden" name="status" value="renewed">
-                        <button type="submit" class="btn btn-success" onclick="return confirm('Are you sure you want to renew this courier?');">Renew</button>
-                    </form>
+                    @if ($driver->status === 'terminated')
+                        <!-- Show Renew button only if status is 'terminated' -->
+                        <form action="{{ route('couriers.updateStatus', $driver->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('PATCH')
+                            <input type="hidden" name="status" value="renewed">
+                            <button type="submit" class="btn btn-success" onclick="return confirm('Are you sure you want to renew this courier?');">Renew</button>
+                        </form>
+                    @elseif ($driver->status === 'renewed')
+                        <!-- Show Terminate button only if status is 'renewed' -->
+                        <form action="{{ route('couriers.updateStatus', $driver->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('PATCH')
+                            <input type="hidden" name="status" value="terminated">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to terminate this courier?');">Terminate</button>
+                        </form>
+                    @endif
                 </td>
 
             </tr>

@@ -20,6 +20,7 @@
             <i class="fas fa-bars" style="color: blue;"></i>
         </button>
     </div> --}}
+
     <div class="container-fluid px-3 px-sm-0">
         <div class="body-wrapper">
             <div class="bodywrapper__inner">
@@ -32,7 +33,76 @@
                         </button>
                     </div>
                 </div>
+                <div class ="pt-3">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="modal"
+                        data-bs-target="#infoModal">
+                        View Activity Logs and User Details
+                    </button>
+                </div>
+                <div class="container mt-4 pb-3">
+                    <!-- Modal -->
+                    <div class="modal fade" id="infoModal" tabindex="-1"
+                        aria-labelledby="infoModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="infoModalLabel">Activity Logs and
+                                        User Details</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- User Details -->
+                                    <div class="user-info mb-4">
+                                        @if (auth()->check())
+                                            <p><strong class="text-dark">Name:</strong> <span
+                                                    class="text-dark">{{ auth()->user()->name }}</span>
+                                            </p>
+                                            <p><strong class="text-dark">Email:</strong> <span
+                                                    class="text-dark">{{ auth()->user()->email }}</span>
+                                            </p>
 
+                                        @else
+                                            <p class="text-danger">User not logged in.</p>
+                                        @endif
+                                        <!-- Add other user details here if needed -->
+                                    </div>
+
+                                    <!-- Activity Logs -->
+                                    <div class="activity-logs">
+                                        <h4 class="text-primary mb-3">Activity Logs</h4>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Activity</th>
+                                                    <th scope="col">Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- Display the date once -->
+                                                <tr>
+                                                    <td colspan="2">{{ \Carbon\Carbon::today()->toFormattedDateString() }}</td>
+                                                </tr>
+                                                <!-- Loop through today's activity logs -->
+                                                @foreach ($activityLogs as $logs)
+                                                    <tr>
+                                                        <td>{{ $logs->activity }}</td>
+                                                        <td>{{ $logs->created_at->format('h:i A') }}</td> <!-- Show time only -->
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
@@ -46,25 +116,32 @@
                                                 <th>Driver Salary</th>
                                                 <th>Helper Salary</th>
                                                 <th>Rates</th>
-                                                <th>Updated Driver Salary</th> <!-- New column header -->
+                                                <th>Updated Driver Salary</th>
+                                                <th>Updated Helper Salary</th>
+                                                <th>Updated Salary Rates</th>
+                                                <!-- New column header -->
 
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($computedSalaries as $id => $salaries)
                                                 @php
-                                                    $driverSalaryWithholdingTax = $salaries['driver_salary'] * 0.98; // Apply 2% withholding tax
+                                                    $driverSalaryWithholdingTax = $salaries['driver_salary'] * 0.98; // Apply 2% withholding tax to driver salary
+                                                    $helperSalaryWithholdingTax = $salaries['helper_salary'] * 0.98;
+                                                    $updatedSalary = $driverSalaryWithholdingTax + $helperSalaryWithholdingTax; // Apply 2% withholding tax to helper salary
                                                 @endphp
                                                 <tr>
                                                     <td>{{ $salaries['delivery_routes'] }}</td>
                                                     <td>₱{{ number_format($salaries['driver_salary'], 2) }}</td>
                                                     <td>₱{{ number_format($salaries['helper_salary'], 2) }}</td>
                                                     <td>₱{{ number_format($salaries['total_salary'], 2) }}</td>
-                                                    <td>₱{{ number_format($driverSalaryWithholdingTax, 2) }}</td> <!-- New column data -->
-
+                                                    <td>₱{{ number_format($driverSalaryWithholdingTax, 2) }}</td> <!-- Driver salary after 2% withholding tax -->
+                                                    <td class="text-start">₱{{ number_format($helperSalaryWithholdingTax, 2) }}</td>
+                                                    <td >₱{{ number_format($updatedSalary, 2) }}</td> <!-- Helper salary after 2% withholding tax -->
                                                 </tr>
                                             @endforeach
                                         </tbody>
+
                                     </table>
 
                                 </div>

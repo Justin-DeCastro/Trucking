@@ -17,6 +17,7 @@ use App\Models\ActivityLog;
 use App\Models\Loan;
 use App\Models\ReturnItem;
 use App\Models\Budget;
+use App\Models\Receivable;
 use App\Models\Location;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
@@ -273,14 +274,21 @@ class AdminController extends Controller
 public function courier_dash()
 {
     $currentUserId = auth()->id();
+
+    // Fetch the license expiration for the logged-in user
+    $expiringCourier = User::where('id', $currentUserId)
+        ->whereBetween('license_expiration', [Carbon::now(), Carbon::now()->addDays(7)])
+        ->first(['name', 'license_expiration']); // Use first() to get a single result
+
     $totalBookings = Booking::where('driver_name', $currentUserId)->count(); // Total bookings
 
     $totalSuccessfulDeliveries = Booking::where('driver_name', $currentUserId)
         ->where('order_status', 'Confirmed_delivery')
         ->count(); // Total successful deliveries
 
-    return view('Admin.Courierdash', compact('totalBookings', 'totalSuccessfulDeliveries'));
+    return view('Admin.Courierdash', compact('totalBookings', 'totalSuccessfulDeliveries', 'expiringCourier'));
 }
+
 
 
 public function coordinatordash()
@@ -288,14 +296,16 @@ public function coordinatordash()
     // Get the current logged-in user ID
     $currentUserId = auth()->id();
 
-    // Fetch new backload bookings
+    // Fetch new backload bookings from today
     $newBackloadBookings = Booking::where('delivery_type', 'Backload')
-    ->whereDate('created_at', Carbon::today())
-    ->orderBy('created_at', 'desc')
-    ->get();
+        ->whereDate('created_at', Carbon::today()) // Ensure you are only getting today's bookings
+        ->orderBy('created_at', 'desc')
+        ->get();
 
-    // Fetch couriers
-    $couriers = User::where('role', 'courier')->get(['name', 'license_expiration']);
+    // Fetch couriers whose licenses are expiring soon
+    $expiringCouriers = User::where('role', 'courier')
+        ->whereBetween('license_expiration', [Carbon::now(), Carbon::now()->addDays(7)])
+        ->get(['name', 'license_expiration']);
 
     // Fetch the latest location for each user
     $latestLocations = Location::select('user_id', 'latitude', 'longitude')
@@ -345,9 +355,23 @@ public function coordinatordash()
         ];
     }
 
+    // Get plate numbers with fewer than 5 bookings and their total count
+    $plateNumbersWithFewBookings = Booking::select('plate_number')
+        ->selectRaw('COUNT(*) as booking_count')
+        ->groupBy('plate_number')
+        ->having('booking_count', '<', 5)
+        ->get();
+
     // Return view with the necessary data
-    return view('Admin.Coordinatordash', compact('couriers', 'locationsWithAddresses', 'newBackloadBookings'));
+    return view('Admin.Coordinatordash', [
+        'expiringCouriers' => $expiringCouriers,
+        'locationsWithAddresses' => $locationsWithAddresses,
+        'newBackloadBookings' => $newBackloadBookings,
+        'plateNumbersWithFewBookings' => $plateNumbersWithFewBookings
+    ]);
 }
+
+
     public function getNewBackloadBookings()
     {
         $today = Carbon::today(); // Get the start of today
@@ -378,9 +402,13 @@ public function coordinatordash()
     }
     public function accounting_dash()
 {
+    $totalrequestBudget = Budget::count();
+    $totalreceivables = Receivable::count();
     // Fetch all transactions from the database
     $transactions = Transaction::all();
-
+    $paidStatus = Loan::whereIn('status', ['Paid'])->count();
+    $unpaidStatus = Loan::whereIn('status', ['UnPaid'])->count();
+    $MaintenanceTruck = Vehicle::whereIn('truck_status', ['maintenance'])->count();
     // Calculate total deposit and withdrawal amounts
     $totalDeposit = $transactions->sum('deposit_amount');
     $totalWithdraw = $transactions->sum('withdraw_amount');
@@ -390,7 +418,7 @@ public function coordinatordash()
     // $netIncome = $totalDeposit - $totalWithdraw - $totalExpense;
 
     // Pass the computed values to the view
-    return view('Accounting.Accountingdash', compact('totalDeposit', 'totalWithdraw',  ));
+    return view('Accounting.Accountingdash', compact('totalDeposit', 'totalWithdraw','MaintenanceTruck' ,'totalreceivables','totalrequestBudget','paidStatus','unpaidStatus'));
 }
 
     public function destroy($id)
@@ -445,11 +473,31 @@ public function feedback(){
     $feedbacks = Feedback::all();
     return view('Admin.Feedback',compact('feedbacks'));
 }
+
+
 public function salary()
 {
+    $user = auth()->user();
+    $userId = $user ? $user->id : null;
+
+    // Fetch all booking details
+
+    // Fetch today's activity logs related to the currently authenticated user
+    $activityLogs = ActivityLog::where('user_id', $userId)
+        ->whereDate('created_at', Carbon::today()) // Get logs for today
+        ->get();
+
+    // Log the user's activity
+    if ($user) {
+        ActivityLog::log($user->id, 'Viewed Salary page');
+    }
+
+    // Fetch all activity logs for the booking model (if needed)
+    $activity_logs = Booking::with('activityLogs')->get();
+
     // Retrieve records grouped by ID with salary details
     $salariesById = DB::table('pricing_salaries')
-        ->select('ID','delivery_routes', 'driver_salary', 'helper_salary')
+        ->select('ID', 'delivery_routes', 'driver_salary', 'helper_salary')
         ->get();
 
     // Initialize an array to hold per-ID salary computations
@@ -458,10 +506,9 @@ public function salary()
     // Iterate through each record and compute as needed
     foreach ($salariesById as $record) {
         $id = $record->ID;
-        $deliveryRoutes= $record->delivery_routes;
+        $deliveryRoutes = $record->delivery_routes;
         $driverSalary = $record->driver_salary;
         $helperSalary = $record->helper_salary;
-
 
         // Compute total salary or other needed calculations per ID
         $totalSalary = $driverSalary + $helperSalary;
@@ -476,8 +523,9 @@ public function salary()
     }
 
     // Pass the data to the view
-    return view('Admin.Salary', compact('computedSalaries'));
+    return view('Admin.Salary', compact('computedSalaries', 'activityLogs'));
 }
+
 public function preventive(Request $request) {
     // Get the selected plate number from the request
     $plateNumber = $request->input('plate_number');

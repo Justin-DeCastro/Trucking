@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-
+<link href="https://cdn.jsdelivr.net/npm/lightbox2@2.11.3/dist/css/lightbox.min.css" rel="stylesheet">
     <!-- Include SweetAlert2 CSS (optional) -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 
@@ -63,7 +63,7 @@
             <div class="bodywrapper__inner">
 
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                    <h6 class="page-title">All Admin</h6>
+                    <h6 class="page-title">Add Truck</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
                     <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal" data-bs-target="#manageAdmin">
     <i class="fas fa-plus"></i> Add New
@@ -85,7 +85,7 @@
                             <th>Vehicle Capacity</th>
                             <th>Vehicle Status</th>
                             <th>Vehicle Quantity</th>
-                            <th>Documents/Certificates</th>
+                            <th>OR/CR</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -96,61 +96,154 @@
                                 <td>{{ $vehicle->truck_name }}</td>
                                 <td>{{ $vehicle->truck_model }}</td>
                                 <td>{{ $vehicle->truck_capacity }}</td>
-                                <td>{{ $vehicle->truck_status }}</td>
+                                <td>
+                                    {{ $vehicle->truck_status }}
+                                    <!-- Three-dots icon -->
+                                    <button type="button" class="btn btn-light btn-sm ms-2"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editStatusModal{{ $vehicle->id }}"
+                                        data-id="{{ $vehicle->id }}"
+                                        data-truck-status="{{ $vehicle->truck_status }}">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </td>
                                 <td>{{ $vehicle->quantity }}</td>
                                 <td>
-                                    @if(!empty($vehicle->documents) && is_array($vehicle->documents))
-                                        <ul>
-                                            @foreach($vehicle->documents as $document)
-                                                <li><a href="{{ asset($document) }}" target="_blank">{{ basename($document) }}</a></li>
-                                            @endforeach
+                                    @if(!empty($vehicle->or) || !empty($vehicle->cr))
+                                        <ul class="list-unstyled">
+                                            @if(!empty($vehicle->or))
+                                                <li>
+                                                    <a href="{{ asset($vehicle->or) }}" data-lightbox="vehicle-docs" data-title="Official Receipt (OR)">
+                                                        <img src="{{ asset($vehicle->or) }}" alt="Official Receipt (OR)" class="img-fluid" style="max-width: 100px; height: auto;">
+                                                    </a>
+                                                    <!-- Three-dots icon for OR -->
+                                                    <button type="button" class="btn btn-light btn-sm ms-2"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#updateOrModal"
+                                                        data-vehicle-id="{{ $vehicle->id }}">
+                                                        <i class="fas fa-ellipsis-v"></i>
+                                                    </button>
+                                                </li>
+                                            @else
+                                                <li>No Official Receipt (OR) available</li>
+                                            @endif
+
+                                            @if(!empty($vehicle->cr))
+                                                <li>
+                                                    <a href="{{ asset($vehicle->cr) }}" data-lightbox="vehicle-docs" data-title="Certificate of Registration (CR)">
+                                                        <img src="{{ asset($vehicle->cr) }}" alt="Certificate of Registration (CR)" class="img-fluid" style="max-width: 100px; height: auto;">
+                                                    </a>
+                                                    <!-- Three-dots icon for CR -->
+                                                    <button type="button" class="btn btn-light btn-sm ms-2"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#updateDocumentModal"
+                                                        data-doc-id="{{ $vehicle->id }}">
+                                                        <i class="fas fa-ellipsis-v"></i>
+                                                    </button>
+                                                </li>
+                                            @else
+                                                <li>No Certificate of Registration (CR) available</li>
+                                            @endif
                                         </ul>
                                     @else
                                         No documents available
                                     @endif
                                 </td>
 
+
+
                                 <td>
-                                    <button type="button" class="btn btn-info btn-sm"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#viewVehicleModal{{ $vehicle->id }}"
-                                    data-id="{{ $vehicle->id }}"
-
-                                    data-documents="{{ json_encode($vehicle->documents) }}">
-                                    <i class="fa fa-eye"></i> View
-                                </button>
                                     <!-- Edit Button -->
-                                    <button type="button" class="btn btn-warning btn-sm"
-    data-bs-toggle="modal"
-    data-bs-target="#editJobModal{{ $vehicle->id }}"
-    data-id="{{ $vehicle->id }}"
-    data-plate-number="{{ $vehicle->plate_number }}"
-    data-truck-name="{{ $vehicle->truck_name }}"
-    data-truck-model="{{ $vehicle->truck_model }}"
-    data-truck-capacity="{{ $vehicle->truck_capacity }}"
-    data-truck-status="{{ $vehicle->truck_status }}"
-    data-quantity="{{ $vehicle->quantity }}"
-    data-documents="{{ json_encode($vehicle->documents) }}">Edit
-</button>
-
-
+                                    {{-- <button type="button" class="btn btn-warning btn-sm"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editJobModal{{ $vehicle->id }}"
+                                        data-id="{{ $vehicle->id }}"
+                                        data-plate-number="{{ $vehicle->plate_number }}"
+                                        data-truck-name="{{ $vehicle->truck_name }}"
+                                        data-truck-model="{{ $vehicle->truck_model }}"
+                                        data-truck-capacity="{{ $vehicle->truck_capacity }}"
+                                        data-truck-status="{{ $vehicle->truck_status }}"
+                                        data-quantity="{{ $vehicle->quantity }}"
+                                        data-documents="{{ json_encode($vehicle->documents) }}">Edit
+                                    </button> --}}
 
                                     <!-- Delete Button -->
                                     <button type="button" class="btn btn-danger btn-delete"
-        data-bs-toggle="modal" data-bs-target="#confirmationModal"
-        data-url="{{ route('vehicles.destroy', $vehicle->id) }}">
-    Delete
-</button>
-
+                                        data-bs-toggle="modal" data-bs-target="#confirmationModal"
+                                        data-url="{{ route('vehicles.destroy', $vehicle->id) }}">
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
+
+                    <!-- Modal for updating OR document -->
+
+
+
+
+
+                    <!-- Status Edit Modal -->
+
                 </table>
             </div>
         </div>
     </div>
+    <!-- Update CR Modal -->
+<div class="modal fade" id="updateDocumentModal" tabindex="-1" aria-labelledby="updateDocumentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateDocumentModalLabel">Update Certificate of Registration (CR)</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('vehicles.updateCr') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="vehicle_id" id="crVehicleId">
+                    <div class="mb-3">
+                        <label for="cr" class="form-label">Certificate of Registration (CR)</label>
+                        <input type="file" class="form-control" name="cr" id="cr" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update CR</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
     @foreach($vehicles as $vehicle)
+    <div class="modal fade" id="editStatusModal{{ $vehicle->id }}" tabindex="-1" aria-labelledby="editStatusModalLabel{{ $vehicle->id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editStatusModalLabel{{ $vehicle->id }}">Update Status for Vehicle #{{ $vehicle->id }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('vehicles.updateStatus', $vehicle->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="mb-3">
+                            <label for="truck-status-{{ $vehicle->id }}" class="form-label">Status</label>
+                            <select class="form-select" id="truck-status-{{ $vehicle->id }}" name="truck_status" required>
+                                <option value="Available" {{ $vehicle->truck_status === 'Available' ? 'selected' : '' }}>Available</option>
+                                <option value="In Use" {{ $vehicle->truck_status === 'In Use' ? 'selected' : '' }}>In Use</option>
+                                <option value="Maintenance" {{ $vehicle->truck_status === 'Maintenance' ? 'selected' : '' }}>Maintenance</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Status</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@endforeach
+
+
+
+    {{-- @foreach($vehicles as $vehicle)
     <div class="modal fade" id="viewVehicleModal{{ $vehicle->id }}" tabindex="-1" aria-labelledby="viewVehicleModalLabel{{ $vehicle->id }}" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -199,7 +292,7 @@
             </div>
         </div>
     </div>
-@endforeach
+@endforeach --}}
 
     <!-- Create Vehicle Modal -->
     <div class="modal fade" id="manageAdmin" tabindex="-1" aria-labelledby="manageAdminLabel" aria-hidden="true">
@@ -246,17 +339,22 @@
                     </select>
                 </div>
 
-
                 <!-- Quantity -->
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Quantity</label>
                     <input type="number" id="quantity" name="quantity" class="form-control" required>
                 </div>
 
-                <!-- Documents -->
+                <!-- OR (Official Receipt) -->
                 <div class="mb-3">
-                    <label for="documents" class="form-label">Documents</label>
-                    <input type="file" id="documents" name="documents[]" class="form-control" multiple required>
+                    <label for="or" class="form-label">Official Receipt (OR)</label>
+                    <input type="file" id="or" name="or" class="form-control" required>
+                </div>
+
+                <!-- CR (Certificate of Registration) -->
+                <div class="mb-3">
+                    <label for="cr" class="form-label">Certificate of Registration (CR)</label>
+                    <input type="file" id="cr" name="cr" class="form-control" required>
                 </div>
 
                 <!-- Submit Button -->
@@ -265,6 +363,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </form>
+
 
         </div>
     </div>
@@ -355,7 +454,63 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="updateOrModal" tabindex="-1" aria-labelledby="updateOrModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateOrModalLabel">Update Official Receipt (OR)</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('documents.updateOr') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="vehicle_id" id="orVehicleId">
+                    <div class="mb-3">
+                        <label for="orFile" class="form-label">Choose New OR Document</label>
+                        <input type="file" class="form-control" id="orFile" name="or" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var updateOrModal = document.getElementById('updateOrModal');
+    updateOrModal.addEventListener('show.bs.modal', function(event) {
+        var button = event.relatedTarget;
+        var vehicleId = button.getAttribute('data-vehicle-id');
+        var modalInput = updateOrModal.querySelector('#orVehicleId');
+        modalInput.value = vehicleId;
+    });
 
+    var updateDocumentModal = document.getElementById('updateDocumentModal');
+    updateDocumentModal.addEventListener('show.bs.modal', function(event) {
+        var button = event.relatedTarget;
+        var vehicleId = button.getAttribute('data-doc-id');
+        var modalInput = updateDocumentModal.querySelector('#crVehicleId');
+        modalInput.value = vehicleId;
+    });
+});
+
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var updateOrModal = document.getElementById('updateOrModal');
+        updateOrModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget; // Button that triggered the modal
+            var vehicleId = button.getAttribute('data-vehicle-id');
+
+            var vehicleIdInput = updateOrModal.querySelector('#orVehicleId');
+
+            vehicleIdInput.value = vehicleId;
+        });
+    });
+</script>
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/jquery-3.7.1.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
@@ -612,7 +767,7 @@
 
 <!-- Include Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.3/dist/js/lightbox.min.js"></script>
 <!-- Include SweetAlert2 JS (optional) -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 </body>

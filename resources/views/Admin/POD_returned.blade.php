@@ -7,7 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Include jQuery -->
-
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.4/css/buttons.dataTables.min.css">
 @include('Components.Admin.Header')
 
 <body>
@@ -77,16 +78,15 @@
                         <div class="card">
                             <div class="card-body p-0">
                                 <div class="table-responsive--md table-responsive">
-                                    <table class="table--light style--two table">
+                                    <table class="table table--light style--two">
                                         <thead>
                                             <tr>
                                                 <th>Plate Number</th>
                                                 <th>Arrival Proof</th>
-                                                <th>Proof of Delivery</th><!-- New column for arrival proof -->
+                                                <th>Proof of Delivery</th>
                                                 <th>Completion of Trip</th>
-                                                <th>Tag</th>
-                                                <th>Close Trip</th>
-                                                {{-- <th>Actions</th> <!-- Column for action buttons --> --}}
+                                                <th> STATUS</th>
+                                                <th class="text-end">Actions</th> <!-- New column for the button -->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -107,7 +107,6 @@
                                                             No Image
                                                         @endif
                                                     </td>
-
                                                     <td>
                                                         @if ($trip->proof_of_delivery)
                                                             @foreach (json_decode($trip->proof_of_delivery, true) as $file)
@@ -122,14 +121,42 @@
                                                             No Image
                                                         @endif
                                                     </td>
-                                                    <td>{{ $trip->trip_completion }}</td>
-                                                    <td>{{ $trip->tag }}</td>
-                                                    <td>{{ $trip->close_trip }}</td>
+
+                                                    <td class="text-start">{{ $trip->trip_completion }}</td>
+                                                    <td id="status-{{ $trip->id }}">
+                                                        @if ($trip->status === 'Pending')
+                                                            <span style="background-color: yellow; box-shadow: 0 4px 8px rgba(255, 255, 0, 0.5); padding: 2px 4px;">
+                                                                {{ $trip->status }}
+                                                            </span>
+                                                        @elseif ($trip->status === 'Closed')
+                                                            <span style="background-color: red; color: white; box-shadow: 0 4px 8px rgba(128, 128, 128, 0.5); padding: 2px 4px;">
+                                                                {{ $trip->status }}
+                                                            </span>
+                                                        @else
+                                                            {{ $trip->status }}
+                                                        @endif
+                                                    </td>
+
+
+
+                                                    <td>
+                                                        <form action="{{ route('trips.close', $trip->id) }}" method="POST" style="display: inline;">
+                                                            @csrf
+                                                            @method('POST')
+                                                            <button type="submit" class="btn {{ $trip->status == 'Closed' ? 'btn-secondary' : 'btn-primary' }} text-start" {{ $trip->status == 'Closed' ? 'disabled' : '' }}>
+                                                                Close Trip
+                                                            </button>
+                                                        </form>
+                                                    </td>
+
 
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
+
+
+
 
 
 
@@ -170,14 +197,14 @@
                         </div>
 
                         <!-- Tag: POD return (handled by coordinator) / POD waybill -->
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="tag" class="form-label">Tag</label>
                             <select id="tag" name="tag" class="form-control" required>
                                 <option value="" disabled selected>Select Tag</option>
                                 <option value="POD Return">POD Return</option>
-                                {{-- <option value="POD Waybill">POD Waybill</option> --}}
+
                             </select>
-                        </div>
+                        </div> --}}
 
                         <!-- Close Trip -->
                         <div class="mb-3">
@@ -528,39 +555,7 @@
             });
         })(jQuery);
     </script>
-    <script>
-        (function ($) {
-            "use strict";
 
-            $('.editBtn').on('click', function () {
-                let title = 'Update Admin'
-                let name = $(this).data('name');
-                let id = $(this).data('id');
-                let username = $(this).data('username');
-                let email = $(this).data('email');
-                let modal = $('#manageAdmin');
-                modal.find('.modal-title').text(title)
-                modal.find('input[name=name]').val(name);
-                modal.find('input[name=id]').val(id);
-                modal.find('input[name=username]').val(username);
-                modal.find('input[name=email]').val(email);
-                modal.find('input[name="password"]').attr('required', false);
-                modal.find('input[name="password_confirmation"]').attr('required', false);
-                modal.find('.pass').addClass('d-none');
-                modal.find('.confirmPassword').addClass('d-none');
-                modal.modal('show');
-            });
-
-            $('.addAdmin').on('click', function () {
-                let modal = $('#manageAdmin');
-                $('.resetForm').trigger('reset');
-                $(`input[name=id]`).val(0);
-                modal.find('.pass').removeClass('d-none');
-                modal.find('.confirmPassword').removeClass('d-none');
-                modal.modal('show')
-            });
-        })(jQuery);
-    </script>
     <script>
         if ($('li').hasClass('active')) {
             $('.sidebar__menu-wrapper').animate({
@@ -636,6 +631,7 @@
 
     <!-- Script to update modal image source -->
     <script>
+
         $('#imageModal').on('show.bs.modal', function (e) {
             var image = $(e.relatedTarget).data('image');
             $('#modalImage').attr('src', image);
@@ -645,9 +641,34 @@
 
 <!-- Include Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <!-- DataTables Buttons JS -->
+        <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
 
 <!-- Include SweetAlert2 JS (optional) -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.2.0/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.table').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true,
+            responsive: true
+        });
+    });
+    </script>
+
 </body>
 
 </html>

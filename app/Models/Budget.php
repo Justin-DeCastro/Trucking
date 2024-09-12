@@ -20,6 +20,9 @@ class Budget extends Model
         'expense_details',
         'voucher',
         'requestee',
+        'bank_name',       // Added
+        'account_name',    // Added
+        'account_number',  // Added
     ];
 
     // Optionally, you can define any relationships or custom methods here

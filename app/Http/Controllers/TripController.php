@@ -56,6 +56,20 @@ class TripController extends Controller
         // Redirect or respond with success message
         return redirect()->back()->with('success', 'Trip updated successfully.');
     }
+// TripController.php
+public function closeTrip(Request $request, $id)
+{
+    $trip = Trip::find($id);
+
+    if ($trip) {
+        $trip->status = 'Closed';
+        $trip->save();
+
+        return redirect()->back()->with('success', 'Trip closed successfully');
+    }
+
+    return redirect()->back()->with('error', 'Error closing trip');
+}
 
     public function store(Request $request)
 {
@@ -64,9 +78,9 @@ class TripController extends Controller
         'arrival_proof.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         'proof_of_delivery.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         'trip_completion' => 'required|in:Returned Successfully,Pending',
-        'tag' => 'required|in:POD Return',
+
         'plate_number' => 'required|string',
-        'close_trip' => 'required|in:Closed Trip,Pending',
+
     ]);
 
     // Initialize arrays for file names
@@ -96,9 +110,9 @@ class TripController extends Controller
         'arrival_proof' => json_encode($arrivalProofFileNames),
         'proof_of_delivery' => json_encode($proofOfDeliveryFileNames),
         'trip_completion' => $request->trip_completion,
-        'tag' => $request->tag,
+
         'plate_number' => $request->plate_number,
-        'close_trip' => $request->close_trip,
+
     ]);
 
     // Redirect or return response

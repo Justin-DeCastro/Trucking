@@ -20,7 +20,23 @@ class VehicleController extends Controller
 
     // Update an existing vehicle
    // app/Http/Controllers/VehicleController.php
+   public function updateStatus(Request $request, $id)
+   {
+       // Validate the request
+       $request->validate([
+           'truck_status' => 'required|string|max:255',
+       ]);
 
+       // Find the vehicle by ID
+       $vehicle = Vehicle::findOrFail($id);
+
+       // Update the status
+       $vehicle->truck_status = $request->input('truck_status');
+       $vehicle->save();
+
+       // Redirect with a success message
+       return redirect()->back()->with('success', 'Vehicle status updated successfully.');
+   }
    public function update(Request $request, $id)
    {
        try {
@@ -96,7 +112,8 @@ class VehicleController extends Controller
             'truck_capacity' => 'required|string|max:255',
             'truck_status' => 'required|string|max:255',
             'quantity' => 'required|integer|min:0',
-            'documents.*' => 'sometimes|file|mimes:jpg,jpeg,png,pdf|max:2048', // Validate each document
+            'or' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048', // Validate OR file
+            'cr' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048', // Validate CR file
         ]);
 
         // Create a new Vehicle instance and save it to the database
@@ -107,27 +124,79 @@ class VehicleController extends Controller
             'truck_capacity' => $request->truck_capacity,
             'truck_status' => $request->truck_status,
             'quantity' => $request->quantity,
-            'documents' => [], // Initialize documents as an empty array
+            'or' => '', // Initialize OR as an empty string
+            'cr' => '', // Initialize CR as an empty string
         ]);
 
-        // Check if the request has files for 'documents'
-        if ($request->hasFile('documents')) {
-            $documentPaths = []; // Initialize an array to hold document paths
-            foreach ($request->file('documents') as $document) {
-                // Generate a unique file name for each document
-                $fileName = time() . '_' . $document->getClientOriginalName();
-                // Move the document to the public/documents directory
-                $document->move(public_path('documents'), $fileName);
-                // Save the file path to the documentPaths array
-                $documentPaths[] = 'documents/' . $fileName;
-            }
-            // Update the vehicle's documents field with the uploaded document paths
-            $vehicle->update(['documents' => $documentPaths]);
+        // Check if the request has files for 'or'
+        if ($request->hasFile('or')) {
+            // Generate a unique file name for OR
+            $orFileName = time() . '_or_' . $request->file('or')->getClientOriginalName();
+            // Move the OR file to the public/documents directory
+            $request->file('or')->move(public_path('documents'), $orFileName);
+            // Update the vehicle's OR field with the uploaded file path
+            $vehicle->update(['or' => 'documents/' . $orFileName]);
+        }
+
+        // Check if the request has files for 'cr'
+        if ($request->hasFile('cr')) {
+            // Generate a unique file name for CR
+            $crFileName = time() . '_cr_' . $request->file('cr')->getClientOriginalName();
+            // Move the CR file to the public/documents directory
+            $request->file('cr')->move(public_path('documents'), $crFileName);
+            // Update the vehicle's CR field with the uploaded file path
+            $vehicle->update(['cr' => 'documents/' . $crFileName]);
         }
 
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Vehicle created successfully!');
     }
+    public function updateOr(Request $request)
+{
+    // Validate incoming request data
+    $request->validate([
+        'vehicle_id' => 'required|exists:vehicles,id',
+        'or' => 'required|file|mimes:pdf,jpeg,png,jpg|max:2048',
+    ]);
+
+    // Find the vehicle by ID
+    $vehicle = Vehicle::find($request->vehicle_id);
+
+    // Check if the request has a file for 'or'
+    if ($request->hasFile('or')) {
+        // Generate a unique file name for OR
+        $orFileName = time() . '_or_' . $request->file('or')->getClientOriginalName();
+        // Move the OR file to the public/documents directory
+        $request->file('or')->move(public_path('documents'), $orFileName);
+        // Update the vehicle's OR field with the uploaded file path
+        $vehicle->or = 'documents/' . $orFileName;
+        // Save the updated vehicle record
+        $vehicle->save();
+    }
+
+    // Redirect back with a success message
+    return redirect()->back()->with('success', 'Official Receipt (OR) updated successfully.');
+}
+public function updateCr(Request $request)
+{
+    // Validate incoming request data
+    $request->validate([
+        'vehicle_id' => 'required|exists:vehicles,id',
+        'cr' => 'required|file|mimes:pdf,jpeg,png,jpg|max:2048',
+    ]);
+
+    // Find the vehicle by ID
+    $vehicle = Vehicle::find($request->vehicle_id);
+
+    if ($request->hasFile('cr')) {
+        $crFileName = time() . '_cr_' . $request->file('cr')->getClientOriginalName();
+        $request->file('cr')->move(public_path('documents'), $crFileName);
+        $vehicle->cr = 'documents/' . $crFileName;
+        $vehicle->save();
+    }
+
+    return redirect()->back()->with('success', 'Certificate of Registration (CR) updated successfully.');
+}
 
 public function useVehicle($id)
 {

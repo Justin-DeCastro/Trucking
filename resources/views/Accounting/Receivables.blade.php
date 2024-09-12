@@ -7,7 +7,15 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 
     <!-- Include jQuery -->
-
+    <style>
+        .big-calendar {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            z-index: 1000;
+            background-color: #fff;
+        }
+    </style>
 @include('Components.Admin.Header')
 
 <body>
@@ -41,11 +49,11 @@
             <div class="bodywrapper__inner">
 
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                    <h6 class="page-title">Budget Table</h6>
+                    <h6 class="page-title">Loan Table</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#requestBudgetModal">
-                            Request Budget
-                        </button>
+                    <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal" data-bs-target="#manageSubcontractor">
+    <i class="las la-plus"></i> Loan
+</button>
 {{-- <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal" data-bs-target="#manageWithdraw">
     <i class="las la-plus"></i> OUT
 </button> --}}
@@ -74,124 +82,134 @@
 
 </div>
 									 </div>
-                                     <table class="jobOffersTable" style="width: 100%; border-collapse: collapse;">
+                                     <table class="jobOffersTable">
                                         <thead>
                                             <tr>
-                                                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Date</th>
-                                                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Requester</th>
-                                                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Department</th>
-                                                <th style="border: 1px solid #ddd; padding: 8px; text-align: right;">Amount</th>
-                                                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Expense Details</th>
-                                                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Voucher</th>
-                                                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Bank Name</th>
-                                                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Account Name</th>
-                                                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Account Number</th>
-                                                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Status</th>
-                                                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Approved by</th>
+                                                <th>Date Borrowed</th>
+                                                <th>Issuer</th>
+                                                <th>Borrower</th>
+                                                <th>Principal Amount</th>
+                                                <th>Subject to </th>
+                                                <th>Pay Now</th>
+                                                <th>Pay Later</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($budgets as $budget)
-                                            <tr id="row-{{ $budget->id }}">
-                                                <td style="border: 1px solid #ddd; padding: 8px;">{{ \Carbon\Carbon::parse($budget->date)->format('F d, Y') }}</td>
-                                                <td style="border: 1px solid #ddd; padding: 8px;">{{ $budget->requestee }}</td>
-                                                <td style="border: 1px solid #ddd; padding: 8px;">{{ $budget->department }}</td>
-                                                <td style="border: 1px solid #ddd; padding: 8px; text-align: right;">{{ number_format($budget->budget_amount, 2) }}</td>
-                                                <td style="border: 1px solid #ddd; padding: 8px;">{{ $budget->expense_details }}</td>
-                                                <td style="border: 1px solid #ddd; padding: 8px;">{{ $budget->voucher }}</td>
-                                                <td style="border: 1px solid #ddd; padding: 8px;">{{ $budget->bank_name }}</td>
-                                                <td style="border: 1px solid #ddd; padding: 8px;">{{ $budget->account_name }}</td>
-                                                <td style="border: 1px solid #ddd; padding: 8px;">{{ $budget->account_number }}</td>
-                                                <td style="border: 1px solid #ddd; padding: 8px;" class="text-start">{{ $budget->status }}</td>
+                                            @foreach($receivables as $singil)
+                                            <tr>
+                                                <td>{{ \Carbon\Carbon::parse($singil->date)->format('F d, Y') }}</td>
+                                                <td>{{ $singil->issuer }}</td>
+                                                <td>{{$loans }}</td>
+                                                <td>{{ $singil->principal }}</td>
+                                                <td>{{ $singil->mode_of_payment }}</td>
+                                                <td>{{ $singil->pay_now_date }}</td>
+                                                <td class="text-start">{{ $singil->pay_later_date }}</td>
+                                                <!-- Assuming each receivable has a related loan, you'll need to fetch it properly -->
 
-                                                <td style="border: 1px solid #ddd; padding: 8px;" class="text-start">{{ $budget->approved_by ? \App\Models\User::find($budget->approved_by)->name : 'N/A' }}</td> <!-- Display approved by -->
                                             </tr>
                                             @endforeach
                                         </tbody>
-                                    </table>
+
+
+
+
 
 
 
     <!-- Create Vehicle Modal -->
-    <div class="modal fade" id="requestBudgetModal" tabindex="-1" aria-labelledby="requestBudgetModalLabel" aria-hidden="true">
+    <div class="modal fade" id="manageSubcontractor" tabindex="-1" aria-labelledby="manageSubcontractorLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="requestBudgetModalLabel">Budget Request Form</h5>
+                    <h5 class="modal-title" id="manageSubcontractorLabel">Receivable Form</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('budget.request') }}" method="POST" enctype="multipart/form-data">
+
+                <form action="{{ route('receivables.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="row mb-3">
-                            <!-- Date -->
+                            <!-- Issuer (Current Logged-in User) -->
                             <div class="col-md-6">
-                                <label for="date" class="form-label">Date</label>
-                                <input type="date" id="date" name="date" class="form-control" required>
+                                <label for="issuer" class="form-label">Issuer</label>
+                                <input type="text" id="issuer" name="issuer" class="form-control" value="{{ $currentIssuer }}" readonly>
                             </div>
-                            <!-- Requestee -->
+
+                            <!-- Borrower Dropdown -->
                             <div class="col-md-6">
-                                <label for="requestee" class="form-label">Requester</label>
-                                <input type="text" id="requestee" name="requestee" class="form-control" required>
-                            </div>
-                            <!-- Department -->
-                            <div class="col-md-6">
-                                <label for="department" class="form-label">Department</label>
-                                <select id="department" name="department" class="form-control" required>
-                                    <option value="" disabled selected>Select Department</option>
-                                    <option value="logistics">Logistics</option>
-                                    <option value="maintenance">Maintenance</option>
-                                    <option value="miscellaneous">Miscellaneous</option>
-                                    <option value="operations">Operations</option>
+                                <label for="borrower" class="form-label">Borrower</label>
+                                <select id="borrower" name="borrower" class="form-control" required>
+                                    <option value="" disabled selected>--Select Borrower--</option>
+                                    @foreach($borrowers as $borrower)
+                                        <option value="{{ $borrower->id }}" data-date="{{ $borrower->date }}" {{ old('borrower') == $borrower->id ? 'selected' : '' }}>
+                                            {{ $borrower->borrower }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
-                            <!-- Budget Amount -->
+
+                            <!-- Principal -->
                             <div class="col-md-6">
-                                <label for="budget_amount" class="form-label">Budget Amount</label>
-                                <input type="number" id="budget_amount" name="budget_amount" class="form-control" placeholder="Enter Amount" required>
+                                <label for="principal" class="form-label">Principal</label>
+                                <input type="number" id="principal" name="principal" class="form-control" placeholder="Enter Amount" required>
                             </div>
-                            <!-- Expense Details -->
-                            <div class="col-md-12">
-                                <label for="expense_details" class="form-label">Expense Details</label>
-                                <textarea id="expense_details" name="expense_details" class="form-control" placeholder="Describe the Expense" rows="3" required></textarea>
-                            </div>
-                            <!-- Voucher Attachment -->
-                            <div class="col-md-12">
-                                <label for="voucher" class="form-label">Voucher Type</label>
-                                <select id="voucher" name="voucher" class="form-control" required>
-                                    <option value="" disabled selected>Select a voucher type</option>
-                                    <option value="cash">Cash</option>
-                                    <option value="cheques">Cheques</option>
-                                    <option value="bank_transfer">Bank Transfer</option>
+
+                            <!-- Mode of Payment -->
+                            <div class="col-md-6">
+                                <label for="mode_of_payment" class="form-label">Subject To</label>
+                                <select id="mode_of_payment" name="mode_of_payment" class="form-control">
+                                    <option value="" disabled selected>--Select--</option>
+                                    <option value="principal">Principal</option>
+                                    <option value="interest">Interest</option>
                                 </select>
                             </div>
-                            <!-- Additional Fields for Bank Transfer -->
-                            <div id="bank-transfer-details" class="col-md-12 d-none">
-                                <div class="mb-3">
-                                    <label for="bank_name" class="form-label">Bank Name</label>
-                                    <input type="text" id="bank_name" name="bank_name" class="form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="account_name" class="form-label">Account Name</label>
-                                    <input type="text" id="account_name" name="account_name" class="form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="account_number" class="form-label">Account Number</label>
-                                    <input type="text" id="account_number" name="account_number" class="form-control">
-                                </div>
+
+                            <!-- Date Borrowed -->
+                            <div class="col-md-6">
+                                <label for="date_borrowed" class="form-label">Date Borrowed</label>
+                                <input type="date" id="date_borrowed" name="date_borrowed" class="form-control" value="{{ old('date_borrowed', $dateBorrowed) }}" required readonly>
                             </div>
                         </div>
+
+                        <!-- Pay Now and Pay Later buttons side by side in a new row -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <button type="button" id="payNowBtn" class="btn btn-secondary w-100">Pay Now</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" id="payLaterBtn" class="btn btn-secondary w-100">Pay Later</button>
+                            </div>
+                        </div>
+
+                        <!-- Hidden fields for Pay Now and Pay Later actions -->
+                        <div id="payNowField" class="mt-3" style="display: none;">
+                            <label for="pay_now_date" class="form-label">Date of Payment (Today)</label>
+                            <input type="text" id="pay_now_date" name="pay_now_date" class="form-control" readonly>
+                        </div>
+
+                        <div id="payLaterField" class="mt-3" style="display: none;">
+                            <label for="pay_later_date" class="form-label">Select Payment Date</label>
+                            <input type="date" id="pay_later_date" name="pay_later_date" class="form-control" readonly>
+                        </div>
                     </div>
+
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Submit Request</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
 
 
+
+
+
+
+
+                <!-- Event Calendar - Positioned outside and to the right of the form -->
+                <div id="eventCalendar" class="big-calendar" style="display: none; position: absolute; top: 10px; right: 20px;">
+                    <!-- Calendar will be rendered here -->
+                </div>
 
 
 
@@ -201,123 +219,76 @@
 
 
 <!-- withdrawal -->
-<div class="modal fade" id="manageWithdraw" tabindex="-1" aria-labelledby="manageSubcontractorLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="manageSubcontractorLabel">Withdraw</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('withdraw.store') }}" method="POST" enctype="multipart/form-data">
-    @csrf
-    <div class="modal-body">
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="amount" class="form-label">Date</label >
-                <input type="date" id="date" name="date" class="form-control" required>
-            </div>
-            <div class="col-md-6">
-                <label for="particulars" class="form-label">Particulars</label>
-                <input type="text" id="particulars" name="particulars" class="form-control" required>
-            </div>
-            <div class="col-md-6">
-                <label for="deposit_amount" class="form-label">Deposit Amount</label>
-                <input type="text" id="deposit_amount" class="form-control" required readonly>
-            </div>
-            <div class="col-md-6">
-                <label for="withdraw_amount" class="form-label">Withdraw Amount</label>
-                <input type="text" id="withdraw_amount" name="withdraw_amount" class="form-control" placeholder="Enter Amount"required>
-            </div>
-            <div class="col-md-6">
-                <label for="notes" class="form-label">Notes</label>
-                <input type="text" id="notes" name="notes" class="form-control" required>
-            </div>
 
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-    </div>
-</form>
-
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-    <!-- Confirmation Modal -->
-    <!-- Confirmation Modal -->
-<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmationModalLabel">Confirm Deletion</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete this vehicle?
-            </div>
-            <div class="modal-footer">
-                <form id="deleteForm" method="POST" style="display: inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
-                </form>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const voucherSelect = document.getElementById('voucher');
-        const bankTransferDetails = document.getElementById('bank-transfer-details');
+    document.addEventListener('DOMContentLoaded', function() {
+        const borrowerSelect = document.getElementById('borrower');
+        const dateBorrowedInput = document.getElementById('date_borrowed');
 
-        voucherSelect.addEventListener('change', function () {
-            if (this.value === 'bank_transfer') {
-                bankTransferDetails.classList.remove('d-none');
+        borrowerSelect.addEventListener('change', function() {
+            const selectedId = this.value;
+            const selectedOption = this.querySelector(`option[value="${selectedId}"]`);
+            const selectedDate = selectedOption ? selectedOption.dataset.date : '';
+
+            if (selectedDate) {
+                dateBorrowedInput.value = selectedDate;
             } else {
-                bankTransferDetails.classList.add('d-none');
+                dateBorrowedInput.value = ''; // Clear the field if no date is found
             }
         });
+
+        // Pre-fill date borrowed if a borrower is already selected
+        const preSelectedId = borrowerSelect.value;
+        const preSelectedOption = borrowerSelect.querySelector(`option[value="${preSelectedId}"]`);
+        const preSelectedDate = preSelectedOption ? preSelectedOption.dataset.date : '';
+
+        if (preSelectedDate) {
+            dateBorrowedInput.value = preSelectedDate;
+        }
     });
     </script>
+
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const initialAmount = document.getElementById('initial_amount');
-        const interestPercentage = document.getElementById('interest_percentage');
-        const paymentPerMonth = document.getElementById('payment_per_month');
-        const paymentTerms = document.getElementById('payment_terms');
-        const totalPayment = document.getElementById('total_payment');
-
-        function calculatePayments() {
-            const initialAmountValue = parseFloat(initialAmount.value) || 0;
-            const interestRate = parseFloat(interestPercentage.value) / 100 || 0;
-            const terms = parseInt(paymentTerms.value) || 0;
-
-            // Calculate monthly interest payment and total payment
-            const monthlyInterestPayment = initialAmountValue * interestRate;
-            const monthlyPayment = initialAmountValue * interestRate;
-            const totalPaymentAmount = monthlyPayment * terms + initialAmountValue ;
-
-            // Set calculated values
-            paymentPerMonth.value = monthlyPayment.toFixed(2);
-            totalPayment.value = totalPaymentAmount.toFixed(2);
-        }
-
-        // Add event listeners
-        interestPercentage.addEventListener('input', calculatePayments);
-        initialAmount.addEventListener('input', calculatePayments);
-        paymentTerms.addEventListener('input', calculatePayments);
+    // Show/Hide fields and handle calendar display based on button clicks
+    document.getElementById('payNowBtn').addEventListener('click', function() {
+        document.getElementById('payNowField').style.display = 'block';
+        document.getElementById('payLaterField').style.display = 'none';
+        document.getElementById('eventCalendar').style.display = 'none';
+        // Set the current date for Pay Now
+        document.getElementById('pay_now_date').value = new Date().toLocaleDateString('en-CA');
     });
-    </script>
+
+    document.getElementById('payLaterBtn').addEventListener('click', function() {
+        document.getElementById('payNowField').style.display = 'none';
+        document.getElementById('payLaterField').style.display = 'block';
+        document.getElementById('eventCalendar').style.display = 'block';
+        // Render the calendar
+        renderCalendar();
+    });
+
+    // Calendar render function using FullCalendar
+    function renderCalendar() {
+        var calendarEl = document.getElementById('eventCalendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            selectable: true,
+            dateClick: function(info) {
+                // Set selected date into the pay_later_date field
+                document.getElementById('pay_later_date').value = info.dateStr;
+                // Hide the calendar after selecting a date
+                document.getElementById('eventCalendar').style.display = 'none';
+            }
+        });
+        calendar.render();
+    }
+</script>
+
+<!-- FullCalendar CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+
 
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>

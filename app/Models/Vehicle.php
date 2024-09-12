@@ -15,7 +15,8 @@ class Vehicle extends Model
         'truck_capacity',
         'truck_status',
         'quantity',
-        'documents', // This is an array of file paths or a JSON field for storing documents
+        'or',
+        'cr',
     ];
 
     // If storing document paths as a JSON array, you need to cast it

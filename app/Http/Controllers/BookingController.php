@@ -99,6 +99,7 @@ class BookingController extends Controller
         // Pass the data to the view
         return view('Admin.PlatenumberBookingCount', [
             'plateNumberCounts' => $plateNumberDetails,
+            'monthlyBookings' => $monthlyBookings,
         ]);
     }
 

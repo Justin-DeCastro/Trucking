@@ -41,16 +41,23 @@
                 </li>
                 <li class="sidebar-menu-item">
                     <a href="loanamount" class="nav-link">
-                        <i class="fas fa-user menu-icon"></i>
+                        <i class="fas fa-hand-holding-usd menu-icon"></i>
                         <span class="menu-title">Loan</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item">
+                    <a href="receivable" class="nav-link">
+                        <i class="fas fa-receipt menu-icon"></i>
+                        <span class="menu-title">Receivable</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
                     <a href="accounting-pms" class="nav-link">
-                        <i class="fas fa-user menu-icon"></i>
+                        <i class="fas fa-calculator menu-icon"></i>
                         <span class="menu-title">PMS</span>
                     </a>
                 </li>
+
                 <li class="sidebar-menu-item">
                     <a href="calendar-acc" class="nav-link">
                         <i class="fas fa-calendar menu-icon"></i>
@@ -59,16 +66,17 @@
                 </li>
                 <li class="sidebar-menu-item">
                     <a href="requestbudget" class="nav-link">
-                        <i class="fas fa-calendar menu-icon"></i>
+                        <i class="fas fa-money-bill-wave menu-icon"></i>
                         <span class="menu-title">Request Budget</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item">
                     <a href="GDRAccounting" class="nav-link">
-                        <i class="fas fa-calendar menu-icon"></i>
+                        <i class="fas fa-book menu-icon"></i>
                         <span class="menu-title">GDR ACCOUNT</span>
                     </a>
                 </li>
+
 
 
             </ul>

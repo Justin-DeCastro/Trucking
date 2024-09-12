@@ -16,12 +16,12 @@ class BudgetController extends Controller
             'department' => 'required|string|max:255',
             'budget_amount' => 'required|numeric|min:0',
             'expense_details' => 'required|string',
-            'voucher' => 'required', // Adjust the file types and size as needed
-            'requestee' => 'required', // Adjust the file types and size as needed
+            'voucher' => 'required|string',
+            'requestee' => 'required|string',
+            'bank_name' => 'nullable|string',
+            'account_name' => 'nullable|string',
+            'account_number' => 'nullable|string',
         ]);
-
-        // Handle file upload for the voucher
-
 
         // Create a new budget request record
         Budget::create([
@@ -30,12 +30,16 @@ class BudgetController extends Controller
             'requestee' => $validatedData['requestee'],
             'budget_amount' => $validatedData['budget_amount'],
             'expense_details' => $validatedData['expense_details'],
-            'voucher' =>$validatedData['voucher'],
+            'voucher' => $validatedData['voucher'],
+            'bank_name' => $validatedData['voucher'] === 'bank_transfer' ? $validatedData['bank_name'] : null,
+            'account_name' => $validatedData['voucher'] === 'bank_transfer' ? $validatedData['account_name'] : null,
+            'account_number' => $validatedData['voucher'] === 'bank_transfer' ? $validatedData['account_number'] : null,
         ]);
 
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Budget request submitted successfully.');
     }
+
     public function approves($id)
 {
     $loan = Budget::findOrFail($id);

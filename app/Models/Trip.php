@@ -17,8 +17,8 @@ class Trip extends Model
         'arrival_proof',
         'proof_of_delivery',
         'trip_completion',
-        'tag',
-        'close_trip',
+
+
         'plate_number', // Add plate_number here
     ];
     protected $casts = [

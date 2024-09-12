@@ -15,11 +15,14 @@ use App\Models\StartingBalance;
 use App\Models\RatePerMile;
 use App\Models\GDRAccounting;
 use App\Models\Budget;
+use App\Models\Loan;
+use App\Models\Receivable;
 class AccountingController extends Controller
 {
     public function accounting_dash(){
         return view('Accounting.Accountingdash');
     }
+
     public function preventive(Request $request) {
         // Get the selected plate number from the request
         $plateNumber = $request->input('plate_number');
@@ -301,5 +304,45 @@ public function update(Request $request, Transaction $transaction)
 
         return redirect()->route('filter.transactions')->with('success', 'Starting balance added successfully.');
     }
+    public function GDR_receivable(Request $request, $borrowerId = null) {
+        // Fetch all loans
+        $loans = Loan::all();
+        $receivables = Receivable::all();
+        $totalreceivables = Receivable::count();
+        // Fetch all unique borrowers with their IDs
+        $borrowers = Loan::select('borrower', 'id', 'date')->distinct()->get();
+        $loans = Loan::select('borrower')->get();
+
+        // Fetch the current logged-in user
+        $currentIssuer = auth()->user()->name; // Adjust according to your user model
+
+        // Default date borrowed
+        $dateBorrowed = null;
+        $selectedBorrowerId = null;
+
+        // If a borrower ID is provided in the URL, find their loan and set the date
+        if ($borrowerId) {
+            $loan = Loan::find($borrowerId);
+            if ($loan) {
+                $selectedBorrowerId = $loan->id;
+                $dateBorrowed = $loan->date;
+            }
+        }
+
+        // If a borrower is selected via form submission, update the date
+        if ($request->isMethod('post') && $request->has('borrower')) {
+            $selectedBorrowerId = $request->input('borrower');
+            $loan = Loan::find($selectedBorrowerId);
+            $dateBorrowed = $loan ? $loan->date : null;
+        }
+
+        // Pass data to the view
+        return view('Accounting.Receivables', compact('loans', 'borrowers', 'currentIssuer', 'dateBorrowed', 'selectedBorrowerId','totalreceivables','receivables','loans'));
+    }
+
+
+
+
+
 
 }
