@@ -306,15 +306,7 @@
                     @csrf
                     <div class="modal-body">
 
-                        <!-- Operator Name -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="operator_name" class="form-label">Operator Name</label>
-                                <input type="text" id="operator_name" name="operator_name" class="form-control" placeholder="Enter operator name" required>
-                            </div>
-                        </div>
-
-                        <!-- Vehicle Details: Plate Number & Truck Name -->
+                        <!-- Row 1: Plate Number & Truck Name -->
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="plate_number" class="form-label">Plate Number</label>
@@ -326,7 +318,7 @@
                             </div>
                         </div>
 
-                        <!-- Truck Details: Model & Capacity -->
+                        <!-- Row 2: Truck Model & Truck Capacity -->
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="truck_model" class="form-label">Truck Model</label>
@@ -338,7 +330,7 @@
                             </div>
                         </div>
 
-                        <!-- Truck Status & Quantity -->
+                        <!-- Row 3: Truck Status & Quantity -->
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="truck_status" class="form-label">Truck Status</label>
@@ -355,7 +347,7 @@
                             </div>
                         </div>
 
-                        <!-- Document Uploads: Official Receipt & Certificate of Registration -->
+                        <!-- Row 4: Official Receipt (OR) & Certificate of Registration (CR) -->
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="or" class="form-label">Official Receipt (OR)</label>
@@ -375,7 +367,6 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>

@@ -3,9 +3,12 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <meta name="description" content="" />
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet" />
     <link href="calendar/https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
     <link href="calendar/https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="calendar/fonts/icomoon/style.css">
@@ -15,7 +18,10 @@
     <link rel="stylesheet" href="calendar/css/style.css">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="Admin/assets/js/plugin/webfont/webfont.min.js"></script>
+
+
     @include('Components.admin.header')
+
 </head>
 
 <body>
@@ -30,7 +36,8 @@
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
                         <a href="../index.html" class="logo">
-                            <img src="Admin/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20">
+                            <img src="Admin/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand"
+                                height="20">
                         </a>
                         <div class="nav-toggle">
                             <button class="btn btn-toggle toggle-sidebar">
@@ -66,10 +73,37 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="content-backdrop fade"></div>
                     </div>
                 </div>
             </div>
+
+
+            <!-- Modal for displaying borrower details -->
+            <div class="modal fade" id="loanModal" tabindex="-1" aria-labelledby="loanModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="loanModalLabel">Borrower Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" >
+                            <p style = "font-size:15px; color:black"><strong>Borrower Name:</strong> <span id="borrowerName"></span></p>
+                            <p style = "font-size:15px; color:black"><strong>Loan Amount:</strong> <span id="loanAmount"></span></p>
+                            <p style = "font-size:15px; color:black"><strong>Interest Percentage:</strong> <span id="loanInterest"></span></p>
+                            <p style = "font-size:15px; color:black"><strong>Payment Terms:</strong> <span id="paymentTerms"></span></p>
+                            <p style = "font-size:15px; color:black"><strong>Payment Per Month:</strong> <span id="paymentPerMonth"></span></p>
+                            <p style = "font-size:15px; color:black"><strong>Mode of Payment:</strong> <span id="modeOfPayment"></span></p>
+                            <p style = "font-size:15px; color:black"><strong>Loan Date:</strong> <span id="loanDate"></span></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
 
             <!-- Core JS Files -->
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -110,6 +144,14 @@
             <!-- Kaiadmin DEMO methods, don't include it in your project! -->
             <script src="Admin/assets/js/setting-demo2.js"></script>
 
+            <!-- Bootstrap CSS -->
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+                rel="stylesheet">
+
+            <!-- Bootstrap JS -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+
             <!-- Calendar JS -->
             <script src='calendar/fullcalendar/packages/core/main.js'></script>
             <script src='calendar/fullcalendar/packages/interaction/main.js'></script>
@@ -124,32 +166,78 @@
 
                     // Function to format the loan amount with a peso sign and comma separator
                     function formatCurrency(amount) {
-                        return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(amount);
+                        return new Intl.NumberFormat('en-PH', {
+                            style: 'currency',
+                            currency: 'PHP'
+                        }).format(amount);
                     }
 
+                    // Function to format the date similar to Carbon's format('F d, Y')
+                    function formatDate(dateString) {
+                        var options = {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        };
+                        var date = new Date(dateString);
+                        return date.toLocaleDateString('en-PH', options);
+                    }
+
+                    // Mapping loan data into FullCalendar events
                     var events = loans.map(function(loan) {
                         return {
-                            title: `${loan.borrower}:${formatCurrency(loan.initial_amount)}`, // Format the loan amount with peso sign and commas
+                            title: `${loan.borrower}`, // Borrower's name displayed as the event title
                             start: loan.date, // Date of the loan
                             extendedProps: {
                                 id: loan.id,
                                 borrower: loan.borrower,
-                                amount: loan.initial_amount,
+                                initial_amount: loan.initial_amount,
+                                interest_percentage: loan.interest_percentage,
+                                payment_terms: loan.payment_terms,
+                                payment_per_month: loan.payment_per_month,
+                                mode_of_payment: loan.mode_of_payment,
+                                date: loan.date // Loan date
                             }
                         };
                     });
 
+                    // Initialize FullCalendar
                     var calendar = new FullCalendar.Calendar(calendarEl, {
                         plugins: ['interaction', 'dayGrid', 'bootstrap'],
                         themeSystem: 'bootstrap',
                         initialView: 'dayGridMonth',
                         editable: false,
                         events: events,
+                        eventClick: function(info) {
+                            var eventObj = info.event.extendedProps;
+
+                            // Populate the modal with borrower information
+                            document.getElementById('borrowerName').innerText = eventObj.borrower;
+                            document.getElementById('loanAmount').innerText = formatCurrency(eventObj
+                                .initial_amount);
+                            document.getElementById('loanInterest').innerText = eventObj.interest_percentage +
+                                '%';
+                            document.getElementById('paymentTerms').innerText = eventObj.payment_terms +
+                                ' months';
+                            document.getElementById('paymentPerMonth').innerText = formatCurrency(eventObj
+                                .payment_per_month);
+                            document.getElementById('modeOfPayment').innerText = eventObj.mode_of_payment;
+                            document.getElementById('loanDate').innerText = formatDate(eventObj
+                            .date); // Format the loan date
+
+                            // Show the modal
+                            var myModal = new bootstrap.Modal(document.getElementById('loanModal'), {
+                                keyboard: false
+                            });
+                            myModal.show();
+                        }
                     });
 
                     calendar.render();
                 });
             </script>
+
+
 
         </div>
     </div>

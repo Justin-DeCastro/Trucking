@@ -9,6 +9,7 @@
     <!-- Google Maps JavaScript API -->
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4&libraries=places" async defer></script>
+
     <style>
 
         #map {
@@ -19,6 +20,54 @@
         }
     </style>
     <style>
+        .logo-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .logo-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 90%;
+        background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+        filter: blur(15px);
+        z-index: -1;
+
+    }
+
+    .logo {
+        border-radius: 0;
+        width: 70%;
+        height: 60px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .res-sidebar-close-btn {
+        background-color: transparent;
+        border: none;
+        color: #fff;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 10px;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .res-sidebar-close-btn:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #ff6b6b;
+    }
+
+    .res-sidebar-close-btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.4);
+    }
         @keyframes pulse {
         0% {
             transform: scale(1);
@@ -147,11 +196,13 @@
         <div class="sidebar bg--dark">
             <button class="res-sidebar-close-btn"><i class="las la-times"></i></button>
             <div class="sidebar__inner">
-                <div class="sidebar__logo"
-                    style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-                    <img src="proofs/GDR.png" alt="Logo"
-                        style="border-radius: 0; width: 100px; height: 100px; filter: drop-shadow(0 0 30px rgba(0, 127, 255, 1));">
-                    <h3 style="margin-top: 10px; color: #1F8FFF;"><b>ADMIN</b></h3>
+                <div class="logo-container">
+                    <div class="sidebar__logo"
+                        style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                        <img src="Home/GDR logo.png" alt="Logo" class="logo">
+                        <h3 style="color: #223d54;"><b>ACCOUNTING</b></h3>
+
+                    </div>
                 </div>
                 <div class="sidebar__menu-wrapper">
                     <ul class="sidebar__menu">

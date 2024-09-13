@@ -337,3 +337,4 @@ Route::post('/documents/update-or', [VehicleController::class, 'updateOr'])->nam
 Route::post('/vehicles/update-cr', [VehicleController::class, 'updateCr'])->name('vehicles.updateCr');
 // web.php
 Route::post('/trips/{id}/close', [TripController::class, 'closeTrip'])->name('trips.close');
+Route::get('/addtruck-archived', [AdminController::class, 'addtruck_archived'])->name('addtruck-archived');

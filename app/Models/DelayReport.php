@@ -14,7 +14,7 @@ class DelayReport extends Model
         'driver_name',
         'plate_number',
         'date',
-
+'other_cause',
         'delay_duration',
         'delay_cause',
         'additional_notes',

@@ -92,18 +92,18 @@
                                                 <th>Subject to </th>
                                                 <th>Pay Now</th>
                                                 <th>Pay Later</th>
-                                                <th>Actions</th>
+
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($receivables as $singil)
                                             <tr>
-                                                <td>{{ \Carbon\Carbon::parse($singil->date)->format('F d, Y') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($singil->date)->format('d-M-y h-i A') }}</td>
                                                 <td>{{ $singil->issuer }}</td>
                                                 <td>{{$loans }}</td>
                                                 <td>{{ $singil->principal }}</td>
                                                 <td>{{ $singil->mode_of_payment }}</td>
-                                                <td>{{ $singil->pay_now_date }}</td>
+                                                <td>{{ \Carbon\Carbon::parse( $singil->pay_now_date) ->format('d-M-y h-i A')}}</td>
                                                 <td class="text-start">{{ $singil->pay_later_date }}</td>
                                                 <!-- Assuming each receivable has a related loan, you'll need to fetch it properly -->
 

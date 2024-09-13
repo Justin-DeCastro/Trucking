@@ -515,9 +515,13 @@ public function courier_order()
 }
 
 
-
+public function addtruck_archived(){
+    $vehicles = Vehicle::all();
+    return view('Admin.Addtruck',compact('vehicles'));
+}
 
 public function addtruck(){
+
     $vehicles = Vehicle::all();
     return view('Admin.Addtruck',compact('vehicles'));
 }
@@ -656,8 +660,9 @@ public function rateperyear(Request $request)
     ]);
 }
 public function calendar(){
-    $interviews = Booking::all();
-    return view('admin.calendar',compact('interviews'));
+    $interviews = Booking::all(); // Assuming you need this as well
+    $loans = Loan::where('status', 'Unpaid')->get(); // Fetch only loans with pending status
+    return view('admin.Calendar-acc', compact('interviews', 'loans'));
  }
  public function calendar_acc() {
     $interviews = Booking::all(); // Assuming you need this as well

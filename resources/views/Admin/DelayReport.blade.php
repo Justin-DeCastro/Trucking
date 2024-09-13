@@ -139,7 +139,6 @@
             margin-left: auto;
         }
     }
-
 </style>
 
 <body>
@@ -158,7 +157,7 @@
                         <div class="sidebar__logo"
                             style="text-align: center; display: flex; flex-direction: column; align-items: center;">
                             <img src="Home/GDR logo.png" alt="Logo" class="logo">
-                            <h3 style="color: #223d54;"><b>Courier</b></h3>
+                            <h3 style="color: #223d54;"><b>COURIER</b></h3>
 
                         </div>
                     </div>
@@ -236,113 +235,158 @@
 
 
 
-    <section style="padding: 60px 0;">
-        <div
-            style="max-width: 900px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-            <div style="text-align: center; margin-bottom: 40px;">
-                <h3 style="margin-top: 0; color: #333; font-size: 28px; font-weight: bold;">Delay Form
-                </h3>
-                <p style="color: #666; font-size: 16px;">Fill out the form below to arrange for the
-                    transportation of your goods.</p>
-            </div>
-            @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
+                        <section style="padding: 60px 0;">
+                            <div
+                                style="max-width: 900px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+                                <div style="text-align: center; margin-bottom: 40px;">
+                                    <h3 style="margin-top: 0; color: #333; font-size: 28px; font-weight: bold;">Delay
+                                        Form
+                                    </h3>
+                                    <p style="color: #666; font-size: 16px;">Fill out the form below to arrange for the
+                                        transportation of your goods.</p>
+                                </div>
+                                @if (session('success'))
+                                    <div class="alert alert-success">{{ session('success') }}</div>
+                                @endif
 
-        <form action="{{ route('delay.submit') }}" method="post" enctype="multipart/form-data" id="myForm">
-            @csrf
+                                <form action="{{ route('delay.submit') }}" method="post" enctype="multipart/form-data"
+                                    id="myForm">
+                                    @csrf
 
-            <!-- Delay Report Information -->
-            <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px;">
-                <!-- Top Section: Trip Ticket, Driver Name, Plate Number -->
-                <div style="display: flex; flex-wrap: wrap; gap: 20px;">
-                    <!-- Trip Ticket -->
-                    <div style="flex: 1; min-width: 220px;">
-                        <label for="trip_ticket" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
-                            Trip Ticket
-                        </label>
-                        <input
-                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                            id="trip_ticket" name="trip_ticket" type="text" placeholder="Enter Trip Ticket Number" required>
+                                    <!-- Delay Report Information -->
+                                    <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px;">
+                                        <!-- Top Section: Trip Ticket, Driver Name, Plate Number -->
+                                        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                                            <!-- Trip Ticket -->
+                                            <div style="flex: 1; min-width: 220px;">
+                                                <label for="trip_ticket"
+                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                                                    Trip Ticket
+                                                </label>
+                                                <input
+                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                    id="trip_ticket" name="trip_ticket" type="text"
+                                                    placeholder="Enter Trip Ticket Number" required>
+                                            </div>
+
+                                            <!-- Driver Name (Read-only) -->
+                                            <div style="flex: 1; min-width: 220px;">
+                                                <label for="driver_name"
+                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                                                    Driver Name
+                                                </label>
+                                                <input
+                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                    id="driver_name" name="driver_name" type="text"
+                                                    value="{{ auth()->user()->name }}" readonly>
+                                            </div>
+
+                                            <!-- Plate Number -->
+                                            <div style="flex: 1; min-width: 220px;">
+                                                <label for="plate_number"
+                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                                                    Plate Number
+                                                </label>
+                                                <input
+                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                    id="plate_number" name="plate_number" type="text"
+                                                    placeholder="Enter Plate Number" required>
+                                            </div>
+
+                                            <!-- Date -->
+                                            <div style="flex: 1; min-width: 220px;">
+                                                <label for="date"
+                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Date</label>
+                                                <input
+                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                    id="date" name="date" type="datetime-local"
+                                                    placeholder="Enter Date" readonly>
+                                            </div>
+                                        </div>
+
+                                        <!-- Delay Details -->
+                                        <!-- Delay Duration -->
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="delay_duration"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                                                Delay Duration
+                                            </label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="delay_duration" name="delay_duration" type="text"
+                                                placeholder="Enter Delay Duration (e.g., 2 hours)" required>
+                                        </div>
+
+                                        <!-- Cause of Delay -->
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="delay_cause"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                                                Cause of Delay
+                                            </label>
+                                            <select id="delay_cause" name="delay_cause"
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                onchange="showOtherField()">
+                                                <option value="">Select Cause of Delay</option>
+                                                <option value="Traffic">Traffic</option>
+                                                <option value="Road Construction">Road Construction</option>
+                                                <option value="Accidents">Accidents</option>
+                                                <option value="Mechanical Breakdown">Mechanical Breakdown</option>
+                                                <option value="Weather Conditions">Weather Conditions</option>
+                                                <option value="Fuel Shortages">Fuel Shortages</option>
+                                                <option value="Driver Fatigue">Driver Fatigue</option>
+                                                <option value="Vehicle Inspections">Vehicle Inspections</option>
+                                                <option value="Tire Issues">Tire Issues</option>
+                                                <option value="Paperwork Problems">Paperwork Problems</option>
+                                                <option value="Overloading">Overloading</option>
+                                                <option value="Weight Restrictions">Weight Restrictions</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+
+                                            <!-- <div style="flex: 1; min-width: 220px;">
+                                                <label for="delay_cause"
+                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                                                    Cause of Delay
+                                                </label>
+                                                <textarea id="delay_cause" name="delay_cause" rows="4" placeholder="Enter Cause of Delay"
+                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"></textarea>
+                                            </div> -->
+
+
+                                            <!-- Hidden text field that appears when 'Other' is selected -->
+                                            <input type="text" id="other_cause" name="other_cause"
+                                                placeholder="Enter Other Cause of Delay"
+                                                style="display: none; margin-top: 10px; width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" />
+                                        </div>
+                                        <!-- Additional Notes -->
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="additional_notes"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                                                Additional Notes
+                                            </label>
+                                            <textarea id="additional_notes" name="additional_notes" rows="4" placeholder="Enter any additional notes"
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"></textarea>
+                                        </div>
+
+                                        <!-- Submit Button -->
+                                        <div style="margin-top: 20px;">
+                                            <button type="submit"
+                                                style="padding: 12px 20px; border-radius: 6px; border: none; background-color: #007bff; color: #fff; font-weight: bold; cursor: pointer;">
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+
+
+                            </div>
+
+
+
                     </div>
+                    </section>
 
-                    <!-- Driver Name (Read-only) -->
-                    <div style="flex: 1; min-width: 220px;">
-                        <label for="driver_name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
-                            Driver Name
-                        </label>
-                        <input
-                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                            id="driver_name" name="driver_name" type="text" value="{{ auth()->user()->name }}" readonly>
-                    </div>
-
-                    <!-- Plate Number -->
-                    <div style="flex: 1; min-width: 220px;">
-                        <label for="plate_number" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
-                            Plate Number
-                        </label>
-                        <input
-                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                            id="plate_number" name="plate_number" type="text" placeholder="Enter Plate Number" required>
-                    </div>
-
-                    <!-- Date -->
-                    <div style="flex: 1; min-width: 220px;">
-                        <label for="date" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Date</label>
-                        <input
-                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                            id="date" name="date" type="datetime-local" placeholder="Enter Date" required>
-                    </div>
-                </div>
-
-                <!-- Delay Details -->
-                <!-- Delay Duration -->
-                <div style="flex: 1; min-width: 220px;">
-                    <label for="delay_duration" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
-                        Delay Duration
-                    </label>
-                    <input
-                        style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                        id="delay_duration" name="delay_duration" type="text" placeholder="Enter Delay Duration (e.g., 2 hours)" required>
-                </div>
-
-                <!-- Cause of Delay -->
-                <div style="flex: 1; min-width: 220px;">
-                    <label for="delay_cause" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
-                        Cause of Delay/Reasons
-                    </label>
-                    <textarea id="delay_cause" name="delay_cause" rows="4" placeholder="Enter Cause of Delay"
-                        style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"></textarea>
-                </div>
-
-                <!-- Additional Notes -->
-                <div style="flex: 1; min-width: 220px;">
-                    <label for="additional_notes" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
-                        Additional Notes
-                    </label>
-                    <textarea id="additional_notes" name="additional_notes" rows="4" placeholder="Enter any additional notes"
-                        style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"></textarea>
-                </div>
-
-                <!-- Submit Button -->
-                <div style="margin-top: 20px;">
-                    <button type="submit" style="padding: 12px 20px; border-radius: 6px; border: none; background-color: #007bff; color: #fff; font-weight: bold; cursor: pointer;">
-                        Submit
-                    </button>
-                </div>
-            </div>
-        </form>
-
-
-
-    </div>
-
-
-
-        </div>
-    </section>
-
-    @include('Components.Admin.Footer')
+                    @include('Components.Admin.Footer')
 
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -353,6 +397,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set the date input to today's date and make it non-editable
+        var today = new Date().toISOString().slice(0, 16); // Format date as yyyy-mm-ddThh:mm
+        document.getElementById('date').value = today;
+    });
+</script>
 
 <script>
     $(document).ready(function() {
@@ -364,4 +415,19 @@
         });
     });
 </script>
+
+<script>
+    function showOtherField() {
+        var delayCause = document.getElementById("delay_cause");
+        var otherCauseField = document.getElementById("other_cause");
+
+        // Show the text field when 'Other' is selected
+        if (delayCause.value === "Other") {
+            otherCauseField.style.display = "block";
+        } else {
+            otherCauseField.style.display = "none";
+        }
+    }
+</script>
+
 </html>

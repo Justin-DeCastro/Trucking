@@ -108,6 +108,7 @@ class VehicleController extends Controller
         $request->validate([
             'plate_number' => 'required|string|max:255',
             'truck_name' => 'required|string|max:255',
+            'operator_name' => 'required|string|max:255',
             'truck_model' => 'required|string|max:255',
             'truck_capacity' => 'required|string|max:255',
             'truck_status' => 'required|string|max:255',
@@ -120,6 +121,7 @@ class VehicleController extends Controller
         $vehicle = Vehicle::create([
             'plate_number' => $request->plate_number,
             'truck_name' => $request->truck_name,
+            'operator_name' => $request->operator_name,
             'truck_model' => $request->truck_model,
             'truck_capacity' => $request->truck_capacity,
             'truck_status' => $request->truck_status,

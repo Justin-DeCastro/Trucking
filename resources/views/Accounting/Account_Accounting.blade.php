@@ -133,7 +133,9 @@
     <tbody>
         @forelse($transactions as $transaction)
             <tr>
-                <td>{{ date('F d, Y g:i A', strtotime($transaction->date)) }}</td>
+
+
+                <td> {{ \Carbon\Carbon::parse($transaction->date)->format('d-M-y h-i A') }}</td>
 
                 <td>{{ $transaction->particulars }}</td>
                 <td>₱{{ number_format($transaction->deposit_amount, 2, '.', ',') }}</td>

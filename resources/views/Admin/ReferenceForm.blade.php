@@ -251,6 +251,7 @@
                                     </div>
                                 </div>
 
+
                                 <!-- Merchant Information -->
                                 <div style="margin-bottom: 40px;">
                                     <h4 style="color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">

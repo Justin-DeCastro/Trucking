@@ -20,14 +20,6 @@ class Booking extends Model
         // 'shipping_type',
         'delivery_type',
         'journey_type',
-        'consignee_name',
-        'consignee_address',
-        'consignee_email',
-        'consignee_mobile',
-        'consignee_city',
-        'consignee_province',
-        'consignee_barangay',
-        'consignee_building_type',
         'merchant_name',
         'merchant_address',
         'merchant_email',
@@ -48,6 +40,10 @@ class Booking extends Model
         'created_by' // Add the updated_by field
     ];
 
+    public function consigneeAddresses()
+    {
+        return $this->hasMany(ConsigneeAddress::class);
+    }
     // Relationship with the User model for the driver
     public function driver()
     {

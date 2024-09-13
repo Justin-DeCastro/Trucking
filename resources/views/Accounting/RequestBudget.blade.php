@@ -93,7 +93,7 @@
                                         <tbody>
                                             @foreach($budgets as $budget)
                                             <tr id="row-{{ $budget->id }}">
-                                                <td style="border: 1px solid #ddd; padding: 8px;">{{ \Carbon\Carbon::parse($budget->date)->format('F d, Y') }}</td>
+                                                <td style="border: 1px solid #ddd; padding: 8px;">{{ \Carbon\Carbon::parse($budget->date)->format('d-M-y h-i A') }}</td>
                                                 <td style="border: 1px solid #ddd; padding: 8px;">{{ $budget->requestee }}</td>
                                                 <td style="border: 1px solid #ddd; padding: 8px;">{{ $budget->department }}</td>
                                                 <td style="border: 1px solid #ddd; padding: 8px; text-align: right;">{{ number_format($budget->budget_amount, 2) }}</td>

@@ -119,15 +119,15 @@
                                             </tr>
                                             @foreach($dailyTransactions as $day => $data)
                                                 <tr>
-                                                    <!-- Display only one row per day with totals -->
-                                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $day)->format('F d, Y') }}</td>
+                                                    <!-- Change date format to day-month-year -->
+                                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $day)->format('d-m-Y') }}</td>
                                                     <td>
                                                         @foreach($data['transactions'] as $transaction)
                                                             {{ $transaction->particulars }}<br>
                                                         @endforeach
                                                     </td>
                                                     <td>₱ {{ number_format($data['depositBalance'], 2) }}</td>
-                                                    <td>₱ {{number_format($data['withdrawBalance'], 2) }}</td>
+                                                    <td>₱ {{ number_format($data['withdrawBalance'], 2) }}</td>
                                                     <td class="text-start">₱ {{ number_format($data['netIncome'], 2) }}</td>
                                                 </tr>
                                             @endforeach
@@ -143,116 +143,113 @@
                                         </tr>
                                     </tfoot>
                                 </table>
-<!-- Preventive Maintenance Table -->
-<h6 class="page-title">Financial Table for PMS</h6>
-<table class="jobOffersTable" style="margin-bottom: 40px;"> <!-- Apply the same class for consistent styling -->
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Parts Replaced</th>
-            <th>Quantity</th>
-            <th>Price per Part</th>
-            <th class="text-start">Total per Transaction</th> <!-- Column for total per transaction -->
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($monthlyPreventives as $month => $dailyPreventives)
-            <!-- Display month header -->
-            <tr>
-                <td colspan="5"><strong>{{ \Carbon\Carbon::createFromFormat('Y-m', $month)->format('F Y') }}</strong></td>
-            </tr>
-            @foreach($dailyPreventives as $day => $data)
-                <tr>
-                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $day)->format('F d, Y') }}</td>
-                    <td>
-                        @foreach($data['preventives'] as $preventive)
-                            {{ $preventive->parts_replaced }}<br>
-                        @endforeach
-                    </td>
-                    <td>
-                        @foreach($data['preventives'] as $preventive)
-                            {{ $preventive->quantity }}<br>
-                        @endforeach
-                    </td>
-                    <td>
-                        @foreach($data['preventives'] as $preventive)
-                        ₱ {{ number_format($preventive->price_parts_replaced, 2) }}<br>
-                        @endforeach
-                    </td>
-                    <td class="text-start">
-                        @foreach($data['preventives'] as $preventive)
-                        ₱ {{ number_format($preventive->price_parts_replaced * $preventive->quantity, 2) }}<br>
-                        @endforeach
-                    </td>
-                </tr>
-            @endforeach
-        @endforeach
-    </tbody>
-    <!-- Display grand total for Preventive Maintenance table -->
-    <tfoot>
-        <tr>
-            <td colspan="4"><strong>Grand Total:</strong></td>
-            <td class="text-start"><strong> ₱ {{ number_format($grandTotalPayment, 2) }}</strong></td>
-        </tr>
-    </tfoot>
-</table>
-<!-- Loan Payments Table -->
-
-<!-- Preventive Maintenance Table -->
-<h6 class="page-title">Financial Table for Loans</h6>
-<table class="jobOffersTable" style="margin-bottom: 40px;">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Borrower</th>
-            <th>Initial Amount</th>
-            <th>Interest</th>
-            <th class="text-start">Total Payment</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($monthlyLoans as $month => $dailyLoans)
-            <!-- Display month header -->
-            <tr>
-                <td colspan="5"><strong>{{ \Carbon\Carbon::createFromFormat('Y-m', $month)->format('F Y') }}</strong></td>
-            </tr>
-            @foreach($dailyLoans as $day => $data)
-                <tr>
-                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $day)->format('F d, Y') }}</td>
-                    <td>
-                        @foreach($data['loans'] as $loan)
-                       {{ $loan->borrower }}<br>
-                        @endforeach
-                    </td>
-                    <td>
-                        @foreach($data['loans'] as $loan)
-                        ₱ {{ number_format($loan->initial_amount, 2) }}<br>
-                        @endforeach
-                    </td>
-                    <td>
-                        @foreach($data['loans'] as $loan)
-                        {{ number_format((float)$loan->interest_percentage, 2) }}%<br>
-                        @endforeach
-                    </td>
-
-                    <td class="text-start">
-                        @foreach($data['loans'] as $loan)
-                        ₱ {{ number_format((float)$loan->total_payment, 2) }}<br>
-                        @endforeach
-                    </td>
-                </tr>
-            @endforeach
-        @endforeach
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="2"><strong>Total</strong></td>
-            <td><strong>₱ {{ number_format($grandTotalInitialAmount, 2) }}</strong></td>
-            <td></td>
-            <td class="text-start"><strong>₱ {{ number_format($grandTotalPayment, 2) }}</strong></td>
-        </tr>
-    </tfoot>
-</table>
+                                <h6 class="page-title">Financial Table for PMS</h6>
+                                <table class="jobOffersTable" style="margin-bottom: 40px;">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Parts Replaced</th>
+                                            <th>Quantity</th>
+                                            <th>Price per Part</th>
+                                            <th class="text-start">Total per Transaction</th> <!-- Column for total per transaction -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($monthlyPreventives as $month => $dailyPreventives)
+                                            <!-- Display month header -->
+                                            <tr>
+                                                <td colspan="5"><strong>{{ \Carbon\Carbon::createFromFormat('Y-m', $month)->format('F Y') }}</strong></td>
+                                            </tr>
+                                            @foreach($dailyPreventives as $day => $data)
+                                                <tr>
+                                                    <!-- Change date format to day-month-year -->
+                                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $day)->format('d-m-Y') }}</td>
+                                                    <td>
+                                                        @foreach($data['preventives'] as $preventive)
+                                                            {{ $preventive->parts_replaced }}<br>
+                                                        @endforeach
+                                                    </td>
+                                                    <td>
+                                                        @foreach($data['preventives'] as $preventive)
+                                                            {{ $preventive->quantity }}<br>
+                                                        @endforeach
+                                                    </td>
+                                                    <td>
+                                                        @foreach($data['preventives'] as $preventive)
+                                                        ₱ {{ number_format($preventive->price_parts_replaced, 2) }}<br>
+                                                        @endforeach
+                                                    </td>
+                                                    <td class="text-start">
+                                                        @foreach($data['preventives'] as $preventive)
+                                                        ₱ {{ number_format($preventive->price_parts_replaced * $preventive->quantity, 2) }}<br>
+                                                        @endforeach
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endforeach
+                                    </tbody>
+                                    <!-- Display grand total for Preventive Maintenance table -->
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4"><strong>Grand Total:</strong></td>
+                                            <td class="text-start"><strong> ₱ {{ number_format($grandTotalPayment, 2) }}</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <h6 class="page-title">Financial Table for Loans</h6>
+                                <table class="jobOffersTable" style="margin-bottom: 40px;">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Borrower</th>
+                                            <th>Initial Amount</th>
+                                            <th>Interest</th>
+                                            <th class="text-start">Total Payment</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($monthlyLoans as $month => $dailyLoans)
+                                            <!-- Display month header -->
+                                            <tr>
+                                                <td colspan="5"><strong>{{ \Carbon\Carbon::createFromFormat('Y-m', $month)->format('F Y') }}</strong></td>
+                                            </tr>
+                                            @foreach($dailyLoans as $day => $data)
+                                                <tr>
+                                                    <!-- Change date format to day-month-year -->
+                                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $day)->format('d-m-Y') }}</td>
+                                                    <td>
+                                                        @foreach($data['loans'] as $loan)
+                                                            {{ $loan->borrower }}<br>
+                                                        @endforeach
+                                                    </td>
+                                                    <td>
+                                                        @foreach($data['loans'] as $loan)
+                                                        ₱ {{ number_format($loan->initial_amount, 2) }}<br>
+                                                        @endforeach
+                                                    </td>
+                                                    <td>
+                                                        @foreach($data['loans'] as $loan)
+                                                        {{ number_format((float)$loan->interest_percentage, 2) }}%<br>
+                                                        @endforeach
+                                                    </td>
+                                                    <td class="text-start">
+                                                        @foreach($data['loans'] as $loan)
+                                                        ₱ {{ number_format((float)$loan->total_payment, 2) }}<br>
+                                                        @endforeach
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="2"><strong>Total</strong></td>
+                                            <td><strong>₱ {{ number_format($grandTotalInitialAmount, 2) }}</strong></td>
+                                            <td></td>
+                                            <td class="text-start"><strong>₱ {{ number_format($grandTotalPayment, 2) }}</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
 
 
 

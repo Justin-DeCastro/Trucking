@@ -103,8 +103,8 @@
                     </thead>
                     <tbody>
                         @foreach ($GDR as $gdrAccounting)
-                            <tr data-month="{{ $gdrAccounting->date->format('Y-m') }}">
-                                <td>{{ $gdrAccounting->date->format('M d, Y H:i') }}</td>
+                            <tr data-month="{{ $gdrAccounting->date->format('d-M-y h-i A') }}">
+                                <td>{{ $gdrAccounting->date->format('d-M-y h-i A') }}</td>
                                 <td>{{ $gdrAccounting->particulars }}</td>
                                 <td>{{ number_format($gdrAccounting->payment_amount, 2) }}</td>
                                 <td>{{ $gdrAccounting->payment_channel }}</td>

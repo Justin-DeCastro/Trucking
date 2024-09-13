@@ -24,6 +24,7 @@ class DelayReportController extends Controller
         'driver_name' => 'required|string', // This might not be necessary if you set it in the form
         'plate_number' => 'required|string|max:255',
         'date' => 'required|date',
+        'other_cause'=>'required',
         'delay_duration' => 'required|string',
         'delay_cause' => 'required|string',
         'additional_notes' => 'nullable|string',

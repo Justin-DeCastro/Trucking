@@ -218,7 +218,7 @@
                                                         <td>{{ $return->return_quantity }}</td>
                                                         <td>{{ $return->condition }}</td>
                                                         <td>{{ $currentDriverName }}</td>
-                                                        <td>{{ $return->return_status }}</td>
+                                                        <td>{{ $return->status }}</td>
                                                         <td>
                                                             @if($return->proof_of_return)
                                                                 <img src="{{ asset('proofs/' . $return->proof_of_return) }}" alt="Proof of Return" style="max-width: 100px; max-height: 100px; object-fit: cover;">

@@ -91,7 +91,7 @@
                                         <tbody>
                                             @foreach($loans as $loan)
                                             <tr>
-                                                <td>{{ \Carbon\Carbon::parse($loan->date)->format('F d, Y') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($loan->date)->format('d-M-y h-i A') }}</td>
                                                 <td>{{ $loan->borrower }}</td>
                                                 <td>{{ number_format($loan->initial_amount, 2) }}</td>
                                                 <td>{{ number_format((float) $loan->interest_percentage, 2) }}</td>
