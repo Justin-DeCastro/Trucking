@@ -17,46 +17,51 @@ class LoginController extends Controller
 
     // Handle the login request
     public function login(Request $request)
-    {
-        // Validate the form data
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+{
+    // Validate the form data
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        // Attempt to log in the user
-        $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
-            // Get the authenticated user
-            $user = Auth::user();
+    // Attempt to log in the user
+    $credentials = $request->only('email', 'password');
+    if (Auth::attempt($credentials)) {
+        // Get the authenticated user
+        $user = Auth::user();
 
-            // Check if the user is verified
-            if ($user->is_verified) {
-                // Redirect based on the user's role
-                if ($user->isAdmin()) {
-                    return redirect()->intended('admindash');
-                } elseif ($user->isCourier()) {
-                    return redirect()->intended('order-for-courier');
-                } elseif ($user->isAccounting()) {
-                    return redirect()->intended('accountingdash');
-                }
-                    elseif ($user->isCoordinator()) {
-                        return redirect()->intended('coordinatordash');
-                }
-
-                // Redirect to a default route if no specific role is found
-                return redirect()->intended('home');
-            } else {
-                // Logout the user if not verified
+        // Check if the user is verified
+        if ($user->is_verified) {
+            // Check if the user's role is 'courier' and status is 'terminated'
+            if ($user->isCourier() && $user->status === 'terminated') {
                 Auth::logout();
-                return redirect()->route('verification.form')->with('error', 'You need to verify your email before logging in.');
-            }
-        }
+                return redirect()->route('login')->with('error', 'Because you didn\'t update your license, you temporarily can\'t use your account.');
 
-        // If login fails, redirect back with an error
-        return redirect()->back()->withErrors(['email' => 'Invalid credentials']);
+            }
+
+            // Redirect based on the user's role
+            if ($user->isAdmin()) {
+                return redirect()->intended('admindash');
+            } elseif ($user->isCourier()) {
+                return redirect()->intended('order-for-courier');
+            } elseif ($user->isAccounting()) {
+                return redirect()->intended('accountingdash');
+            } elseif ($user->isCoordinator()) {
+                return redirect()->intended('coordinatordash');
+            }
+
+            // Redirect to a default route if no specific role is found
+            return redirect()->intended('home');
+        } else {
+            // Logout the user if not verified
+            Auth::logout();
+            return redirect()->route('verification.form')->with('error', 'You need to verify your email before logging in.');
+        }
     }
 
+    // If login fails, redirect back with an error
+    return redirect()->back()->withErrors(['email' => 'Invalid credentials']);
+}
 
     // Log out the user
     public function logout(Request $request)

@@ -278,7 +278,7 @@ public function courier_dash()
     // Fetch the license expiration for the logged-in user
     $expiringCourier = User::where('id', $currentUserId)
         ->whereBetween('license_expiration', [Carbon::now(), Carbon::now()->addDays(7)])
-        ->first(['name', 'license_expiration']); // Use first() to get a single result
+        ->first(['name', 'license_number', 'license_expiration', 'driver_license']); // Add required fields
 
     $totalBookings = Booking::where('driver_name', $currentUserId)->count(); // Total bookings
 
@@ -287,6 +287,58 @@ public function courier_dash()
         ->count(); // Total successful deliveries
 
     return view('Admin.Courierdash', compact('totalBookings', 'totalSuccessfulDeliveries', 'expiringCourier'));
+}
+public function storeDriverLicenseDetails(Request $request)
+{
+    // Validate the input
+    $request->validate([
+        'license_number' => 'required|string|max:255',
+        'license_expiration' => 'required|date|after:today',
+        'driver_license' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+    ]);
+
+    // Get the authenticated user (courier)
+    $courier = Auth::user();
+
+    if (!$courier) {
+        return redirect()->back()->with('error', 'Courier not found.');
+    }
+
+    // Prepare data for update
+    $data = [
+        'license_number' => $request->license_number,
+        'license_expiration' => $request->license_expiration,
+    ];
+
+    // Check if a new file is uploaded and add it to the update data
+    if ($request->hasFile('driver_license')) {
+        // Get the uploaded file
+        $file = $request->file('driver_license');
+
+        // Define the path where you want to store the file
+        $destinationPath = public_path('licenses'); // Public path 'licenses' folder
+
+        // Create the 'licenses' directory if it does not exist
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
+        }
+
+        // Generate a unique filename to avoid conflicts
+        $filename = time() . '-' . $file->getClientOriginalName();
+
+        // Move the file to the public 'licenses' directory
+        $file->move($destinationPath, $filename);
+
+        // Store the relative path in the database
+        $data['driver_license'] = 'licenses/' . $filename;
+    }
+
+    // Update the user with the data
+    $courier->fill($data);
+    $courier->save();
+
+    // Redirect back with a success message
+    return redirect()->back()->with('success', 'Driver license details updated successfully.');
 }
 
 

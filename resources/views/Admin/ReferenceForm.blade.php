@@ -5,6 +5,7 @@
 @include('Components.Admin.Header')
 
 <style>
+
     .card-header {
         background-color: #ffffff;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -136,23 +137,14 @@
                                             <label for="transport-mode" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
                                                 Transport Mode
                                             </label>
-                                            <div id="transport-mode" style="padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);">
-                                                <label style="margin-right: 10px;">
-                                                    <input type="radio" name="transport_mode" value="Land Transport" checked> Land Transport
-                                                </label>
-                                            </div>
+                                            <select id="transport-mode" name="transport_mode" style="padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); width: 100%;">
+                                                <option value="Land Transport" selected>Land Transport</option>
+                                                <option value="Water Transport">Water Transport</option>
+                                            </select>
                                         </div>
 
-                                        <div style="flex: 1; min-width: 220px;">
-                                            <label for="shipping-type" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
-                                                Shipping Type
-                                            </label>
-                                            <div id="shipping-type" style="padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);">
-                                                <label style="margin-right: 10px;">
-                                                    <input type="radio" name="shipping_type" value="road" checked> Road Transport
-                                                </label>
-                                            </div>
-                                        </div>
+
+
 
 
                                     </div>
@@ -365,7 +357,9 @@
                                         Submit Booking
                                     </button>
                                 </div>
+
                             </form>
+
 
 
                         </div>
@@ -749,7 +743,32 @@
             }
         });
         </script>
+<script>
+    $(document).ready(function() {
+    $('#myForm').on('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
 
+        var formData = $(this).serialize(); // Serialize form data
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    alert('Form submitted successfully! Estimated Travel time: ' + response.travel_time_minutes + ' minutes.');
+                } else {
+                    alert('Error: ' + response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('An error occurred: ' + error);
+            }
+        });
+    });
+});
+
+</script>
     <script>
         "use strict";
         var routes = [{

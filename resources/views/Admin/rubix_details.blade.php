@@ -676,10 +676,10 @@
                                                         <td>Delivery Type</td>
                                                         <td class="text-wrap">{{ $detail->delivery_type }}</td>
                                                     </tr>
-                                                    <tr>
+                                                    {{-- <tr>
                                                         <td>Shipping Type</td>
                                                         <td class="text-wrap">{{ $detail->shipping_type }}</td>
-                                                    </tr>
+                                                    </tr> --}}
                                                     <tr>
                                                         <td>Journey Type</td>
                                                         <td class="text-wrap">{{ $detail->journey_type }}</td>
@@ -1200,7 +1200,7 @@
                 <script src="https://cdn.datatables.net/buttons/1.7.2/js/buttons.print.min.js"></script>
                 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4&libraries=places">
                 </script>
-               <script>
+              <script>
                 var timerIntervals = {}; // Store interval references
 
                 function startTimer(detailId, duration) {
@@ -1262,17 +1262,6 @@
                             directionsRenderer.setDirections(result);
                             map.setCenter(result.routes[0].legs[0].start_location);
 
-                            // Define the truck icon URL
-                            var truckIcon = 'https://maps.google.com/mapfiles/kml/shapes/truck.png';
-
-                            // Create the truck marker
-                            var truckMarker = new google.maps.Marker({
-                                position: result.routes[0].legs[0].start_location,
-                                map: map,
-                                icon: truckIcon,
-                                title: 'Moving Truck'
-                            });
-
                             var durationInSeconds = result.routes[0].legs[0].duration.value;
                             startTimer(detailId, durationInSeconds);
 
@@ -1281,21 +1270,26 @@
 
                             var timelineListElement = document.getElementById('timelineHistory' + detailId);
 
+                            // URL for the red location icon
+                            var redLocationIcon = 'https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png'; // Red location icon URL
+
                             function moveTruck() {
                                 if (step < route.steps.length) {
-                                    truckMarker.setPosition(route.steps[step].end_location);
-
+                                    var stepEndLocation = route.steps[step].end_location;
                                     var placeDescription = route.steps[step].instructions;
-                                    var placeElement = document.createElement('li');
-                                    placeElement.innerHTML = placeDescription;
-                                    timelineListElement.appendChild(placeElement);
 
-                                    // Add marker for each step (including last stop)
+                                    // Add a marker for the current step with red location icon
                                     var placeMarker = new google.maps.Marker({
-                                        position: route.steps[step].end_location,
+                                        position: stepEndLocation,
                                         map: map,
-                                        title: placeDescription
+                                        title: placeDescription,
+                                        icon: redLocationIcon // Set the custom red icon
                                     });
+
+                                    // Add timeline entry
+                                    var placeElement = document.createElement('li');
+                                    placeElement.innerHTML = `<strong>Location:</strong> ${placeDescription}`;
+                                    timelineListElement.appendChild(placeElement);
 
                                     // Info window for hover details
                                     var infoWindow = new google.maps.InfoWindow({
@@ -1309,6 +1303,10 @@
                                         infoWindow.close();
                                     });
 
+                                    // Move truck marker to the current step location
+                                    truckMarker.setPosition(stepEndLocation);
+                                    map.setCenter(stepEndLocation); // Center map around the current step
+
                                     step++;
                                     setTimeout(moveTruck, 2000);
                                 } else {
@@ -1318,11 +1316,12 @@
                                     arrivalElement.innerHTML = "<strong>Truck has arrived at the destination.</strong>";
                                     timelineListElement.appendChild(arrivalElement);
 
-                                    // Add hover effect for final destination marker
+                                    // Add a final destination marker with red location icon
                                     var finalMarker = new google.maps.Marker({
                                         position: route.steps[step - 1].end_location,
                                         map: map,
-                                        title: 'Final Destination'
+                                        title: 'Final Destination',
+                                        icon: redLocationIcon // Use the same red icon
                                     });
 
                                     var finalInfoWindow = new google.maps.InfoWindow({
@@ -1337,6 +1336,15 @@
                                     });
                                 }
                             }
+
+                            // Create the initial truck marker
+                            var truckIcon = 'https://maps.google.com/mapfiles/kml/shapes/truck.png';
+                            var truckMarker = new google.maps.Marker({
+                                position: result.routes[0].legs[0].start_location,
+                                map: map,
+                                icon: truckIcon,
+                                title: 'Moving Truck'
+                            });
 
                             moveTruck();
                         } else {
@@ -1357,6 +1365,7 @@
                     @endforeach
                 });
             </script>
+
 
 
 

@@ -49,6 +49,12 @@
 
                         <h6> Welcome! Sign in to your account. </h6>
                         <br>
+                        @if(session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
@@ -78,6 +84,7 @@
                             <p>Don't have an account? <a href="{{ route('register') }}" class="btn btn-outline-primary">Sign up</a></p>
                         </div> -->
                     </form>
+
                 </div>
             </div>
         </div>

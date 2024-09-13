@@ -76,6 +76,12 @@
                         <span class="menu-title">GDR ACCOUNT</span>
                     </a>
                 </li>
+                <li class="sidebar-menu-item">
+                    <a href="financialreport" class="nav-link">
+                        <i class="fas fa-book menu-icon"></i>
+                        <span class="menu-title">Financial Report</span>
+                    </a>
+                </li>
 
 
 

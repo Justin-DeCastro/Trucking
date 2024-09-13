@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-
+  use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\User;
@@ -217,114 +217,147 @@ public function getAccountData(Request $request)
 
 
     // Handle form submission
-    public function submitForm(Request $request)
-    {
-        // Validate the request
-        $validatedData = $request->validate([
-            'trip_ticket' => 'required',
-            'driver_name' => 'required|string|max:255',
-            'plate_number' => 'required|string|max:255',
-            'date' => 'required|date',
-            'sender_name' => 'required|string|max:255',
-            'product_name' => 'required|string|max:255',
-            'transport_mode' => 'required|string|max:255',
-            'shipping_type' => 'required|string|max:255',
-            'delivery_type' => 'required|string|max:255',
-            'journey_type' => 'required|string|max:255',
-            'consignee_name' => 'required|string|max:255',
-            'consignee_address' => 'required|string|max:255',
-            'consignee_email' => 'required|email|max:255',
-            'consignee_mobile' => 'required|string|max:255',
-            'consignee_city' => 'required|string|max:255',
-            'consignee_province' => 'required|string|max:255',
-            'consignee_barangay' => 'required|string|max:255',
-            'consignee_building_type' => 'required|string|max:255',
-            'merchant_name' => 'required|string|max:255',
-            'merchant_address' => 'required|string|max:255',
-            'merchant_email' => 'required|email|max:255',
-            'merchant_mobile' => 'required|string|max:255',
-            'merchant_city' => 'required|string|max:255',
-            'merchant_province' => 'required|string|max:255',
-            'truck_type' => 'required',
-        ]);
+   // Import the HTTP client
 
-        // Generate tracking number
-        $trackingNumber = 'GDR-' . strtoupper(uniqid(mt_rand(), true));
-        $validatedData['tracking_number'] = $trackingNumber;
+   public function submitForm(Request $request)
+{
+    // Validate the request
+    $validatedData = $request->validate([
+        'trip_ticket' => 'required',
+        'driver_name' => 'required|string|max:255',
+        'plate_number' => 'required|string|max:255',
+        'date' => 'required|date',
+        'sender_name' => 'required|string|max:255',
+        'product_name' => 'required|string|max:255',
+        'transport_mode' => 'required|string|max:255',
+        // 'shipping_type' => 'required|string|max:255',
+        'delivery_type' => 'required|string|max:255',
+        'journey_type' => 'required|string|max:255',
+        'consignee_name' => 'required|string|max:255',
+        'consignee_address' => 'required|string|max:255',
+        'consignee_email' => 'required|email|max:255',
+        'consignee_mobile' => 'required|string|max:255',
+        'consignee_city' => 'required|string|max:255',
+        'consignee_province' => 'required|string|max:255',
+        'consignee_barangay' => 'required|string|max:255',
+        'consignee_building_type' => 'required|string|max:255',
+        'merchant_name' => 'required|string|max:255',
+        'merchant_address' => 'required|string|max:255',
+        'merchant_email' => 'required|email|max:255',
+        'merchant_mobile' => 'required|string|max:255',
+        'merchant_city' => 'required|string|max:255',
+        'merchant_province' => 'required|string|max:255',
+        'truck_type' => 'required',
+    ]);
 
-        // Add the created_by field with the authenticated user's ID
-        $validatedData['created_by'] = auth()->id();
+    // Extract addresses from the validated data
+    $merchantAddress = $validatedData['merchant_address'];
+    $consigneeAddress = $validatedData['consignee_address'];
 
-        // Generate order number with the format '2024-(order_number)'
-        $currentYear = date('Y'); // Gets the current year
+    // Define your API key from the environment file
+    $apiKey = env('GOOGLE_MAPS_API_KEY');
 
-        // Retrieve the last booking for the current year
-        $lastBooking = Booking::whereYear('created_at', $currentYear)->orderBy('order_number', 'desc')->first();
+    // Make a request to the Distance Matrix API
+    $response = Http::get('https://maps.googleapis.com/maps/api/distancematrix/json', [
+        'origins' => $merchantAddress,
+        'destinations' => $consigneeAddress,
+        'key' => $apiKey,
+    ]);
 
-        // Initialize order number
-        if ($lastBooking && strpos($lastBooking->order_number, '-') !== false) {
-            // Split the last order number by '-'
-            $parts = explode('-', $lastBooking->order_number);
+    // Decode the JSON response
+    $data = $response->json();
 
-            // Check if the split parts are valid
-            if (isset($parts[1]) && is_numeric($parts[1])) {
-                $orderNumber = intval($parts[1]) + 1;
-            } else {
-                $orderNumber = 1;
-            }
+    // Check for valid response
+    $travelTimeMinutes = null;
+    if ($data['status'] == 'OK') {
+        $elements = $data['rows'][0]['elements'];
+
+        // Get the duration of the first (and should be only) element
+        if (!empty($elements) && $elements[0]['status'] == 'OK') {
+            $duration = $elements[0]['duration']['value']; // Duration in seconds
+            $travelTimeMinutes = $duration / 60; // Convert to minutes
+        }
+    }
+
+    // Generate tracking number
+    $trackingNumber = 'GDR-' . strtoupper(uniqid(mt_rand(), true));
+    $validatedData['tracking_number'] = $trackingNumber;
+
+    // Add the created_by field with the authenticated user's ID
+    $validatedData['created_by'] = auth()->id();
+
+    // Generate order number with the format '2024-(order_number)'
+    $currentYear = date('Y'); // Gets the current year
+
+    // Retrieve the last booking for the current year
+    $lastBooking = Booking::whereYear('created_at', $currentYear)->orderBy('order_number', 'desc')->first();
+
+    // Initialize order number
+    if ($lastBooking && strpos($lastBooking->order_number, '-') !== false) {
+        // Split the last order number by '-'
+        $parts = explode('-', $lastBooking->order_number);
+
+        // Check if the split parts are valid
+        if (isset($parts[1]) && is_numeric($parts[1])) {
+            $orderNumber = intval($parts[1]) + 1;
         } else {
             $orderNumber = 1;
         }
-
-        // Format order number to start from 0001
-        $formattedOrderNumber = str_pad($orderNumber, 4, '0', STR_PAD_LEFT);
-        $validatedData['order_number'] = $currentYear . '-' . $formattedOrderNumber;
-
-        // Create the booking
-        $booking = Booking::create($validatedData);
-
-        // Generate URL to redirect to
-        $detailsUrl = route('rubixdetails', ['tracking_number' => $trackingNumber, 'order_number' => $validatedData['order_number']]);
-
-        // Generate QR code
-        $filename = time() . '-' . $trackingNumber . '.svg';
-        $qrCodePath = 'qrcodes/' . $filename;
-        $qrCodeImage = QrCode::size(300)->generate($detailsUrl);
-        file_put_contents(public_path($qrCodePath), $qrCodeImage);
-
-        // Save QR code path to the booking
-        $booking->update(['qr_code_path' => $qrCodePath]);
-
-        // Update the truck status if truck_type is provided
-        $truckId = $request->input('truck_type'); // Ensure 'truck_type' field exists in the form
-        if ($truckId) {
-            $truck = Vehicle::find($truckId);
-
-            if ($truck) {
-                // Decrement the quantity of the truck
-                $truck->decrement('quantity');
-
-                // Update truck status if quantity is 0
-                if ($truck->quantity <= 0) {
-                    $truck->update([
-                        'truck_status' => 'Not Available',
-                    ]);
-                }
-            }
-        }
-
-        // Generate the URL to the QR code image
-        $qrCodeUrl = asset($qrCodePath);
-
-        // Redirect to the confirmation view with data
-        return view('Home.confirmation', [
-            'trackingNumber' => $trackingNumber,
-            'qrCodeUrl' => $qrCodeUrl,
-            'orderNumber' => $validatedData['order_number'],
-        ]);
+    } else {
+        $orderNumber = 1;
     }
 
+    // Format order number to start from 0001
+    $formattedOrderNumber = str_pad($orderNumber, 4, '0', STR_PAD_LEFT);
+    $validatedData['order_number'] = $currentYear . '-' . $formattedOrderNumber;
 
+    // Create the booking
+    $booking = Booking::create($validatedData);
+
+    // Generate URL to redirect to
+    $detailsUrl = route('rubixdetails', ['tracking_number' => $trackingNumber, 'order_number' => $validatedData['order_number']]);
+
+    // Generate QR code
+    $filename = time() . '-' . $trackingNumber . '.svg';
+    $qrCodePath = 'qrcodes/' . $filename;
+    $qrCodeImage = QrCode::size(300)->generate($detailsUrl);
+    file_put_contents(public_path($qrCodePath), $qrCodeImage);
+
+    // Save QR code path to the booking
+    $booking->update(['qr_code_path' => $qrCodePath]);
+
+    // Update the truck status if truck_type is provided
+    $truckId = $request->input('truck_type'); // Ensure 'truck_type' field exists in the form
+    if ($truckId) {
+        $truck = Vehicle::find($truckId);
+
+        if ($truck) {
+            // Decrement the quantity of the truck
+            $truck->decrement('quantity');
+
+            // Update truck status if quantity is 0
+            if ($truck->quantity <= 0) {
+                $truck->update([
+                    'truck_status' => 'Not Available',
+                ]);
+            }
+        }
+    }
+
+    // Generate the URL to the QR code image
+    $qrCodeUrl = asset($qrCodePath);
+
+    // Return a JSON response with success and travel time data
+    return response()->json([
+        'success' => true,
+        'message' => '<div class="alert alert-success">Your order has been successfully processed!</div>',
+        'tracking_number' => $trackingNumber,
+        'order_number' => $validatedData['order_number'],
+        'travel_time_minutes' => $travelTimeMinutes,
+        'qr_code_url' => $qrCodeUrl,
+    ]);
+
+}
 
 
 

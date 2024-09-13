@@ -250,50 +250,70 @@
 </div>
 
 <!-- Modal for updating license -->
-<div class="modal fade" id="updateLicenseModal" tabindex="-1" aria-labelledby="updateLicenseModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateLicenseModalLabel">Update Driver's License</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('updateLicense') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+<!-- License Expiration Modal -->
+@if($expiringCourier)
+    <div class="modal fade" id="updateLicenseModal" tabindex="-1" aria-labelledby="updateLicenseModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateLicenseModalLabel">Your License is Expiring Soon</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{-- <p><strong>Name:</strong> {{ $expiringCourier->name }}</p>
+                    <p><strong>License Number:</strong> {{ $expiringCourier->license_number }}</p>
+                    <p><strong>Expiration Date:</strong> {{ $expiringCourier->license_expiration->format('F d, Y') }}</p> --}}
+
+                    @if($expiringCourier->drivers_license)
+                        <p><strong>Proof of License:</strong> <a href="{{ asset('path/to/licenses/' . $expiringCourier->driver_license) }}" target="_blank">View License</a></p>
                     @endif
 
-                    <input type="hidden" name="courier_id" value="{{ $expiringCourier->id }}">
+                    <form action="{{ route('updateLicense') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
 
-                    <div class="mb-3">
-                        <label for="licenseNumber" class="form-label">License Number</label>
-                        <input type="text" class="form-control" id="licenseNumber" name="new_license_number" value="{{ old('new_license_number', $expiringCourier->license_number) }}">
-                    </div>
+                        <!-- License Number -->
+                        <div class="mb-3">
+                            <label for="licenseNumber" class="form-label">License Number</label>
+                            <input type="text" class="form-control" id="licenseNumber" name="license_number" value="{{ Auth::user()->license_number }}">
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="licenseExpiration" class="form-label">Expiration Date</label>
-                        <input type="date" class="form-control" id="licenseExpiration" name="new_license_expiration" value="{{ old('new_license_expiration', $expiringCourier->license_expiration) }}">
-                    </div>
+                        <!-- Expiration Date -->
+                        <div class="mb-3">
+                            <label for="licenseExpiration" class="form-label">Expiration Date</label>
+                            <input type="date" class="form-control" id="licenseExpiration" name="license_expiration" value="{{ Auth::user()->license_expiration }}">
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="driverLicense" class="form-label">Proof of License</label>
-                        <input type="file" class="form-control" id="driverLicense" name="new_driver_license" accept="image/*,application/pdf">
-                    </div>
+                        <!-- Driver License Upload -->
+                        <div class="mb-3">
+                            <label for="driverLicense" class="form-label">Proof of License</label>
+                            <input type="file" class="form-control" id="driverLicense" name="driver_license" accept="image/*,application/pdf">
+                        </div>
 
-                    <button type="submit" class="btn btn-primary">Update License</button>
-                </form>
-
+                        <button type="submit" class="btn btn-primary">Update License</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+    <!-- Trigger the modal automatically if the license is about to expire -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modal = new bootstrap.Modal(document.getElementById('updateLicenseModal'));
+            modal.show();
+        });
+    </script>
+@endif
+
 
 
 

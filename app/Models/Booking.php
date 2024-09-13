@@ -17,7 +17,7 @@ class Booking extends Model
         'sender_name',
         'trip_ticket',
         'transport_mode',
-        'shipping_type',
+        // 'shipping_type',
         'delivery_type',
         'journey_type',
         'consignee_name',
