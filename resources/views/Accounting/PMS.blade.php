@@ -115,9 +115,10 @@
                                                                     <th>Plate Number</th>
                                                                     <th>Total Kilometer</th>
                                                                     <th>Truck Model</th>
-                                                                    <th>Parts Replaced</th>
+                                                                    <th>Particulars</th>
                                                                     <th>Quantity</th>
-                                                                    <th>Price per Quantity</th>
+                                                                    <th>Price per pc</th>
+                                                                    <th>Total Cost</th>
                                                                     <th>Proof of Need to Fixed</th>
                                                                     <th>Proof of Payment</th>
                                                                     <th>Action</th>
@@ -132,6 +133,8 @@
                                                                         <td>{{ $maintenance->parts_replaced }}</td>
                                                                         <td>{{ $maintenance->quantity }}</td>
                                                                         <td>₱{{ number_format($maintenance->price_parts_replaced, 2) }}</td>
+                                                                        <td>₱{{ number_format($maintenance->quantity * $maintenance->price_parts_replaced, 2) }}</td>
+
                                                                         <td>
                                                                             @if (is_array($maintenance->proof_of_need_to_fixed))
                                                                                 @foreach ($maintenance->proof_of_need_to_fixed as $path)

@@ -277,6 +277,21 @@
                                 </div>
                             </a>
                         </div>
+                        <div class="col-xxl-3 col-sm-6">
+                            <a href="#" class="text-decoration-none">
+                                <div class="bg-info text-white p-3 rounded d-flex align-items-center shadow-sm">
+                                    <div class="me-3">
+                                        <i class="fas fa-list-alt fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Total Earnings</p>
+                                        <h3 class="mb-0">{{ number_format($totalEarnings, 2) }}</h3>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+
 
                         <!-- Notification Card -->
                        <!-- Notification Card -->

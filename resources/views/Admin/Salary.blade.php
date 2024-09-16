@@ -108,7 +108,7 @@
                         <div class="card">
                             <div class="card-body p-0">
                                 <div class="table-responsive--md table-responsive">
-                                    <h4>Updated Driver Salary = Driver Salary - 2% Holding tax</h4>
+                                    <h4>Updated Driver Salary = Driver Salary - 2% Withholding tax</h4>
                                     <table id="adminTable" class="table--light style--two table">
                                         <thead>
                                             <tr>
@@ -116,8 +116,8 @@
                                                 <th>Driver Salary</th>
                                                 <th>Helper Salary</th>
                                                 <th>Rates</th>
-                                                <th>Updated Driver Salary</th>
-                                                <th>Updated Helper Salary</th>
+                                                <th>Updated Driver Salary(-2%)</th>
+                                                <th>Updated Helper Salary(-2%)</th>
                                                 <th>Updated Salary Rates</th>
                                                 <!-- New column header -->
 

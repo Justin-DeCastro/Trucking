@@ -19,9 +19,45 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="Admin/assets/js/plugin/webfont/webfont.min.js"></script>
 
-
     @include('Components.admin.header')
 
+    <style>
+        .calendar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        #calendar {
+            flex: 1;
+        }
+
+        .calendar-legend {
+            width: 200px; /* Adjust as needed */
+            margin-left: 20px; /* Adjust spacing between calendar and legend */
+        }
+
+        .calendar-legend h5 {
+            margin-bottom: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .legend-text {
+            font-size: 14px;
+        }
+    </style>
 </head>
 
 <body>
@@ -65,10 +101,21 @@
                                 <hr class="my-5" />
                                 <div class="card">
                                     <div class="card-header flex-column flex-md-row">
-                                        <h5 class="card-header">Pending Loan Application</h5>
+                                        <h5 class="card-header">Transactions Calendar</h5>
                                     </div>
-                                    <div class="content" style="margin-top: -50px">
+                                    <div class="calendar-container">
                                         <div id='calendar'></div>
+                                        <div class="calendar-legend">
+                                            <h5>Legend</h5>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: green;"></div>
+                                                <div class="legend-text">Paid</div>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-color" style="background-color: orange;"></div>
+                                                <div class="legend-text">Unpaid</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -76,7 +123,6 @@
                     </div>
                 </div>
             </div>
-
 
             <!-- Modal for displaying borrower details -->
             <div class="modal fade" id="loanModal" tabindex="-1" aria-labelledby="loanModalLabel" aria-hidden="true">
@@ -87,14 +133,14 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
-                        <div class="modal-body" >
-                            <p style = "font-size:15px; color:black"><strong>Borrower Name:</strong> <span id="borrowerName"></span></p>
-                            <p style = "font-size:15px; color:black"><strong>Loan Amount:</strong> <span id="loanAmount"></span></p>
-                            <p style = "font-size:15px; color:black"><strong>Interest Percentage:</strong> <span id="loanInterest"></span></p>
-                            <p style = "font-size:15px; color:black"><strong>Payment Terms:</strong> <span id="paymentTerms"></span></p>
-                            <p style = "font-size:15px; color:black"><strong>Payment Per Month:</strong> <span id="paymentPerMonth"></span></p>
-                            <p style = "font-size:15px; color:black"><strong>Mode of Payment:</strong> <span id="modeOfPayment"></span></p>
-                            <p style = "font-size:15px; color:black"><strong>Loan Date:</strong> <span id="loanDate"></span></p>
+                        <div class="modal-body">
+                            <p style="font-size:15px; color:black"><strong>Borrower Name:</strong> <span id="borrowerName"></span></p>
+                            <p style="font-size:15px; color:black"><strong>Loan Amount:</strong> <span id="loanAmount"></span></p>
+                            <p style="font-size:15px; color:black"><strong>Interest Percentage:</strong> <span id="loanInterest"></span></p>
+                            <p style="font-size:15px; color:black"><strong>Payment Terms:</strong> <span id="paymentTerms"></span></p>
+                            <p style="font-size:15px; color:black"><strong>Payment Per Month:</strong> <span id="paymentPerMonth"></span></p>
+                            <p style="font-size:15px; color:black"><strong>Mode of Payment:</strong> <span id="modeOfPayment"></span></p>
+                            <p style="font-size:15px; color:black"><strong>Loan Date:</strong> <span id="loanDate"></span></p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -102,8 +148,6 @@
                     </div>
                 </div>
             </div>
-
-
 
             <!-- Core JS Files -->
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -151,17 +195,17 @@
             <!-- Bootstrap JS -->
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
-
             <!-- Calendar JS -->
             <script src='calendar/fullcalendar/packages/core/main.js'></script>
             <script src='calendar/fullcalendar/packages/interaction/main.js'></script>
             <script src='calendar/fullcalendar/packages/daygrid/main.js'></script>
             <script src="calendar/js/main.js"></script>
+
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     var calendarEl = document.getElementById('calendar');
 
-                    // Replace this array with your PHP data (only pending loans are passed here)
+                    // Replace this array with your PHP data (only unpaid loans are passed here)
                     var loans = @json($loans);
 
                     // Function to format the loan amount with a peso sign and comma separator
@@ -185,9 +229,13 @@
 
                     // Mapping loan data into FullCalendar events
                     var events = loans.map(function(loan) {
+                        var eventColor = loan.status === 'Unpaid' ? 'orange' : ''; // Set color to orange if status is "Unpaid"
+
                         return {
                             title: `${loan.borrower}`, // Borrower's name displayed as the event title
                             start: loan.date, // Date of the loan
+                            backgroundColor: eventColor, // Set the background color to orange if unpaid
+                            borderColor: eventColor,    // Set the border color to orange if unpaid
                             extendedProps: {
                                 id: loan.id,
                                 borrower: loan.borrower,
@@ -196,7 +244,8 @@
                                 payment_terms: loan.payment_terms,
                                 payment_per_month: loan.payment_per_month,
                                 mode_of_payment: loan.mode_of_payment,
-                                date: loan.date // Loan date
+                                date: loan.date, // Loan date
+                                status: loan.status // Loan status
                             }
                         };
                     });
@@ -208,22 +257,18 @@
                         initialView: 'dayGridMonth',
                         editable: false,
                         events: events,
+
                         eventClick: function(info) {
                             var eventObj = info.event.extendedProps;
 
                             // Populate the modal with borrower information
                             document.getElementById('borrowerName').innerText = eventObj.borrower;
-                            document.getElementById('loanAmount').innerText = formatCurrency(eventObj
-                                .initial_amount);
-                            document.getElementById('loanInterest').innerText = eventObj.interest_percentage +
-                                '%';
-                            document.getElementById('paymentTerms').innerText = eventObj.payment_terms +
-                                ' months';
-                            document.getElementById('paymentPerMonth').innerText = formatCurrency(eventObj
-                                .payment_per_month);
+                            document.getElementById('loanAmount').innerText = formatCurrency(eventObj.initial_amount);
+                            document.getElementById('loanInterest').innerText = eventObj.interest_percentage + '%';
+                            document.getElementById('paymentTerms').innerText = eventObj.payment_terms + ' months';
+                            document.getElementById('paymentPerMonth').innerText = formatCurrency(eventObj.payment_per_month);
                             document.getElementById('modeOfPayment').innerText = eventObj.mode_of_payment;
-                            document.getElementById('loanDate').innerText = formatDate(eventObj
-                            .date); // Format the loan date
+                            document.getElementById('loanDate').innerText = formatDate(eventObj.date); // Format the loan date
 
                             // Show the modal
                             var myModal = new bootstrap.Modal(document.getElementById('loanModal'), {
@@ -236,8 +281,6 @@
                     calendar.render();
                 });
             </script>
-
-
 
         </div>
     </div>

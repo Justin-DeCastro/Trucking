@@ -15,9 +15,17 @@ class Booking extends Model
     // Specify which attributes are mass assignable
     protected $fillable = [
         'sender_name',
-        'trip_ticket',
+        // 'trip_ticket',
         'transport_mode',
         // 'shipping_type',
+    'consignee_name',
+    'consignee_address',
+'consignee_email',
+'consignee_mobile',
+ 'consignee_city',
+ 'consignee_province',
+  'consignee_barangay',
+  'consignee_building_type',
         'delivery_type',
         'journey_type',
         'merchant_name',
@@ -45,10 +53,15 @@ class Booking extends Model
         return $this->hasMany(ConsigneeAddress::class);
     }
     // Relationship with the User model for the driver
-    public function driver()
+    public function drivers()
     {
         return $this->belongsTo(User::class, 'driver_id');
     }
+// In Booking.php model
+public function driver()
+{
+    return $this->belongsTo(User::class, 'driver_name'); // Assuming 'driver_name' contains the user ID
+}
 
     // Relationship with the User model for the user who updated the record
     public function updater()

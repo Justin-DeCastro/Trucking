@@ -101,7 +101,7 @@
                 <li class="sidebar-menu-item">
                     <a href="loanamount" class="nav-link">
                         <i class="fas fa-money-bill-wave menu-icon"></i> <!-- Loan icon -->
-                        <span class="menu-title">Loan</span>
+                        <span class="menu-title">Consign</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item">

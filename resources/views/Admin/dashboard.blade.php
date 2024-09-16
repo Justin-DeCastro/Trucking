@@ -133,7 +133,8 @@
                                     <i class="fas fa-check-circle fa-2x"></i>
                                 </div>
                                 <div>
-                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Successful Delivery</p>
+                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Successful Delivery
+                                    </p>
                                     <h3 class="mb-0">{{ $deliverySuccessfulCount }}</h3>
                                 </div>
                             </div>
@@ -146,7 +147,8 @@
                                     <i class="fas fa-bus fa-2x"></i>
                                 </div>
                                 <div>
-                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Total Available Truck</p>
+                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Total Available
+                                        Truck</p>
                                     <h3 class="mb-0">{{ $totalAvailableTrucks }}</h3>
                                 </div>
                             </div>
@@ -198,7 +200,8 @@
                                     <i class="fas fa-tools fa-2x"></i> <!-- Icon changed to tools -->
                                 </div>
                                 <div>
-                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">For Maintenance Truck</p>
+                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">For Maintenance
+                                        Truck</p>
                                     <h3 class="mb-0">{{ $MaintenanceTruck }}</h3>
                                 </div>
                             </div>
@@ -211,11 +214,13 @@
                 <div class="row mt-4">
                     <div class="col-6">
                         <a href="#" class="text-decoration-none">
-                            <div class="bg-info text-white p-4 rounded d-flex flex-column align-items-start shadow-sm" style="width: 100%; max-width: 1000px; margin: auto;">
+                            <div class="bg-info text-white p-4 rounded d-flex flex-column align-items-start shadow-sm"
+                                style="width: 100%; max-width: 1000px; margin: auto;">
                                 <div class="d-flex align-items-center mb-3">
                                     <i class="fas fa-map-marker-alt fa-3x me-3"></i>
                                     <div>
-                                        <p class="mb-1" style="font-size: 1.5rem; font-weight: 600;">Latest Drivers Locations</p>
+                                        <p class="mb-1" style="font-size: 1.5rem; font-weight: 600;">Latest Drivers
+                                            Locations</p>
                                     </div>
                                 </div>
                                 <div class="w-100">
@@ -247,21 +252,26 @@
     <!-- Notification Card -->
     <div id="notificationCard" class="notification-card d-none">
         <div class="cards p-3 bg-warning border-warning">
-            <img src="Home/360_F_512063511_tspgHXYtRcpd9A05MFaWZv8nCTxL8WXP.jpg" class="card-img-top" alt="License Expiration Image">
+            <img src="Home/360_F_512063511_tspgHXYtRcpd9A05MFaWZv8nCTxL8WXP.jpg" class="card-img-top"
+                alt="License Expiration Image">
             <div class="card-body">
                 <h5 class="card-title">⚠️ Driver's License Expiration Warning</h5>
-                @foreach($couriers as $courier)
-                    @php
-                        $expirationDate = \Carbon\Carbon::parse($courier->license_expiration);
-                        $today = \Carbon\Carbon::today();
-                        $statusText = $expirationDate->isPast() ? 'expired' : 'expires on';
-                    @endphp
-                    <p class="card-text">{{ $courier->name }}'s license {{ $statusText }} {{ $expirationDate->format('F j, Y') }}.</p>
-                @endforeach
+                <ul class="list-unstyled">
+                    @foreach ($couriers as $courier)
+                        @php
+                            $expirationDate = \Carbon\Carbon::parse($courier->license_expiration);
+                            $today = \Carbon\Carbon::today();
+                            $statusText = $expirationDate->isPast() ? 'expired' : 'expires on';
+                        @endphp
+                        <li class="card-text">• {{ $courier->name }}'s license {{ $statusText }}
+                            {{ $expirationDate->format('F j, Y') }}.</li>
+                    @endforeach
+                </ul>
                 <button type="button" class="btn btn-secondary" id="closeNotification">Close</button>
             </div>
         </div>
     </div>
+
 
 
 

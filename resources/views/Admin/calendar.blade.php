@@ -27,7 +27,7 @@
 <body>
     <div class="wrapper">
         <!-- Sidebar -->
-        @include('Components.accounting.sidebar')
+        @include('Components.admin.sidebar')
         <!-- End Sidebar -->
 
         <div class="main-panel">
@@ -65,7 +65,7 @@
                                 <hr class="my-5" />
                                 <div class="card">
                                     <div class="card-header flex-column flex-md-row">
-                                        <h5 class="card-header">Pending Loan Application</h5>
+                                        <h5 class="card-header">Transactions Calendar</h5>
                                     </div>
                                     <div class="content" style="margin-top: -50px">
                                         <div id='calendar'></div>

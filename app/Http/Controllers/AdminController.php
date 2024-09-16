@@ -127,28 +127,28 @@ class AdminController extends Controller
         return view('Admin.show', compact('detail'));
     }
     public function rubix_details()
-{
-    // Get the currently authenticated user
-    $user = auth()->user();
-    $userId = $user ? $user->id : null;
+    {
+        // Get the currently authenticated user
+        $user = auth()->user();
+        $userId = $user ? $user->id : null;
 
-    // Fetch all booking details
-    $rubixdetails = Booking::all();
+        // Fetch all booking details with driver information
+        $rubixdetails = Booking::with('driver')->get();
 
-    // Fetch activity logs related to the currently authenticated user
-    $activityLogs = ActivityLog::where('user_id', $userId)->get();
+        // Fetch activity logs related to the currently authenticated user
+        $activityLogs = ActivityLog::where('user_id', $userId)->get();
 
-    // Log the user's activity
-    if ($user) {
-        ActivityLog::log($user->id, 'Viewed rubix details page');
+        // Log the user's activity
+        if ($user) {
+            ActivityLog::log($user->id, 'Viewed rubix details page');
+        }
+
+        // Fetch all activity logs for the booking model (if needed)
+        $activity_logs = Booking::with('activityLogs')->get();
+
+        // Pass the data to the view
+        return view('Admin.rubix_details', compact('rubixdetails', 'activityLogs', 'activity_logs'));
     }
-
-    // Fetch all activity logs for the booking model (if needed)
-    $activity_logs = Booking::with('activityLogs')->get();
-
-    // Pass the data to the view
-    return view('Admin.rubix_details', compact('rubixdetails', 'activityLogs', 'activity_logs'));
-}
 
 
     public function logStatusUpdate(Request $request, $id)
@@ -219,8 +219,9 @@ class AdminController extends Controller
     }
     public function reference(){
         $vehicles = Vehicle::where('truck_status', 'Available')->get();
+        $subcontractors = Subcontractor::all();
         $users = User::where('role', 'courier')->get();
-        return view('Admin.ReferenceForm',compact('users','vehicles'));
+        return view('Admin.ReferenceForm',compact('users','vehicles','subcontractors'));
     }
     public function reference_form(){
         $vehicles = Vehicle::where('truck_status', 'Available')->get();
@@ -286,7 +287,32 @@ public function courier_dash()
         ->where('order_status', 'Confirmed_delivery')
         ->count(); // Total successful deliveries
 
-    return view('Admin.Courierdash', compact('totalBookings', 'totalSuccessfulDeliveries', 'expiringCourier'));
+    // Fetch delivery routes and driver salary from PicingSalary
+    $deliverySalaries = DB::table('pricing_salaries')
+        ->select('delivery_routes', 'driver_salary')
+        ->get()
+        ->mapWithKeys(function ($item) {
+            return [strtoupper($item->delivery_routes) => $item->driver_salary];
+        }); // Normalize delivery_routes to uppercase
+
+    // Calculate total earnings based on booking consignee addresses
+    $totalEarnings = Booking::where('driver_name', $currentUserId)
+        ->whereNotNull('consignee_address') // Ensure consignee_address is not null
+        ->get()
+        ->reduce(function ($carry, $booking) use ($deliverySalaries) {
+            $route = strtoupper($booking->consignee_address); // Normalize consignee_address to uppercase
+
+            // Check if the consignee_address matches any delivery_routes (partial match)
+            foreach ($deliverySalaries as $deliveryRoute => $salary) {
+                if (stripos($route, $deliveryRoute) !== false) {
+                    return $carry + $salary;
+                }
+            }
+
+            return $carry;
+        }, 0); // Initial value for carry is 0
+
+    return view('Admin.Courierdash', compact('totalBookings', 'totalSuccessfulDeliveries', 'expiringCourier', 'totalEarnings'));
 }
 public function storeDriverLicenseDetails(Request $request)
 {
@@ -339,6 +365,21 @@ public function storeDriverLicenseDetails(Request $request)
 
     // Redirect back with a success message
     return redirect()->back()->with('success', 'Driver license details updated successfully.');
+}
+
+public function confirmation()
+{
+    // Retrieve the variables from the session
+    $trackingNumber = session('trackingNumber');
+    $qrCodeUrl = session('qrCodeUrl');
+
+    // Check if the required session data is available
+    if (!$trackingNumber || !$qrCodeUrl) {
+        // Redirect back or show an error page if session data is missing
+        return redirect()->route('home')->with('error', 'Session data is missing. Please try again.');
+    }
+
+    return view('Home.confirmation', compact('trackingNumber', 'qrCodeUrl'));
 }
 
 

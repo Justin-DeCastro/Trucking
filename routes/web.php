@@ -338,3 +338,9 @@ Route::post('/vehicles/update-cr', [VehicleController::class, 'updateCr'])->name
 // web.php
 Route::post('/trips/{id}/close', [TripController::class, 'closeTrip'])->name('trips.close');
 Route::get('/addtruck-archived', [AdminController::class, 'addtruck_archived'])->name('addtruck-archived');
+Route::get('/vehicles-archived', [VehicleController::class, 'showArchived'])->name('vehicles-archived');
+Route::post('/vehicles-archivedtbl/{id}', [VehicleController::class, 'archive'])->name('vehicles-archivedtbl');
+
+
+//
+Route::get('/confirmation', [AdminController::class, 'confirmation'])->name('confirmation');

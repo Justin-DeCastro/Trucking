@@ -17,5 +17,7 @@ class Subcontractor extends Model
         'email_address',
         'phone_number',
         'file_upload',
+        'plate_number',
+        'truck_capacity',
     ];
 }

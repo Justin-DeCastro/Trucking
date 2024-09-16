@@ -106,7 +106,7 @@
                                         <tr>
                                             <th>Date</th>
                                             <th>Particulars</th>
-                                            <th>Total Deposit</th>
+                                            <th>Service Fee</th>
                                             <th>Total Expense</th>
                                             <th>Net Income</th>
                                         </tr>

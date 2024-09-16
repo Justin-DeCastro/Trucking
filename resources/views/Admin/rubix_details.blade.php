@@ -418,14 +418,25 @@
 
 
                                     <!-- Existing Table -->
+                                    <div class="d-flex justify-content-end mb-3">
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Export
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="exportDropdownMenuButton">
+                                                <li><a class="dropdown-item" href="#" id="exportCsv">Export as CSV</a></li>
+                                                <li><a class="dropdown-item" href="#" id="exportExcel">Export as Excel</a></li>
+                                                <li><a class="dropdown-item" href="#" id="exportPdf">Export as PDF</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
 
-
-                                    <table id="data-table" class="data-table table--light style--two">
+                                    <table id="data-table" class="data-table table--light style--two" style="width: 100%; border-collapse: collapse;">
                                         <thead>
                                             <tr>
                                                 <th>Date</th>
-                                                <th>Tracking Number</th>
-                                                <th>Driver</th>
+                                                <th>Trip Ticket Number</th>
+                                                <th>Driver Name</th>
                                                 <th>Truck Plate Number</th>
                                                 <th>Destination</th>
                                                 <th>Proof of Delivery</th>
@@ -443,8 +454,9 @@
                                                 <tr>
                                                     <td>{{ \Carbon\Carbon::parse($detail->date)->format('F d, Y g:i A') }}
                                                     </td>
-                                                    <td>{{ $detail->tracking_number }}</td>
-                                                    <td>{{ $detail->driver_name }}</td>
+                                                    <td>{{ $detail->order_number }}</td>
+                                                    <td>{{ $detail->driver ? $detail->driver->name : 'No driver assigned' }}</td>
+
                                                     <td>{{ $detail->plate_number }}</td>
                                                     <td>{{ $detail->consignee_address }}</td>
                                                     <td>
@@ -1200,171 +1212,195 @@
                 <script src="https://cdn.datatables.net/buttons/1.7.2/js/buttons.print.min.js"></script>
                 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4&libraries=places">
                 </script>
-              <script>
-                var timerIntervals = {}; // Store interval references
+           <script>
+            var timerIntervals = {}; // Store interval references
 
-                function startTimer(detailId, duration) {
-                    var hoursElement = document.getElementById('hours' + detailId);
-                    var minutesElement = document.getElementById('minutes' + detailId);
-                    var secondsElement = document.getElementById('seconds' + detailId);
+            function startTimer(detailId, duration) {
+                var hoursElement = document.getElementById('hours' + detailId);
+                var minutesElement = document.getElementById('minutes' + detailId);
+                var secondsElement = document.getElementById('seconds' + detailId);
 
-                    var startTime = Date.now();
-                    var endTime = startTime + duration * 1000;
+                var startTime = Date.now();
+                var endTime = startTime + duration * 1000;
 
-                    // Timer interval
-                    timerIntervals[detailId] = setInterval(function() {
-                        var now = Date.now();
-                        var elapsedTime = Math.max(now - startTime, 0);
+                // Timer interval
+                timerIntervals[detailId] = setInterval(function() {
+                    var now = Date.now();
+                    var elapsedTime = Math.max(now - startTime, 0);
 
-                        var hours = Math.floor(elapsedTime / (1000 * 60 * 60));
-                        var minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
-                        var seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+                    var hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+                    var minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
 
-                        hoursElement.textContent = String(hours).padStart(2, '0');
-                        minutesElement.textContent = String(minutes).padStart(2, '0');
-                        secondsElement.textContent = String(seconds).padStart(2, '0');
+                    hoursElement.textContent = String(hours).padStart(2, '0');
+                    minutesElement.textContent = String(minutes).padStart(2, '0');
+                    secondsElement.textContent = String(seconds).padStart(2, '0');
 
-                    }, 1000); // Update every second
-                }
+                }, 1000); // Update every second
+            }
 
-                function stopTimer(detailId) {
-                    clearInterval(timerIntervals[detailId]);
-                    console.log('Timer stopped for detail ID:', detailId);
-                }
+            function stopTimer(detailId) {
+                clearInterval(timerIntervals[detailId]);
+                console.log('Timer stopped for detail ID:', detailId);
+            }
 
-                function initMap(detailId, startAddress, endAddress) {
-                    var map = new google.maps.Map(document.getElementById('map' + detailId), {
-                        zoom: 10,
-                        center: { lat: -34.397, lng: 150.644 } // Default center; will update later
-                    });
-
-                    // Add traffic layer to show real-time traffic conditions
-                    var trafficLayer = new google.maps.TrafficLayer();
-                    trafficLayer.setMap(map);
-
-                    var directionsService = new google.maps.DirectionsService();
-                    var directionsRenderer = new google.maps.DirectionsRenderer({
-                        polylineOptions: {
-                            strokeColor: '#00FF00', // Green as default road color
-                            strokeWeight: 6
+            function getCityFromLatLng(latLng, callback) {
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ 'location': latLng }, function(results, status) {
+                    if (status === 'OK' && results[0]) {
+                        var city = '';
+                        for (var i = 0; i < results[0].address_components.length; i++) {
+                            var component = results[0].address_components[i];
+                            if (component.types.includes('locality') || component.types.includes('administrative_area_level_1')) {
+                                city = component.long_name;
+                                break;
+                            }
                         }
-                    });
-                    directionsRenderer.setMap(map);
+                        callback(city);
+                    } else {
+                        console.error('Geocoder failed due to ' + status);
+                        callback('');
+                    }
+                });
+            }
 
-                    var request = {
-                        origin: startAddress,
-                        destination: endAddress,
-                        travelMode: 'DRIVING'
-                    };
+            function initMap(detailId, startAddress, endAddress) {
+                var map = new google.maps.Map(document.getElementById('map' + detailId), {
+                    zoom: 10,
+                    center: { lat: -34.397, lng: 150.644 } // Default center; will update later
+                });
 
-                    directionsService.route(request, function(result, status) {
-                        if (status === 'OK') {
-                            directionsRenderer.setDirections(result);
-                            map.setCenter(result.routes[0].legs[0].start_location);
+                // Add traffic layer to show real-time traffic conditions
+                var trafficLayer = new google.maps.TrafficLayer();
+                trafficLayer.setMap(map);
 
-                            var durationInSeconds = result.routes[0].legs[0].duration.value;
-                            startTimer(detailId, durationInSeconds);
+                var directionsService = new google.maps.DirectionsService();
+                var directionsRenderer = new google.maps.DirectionsRenderer({
+                    polylineOptions: {
+                        strokeColor: '#00FF00', // Green as default road color
+                        strokeWeight: 6
+                    }
+                });
+                directionsRenderer.setMap(map);
 
-                            var route = result.routes[0].legs[0];
-                            var step = 0;
+                var request = {
+                    origin: startAddress,
+                    destination: endAddress,
+                    travelMode: 'DRIVING'
+                };
 
-                            var timelineListElement = document.getElementById('timelineHistory' + detailId);
+                directionsService.route(request, function(result, status) {
+                    if (status === 'OK') {
+                        directionsRenderer.setDirections(result);
+                        map.setCenter(result.routes[0].legs[0].start_location);
 
-                            // URL for the red location icon
-                            var redLocationIcon = 'https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png'; // Red location icon URL
+                        var durationInSeconds = result.routes[0].legs[0].duration.value;
+                        startTimer(detailId, durationInSeconds);
 
-                            function moveTruck() {
-                                if (step < route.steps.length) {
-                                    var stepEndLocation = route.steps[step].end_location;
-                                    var placeDescription = route.steps[step].instructions;
+                        var route = result.routes[0].legs[0];
+                        var step = 0;
 
-                                    // Add a marker for the current step with red location icon
-                                    var placeMarker = new google.maps.Marker({
-                                        position: stepEndLocation,
-                                        map: map,
-                                        title: placeDescription,
-                                        icon: redLocationIcon // Set the custom red icon
-                                    });
+                        var timelineListElement = document.getElementById('timelineHistory' + detailId);
 
+                        // URL for the red location icon
+                        var redLocationIcon = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'; // Red location icon URL
+
+                        function moveTruck() {
+                            if (step < route.steps.length) {
+                                var stepEndLocation = route.steps[step].end_location;
+                                var placeDescription = route.steps[step].instructions;
+
+                                // Add a marker for the current step with red location icon
+                                var placeMarker = new google.maps.Marker({
+                                    position: stepEndLocation,
+                                    map: map,
+                                    title: placeDescription,
+                                    icon: redLocationIcon // Set the custom red icon
+                                });
+
+                                // Get city/municipality information
+                                getCityFromLatLng(stepEndLocation, function(city) {
                                     // Add timeline entry
                                     var placeElement = document.createElement('li');
-                                    placeElement.innerHTML = `<strong>Location:</strong> ${placeDescription}`;
+                                    placeElement.innerHTML = `<strong>Location:</strong> ${placeDescription} <br> <strong>City/Municipality:</strong> ${city}`;
                                     timelineListElement.appendChild(placeElement);
+                                });
 
-                                    // Info window for hover details
-                                    var infoWindow = new google.maps.InfoWindow({
-                                        content: placeDescription
-                                    });
+                                // Info window for hover details
+                                var infoWindow = new google.maps.InfoWindow({
+                                    content: placeDescription
+                                });
 
-                                    placeMarker.addListener('mouseover', function() {
-                                        infoWindow.open(map, placeMarker);
-                                    });
-                                    placeMarker.addListener('mouseout', function() {
-                                        infoWindow.close();
-                                    });
+                                placeMarker.addListener('mouseover', function() {
+                                    infoWindow.open(map, placeMarker);
+                                });
+                                placeMarker.addListener('mouseout', function() {
+                                    infoWindow.close();
+                                });
 
-                                    // Move truck marker to the current step location
-                                    truckMarker.setPosition(stepEndLocation);
-                                    map.setCenter(stepEndLocation); // Center map around the current step
+                                // Move truck marker to the current step location
+                                truckMarker.setPosition(stepEndLocation);
+                                map.setCenter(stepEndLocation); // Center map around the current step
 
-                                    step++;
-                                    setTimeout(moveTruck, 2000);
-                                } else {
-                                    stopTimer(detailId);
+                                step++;
+                                setTimeout(moveTruck, 2000);
+                            } else {
+                                stopTimer(detailId);
 
-                                    var arrivalElement = document.createElement('li');
-                                    arrivalElement.innerHTML = "<strong>Truck has arrived at the destination.</strong>";
-                                    timelineListElement.appendChild(arrivalElement);
+                                var arrivalElement = document.createElement('li');
+                                arrivalElement.innerHTML = "<strong>Truck has arrived at the destination.</strong>";
+                                timelineListElement.appendChild(arrivalElement);
 
-                                    // Add a final destination marker with red location icon
-                                    var finalMarker = new google.maps.Marker({
-                                        position: route.steps[step - 1].end_location,
-                                        map: map,
-                                        title: 'Final Destination',
-                                        icon: redLocationIcon // Use the same red icon
-                                    });
+                                // Add a final destination marker with red location icon
+                                var finalMarker = new google.maps.Marker({
+                                    position: route.steps[step - 1].end_location,
+                                    map: map,
+                                    title: 'Final Destination',
+                                    icon: redLocationIcon // Use the same red icon
+                                });
 
-                                    var finalInfoWindow = new google.maps.InfoWindow({
-                                        content: 'Final Destination'
-                                    });
+                                var finalInfoWindow = new google.maps.InfoWindow({
+                                    content: 'Final Destination'
+                                });
 
-                                    finalMarker.addListener('mouseover', function() {
-                                        finalInfoWindow.open(map, finalMarker);
-                                    });
-                                    finalMarker.addListener('mouseout', function() {
-                                        finalInfoWindow.close();
-                                    });
-                                }
+                                finalMarker.addListener('mouseover', function() {
+                                    finalInfoWindow.open(map, finalMarker);
+                                });
+                                finalMarker.addListener('mouseout', function() {
+                                    finalInfoWindow.close();
+                                });
                             }
-
-                            // Create the initial truck marker
-                            var truckIcon = 'https://maps.google.com/mapfiles/kml/shapes/truck.png';
-                            var truckMarker = new google.maps.Marker({
-                                position: result.routes[0].legs[0].start_location,
-                                map: map,
-                                icon: truckIcon,
-                                title: 'Moving Truck'
-                            });
-
-                            moveTruck();
-                        } else {
-                            console.error('Directions request failed due to ' + status);
                         }
-                    });
-                }
 
-                document.addEventListener('DOMContentLoaded', function() {
-                    @foreach ($rubixdetails as $detail)
-                        document.getElementById('modal{{ $detail->id }}').addEventListener('shown.bs.modal', function() {
-                            initMap(
-                                '{{ $detail->id }}',
-                                '{{ $detail->merchant_address }}',
-                                '{{ $detail->consignee_address }}'
-                            );
+                        // Create the initial truck marker
+                        var truckIcon = 'https://maps.google.com/mapfiles/kml/shapes/truck.png';
+                        var truckMarker = new google.maps.Marker({
+                            position: result.routes[0].legs[0].start_location,
+                            map: map,
+                            icon: truckIcon,
+                            title: 'Moving Truck'
                         });
-                    @endforeach
+
+                        moveTruck();
+                    } else {
+                        console.error('Directions request failed due to ' + status);
+                    }
                 });
-            </script>
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                @foreach ($rubixdetails as $detail)
+                    document.getElementById('modal{{ $detail->id }}').addEventListener('shown.bs.modal', function() {
+                        initMap(
+                            '{{ $detail->id }}',
+                            '{{ $detail->merchant_address }}',
+                            '{{ $detail->consignee_address }}'
+                        );
+                    });
+                @endforeach
+            });
+        </script>
+
 
 
 

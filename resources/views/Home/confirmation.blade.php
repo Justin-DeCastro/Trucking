@@ -10,10 +10,10 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 1) 0%, 
-                rgba(0, 0, 255, 0.8) 50%, 
-                rgba(255, 0, 0, 0.4) 75%, 
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 1) 0%,
+                rgba(0, 0, 255, 0.8) 50%,
+                rgba(255, 0, 0, 0.4) 75%,
                 rgba(255, 255, 255, 1) 100%);
             /* White to blue to red, with blue being more prominent */
         }

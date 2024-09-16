@@ -3,28 +3,102 @@
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
 
 @include('Components.Admin.Header')
-
 <style>
-
-    .card-header {
-        background-color: #ffffff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        text-align: center;
-        color: #333;
-        width: 100%;
-        max-width: 1200px;
-        margin: 20px auto;
+     .btn-custom {
+        background-color: #007bff; /* Custom background color */
+        color: #fff; /* White text color */
+        border: none; /* Remove border */
+        border-radius: 6px; /* Rounded corners */
+        padding: 12px 20px; /* Padding for button */
+        font-size: 16px; /* Font size */
+        font-weight: bold; /* Bold text */
+        margin: 0 10px; /* Horizontal margin between buttons */
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for color and transform */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
     }
 
-    .card-header .page-title {
-        font-size: 24px;
-        font-weight: 500;
-        /* Bold title */
-        margin: 0;
-        text-transform: uppercase;
+    .btn-custom:hover {
+        background-color: #0056b3; /* Darker background color on hover */
+        transform: scale(1.05); /* Slightly enlarge the button */
+    }
+
+    .btn-custom:focus {
+        outline: none; /* Remove focus outline */
+    }
+     .card-custom {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .card-custom:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        transform: translateY(-4px);
+    }
+
+    .card-header-custom {
+        background-color: #007bff;
+        color: #ffffff;
+        padding: 15px;
+        border-bottom: 1px solid #0056b3;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .card-body-custom {
+        padding: 20px;
+    }
+
+    .card-title-custom {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .card-text-custom {
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .card-custom img {
+        max-width: 100%;
+        height: auto;
+        border-bottom: 1px solid #e0e0e0;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .btn-custom {
+        background-color: #007bff;
+        color: #ffffff;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    .btn-custom:hover {
+        background-color: #0056b3;
+    }
+
+    .radio-custom {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background-color: #ffffff;
+        border: 2px solid #007bff;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+
+    .radio-custom:checked {
+        background-color: #007bff;
+        border-color: #007bff;
     }
 </style>
+
 
 <body>
 
@@ -49,10 +123,11 @@
                         <div
                             style="max-width: 900px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
                             <div style="text-align: center; margin-bottom: 40px;">
-                                <h3 style="margin-top: 0; color: #333; font-size: 28px; font-weight: bold;">Booking Form
-                                </h3>
-                                <p style="color: #666; font-size: 16px;">Fill out the form below to arrange for the
-                                    transportation of your goods.</p>
+                                <!-- Logo -->
+                                <img src="{{ asset('Home/GDR logo.png') }}" alt="Logo" style="max-width: 150px; margin-bottom: 20px;">
+
+                                <h3 style="margin-top: 0; color: #333; font-size: 28px; font-weight: bold;">Booking Form</h3>
+                                <p style="color: #666; font-size: 16px;">Fill out the form below to arrange for the transportation of your goods.</p>
                             </div>
                             <form action="{{ route('booking.submit') }}" method="post" enctype="multipart/form-data" id="myForm">
                                 @csrf
@@ -62,14 +137,14 @@
                                     <!-- Top Section: Trip Ticket, Driver Name, and Plate Number -->
                                     <div style="display: flex; flex-wrap: wrap; gap: 20px;">
                                         <!-- Trip Ticket -->
-                                        <div style="flex: 1; min-width: 220px;">
+                                        {{-- <div style="flex: 1; min-width: 220px;">
                                             <label for="trip_ticket" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
                                                 Trip Ticket
                                             </label>
                                             <input
                                                 style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
                                                 id="trip_ticket" name="trip_ticket" type="text" placeholder="Enter Trip Ticket Number" required>
-                                        </div>
+                                        </div> --}}
 
                                         <!-- Driver Name -->
                                         <div style="flex: 1; min-width: 220px;">
@@ -178,7 +253,7 @@
 
                                 <div style="margin-bottom: 40px;">
                                     <h4 style="color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">
-                                        Consignee Information</h4>
+                                        Destination Information</h4>
                                     <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
                                         <div style="flex: 1; min-width: 220px;">
                                             <label for="consignee_name"
@@ -255,7 +330,7 @@
                                 <!-- Merchant Information -->
                                 <div style="margin-bottom: 40px;">
                                     <h4 style="color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">
-                                        Merchant Information</h4>
+                                        Origin Information</h4>
                                     <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
                                         <div style="flex: 1; min-width: 220px;">
                                             <label for="merchant_name"
@@ -310,46 +385,24 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="vehicleChoices"
-                                    style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px;">
-                                    @foreach ($vehicles as $vehicle)
-                                        <div
-                                            style="background-color: #fff; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 20px; width: calc(33.333% - 20px); box-sizing: border-box; text-align: center; position: relative;">
-                                            <!-- Radio Input -->
-                                            <input type="radio" id="truck-{{ $vehicle->id }}" name="truck_type"
-                                                value="{{ $vehicle->id }}"
-                                                style="position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; cursor: pointer;"
-                                                required>
+                                <div class="container mt-4">
+                                    <div class="mb-3">
+                                        <label for="dataSelect" class="form-label">Select Truck Type</label>
+                                        <select class="form-select" id="dataSelect" aria-label="Select Data Type" onchange="showData(this.value)">
+                                            <option value="">-- Choose an option --</option>
+                                            <option value="company-vehicles">Company Vehicles</option>
+                                            <option value="subcontractors">Subcontractors</option>
+                                        </select>
+                                    </div>
 
-                                            <!-- Card Content -->
-                                            <label for="truck-{{ $vehicle->id }}"
-                                                style="display: block; cursor: pointer; padding-right: 30px;">
-                                                <!-- Conditional Image -->
-                                                @php
-                                                    $imagePath = 'Home/icons8-truck-48.png'; // Default image
+                                    <!-- Container for displaying data in card format -->
+                                    <div id="dataContainer" class="mt-4 row">
+                                        <!-- Cards will be dynamically inserted here -->
+                                    </div>
 
-                                                    if ($vehicle->truck_name === '6 Wheeler tractor heads') {
-                                                        $imagePath = 'Home/tractorhead-removebg-preview.png';
-                                                    } elseif ($vehicle->truck_name === '6 Wheeler closed vans') {
-                                                        $imagePath = 'Home/closedvans-removebg-preview.png';
-                                                    } elseif ($vehicle->truck_name === '10 Wheeler Aluminum wing van') {
-                                                        $imagePath = 'Home/10wheeler-removebg-preview.png';
-                                                    }
-                                                @endphp
-                                                <img src="{{ asset($imagePath) }}" alt="Truck Moving"
-                                                    style="width: 150px; height: auto; margin-bottom: 10px;">
-
-                                                <!-- Truck Details -->
-                                                <h3 style="font-size: 1.2em; margin-bottom: 10px; color: #333;">
-                                                    {{ $vehicle->truck_name }}</h3>
-                                                <p style="font-size: 1em; color: #666;">{{ $vehicle->truck_capacity }}
-                                                </p>
-                                                <p style="font-size: 1em; color: #666; margin-top: 10px;">Available:
-                                                    {{ $vehicle->quantity }}</p>
-                                            </label>
-                                        </div>
-                                    @endforeach
+                                    <!-- Submit Button -->
                                 </div>
+
                                 <!-- Submit Button -->
                                 <div style="text-align: center;">
                                     <button
@@ -373,7 +426,54 @@
     </div>
     </div>
     </div>
+    <script>
+       const companyVehicles = @json($vehicles->map(function ($vehicle) {
+    return [
+        'id' => $vehicle->id,
+        'name' => $vehicle->truck_name,
+        'description' => $vehicle->truck_capacity . ' - Available: ' . $vehicle->quantity
+    ];
+}));
 
+const subcontractors = @json($subcontractors->map(function ($sub) {
+    return [
+        'id' => $sub->id,
+        'name' => $sub->company_name,
+        'description' => $sub->truck_capacity . ' - Plate Number: ' . $sub->plate_number
+    ];
+}));
+
+function showData(type) {
+    const dataContainer = document.getElementById('dataContainer');
+
+    // Clear existing content
+    dataContainer.innerHTML = '';
+
+    // Determine which data to display
+    const items = type === 'company-vehicles' ? companyVehicles : subcontractors;
+    const cardType = type === 'company-vehicles' ? 'vehicle' : 'subcontractor';
+
+    dataContainer.innerHTML = generateCards(items, cardType);
+}
+
+function generateCards(items, type) {
+    return items.map(item => `
+        <div class="col-md-3 mb-4">
+            <div class="card position-relative" style="width: 100%;">
+                <input class="form-check-input position-absolute top-0 end-0 m-2" type="radio" name="truck_type" id="${type}-${item.id}" value="${item.id}">
+                <div class="card-body">
+                    <h5 class="card-title">${item.name}</h5>
+                    <p class="card-text">
+                        ${item.description}
+                    </p>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+
+       </script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/jquery-3.7.1.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/vendor/bootstrap-toggle.min.js"></script>
@@ -439,6 +539,7 @@
             }
         }
     </script>
+
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/moment.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/daterangepicker.min.js"></script>
@@ -713,7 +814,7 @@
                         // Populate form fields for each entry
                         data.forEach(item => {
                             // Set values for various fields
-                            document.getElementById('trip_ticket').value = item.trip_ticket || '';
+
                             document.getElementById('driver_name').value = item.driver_name || '';
                             document.getElementById('plate_number').value = item.plate_number || '';
                             document.getElementById('date').value = item.date || '';
@@ -744,7 +845,7 @@
             }
         });
         </script>
-<script>
+{{-- <script>
     $(document).ready(function() {
     $('#myForm').on('submit', function(event) {
         event.preventDefault(); // Prevent default form submission
@@ -769,7 +870,7 @@
     });
 });
 
-</script>
+</script> --}}
     <script>
         "use strict";
         var routes = [{
