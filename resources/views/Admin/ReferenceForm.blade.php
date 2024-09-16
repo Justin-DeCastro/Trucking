@@ -131,7 +131,11 @@
                             </div>
                             <form action="{{ route('booking.submit') }}" method="post" enctype="multipart/form-data" id="myForm">
                                 @csrf
-
+                                <div style="text-align: right;">
+                                    <button type="button" onclick="downloadForm()" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                        Download Form
+                                    </button>
+                                </div>
                                 <!-- Sender Information -->
                                 <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px;">
                                     <!-- Top Section: Trip Ticket, Driver Name, and Plate Number -->
@@ -539,7 +543,28 @@ function generateCards(items, type) {
             }
         }
     </script>
+<script>
+    function downloadForm() {
+        // Get the form data
+        const form = document.getElementById('myForm');
+        const formData = new FormData(form);
 
+        // Collect data into a string
+        let formContent = '';
+        for (let [name, value] of formData) {
+            formContent += `${name}: ${value}\n`;
+        }
+
+        // Create a Blob (file) with the form data
+        const blob = new Blob([formContent], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'form_data.txt'; // The file name
+
+        // Trigger the download
+        link.click();
+    }
+    </script>
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/moment.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/daterangepicker.min.js"></script>
