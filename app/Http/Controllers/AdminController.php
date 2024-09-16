@@ -295,8 +295,9 @@ public function courier_dash()
             return [strtoupper($item->delivery_routes) => $item->driver_salary];
         }); // Normalize delivery_routes to uppercase
 
-    // Calculate total earnings based on booking consignee addresses
+    // Calculate total earnings based on booking consignee addresses where order_status is 'Confirmed_delivery'
     $totalEarnings = Booking::where('driver_name', $currentUserId)
+        ->where('order_status', 'Confirmed_delivery') // Only consider confirmed deliveries
         ->whereNotNull('consignee_address') // Ensure consignee_address is not null
         ->get()
         ->reduce(function ($carry, $booking) use ($deliverySalaries) {
@@ -305,7 +306,8 @@ public function courier_dash()
             // Check if the consignee_address matches any delivery_routes (partial match)
             foreach ($deliverySalaries as $deliveryRoute => $salary) {
                 if (stripos($route, $deliveryRoute) !== false) {
-                    return $carry + $salary;
+                    // Apply 2% reduction to driver_salary
+                    return $carry + ($salary * 0.98);
                 }
             }
 
@@ -314,6 +316,8 @@ public function courier_dash()
 
     return view('Admin.Courierdash', compact('totalBookings', 'totalSuccessfulDeliveries', 'expiringCourier', 'totalEarnings'));
 }
+
+
 public function storeDriverLicenseDetails(Request $request)
 {
     // Validate the input

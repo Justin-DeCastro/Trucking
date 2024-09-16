@@ -220,101 +220,112 @@ public function getAccountData(Request $request)
    // Import the HTTP client
 
    public function submitForm(Request $request)
-   {
-       // Validate the request
-       $validatedData = $request->validate([
-        //    'trip_ticket' => 'required',
-           'driver_name' => 'required|string|max:255',
-           'plate_number' => 'required|string|max:255',
-           'date' => 'required|date',
-           'sender_name' => 'required|string|max:255',
-           'product_name' => 'required|string|max:255',
-           'transport_mode' => 'required|string|max:255',
-           'delivery_type' => 'required|string|max:255',
-           'journey_type' => 'required|string|max:255',
-           'consignee_name' => 'required|string|max:255',
-           'consignee_address' => 'required|string|max:255',
-           'consignee_email' => 'required|email|max:255',
-           'consignee_mobile' => 'required|string|max:255',
-           'consignee_city' => 'required|string|max:255',
-           'consignee_province' => 'required|string|max:255',
-           'consignee_barangay' => 'required|string|max:255',
-           'consignee_building_type' => 'required|string|max:255',
-           'merchant_name' => 'required|string|max:255',
-           'merchant_address' => 'required|string|max:255',
-           'merchant_email' => 'required|email|max:255',
-           'merchant_mobile' => 'required|string|max:255',
-           'merchant_city' => 'required|string|max:255',
-           'merchant_province' => 'required|string|max:255',
-           'truck_type' => 'required',
-       ]);
+{
+    // Validate the request
+    $validatedData = $request->validate([
+        'driver_name' => 'required|string|max:255',
+        'plate_number' => 'required|string|max:255',
+        'date' => 'required|date',
+        'sender_name' => 'required|string|max:255',
+        'product_name' => 'required|string|max:255',
+        'transport_mode' => 'required|string|max:255',
+        'delivery_type' => 'required|string|max:255',
+        'journey_type' => 'required|string|max:255',
+        'consignee_name' => 'required|string|max:255',
+        'consignee_address' => 'required|string|max:255',
+        'consignee_email' => 'required|email|max:255',
+        'consignee_mobile' => 'required|string|max:255',
+        'consignee_city' => 'required|string|max:255',
+        'consignee_province' => 'required|string|max:255',
+        'consignee_barangay' => 'required|string|max:255',
+        'consignee_building_type' => 'required|string|max:255',
+        'merchant_name' => 'required|string|max:255',
+        'merchant_address' => 'required|string|max:255',
+        'merchant_email' => 'required|email|max:255',
+        'merchant_mobile' => 'required|string|max:255',
+        'merchant_city' => 'required|string|max:255',
+        'merchant_province' => 'required|string|max:255',
+        'truck_type' => 'required',
+    ]);
 
-       // Extract addresses and other details
-       $merchantAddress = $validatedData['merchant_address'];
-       $consigneeAddress = $validatedData['consignee_address'];
-       $apiKey = env('GOOGLE_MAPS_API_KEY');
+    // Extract addresses and other details
+    $merchantAddress = $validatedData['merchant_address'];
+    $consigneeAddress = $validatedData['consignee_address'];
+    $apiKey = env('GOOGLE_MAPS_API_KEY');
 
-       // Make a request to the Distance Matrix API
-       $response = Http::get('https://maps.googleapis.com/maps/api/distancematrix/json', [
-           'origins' => $merchantAddress,
-           'destinations' => $consigneeAddress,
-           'key' => $apiKey,
-       ]);
+    // Make a request to the Distance Matrix API
+    $response = Http::get('https://maps.googleapis.com/maps/api/distancematrix/json', [
+        'origins' => $merchantAddress,
+        'destinations' => $consigneeAddress,
+        'key' => $apiKey,
+    ]);
 
-       // Decode the response
-       $data = $response->json();
-       $travelTimeMinutes = null;
-       if ($data['status'] == 'OK') {
-           $elements = $data['rows'][0]['elements'];
-           if (!empty($elements) && $elements[0]['status'] == 'OK') {
-               $duration = $elements[0]['duration']['value'];
-               $travelTimeMinutes = $duration / 60;
-           }
-       }
+    // Decode the response
+    $data = $response->json();
+    $travelTimeMinutes = null;
+    if ($data['status'] == 'OK') {
+        $elements = $data['rows'][0]['elements'];
+        if (!empty($elements) && $elements[0]['status'] == 'OK') {
+            $duration = $elements[0]['duration']['value'];
+            $travelTimeMinutes = $duration / 60;
+        }
+    }
 
-       // Generate tracking number and order number
-       $trackingNumber = 'GDR-' . strtoupper(substr(uniqid(mt_rand(), true), -8));
+    // Generate tracking number and order number
+    $trackingNumber = 'GDR-' . strtoupper(substr(uniqid(mt_rand(), true), -8));
 
-       $validatedData['tracking_number'] = $trackingNumber;
-       $validatedData['created_by'] = auth()->id();
-       $currentYear = date('Y');
-       $lastBooking = Booking::whereYear('created_at', $currentYear)->orderBy('order_number', 'desc')->first();
+    $validatedData['tracking_number'] = $trackingNumber;
+    $validatedData['created_by'] = auth()->id();
+    $currentYear = date('Y');
+    $lastBooking = Booking::whereYear('created_at', $currentYear)->orderBy('order_number', 'desc')->first();
 
-       $orderNumber = $lastBooking ? intval(explode('-', $lastBooking->order_number)[1]) + 1 : 1;
-       $formattedOrderNumber = str_pad($orderNumber, 4, '0', STR_PAD_LEFT);
-       $validatedData['order_number'] = $currentYear . '-' . $formattedOrderNumber;
+    $orderNumber = $lastBooking ? intval(explode('-', $lastBooking->order_number)[1]) + 1 : 1;
+    $formattedOrderNumber = str_pad($orderNumber, 4, '0', STR_PAD_LEFT);
+    $validatedData['order_number'] = $currentYear . '-' . $formattedOrderNumber;
 
-       // Create booking
-       $booking = Booking::create($validatedData);
+    // Generate trip_ticket
+    $lastTripTicket = Booking::whereYear('created_at', $currentYear)->orderBy('trip_ticket', 'desc')->first();
+    $lastTicketNumber = 0;
+    if ($lastTripTicket) {
+        $tripTicketParts = explode('-', $lastTripTicket->trip_ticket);
+        if (isset($tripTicketParts[1])) {
+            $lastTicketNumber = intval($tripTicketParts[1]);
+        }
+    }
+    $nextTicketNumber = str_pad($lastTicketNumber + 1, 4, '0', STR_PAD_LEFT);
+    $tripTicket = $currentYear . '-' . $nextTicketNumber;
+    $validatedData['trip_ticket'] = $tripTicket;
 
-       // Generate QR code and save it
-       $filename = time() . '-' . $trackingNumber . '.svg';
-       $qrCodePath = 'qrcodes/' . $filename;
-       $qrCodeImage = QrCode::size(300)->generate(route('rubixdetails', ['tracking_number' => $trackingNumber, 'order_number' => $validatedData['order_number']]));
-       file_put_contents(public_path($qrCodePath), $qrCodeImage);
-       $booking->update(['qr_code_path' => $qrCodePath]);
+    // Create booking
+    $booking = Booking::create($validatedData);
 
-       // Truck status handling
-       if ($truckId = $request->input('truck_type')) {
-           $truck = Vehicle::find($truckId);
-           if ($truck) {
-               $truck->decrement('quantity');
-               if ($truck->quantity <= 0) {
-                   $truck->update(['truck_status' => 'Not Available']);
-               }
-           }
-       }
+    // Generate QR code and save it
+    $filename = time() . '-' . $trackingNumber . '.svg';
+    $qrCodePath = 'qrcodes/' . $filename;
+    $qrCodeImage = QrCode::size(300)->generate(route('rubixdetails', ['tracking_number' => $trackingNumber, 'order_number' => $validatedData['order_number']]));
+    file_put_contents(public_path($qrCodePath), $qrCodeImage);
+    $booking->update(['qr_code_path' => $qrCodePath]);
 
-       // Redirect to confirmation page with QR code and tracking number
-       return redirect()->route('confirmation')->with([
-           'trackingNumber' => $trackingNumber,
-           'orderNumber' => $validatedData['order_number'],
-           'qrCodeUrl' => asset($qrCodePath),
-           'travelTimeMinutes' => $travelTimeMinutes,
-       ]);
-   }
+    // Truck status handling
+    if ($truckId = $request->input('truck_type')) {
+        $truck = Vehicle::find($truckId);
+        if ($truck) {
+            $truck->decrement('quantity');
+            if ($truck->quantity <= 0) {
+                $truck->update(['truck_status' => 'Not Available']);
+            }
+        }
+    }
 
-
+    // Redirect to confirmation page with QR code and tracking number
+    return redirect()->route('confirmation')->with([
+        'trackingNumber' => $trackingNumber,
+        'orderNumber' => $validatedData['order_number'],
+        'tripTicket' => $tripTicket, // Add trip ticket to the view data
+        'qrCodeUrl' => asset($qrCodePath),
+        'travelTimeMinutes' => $travelTimeMinutes,
+    ]);
+}
 
 
 

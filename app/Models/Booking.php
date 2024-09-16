@@ -15,7 +15,7 @@ class Booking extends Model
     // Specify which attributes are mass assignable
     protected $fillable = [
         'sender_name',
-        // 'trip_ticket',
+        'trip_ticket',
         'transport_mode',
         // 'shipping_type',
     'consignee_name',
