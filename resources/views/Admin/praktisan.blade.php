@@ -416,14 +416,6 @@
         <!-- FileSaver.js for CSV export -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
-        <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
-        <script>
-            if ($('li').hasClass('active')) {
-                $('.sidebar__menu-wrapper').animate({
-                    scrollTop: eval($(".active").offset().top - 320)
-                }, 500);
-            }
-        </script>
         <script>
             // Function to extract all table data
             function getTableData() {
@@ -594,10 +586,19 @@
         <script>
             $(document).ready(function() {
                 $('#data-table').DataTable({
-                    responsive: true, // Enable responsiveness
+                    dom: 'Bfrtip', // Enables export buttons
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
                     paging: true, // Enables pagination
                     searching: true, // Enables search
                     ordering: true, // Enables sorting
+                    responsive: true, // Makes the table responsive
+                    columnDefs: [{
+                            orderable: false,
+                            targets: [5]
+                        } // Disable sorting on the 'Actions' column
+                    ]
                 });
             });
         </script>

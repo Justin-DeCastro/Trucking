@@ -10,14 +10,18 @@
         position: fixed;
         top: 10px;
         right: 10px;
-        z-index: 1050; /* Ensure it's above other content */
-        width: 300px; /* Adjust width as needed */
+        z-index: 1050;
+        /* Ensure it's above other content */
+        width: 300px;
+        /* Adjust width as needed */
         transition: opacity 0.5s ease, transform 0.5s ease;
     }
+
     .notification-card.show {
         opacity: 1;
         transform: translateY(0);
     }
+
     .notification-card.d-none {
         opacity: 0;
         transform: translateY(-100px);
@@ -75,9 +79,12 @@
         background-color: #fff;
         border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        margin: 0; /* Remove margin to touch sidebar */
-        margin-left: 250px; /* Adjust based on sidebar width */
-        margin-top: 20px; /* Ensure top margin is retained */
+        margin: 0;
+        /* Remove margin to touch sidebar */
+        margin-left: 250px;
+        /* Adjust based on sidebar width */
+        margin-top: 20px;
+        /* Ensure top margin is retained */
     }
 
     .page-title {
@@ -93,7 +100,8 @@
         background-color: #fff;
     }
 
-    .table th, .table td {
+    .table th,
+    .table td {
         padding: 12px;
         border: 1px solid #ddd;
     }
@@ -119,7 +127,9 @@
     }
 
     @media (max-width: 768px) {
-        .table th, .table td {
+
+        .table th,
+        .table td {
             font-size: 14px;
         }
 
@@ -128,7 +138,8 @@
         }
 
         .container-fluid {
-            margin-left: 0; /* Remove left margin on smaller screens */
+            margin-left: 0;
+            /* Remove left margin on smaller screens */
         }
     }
 </style>
@@ -138,174 +149,209 @@
     @include('Components.Admin.Navbar')
     @include('Components.Admin.Sidebar')
 
-    <div class="container-fluid px-3 px-sm-0">
         <div class="body-wrapper">
             <div class="bodywrapper__inner">
 
-                <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
+                <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
                     <h6 class="page-title">Plate Number Bookings</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class='bx bx-export'></i> Export
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <button type="button" id="copyBtn" class="btn dropdown-item">
+                                        <i class='bx bx-copy'></i> Copy
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="printBtn" class="btn dropdown-item">
+                                        <i class='bx bx-printer'></i> Print
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="pdfBtn" class="btn dropdown-item">
+                                        <i class='bx bxs-file-pdf'></i> PDF
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="excelBtn" class="btn dropdown-item">
+                                        <i class='bx bx-file'></i> Excel
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
 
                     </div>
                 </div>
                 <div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body p-0">
-                <div class="table-responsive--sm table-responsive">
-                    <table class="table table--light style--two">
-                        <thead>
-                            <tr>
-                                <th>Plate Number</th>
-                                <th>Total Bookings</th>
-                                <th>Status</th>
-                                <th>Reference</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($plateNumberCounts as $detail)
-                            <tr>
-                                <td>{{ $detail->plate_number }}</td>
-                                <td>{{ $detail->total_bookings }}</td>
-                                <td>{{ $detail->statuses }}</td>
-                                <td>{{ $detail->order_statuses }}</td>
-                                <td>
-                                    <!-- Button to trigger modal -->
-                                    <button type="button" class="btn btn-info" data-bs-toggle="modal"
-                                        data-bs-target="#modal{{ $loop->index }}">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="4">No data available</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div><!-- card end -->
-    </div>
-</div>
-<div id="notificationCard" class="notification-card d-none">
-    <div class="card p-3 bg-info text-white border-info">
-        <div class="card-body">
-            <h5 class="card-title">📊 Monthly Bookings Summary</h5>
-            <ul class="list-unstyled">
-                @foreach (range(1, 12) as $month)
-                    @php
-                        $monthName = \Carbon\Carbon::create()->month($month)->format('F');
-                        $formattedMonth = date('Y') . '-' . str_pad($month, 2, '0', STR_PAD_LEFT);
-                    @endphp
-                    <li class="mb-1"><strong>{{ $monthName }}:</strong> {{ $monthlyBookings->get($formattedMonth, 0) }} bookings</li>
-                @endforeach
-            </ul>
-            <button type="button" class="btn btn-light mt-3" id="closeNotification">Close</button>
-        </div>
-    </div>
-</div>
-@foreach ($plateNumberCounts as $detail)
-<div class="modal fade" id="modal{{ $loop->index }}" tabindex="-1" aria-labelledby="modalLabel{{ $loop->index }}" aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="width: 70%; max-width: 1000px; height: 70%;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel{{ $loop->index }}">Details for Plate Number {{ $detail->plate_number }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h2>Booking Details</h2>
-
-                            <h3>Status and Order Status Counts</h3>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Status</th>
-                                        <th>Order Status</th>
-                                        <th>Count</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($detail->status_counts as $status => $orderStatuses)
-                                        @foreach ($orderStatuses as $orderStatus => $count)
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body p-0">
+                                <div class="table-responsive--sm table-responsive">
+                                    <table id="data-table" class="table table--light style--two display nowrap">
+                                        <thead>
                                             <tr>
-                                                <td>{{ $status }}</td>
-                                                <td>{{ $orderStatus }}</td>
-                                                <td>{{ $count }}</td>
+                                                <th>Plate Number</th>
+                                                <th>Total Bookings</th>
+                                                <th>Status</th>
+                                                <th>Reference</th>
+                                                <th>Actions</th>
                                             </tr>
-                                        @endforeach
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($plateNumberCounts as $detail)
+                                                <tr>
+                                                    <td>{{ $detail->plate_number }}</td>
+                                                    <td>{{ $detail->total_bookings }}</td>
+                                                    <td>{{ $detail->statuses }}</td>
+                                                    <td>{{ $detail->order_statuses }}</td>
+                                                    <td>
+                                                        <!-- Button to trigger modal -->
+                                                        <button type="button" class="btn btn-info"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#modal{{ $loop->index }}">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="4">No data available</td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div><!-- card end -->
+                    </div>
+                </div>
+                <div id="notificationCard" class="notification-card d-none">
+                    <div class="card p-3 bg-info text-white border-info">
+                        <div class="card-body">
+                            <h5 class="card-title">📊 Monthly Bookings Summary</h5>
+                            <ul class="list-unstyled">
+                                @foreach (range(1, 12) as $month)
+                                    @php
+                                        $monthName = \Carbon\Carbon::create()->month($month)->format('F');
+                                        $formattedMonth = date('Y') . '-' . str_pad($month, 2, '0', STR_PAD_LEFT);
+                                    @endphp
+                                    <li class="mb-1"><strong>{{ $monthName }}:</strong>
+                                        {{ $monthlyBookings->get($formattedMonth, 0) }} bookings</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn btn-light mt-3" id="closeNotification">Close</button>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="printModal('modal{{ $loop->index }}')">Print</button>
-            </div>
-        </div>
-    </div>
-</div>
-@endforeach
+                @foreach ($plateNumberCounts as $detail)
+                    <div class="modal fade" id="modal{{ $loop->index }}" tabindex="-1"
+                        aria-labelledby="modalLabel{{ $loop->index }}" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" style="width: 70%; max-width: 1000px; height: 70%;">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalLabel{{ $loop->index }}">Details for Plate Number
+                                        {{ $detail->plate_number }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h2>Booking Details</h2>
+
+                                                <h3>Status and Order Status Counts</h3>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Status</th>
+                                                            <th>Order Status</th>
+                                                            <th>Count</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($detail->status_counts as $status => $orderStatuses)
+                                                            @foreach ($orderStatuses as $orderStatus => $count)
+                                                                <tr>
+                                                                    <td>{{ $status }}</td>
+                                                                    <td>{{ $orderStatus }}</td>
+                                                                    <td>{{ $count }}</td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary"
+                                        onclick="printModal('modal{{ $loop->index }}')">Print</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
 
 
-            <style>
-                @media print {
-                    .modal-footer button {
-                        display: none;
+                <style>
+                    @media print {
+                        .modal-footer button {
+                            display: none;
+                        }
                     }
-                }
                 </style>
-<script>
-    function printModal(modalId) {
-        var printContent = document.getElementById(modalId).innerHTML;
-        var originalContent = document.body.innerHTML;
-        var printWindow = window.open('', '', 'height=600,width=800');
+                <script>
+                    function printModal(modalId) {
+                        var printContent = document.getElementById(modalId).innerHTML;
+                        var originalContent = document.body.innerHTML;
+                        var printWindow = window.open('', '', 'height=600,width=800');
 
-        // Write content to the new window
-        printWindow.document.open();
-        printWindow.document.write('<html><head><title>Print</title>');
-        printWindow.document.write('<style>body { margin: 20px; } table { width: 100%; border-collapse: collapse; } table, th, td { border: 1px solid black; } th, td { padding: 8px; text-align: left; } @media print { .modal-footer { display: none; } }</style>'); // Add any necessary styles here
-        printWindow.document.write('</head><body>');
-        printWindow.document.write(printContent);
-        printWindow.document.write('</body></html>');
-        printWindow.document.close();
+                        // Write content to the new window
+                        printWindow.document.open();
+                        printWindow.document.write('<html><head><title>Print</title>');
+                        printWindow.document.write(
+                            '<style>body { margin: 20px; } table { width: 100%; border-collapse: collapse; } table, th, td { border: 1px solid black; } th, td { padding: 8px; text-align: left; } @media print { .modal-footer { display: none; } }</style>'
+                        ); // Add any necessary styles here
+                        printWindow.document.write('</head><body>');
+                        printWindow.document.write(printContent);
+                        printWindow.document.write('</body></html>');
+                        printWindow.document.close();
 
-        // Print the content
-        printWindow.print();
+                        // Print the content
+                        printWindow.print();
 
-        // Close the print window after printing
-        printWindow.onafterprint = function() {
-            printWindow.close();
-        };
-    }
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var notificationCard = document.getElementById('notificationCard');
-            var closeButton = document.getElementById('closeNotification');
+                        // Close the print window after printing
+                        printWindow.onafterprint = function() {
+                            printWindow.close();
+                        };
+                    }
+                </script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var notificationCard = document.getElementById('notificationCard');
+                        var closeButton = document.getElementById('closeNotification');
 
-            // Show the notification card on page load
-            if (notificationCard) {
-                notificationCard.classList.remove('d-none'); // Show the notification card
+                        // Show the notification card on page load
+                        if (notificationCard) {
+                            notificationCard.classList.remove('d-none'); // Show the notification card
 
-                // Hide the notification card when the close button is clicked
-                if (closeButton) {
-                    closeButton.addEventListener('click', function () {
-                        notificationCard.classList.add('d-none'); // Hide the notification card
+                            // Hide the notification card when the close button is clicked
+                            if (closeButton) {
+                                closeButton.addEventListener('click', function() {
+                                    notificationCard.classList.add('d-none'); // Hide the notification card
+                                });
+                            }
+                        }
                     });
-                }
-            }
-        });
-    </script>
+                </script>
 
                 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
                 <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/jquery-3.7.1.min.js"></script>
@@ -320,11 +366,11 @@
 
                 <script>
                     $(document).ready(function() {
-                        $('.jobOffersTable').DataTable({
-                            dom: 'Bfrtip',
-                            buttons: [
-                                'copy', 'csv', 'excel', 'pdf', 'print'
-                            ]
+                        $('#data-table').DataTable({
+                            responsive: true, // Enable responsiveness
+                            paging: true, // Enables pagination
+                            searching: true, // Enables search
+                            ordering: true, // Enables sorting
                         });
                     });
                 </script>

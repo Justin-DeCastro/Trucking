@@ -132,9 +132,10 @@
                             <form action="{{ route('booking.submit') }}" method="post" enctype="multipart/form-data" id="myForm">
                                 @csrf
                                 <div style="text-align: right;">
-                                    <button type="button" onclick="downloadForm()" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                 <button type="button" onclick="downloadForm()" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
                                         Download Form
                                     </button>
+         
                                 </div>
                                 <!-- Sender Information -->
                                 <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px;">
@@ -192,9 +193,10 @@
                                                 style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
                                                 required
                                             >
-                                            <datalist id="accountNames">
-                                                <option value="DSWD">
-                                                <option value="XDE">
+                                             <datalist id="accountNames">
+                                                @foreach ($senderNames as $name)
+                                                    <option value="{{ $name }}">
+                                                @endforeach
                                             </datalist>
                                         </div>
 
@@ -256,9 +258,36 @@
 
 
                                 <div style="margin-bottom: 40px;">
-                                    <h4 style="color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">
-                                        Destination Information</h4>
+                                    
                                     <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="origin"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Origin</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="origin" name="origin" type="text"
+                                                placeholder="Enter Origin" required>
+                                        </div>
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="destination"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Destination</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="destination" name="destination" type="text"
+                                                placeholder="Enter Destination" required>
+                                        </div>
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="eta"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">ETA</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="eta" name="eta" type="text"
+                                                placeholder="Enter ETA" required>
+                                        </div>
+
+                                        <h4 style="color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">
+                                        Destination Information</h4>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
                                         <div style="flex: 1; min-width: 220px;">
                                             <label for="consignee_name"
                                                 style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Consignee
@@ -428,8 +457,8 @@
 
         </div>
     </div>
-    </div>
-    </div>
+
+
     <script>
        const companyVehicles = @json($vehicles->map(function ($vehicle) {
     return [
@@ -543,29 +572,39 @@ function generateCards(items, type) {
             }
         }
     </script>
-<script>
-    function downloadForm() {
-        // Get the form data
-        const form = document.getElementById('myForm');
-        const formData = new FormData(form);
+        <script>
+        function downloadForm() {
+            // Get the form element
+            const form = document.getElementById('myForm');
 
-        // Collect data into a string
-        let formContent = '';
-        for (let [name, value] of formData) {
-            formContent += `${name}: ${value}\n`;
+            // Capture the form's HTML content
+            const formHtml = form.outerHTML;
+
+            // Capture the links to external stylesheets
+            const stylesheets = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
+                .map(link => <link rel="stylesheet" href="${link.href}">)
+                .join('\n');
+
+            // Construct the full HTML content
+            const fullHtml = `
+                <html>
+                <head>
+                    ${stylesheets}
+                </head>
+                <body>${formHtml}</body>
+                </html>
+            `;
+
+            // Create a Blob (file) with the HTML content
+            const blob = new Blob([fullHtml], { type: 'text/html' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'form.html'; // The file name
+
+            // Trigger the download
+            link.click();
         }
-
-        // Create a Blob (file) with the form data
-        const blob = new Blob([formContent], { type: 'text/plain' });
-        const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = 'form_data.txt'; // The file name
-
-        // Trigger the download
-        link.click();
-    }
     </script>
-
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/moment.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/daterangepicker.min.js"></script>
 
@@ -895,216 +934,7 @@ function generateCards(items, type) {
     });
 });
 
-</script> --}}
-    <script>
-        "use strict";
-        var routes = [{
-            "admin.branch.manager.staff.list": "https:\/\/script.viserlab.com\/courierlab\/demo\/admin\/branch-manager\/staff\/{id}"
-        }, {
-            "admin.branch.manager.staff": "https:\/\/script.viserlab.com\/courierlab\/demo\/admin\/branch-manager\/staff\/dashboard\/{id}"
-        }, {
-            "admin.staff.index": "https:\/\/script.viserlab.com\/courierlab\/demo\/admin\/staff"
-        }, {
-            "manager.staff.create": "https:\/\/script.viserlab.com\/courierlab\/demo\/manager\/staff\/create"
-        }, {
-            "manager.staff.index": "https:\/\/script.viserlab.com\/courierlab\/demo\/manager\/staff\/list"
-        }, {
-            "manager.staff.store": "https:\/\/script.viserlab.com\/courierlab\/demo\/manager\/staff\/store"
-        }, {
-            "manager.staff.edit": "https:\/\/script.viserlab.com\/courierlab\/demo\/manager\/staff\/edit\/{id}"
-        }, {
-            "manager.staff.status": "https:\/\/script.viserlab.com\/courierlab\/demo\/manager\/staff\/status\/{id}"
-        }, {
-            "staff.login": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff"
-        }, {
-            "staff.": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff"
-        }, {
-            "staff.logout": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/logout"
-        }, {
-            "staff.password.request": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/password\/reset"
-        }, {
-            "staff.password.email": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/password\/email"
-        }, {
-            "staff.password.code.verify": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/password\/code-verify"
-        }, {
-            "staff.password.verify.code": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/password\/verify-code"
-        }, {
-            "staff.password.reset.form": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/password\/password\/reset\/{token}"
-        }, {
-            "staff.password.change": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/password\/password\/reset\/change"
-        }, {
-            "staff.dashboard": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/dashboard"
-        }, {
-            "staff.password": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/password"
-        }, {
-            "staff.profile": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/profile"
-        }, {
-            "staff.profile.update.data": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/profile\/update"
-        }, {
-            "staff.password.update.data": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/password\/update"
-        }, {
-            "staff.ticket.delete": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/ticket\/delete\/{id}"
-        }, {
-            "staff.branch.index": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/branch\/list"
-        }, {
-            "staff.branch.income": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/branch\/income"
-        }, {
-            "staff.courier.create": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/send"
-        }, {
-            "staff.courier.store": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/store"
-        }, {
-            "staff.courier.update": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/update\/{id}"
-        }, {
-            "staff.courier.edit": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/edit\/{id}"
-        }, {
-            "staff.courier.invoice": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/invoice\/{id}"
-        }, {
-            "staff.courier.delivery.list": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/delivery\/list"
-        }, {
-            "staff.courier.details": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/details\/{id}"
-        }, {
-            "staff.courier.payment": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/payment"
-        }, {
-            "staff.courier.delivery": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/delivery\/store"
-        }, {
-            "staff.courier.manage.list": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/list"
-        }, {
-            "staff.courier.date.search": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/date\/search"
-        }, {
-            "staff.courier.search": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/search"
-        }, {
-            "staff.courier.manage.sent.list": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/send\/list"
-        }, {
-            "staff.courier.received.list": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/received\/list"
-        }, {
-            "staff.courier.sent.queue": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/sent\/queue"
-        }, {
-            "staff.courier.dispatch.all": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/dispatch-all"
-        }, {
-            "staff.courier.dispatch": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/dispatch"
-        }, {
-            "staff.courier.dispatched": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/status\/{id}"
-        }, {
-            "staff.courier.upcoming": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/upcoming"
-        }, {
-            "staff.courier.receive": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/receive\/{id}"
-        }, {
-            "staff.courier.delivery.queue": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/delivery\/queue"
-        }, {
-            "staff.courier.manage.delivered": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/courier\/delivery\/list\/total"
-        }, {
-            "staff.cash.courier.income": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/cash\/collection"
-        }, {
-            "staff.search.customer": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/customer\/search"
-        }, {
-            "staff.ticket.index": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/ticket"
-        }, {
-            "staff.ticket.open": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/ticket\/new"
-        }, {
-            "staff.ticket.store": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/ticket\/create"
-        }, {
-            "staff.ticket.view": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/ticket\/view\/{ticket}"
-        }, {
-            "staff.ticket.reply": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/ticket\/reply\/{ticket}"
-        }, {
-            "staff.ticket.close": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/ticket\/close\/{ticket}"
-        }, {
-            "staff.ticket.download": "https:\/\/script.viserlab.com\/courierlab\/demo\/staff\/ticket\/download\/{ticket}"
-        }];
-        var settingsData = Object.assign({}, {
-            "dashboard": {
-                "keyword": ["Dashboard", "Home", "Panel", "staff", "Control center", "Overview", "Main hub",
-                    "Management hub", "Central hub", "Command center", "Centralized interface", "staff console",
-                    "Management dashboard", "Main screen", "Command dashboard", "staff control panel"
-                ],
-                "title": "Dashboard",
-                "icon": "las la-home",
-                "route_name": "staff.dashboard",
-                "menu_active": "staff.dashboard"
-            },
-            "send_courier": {
-                "keyword": ["send courier"],
-                "title": "Send Courier",
-                "icon": "las la-shipping-fast",
-                "route_name": "staff.courier.create",
-                "menu_active": "staff.courier.create"
-            },
-            "sent_in_queue": {
-                "keyword": ["sent in queue"],
-                "title": "Sent In Queue",
-                "icon": "las la-hourglass-start",
-                "route_name": "staff.courier.sent.queue",
-                "menu_active": "staff.courier.sent.queue"
-            },
-            "shipping_courier": {
-                "keyword": ["shipping", "shipping courier"],
-                "title": "Shipping Courier",
-                "icon": "las la-sync",
-                "route_name": "staff.courier.dispatch",
-                "menu_active": "staff.courier.dispatch"
-            },
-            "upcoming_courier": {
-                "keyword": ["upcoming", "upcoming courier"],
-                "title": "Upcoming Courier",
-                "icon": "las la-history",
-                "route_name": "staff.courier.upcoming",
-                "menu_active": "staff.courier.upcoming",
-                "counter": "upcomingCount"
-            },
-            "delivery_in_queue": {
-                "keyword": ["delivery", "delivery in queue", "delivery courier"],
-                "title": "Delivery In Queue",
-                "icon": "lab la-accessible-icon",
-                "route_name": "staff.courier.delivery.queue",
-                "menu_active": "staff.courier.delivery.queue"
-            },
-            "manage_courier": {
-                "title": "Manage Courier",
-                "icon": "las la-sliders-h",
-                "menu_active": ["staff.courier.manage*"],
-                "submenu": [{
-                    "keyword": ["total sent", "total sent querier"],
-                    "title": "Total Sent",
-                    "route_name": "staff.courier.manage.sent.list",
-                    "menu_active": "staff.courier.manage.sent.list"
-                }, {
-                    "keyword": ["total delivered"],
-                    "title": "Total Delivered",
-                    "route_name": "staff.courier.manage.delivered",
-                    "menu_active": "staff.courier.manage.delivered"
-                }, {
-                    "keyword": ["all courier"],
-                    "title": "All Courier",
-                    "route_name": "staff.courier.manage.list",
-                    "menu_active": "staff.courier.manage.list"
-                }]
-            },
-            "branch_list": {
-                "keyword": ["branch", "branch list"],
-                "title": "Branch List",
-                "icon": "las la-university",
-                "route_name": "staff.branch.index",
-                "menu_active": "staff.branch.index"
-            },
-            "cash_collection": {
-                "keyword": ["cash", "cash collection"],
-                "title": "Cash Collection",
-                "icon": "las la-wallet",
-                "route_name": "staff.cash.courier.income",
-                "menu_active": "staff.cash.courier.income"
-            },
-            "support_ticket": {
-                "keyword": ["ticket", "support ticket"],
-                "title": "Support Ticket",
-                "icon": "las la-ticket-alt",
-                "route_name": "staff.ticket.index",
-                "menu_active": "ticket*"
-            }
-        });
-        $('.navbar__action-list .dropdown-menu').on('click', function(event) {
-            event.stopPropagation();
-        });
-    </script>
+    
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/search.js"></script>
 

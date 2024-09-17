@@ -3,10 +3,10 @@
 <html lang="en">
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Include SweetAlert2 CSS (optional) -->
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+<!-- Include SweetAlert2 CSS (optional) -->
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 
-    <!-- Include jQuery -->
+<!-- Include jQuery -->
 
 @include('Components.Admin.Header')
 
@@ -25,7 +25,7 @@
         <div class="body-wrapper">
             <div class="bodywrapper__inner">
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                    <h6 class="page-title">All Admin</h6>
+                    <h6 class="page-title">All Driver's Salary</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
                         <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal"
                             data-bs-target="#manageAdmin">
@@ -34,15 +34,14 @@
                     </div>
                 </div>
                 <div class ="pt-3">
-                    <button class="btn btn-primary" type="button" data-bs-toggle="modal"
-                        data-bs-target="#infoModal">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#infoModal">
                         View Activity Logs and User Details
                     </button>
                 </div>
                 <div class="container mt-4 pb-3">
                     <!-- Modal -->
-                    <div class="modal fade" id="infoModal" tabindex="-1"
-                        aria-labelledby="infoModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel"
+                        aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -61,7 +60,6 @@
                                             <p><strong class="text-dark">Email:</strong> <span
                                                     class="text-dark">{{ auth()->user()->email }}</span>
                                             </p>
-
                                         @else
                                             <p class="text-danger">User not logged in.</p>
                                         @endif
@@ -81,13 +79,15 @@
                                             <tbody>
                                                 <!-- Display the date once -->
                                                 <tr>
-                                                    <td colspan="2">{{ \Carbon\Carbon::today()->toFormattedDateString() }}</td>
+                                                    <td colspan="2">
+                                                        {{ \Carbon\Carbon::today()->toFormattedDateString() }}</td>
                                                 </tr>
                                                 <!-- Loop through today's activity logs -->
                                                 @foreach ($activityLogs as $logs)
                                                     <tr>
                                                         <td>{{ $logs->activity }}</td>
-                                                        <td>{{ $logs->created_at->format('h:i A') }}</td> <!-- Show time only -->
+                                                        <td>{{ $logs->created_at->format('h:i A') }}</td>
+                                                        <!-- Show time only -->
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -108,8 +108,13 @@
                         <div class="card">
                             <div class="card-body p-0">
                                 <div class="table-responsive--md table-responsive">
-                                    <h4>Updated Driver Salary = Driver Salary - 2% Withholding tax</h4>
-                                    <table id="adminTable" class="table--light style--two table">
+                                    <div
+                                        class="dt-buttons btn-group d-flex align-items-center justify-content-between pb-3">
+                                        <h4 class="mb-0">Updated Driver Salary = Driver Salary - 2% Withholding tax
+                                        </h4>
+                                        @include('Components.Admin.Export')
+                                    </div>
+                                    <table id="data-table" class="table table--light style--two display nowrap">
                                         <thead>
                                             <tr>
                                                 <th>Delivery Routes</th>
@@ -128,16 +133,20 @@
                                                 @php
                                                     $driverSalaryWithholdingTax = $salaries['driver_salary'] * 0.98; // Apply 2% withholding tax to driver salary
                                                     $helperSalaryWithholdingTax = $salaries['helper_salary'] * 0.98;
-                                                    $updatedSalary = $driverSalaryWithholdingTax + $helperSalaryWithholdingTax; // Apply 2% withholding tax to helper salary
+                                                    $updatedSalary =
+                                                        $driverSalaryWithholdingTax + $helperSalaryWithholdingTax; // Apply 2% withholding tax to helper salary
                                                 @endphp
                                                 <tr>
                                                     <td>{{ $salaries['delivery_routes'] }}</td>
                                                     <td>₱{{ number_format($salaries['driver_salary'], 2) }}</td>
                                                     <td>₱{{ number_format($salaries['helper_salary'], 2) }}</td>
                                                     <td>₱{{ number_format($salaries['total_salary'], 2) }}</td>
-                                                    <td>₱{{ number_format($driverSalaryWithholdingTax, 2) }}</td> <!-- Driver salary after 2% withholding tax -->
-                                                    <td class="text-start">₱{{ number_format($helperSalaryWithholdingTax, 2) }}</td>
-                                                    <td >₱{{ number_format($updatedSalary, 2) }}</td> <!-- Helper salary after 2% withholding tax -->
+                                                    <td>₱{{ number_format($driverSalaryWithholdingTax, 2) }}</td>
+                                                    <!-- Driver salary after 2% withholding tax -->
+                                                    <td class="text-start">
+                                                        ₱{{ number_format($helperSalaryWithholdingTax, 2) }}</td>
+                                                    <td>₱{{ number_format($updatedSalary, 2) }}</td>
+                                                    <!-- Helper salary after 2% withholding tax -->
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -162,7 +171,8 @@
                                         @csrf
                                         <div class="modal-body">
                                             <div class="mb-3">
-                                                <label for="delivery_routes" class="form-label">Delivery Routes</label>
+                                                <label for="delivery_routes" class="form-label">Delivery
+                                                    Routes</label>
                                                 <input type="text" id="delivery_routes" name="delivery_routes"
                                                     class="form-control" required
                                                     oninput="this.value = this.value.toUpperCase();">
@@ -221,18 +231,31 @@
     </div>
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-    <script
-        src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/vendor/bootstrap-toggle.min.js"></script>
-    <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast.min.css" rel="stylesheet">
-    <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast_custom.css" rel="stylesheet">
-    <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/iziToast.min.js"></script>
+    <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/vendor/bootstrap-toggle.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Include SweetAlert2 JS (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        if ($('li').hasClass('active')) {
+            $('.sidebar__menu-wrapper').animate({
+                scrollTop: eval($(".active").offset().top - 320)
+            }, 500);
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
             var deleteButtons = document.querySelectorAll('.btn-delete');
             var deleteForm = document.getElementById('deleteForm');
 
-            deleteButtons.forEach(function (button) {
-                button.addEventListener('click', function () {
+            deleteButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
                     var url = button.getAttribute('data-url');
                     deleteForm.setAttribute('action', url);
                 });
@@ -241,7 +264,7 @@
     </script>
 
     <script>
-        $('form[id^="editJobForm"]').on('submit', function (e) {
+        $('form[id^="editJobForm"]').on('submit', function(e) {
             e.preventDefault();
 
             var form = $(this);
@@ -257,7 +280,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success: function (response) {
+                success: function(response) {
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',
@@ -270,7 +293,7 @@
                         location.reload(); // Reload page or update table row
                     });
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
@@ -285,45 +308,30 @@
     </script>
 
     <script>
-        $(document).ready(function () {
-            $('#adminTable').DataTable({
-                "paging": true,
-                "searching": true,
-                "ordering": true,
-                "info": true,
-                dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'excel', 'pdf', 'print'
-                ]
-            });
-
-            var deleteButtons = document.querySelectorAll('.btn-delete');
-            var deleteForm = document.getElementById('deleteForm');
-
-            deleteButtons.forEach(function (button) {
-                button.addEventListener('click', function () {
-                    var url = button.getAttribute('data-url');
-                    deleteForm.setAttribute('action', url);
-                });
+        $(document).ready(function() {
+            $('#data-table').DataTable({
+                responsive: true, // Enable responsiveness
+                paging: true, // Enables pagination
+                searching: true, // Enables search
+                ordering: true, // Enables sorting
             });
         });
     </script>
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/jquery-3.7.1.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
-    <script
-        src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/vendor/bootstrap-toggle.min.js"></script>
+    <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/vendor/bootstrap-toggle.min.js"></script>
 
     <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast.min.css" rel="stylesheet">
     <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast_custom.css" rel="stylesheet">
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/iziToast.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             var deleteButtons = document.querySelectorAll('.btn-delete');
             var deleteForm = document.getElementById('deleteForm');
 
-            deleteButtons.forEach(function (button) {
-                button.addEventListener('click', function () {
+            deleteButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
                     var url = button.getAttribute('data-url');
                     deleteForm.setAttribute('action', url);
                 });
@@ -332,7 +340,7 @@
     </script>
 
     <script>
-        $('form[id^="editJobForm"]').on('submit', function (e) {
+        $('form[id^="editJobForm"]').on('submit', function(e) {
             e.preventDefault();
 
             var form = $(this);
@@ -348,7 +356,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success: function (response) {
+                success: function(response) {
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',
@@ -361,7 +369,7 @@
                         location.reload(); // Reload page or update table row
                     });
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
@@ -373,8 +381,8 @@
                 }
             });
         });
-
     </script>
+
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
 </body>

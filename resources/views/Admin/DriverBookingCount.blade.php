@@ -1,324 +1,258 @@
-<!-- meta tags and other links -->
 <!DOCTYPE html>
 <html lang="en">
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Include SweetAlert2 CSS (optional) -->
-<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Include jQuery -->
-<style>
-    .table td {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    white-space: normal;
-}
+    <!-- Include SweetAlert2 CSS (optional) -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 
-    body {
-        font-family: 'Arial', sans-serif;
-        color: #333;
-        background-color: #f9f9f9;
-        margin: 0;
-        padding: 0;
-    }
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 
-    .page-wrapper {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
+    <!-- DataTables Buttons Extension CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.2/css/buttons.dataTables.min.css">
 
-    .navbar-wrapper {
-        background-color: #333;
-        color: #fff;
-        padding: 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        z-index: 1000;
-    }
+    <style>
+        .notification-card {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1050;
+            /* Ensure it's above other content */
+            width: 300px;
+            /* Adjust width as needed */
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
 
-    .navbar-search {
-        display: flex;
-        align-items: center;
-        position: relative;
-    }
+        .notification-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-    .navbar-search input {
-        padding: 10px;
-        border: none;
-        border-radius: 20px;
-        width: 200px;
-        outline: none;
-    }
+        .notification-card.d-none {
+            opacity: 0;
+            transform: translateY(-100px);
+        }
 
-    .navbar-search i {
-        position: absolute;
-        right: 10px;
-        color: #666;
-    }
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
 
-    .container-fluid {
-        padding: 15px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        margin: 0; /* Remove margin to touch sidebar */
-        margin-left: 250px; /* Adjust based on sidebar width */
-        margin-top: 20px; /* Ensure top margin is retained */
-    }
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    .page-title {
-        font-size: 24px;
-        font-weight: bold;
-        color: #333;
-    }
+        .navbar-wrapper {
+            background-color: #333;
+            color: #fff;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
 
-    .table {
-        width: 100%;
-        margin-bottom: 20px;
-        border-collapse: collapse;
-        background-color: #fff;
-    }
-
-    .table th, .table td {
-        padding: 12px;
-        border: 1px solid #ddd;
-    }
-
-    .table th {
-        background-color: #f4f4f4;
-        font-weight: bold;
-    }
-
-    .table tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-
-    .table-colgroup {
-        width: 30%;
-        border-right: 2px solid #ddd;
-    }
-
-    h2 {
-        font-size: 20px;
-        color: #333;
-        margin-bottom: 10px;
-    }
-
-    @media (max-width: 768px) {
-        .table th, .table td {
-            font-size: 14px;
+        .navbar-search {
+            display: flex;
+            align-items: center;
+            position: relative;
         }
 
         .navbar-search input {
-            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            width: 200px;
+            outline: none;
+        }
+
+        .navbar-search i {
+            position: absolute;
+            right: 10px;
+            color: #666;
         }
 
         .container-fluid {
-            margin-left: 0; /* Remove left margin on smaller screens */
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 0;
+            /* Remove margin to touch sidebar */
+            margin-left: 250px;
+            /* Adjust based on sidebar width */
+            margin-top: 20px;
+            /* Ensure top margin is retained */
         }
-    }
-</style>
-@include('Components.Admin.Header')
+
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table-colgroup {
+            width: 30%;
+            border-right: 2px solid #ddd;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+
+            .table th,
+            .table td {
+                font-size: 14px;
+            }
+
+            .navbar-search input {
+                width: 100%;
+            }
+
+            .container-fluid {
+                margin-left: 0;
+                /* Remove left margin on smaller screens */
+            }
+        }
+    </style>
+      @include('Components.Admin.Header')
+</head>
 
 <body>
+  
     @include('Components.Admin.Navbar')
     @include('Components.Admin.Sidebar')
 
     <div class="container-fluid px-3 px-sm-0">
         <div class="body-wrapper">
             <div class="bodywrapper__inner">
-
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                    <h6 class="page-title">Total Driver Booking</h6>
+                    <h6 class="page-title">Plate Number Bookings</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-
-
+                        <!-- Breadcrumb plugins if any -->
                     </div>
                 </div>
                 <div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body p-0">
-                <div class="table-responsive--sm table-responsive">
-                    <table class="table table--light style--two">
-                        <thead>
-                            <tr>
-                                <th>Driver Name</th>
-                                <th>Total Bookings</th>
-                                <th>Date</th>
-                                <th>Product Name</th>
-                                <th>Consignee Address</th>
-
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($driverDetails as $detail)
-                                <tr>
-                                    <!-- Display driver name and total bookings only once per driver -->
-                                    <td rowspan="{{ count($detail->bookingDetails) }}">{{ $detail->driver_name }}</td>
-                                    <td rowspan="{{ count($detail->bookingDetails) }}">{{ $detail->total_bookings }}</td>
-
-                                    <!-- Display the first booking detail -->
-                                    @foreach ($detail->bookingDetails as $index => $booking)
-                                        @if($index > 0)
-                                            <!-- Create a new row for subsequent booking details -->
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body p-0">
+                                <div class="table-responsive--sm table-responsive">
+                                    <table id="data-table" class="table table--light style--two display nowrap">
+                                        <thead>
                                             <tr>
-                                        @endif
+                                                <th>Driver Name</th>
+                                                <th>Total Bookings</th>
+                                                <th>Date</th>
+                                                <th>Product Name</th>
+                                                <th>Consignee Address</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($driverDetails as $detail)
+                                                @foreach ($detail->bookingDetails as $index => $booking)
+                                                    <tr data-driver-name="{{ $detail->driver_name }}">
+                                                        @if ($index === 0)
+                                                            <td>{{ $detail->driver_name }}</td>
+                                                            <td>{{ $detail->total_bookings }}</td>
+                                                        @else
+                                                            <td></td>
+                                                            <td></td>
+                                                        @endif
+                                                        <td>{{ \Carbon\Carbon::parse($booking['date'])->format('d-M-y h:i A') }}
+                                                        </td>
+                                                        <td>{{ $booking['product_name'] }}</td>
+                                                        <td class="text-start">{{ $booking['consignee_address'] }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            @empty
+                                                <tr>
+                                                    <td colspan="5">No data available</td>
+                                                </tr>
+                                            @endforelse
 
-                                        <td>{{ $booking['date'] }}</td>
-                                        <td>{{ $booking['product_name'] }}</td>
-                                        <td class="text-start">{{ $booking['consignee_address'] }}</td>
 
-                                        @if($index == 0)
-                                            <!-- Display the actions button only in the first row -->
-                                            <td rowspan="{{ count($detail->bookingDetails) }}">
-                                                <!-- Button to trigger modal -->
-                                                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal{{ $loop->parent->index }}">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                            </td>
-                                        @endif
-                                        </tr>
-                                    @endforeach
-                            @empty
-                                <tr>
-                                    <td colspan="8">No data available</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-<!-- Modal Structure -->
-@foreach ($driverDetails as $detail)
-    <div class="modal fade" id="modal{{ $loop->index }}" tabindex="-1" aria-labelledby="modalLabel{{ $loop->index }}" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel{{ $loop->index }}">Details for Driver: {{ $detail->driver_name }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h2>Booking Details</h2>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Count</th>
-                                <th>Date</th>
-                                <th>Product Name</th>
-                                <th>Destination</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($detail->bookingDetails as $booking)
-                                <tr>
-                                    <td>{{ $booking['count'] }}</td>
-                                    <td>{{ $booking['date'] }}</td>
-                                    <td>{{ $booking['product_name'] }}</td>
-                                    <td class="text-start">{{ $booking['consignee_address'] }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="printModal('modal{{ $loop->index }}')">Print</button>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div><!-- card end -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-@endforeach
 
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <!-- Include Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Include SweetAlert2 JS (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
-            <style>
-                @media print {
-                    .modal-footer button {
-                        display: none;
-                    }
-                }
-                </style>
-<script>
-    function printModal(modalId) {
-        var printContent = document.getElementById(modalId).innerHTML;
-        var originalContent = document.body.innerHTML;
-        var printWindow = window.open('', '', 'height=600,width=800');
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
-        // Write content to the new window
-        printWindow.document.open();
-        printWindow.document.write('<html><head><title>Print</title>');
-        printWindow.document.write('<style>body { margin: 20px; } table { width: 100%; border-collapse: collapse; } table, th, td { border: 1px solid black; } th, td { padding: 8px; text-align: left; } @media print { .modal-footer { display: none; } }</style>'); // Add any necessary styles here
-        printWindow.document.write('</head><body>');
-        printWindow.document.write(printContent);
-        printWindow.document.write('</body></html>');
-        printWindow.document.close();
-
-        // Print the content
-        printWindow.print();
-
-        // Close the print window after printing
-        printWindow.onafterprint = function() {
-            printWindow.close();
-        };
-    }
+    <!-- DataTables Buttons Extension JS -->
+    <script src="https://cdn.datatables.net/buttons/1.7.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.2/js/buttons.print.min.js"></script>
+    <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
+    <script>
+        if ($('li').hasClass('active')) {
+            $('.sidebar__menu-wrapper').animate({
+                scrollTop: eval($(".active").offset().top - 320)
+            }, 500);
+        }
     </script>
-                <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-                <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/jquery-3.7.1.min.js"></script>
-                <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
-                <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/vendor/bootstrap-toggle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#data-table').DataTable({
+                responsive: true, // Enable responsiveness
+                paging: true, // Enables pagination
+                searching: true, // Enables search
+                ordering: true, // Enables sorting
+            });
+        });
+    </script>
 
-                <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast.min.css"
-                    rel="stylesheet">
-                <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast_custom.css"
-                    rel="stylesheet">
-                <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/iziToast.min.js"></script>
-
-                <script>
-                    $(document).ready(function() {
-                        $('.jobOffersTable').DataTable({
-                            dom: 'Bfrtip',
-                            buttons: [
-                                'copy', 'csv', 'excel', 'pdf', 'print'
-                            ]
-                        });
-                    });
-                </script>
-                <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/nicEdit.js"></script>
-                <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/select2.min.js"></script>
-                <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
-                <script>
-                    if ($('li').hasClass('active')) {
-                        $('.sidebar__menu-wrapper').animate({
-                            scrollTop: eval($(".active").offset().top - 320)
-                        }, 500);
-                    }
-                </script>
-
-                <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/search.js"></script>
-
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-                <!-- Include Bootstrap JS -->
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
-                <!-- Include SweetAlert2 JS (optional) -->
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                <!-- DataTables CSS -->
-                <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
-                <!-- DataTables JS -->
-                <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-                <!-- DataTables Buttons Extension CSS -->
-                <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.2/css/buttons.dataTables.min.css">
-                <!-- DataTables Buttons Extension JS -->
-                <script src="https://cdn.datatables.net/buttons/1.7.2/js/dataTables.buttons.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-                <script src="https://cdn.datatables.net/buttons/1.7.2/js/buttons.html5.min.js"></script>
-                <script src="https://cdn.datatables.net/buttons/1.7.2/js/buttons.print.min.js"></script>
 </body>
 
 </html>

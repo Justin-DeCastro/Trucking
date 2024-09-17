@@ -218,10 +218,14 @@ class AdminController extends Controller
         return view('Admin.Admin');
     }
     public function reference(){
+        $senderNames = DB::table('bookings')
+        ->select('sender_name')
+        ->distinct()
+        ->pluck('sender_name');
         $vehicles = Vehicle::where('truck_status', 'Available')->get();
         $subcontractors = Subcontractor::all();
         $users = User::where('role', 'courier')->get();
-        return view('Admin.ReferenceForm',compact('users','vehicles','subcontractors'));
+        return view('Admin.ReferenceForm',compact('users','vehicles','senderNames','subcontractors'));
     }
     public function reference_form(){
         $vehicles = Vehicle::where('truck_status', 'Available')->get();
@@ -707,7 +711,7 @@ public function rateperyear(Request $request)
 public function calendar(){
     $interviews = Booking::all(); // Assuming you need this as well
     $loans = Loan::where('status', 'Unpaid')->get(); // Fetch only loans with pending status
-    return view('admin.Calendar-acc', compact('interviews', 'loans'));
+    return view('admin.calendar', compact('interviews', 'loans'));
  }
  public function calendar_acc() {
     $interviews = Booking::all(); // Assuming you need this as well
