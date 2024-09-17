@@ -58,9 +58,14 @@ class Booking extends Model
         return $this->belongsTo(User::class, 'driver_id');
     }
 // In Booking.php model
+// public function driver()
+// {
+//     return $this->belongsTo(User::class, 'driver_name'); // Assuming 'driver_name' contains the user ID
+// }
+// Booking.php
 public function driver()
 {
-    return $this->belongsTo(User::class, 'driver_name'); // Assuming 'driver_name' contains the user ID
+    return $this->belongsTo(User::class, 'driver_name', 'id'); // Adjust the foreign key as needed
 }
 
     // Relationship with the User model for the user who updated the record

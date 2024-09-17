@@ -53,56 +53,52 @@ class AdminController extends Controller
 
     // Fetch the latest location for each user
     $latestLocations = Location::select('user_id', 'latitude', 'longitude')
-        ->whereIn('id', function ($query) {
-            $query->selectRaw('MAX(id)')
-                ->from('locations')
-                ->groupBy('user_id');
-        })
-        ->get();
+    ->whereIn('id', function ($query) {
+        $query->selectRaw('MAX(id)')
+            ->from('locations')
+            ->groupBy('user_id');
+    })
+    ->get();
 
-    // Define your Google Maps API key
-    $apiKey = 'AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4';
+$apiKey = 'AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4';
 
-    // Initialize an empty array to store the locations with addresses
-    $locationsWithAddresses = [];
+$locationsWithAddresses = [];
 
-    foreach ($latestLocations as $location) {
-        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
-            'latlng' => "{$location->latitude},{$location->longitude}",
-            'key' => $apiKey
-        ]);
+foreach ($latestLocations as $location) {
+    $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
+        'latlng' => "{$location->latitude},{$location->longitude}",
+        'key' => $apiKey
+    ]);
 
-        $data = $response->json();
+    $data = $response->json();
 
-        // Extract address from the API response
-        $address = $data['results'][0]['formatted_address'] ?? 'Address not found';
+    $address = $data['results'][0]['formatted_address'] ?? 'Address not found';
 
-        // Get the user's name
-        $user = User::find($location->user_id);
+    $user = User::find($location->user_id);
 
-        $locationsWithAddresses[] = [
-            'latitude' => $location->latitude,
-            'longitude' => $location->longitude,
-            'address' => $address,
-            'creator' => $user ? $user->name : 'Unknown'
-        ];
-    }
-
-    return view('Admin.dashboard', compact(
-        'totalBookings',
-        'outboundTruck',
-        'inboundTruck',
-        'todayBookings',
-        'formattedDate',
-        'deliverySuccessfulCount',
-        'totalAvailableTrucks',
-        'totalCouriers',
-        'couriers', // Pass couriers with license expiration to the view
-        'locationsWithAddresses',
-        'MaintenanceTruck'
-         // Pass locations with addresses to the view
-    ));
+    $locationsWithAddresses[] = [
+        'user_id' => $location->user_id,
+        'address' => $address,
+        'creator' => $user ? $user->name : 'Unknown'
+    ];
 }
+
+return view('Admin.dashboard', compact(
+    'totalBookings',
+    'outboundTruck',
+    'inboundTruck',
+    'todayBookings',
+    'formattedDate',
+    'deliverySuccessfulCount',
+    'totalAvailableTrucks',
+    'totalCouriers',
+    'couriers',
+    'locationsWithAddresses',
+    'MaintenanceTruck'
+));
+}
+
+
 
      public function waybill(){
         $vehicles = Vehicle::all();
