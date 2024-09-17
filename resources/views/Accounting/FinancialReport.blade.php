@@ -116,7 +116,7 @@
                             <th>Date</th>
                             <th>Particulars</th>
                             <th>Service Fee</th>
-                            <th>Total Expense</th>
+                            <th>Expenses</th>
                             <th>Net Income</th>
                         </tr>
                     </thead>
@@ -131,7 +131,8 @@
                             @foreach ($dailyTransactions as $day => $data)
                                 <tr>
                                     <!-- Change date format to day-month-year -->
-                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $day)->format('d-m-Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $day)->format('d-M-Y') }}</td>
+
                                     <td>
                                         @foreach ($data['transactions'] as $transaction)
                                             {{ $transaction->particulars }}<br>
@@ -176,7 +177,8 @@
                             @foreach ($dailyPreventives as $day => $data)
                                 <tr>
                                     <!-- Change date format to day-month-year -->
-                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $day)->format('d-m-Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $day)->format('d-M-Y') }}</td>
+
                                     <td>
                                         @foreach ($data['preventives'] as $preventive)
                                             {{ $preventive->parts_replaced }}<br>
@@ -232,7 +234,8 @@
                             @foreach ($dailyLoans as $day => $data)
                                 <tr>
                                     <!-- Change date format to day-month-year -->
-                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $day)->format('d-m-Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $day)->format('d-M-Y') }}</td>
+
                                     <td>
                                         @foreach ($data['loans'] as $loan)
                                             {{ $loan->borrower }}<br>
