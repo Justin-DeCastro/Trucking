@@ -203,7 +203,7 @@ Route::get('/driverbooking-count', [BookingController::class, 'getDriverPlateNum
 // In web.php
 Route::post('/log-activity', [ActivityLogController::class, 'logActivity'])->name('log.activity');
 Route::get('/calendar-acc', [AdminController::class, 'calendar_acc'])->name('calendar-acc');
-
+Route::patch('/booking/{id}/update-location', [BookingController::class, 'updateLocation'])->name('update.location');
 
 
 

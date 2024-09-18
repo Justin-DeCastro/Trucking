@@ -39,6 +39,7 @@ class Booking extends Model
         'tracking_number',
         'date',
         'order_number',
+        'location',
         'truck_type',
         'qr_code_path',
         'product_name',

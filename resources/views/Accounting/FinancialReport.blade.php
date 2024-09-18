@@ -45,7 +45,7 @@
 
 
     @include('Components.Accounting.Sidebar')
-    <!-- sidebar end -->
+    @include('Components.Admin.Navbar')
 
     <!-- navbar-wrapper start -->
 
@@ -87,6 +87,7 @@
                         </button>
                     </div>
                 </div>
+            </div>
 
                 <div class="dt-buttons btn-group d-flex justify-content-end gap-2 ">
                     {{-- <div class="dropdown">

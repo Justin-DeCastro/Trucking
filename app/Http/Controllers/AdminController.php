@@ -214,15 +214,24 @@ return view('Admin.dashboard', compact(
         return view('Admin.Admin');
     }
     public function reference(){
+        $senderNames = DB::table('bookings')
+        ->select('sender_name')
+        ->distinct()
+        ->pluck('sender_name');
         $vehicles = Vehicle::where('truck_status', 'Available')->get();
         $subcontractors = Subcontractor::all();
         $users = User::where('role', 'courier')->get();
-        return view('Admin.ReferenceForm',compact('users','vehicles','subcontractors'));
+        return view('Admin.ReferenceForm',compact('users','vehicles','senderNames','subcontractors'));
     }
     public function reference_form(){
+        $senderNames = DB::table('bookings')
+        ->select('sender_name')
+        ->distinct()
+        ->pluck('sender_name');
         $vehicles = Vehicle::where('truck_status', 'Available')->get();
+        $subcontractors = Subcontractor::all();
         $users = User::where('role', 'courier')->get();
-        return view('Admin.reference-form',compact('users','vehicles'));
+        return view('Admin.reference-form',compact('users','vehicles','senderNames','subcontractors'));
     }
     public function managebranch(){
         $branches = ManageBranch::all();
@@ -389,10 +398,12 @@ public function coordinatordash()
     // Get the current logged-in user ID
     $currentUserId = auth()->id();
 
-    // Fetch new backload bookings from today
-    $newBackloadBookings = Booking::where('delivery_type', 'Backload')
-        ->whereDate('created_at', Carbon::today()) // Ensure you are only getting today's bookings
-        ->orderBy('created_at', 'desc')
+    // Fetch new backload bookings from today with location and driver data
+    $newBackloadBookings = Booking::select('bookings.id', 'bookings.delivery_type', 'bookings.created_at', 'bookings.location', 'users.name as driver_name') // Include driver_name from users table
+        ->join('users', 'bookings.driver_name', '=', 'users.id') // Join with users table to get the driver_name
+        ->where('bookings.delivery_type', 'Backload')
+        ->whereDate('bookings.created_at', Carbon::today()) // Ensure you are only getting today's bookings
+        ->orderBy('bookings.created_at', 'desc')
         ->get();
 
     // Fetch couriers whose licenses are expiring soon
@@ -400,53 +411,11 @@ public function coordinatordash()
         ->whereBetween('license_expiration', [Carbon::now(), Carbon::now()->addDays(7)])
         ->get(['name', 'license_expiration']);
 
-    // Fetch the latest location for each user
-    $latestLocations = Location::select('user_id', 'latitude', 'longitude')
-        ->whereIn('id', function ($query) {
-            $query->selectRaw('MAX(id)')
-                  ->from('locations')
-                  ->groupBy('user_id');
-        })
+    // Get bookings with locations and driver names
+    $bookingsWithLocations = Booking::select('bookings.id', 'bookings.location', 'users.name as driver_name') // Include driver_name from users table
+        ->join('users', 'bookings.driver_name', '=', 'users.id') // Join with users table to get the driver_name
+        ->whereNotNull('bookings.location') // Ensure we only get bookings with a location value
         ->get();
-
-    // Define your Google Maps API key
-    $apiKey = 'AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4';
-
-    // Initialize an empty array to store the locations with addresses
-    $locationsWithAddresses = [];
-
-    // Iterate through each latest location to get the address
-    foreach ($latestLocations as $location) {
-        try {
-            // Make API request to get the address
-            $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
-                'latlng' => "{$location->latitude},{$location->longitude}",
-                'key' => $apiKey
-            ]);
-
-            // Check if the response is successful
-            if ($response->successful()) {
-                $data = $response->json();
-                // Extract address from the API response
-                $address = $data['results'][0]['formatted_address'] ?? 'Address not found';
-            } else {
-                $address = 'Address not found';
-            }
-        } catch (\Exception $e) {
-            // Handle exceptions
-            $address = 'Address not found';
-        }
-
-        // Get the user's name
-        $user = User::find($location->user_id);
-
-        $locationsWithAddresses[] = [
-            'latitude' => $location->latitude,
-            'longitude' => $location->longitude,
-            'address' => $address,
-            'creator' => $user ? $user->name : 'Unknown'
-        ];
-    }
 
     // Get plate numbers with fewer than 5 bookings and their total count
     $plateNumbersWithFewBookings = Booking::select('plate_number')
@@ -458,7 +427,7 @@ public function coordinatordash()
     // Return view with the necessary data
     return view('Admin.Coordinatordash', [
         'expiringCouriers' => $expiringCouriers,
-        'locationsWithAddresses' => $locationsWithAddresses,
+        'bookingsWithLocations' => $bookingsWithLocations,
         'newBackloadBookings' => $newBackloadBookings,
         'plateNumbersWithFewBookings' => $plateNumbersWithFewBookings
     ]);
@@ -703,7 +672,7 @@ public function rateperyear(Request $request)
 public function calendar(){
     $interviews = Booking::all(); // Assuming you need this as well
     $loans = Loan::where('status', 'Unpaid')->get(); // Fetch only loans with pending status
-    return view('admin.Calendar-acc', compact('interviews', 'loans'));
+    return view('admin.calendar', compact('interviews', 'loans'));
  }
  public function calendar_acc() {
     $interviews = Booking::all(); // Assuming you need this as well

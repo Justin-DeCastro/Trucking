@@ -143,86 +143,10 @@
 
 <body>
 
-    <div class="page-wrapper default-version">
-        <div class="page-wrapper default-version">
+   
+    @include('Components.Admin.Navbar')
+    @include('Components.Admin.Driver_Sidebar')
 
-            <div class="sidebar bg--dark">
-                <button class="res-sidebar-close-btn">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-
-                <div class="sidebar__inner">
-
-                    <div class="logo-container">
-                        <div class="sidebar__logo"
-                            style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-                            <img src="Home/GDR logo.png" alt="Logo" class="logo">
-                            <h3 style="color: #223d54;"><b>COURIER</b></h3>
-
-                        </div>
-                    </div>
-
-
-
-                    <div class="sidebar__menu-wrapper">
-                        <ul class="sidebar__menu">
-                            <li class="sidebar-menu-item ">
-                                <a href="courierdash" class="nav-link ">
-                                    <i class="menu-icon fas fa-clipboard-list"></i>
-                                    <span class="menu-title">Courier Dashboard</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a href="order-for-courier" class="nav-link">
-                                    <i class="fa-solid fa-boxes-stacked"></i>
-                                    <span class="menu-title" style="padding-left: 17px">Manage Order</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a href="return-items" class="nav-link">
-                                    <i class="fa-solid fa-boxes-stacked"></i>
-                                    <span class="menu-title" style="padding-left: 17px">Return Items</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
-                                <a href="delay" class="nav-link">
-                                    <i class="fa-solid fa-boxes-stacked"></i>
-                                    <span class="menu-title" style="padding-left: 17px">Delay Report</span>
-                                </a>
-                            </li>
-                        </ul>
-
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- sidebar end -->
-
-            <!-- navbar-wrapper start -->
-            <nav class="navbar-wrapper d-flex flex-wrap">
-                <div class="navbar__left">
-                    <button type="button" class="res-sidebar-open-btn me-3">
-                        <i class="fa-solid fa-bars"></i>
-                    </button>
-                </div>
-
-                <div class="navbar__right">
-                    <ul class="navbar__action-list">
-                        <li class="dropdown d-flex profile-dropdown">
-                            <a href="logout" class="dropdown-menu__item d-flex align-items-center px-3 py-2">
-                                <i class="dropdown-menu__icon fas fa-sign-out-alt"></i>
-                                <span class="dropdown-menu__caption">Logout</span>
-                            </a>
-
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            <!-- navbar-wrapper end -->
-
-
-            <div class="container-fluid px-3 px-sm-0">
                 <div class="body-wrapper">
                     <div class="bodywrapper__inner">
                         <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
@@ -231,20 +155,16 @@
                                 class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
                             </div>
                         </div>
-
-
-
-
-                        <section style="padding: 60px 0;">
+                        <section>
                             <div
                                 style="max-width: 900px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-                                <div style="text-align: center; margin-bottom: 40px;">
-                                    <h3 style="margin-top: 0; color: #333; font-size: 28px; font-weight: bold;">Delay
-                                        Form
-                                    </h3>
-                                    <p style="color: #666; font-size: 16px;">Fill out the form below to arrange for the
-                                        transportation of your goods.</p>
-                                </div>
+                               <div style="text-align: center; margin-bottom: 40px;">
+                                <!-- Logo -->
+                                <img src="{{ asset('Home/GDR logo.png') }}" alt="Logo" style="max-width: 150px; margin-bottom: 20px;">
+
+                                <h3 style="margin-top: 0; color: #333; font-size: 28px; font-weight: bold;">Delay Form</h3>
+                                <p style="color: #666; font-size: 16px;">Fill out the form below to arrange for the transportation of your goods.</p>
+                            </div>
                                 @if (session('success'))
                                     <div class="alert alert-success">{{ session('success') }}</div>
                                 @endif

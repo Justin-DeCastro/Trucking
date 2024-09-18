@@ -293,39 +293,15 @@
 
     @include('Components.Admin.Sidebar')
 
-    <div class="container-fluid px-3 px-sm-0">
         <div class="body-wrapper">
             <div class="bodywrapper__inner">
 
-                <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
+                <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
                     <h6 class="page-title">Booking History</h6>
-                    <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-
-                    </div>
                 </div>
                 <!-- Display the overall Outstanding Balance -->
 
-                <div class="dt-buttons btn-group d-flex justify-content-end gap-2 ">
-                    <div class="dropdown">
-                        {{-- <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class='bx bx-export'></i> Export
-                        </button> --}}
-                        <ul class="dropdown-menu">
-                            <li><button type="button" id="copyBtn" class="btn dropdown-item"><i
-                                        class='bx bx-copy'></i> Copy</button></li>
-                            <li><button type="button" id="printBtn" class="btn dropdown-item"><i
-                                        class='bx bx-printer'></i> Print</button></li>
-                            <li><button type="button" id="excelBtn" class="btn dropdown-item"><i
-                                        class='bx bx-file'></i>Excel</button></li>
-                            <li><button type="button" id="pdfBtn" class="btn dropdown-item"><i
-                                        class='bx bxs-file-pdf'></i> Pdf</button></li>
-                        </ul>
-                    </div>
-                    <div class="dropdown">
 
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
@@ -418,20 +394,55 @@
 
 
                                     <!-- Existing Table -->
-                                    <div class="d-flex justify-content-end mb-3">
+                                    <!-- <div class="d-flex justify-content-end mb-3">
                                         <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                id="exportDropdownMenuButton" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
                                                 Export
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="exportDropdownMenuButton">
-                                                <li><a class="dropdown-item" href="#" id="exportCsv">Export as CSV</a></li>
-                                                <li><a class="dropdown-item" href="#" id="exportExcel">Export as Excel</a></li>
-                                                <li><a class="dropdown-item" href="#" id="exportPdf">Export as PDF</a></li>
+                                                <li><a class="dropdown-item" href="#" id="exportCsv">Export as
+                                                        CSV</a></li>
+                                                <li><a class="dropdown-item" href="#" id="exportExcel">Export
+                                                        as Excel</a></li>
+                                                <li><a class="dropdown-item" href="#" id="exportPdf">Export as
+                                                        PDF</a></li>
+                                            </ul>
+                                        </div>
+                                    </div> -->
+
+                                    <div class="dt-buttons btn-group d-flex justify-content-end gap-2 pb-3">
+                                        <div class="dropdown">
+                                            <button type="button" class="btn btn-primary dropdown-toggle"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class='bx bx-export'></i> Export
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <button type="button" id="copyBtn" class="btn dropdown-item">
+                                                        <i class='bx bx-copy'></i> Copy
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button" id="printBtn" class="btn dropdown-item">
+                                                        <i class='bx bx-printer'></i> Print
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button" id="pdfBtn" class="btn dropdown-item">
+                                                        <i class='bx bxs-file-pdf'></i> PDF
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button" id="excelBtn" class="btn dropdown-item">
+                                                        <i class='bx bx-file'></i> Excel
+                                                    </button>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
-
-                                    <table id="data-table" class="data-table table--light style--two" style="width: 100%; border-collapse: collapse;">
+                                    <table id="data-table" class="table table--light style--two display nowrap">
                                         <thead>
                                             <tr>
                                                 <th>Date</th>
@@ -455,7 +466,8 @@
                                                     <td>{{ \Carbon\Carbon::parse($detail->date)->format('F d, Y g:i A') }}
                                                     </td>
                                                     <td>{{ $detail->order_number }}</td>
-                                                    <td>{{ $detail->driver ? $detail->driver->name : 'No driver assigned' }}</td>
+                                                    <td>{{ $detail->driver ? $detail->driver->name : 'No driver assigned' }}
+                                                    </td>
 
                                                     <td>{{ $detail->plate_number }}</td>
                                                     <td>{{ $detail->consignee_address }}</td>
@@ -764,21 +776,25 @@
                                                         <td>Province</td>
                                                         <td class="text-wrap">{{ $detail->merchant_province }}</td>
                                                     </tr>
-                                                      <tr>
-                                                    <td>Travel Time</td>
-                                                    <td class="text-wrap">
-                                                        <span class="countdown-timer" id="timer{{ $detail->id }}">
-                                                            <span id="hours{{ $detail->id }}">00</span>:<span id="minutes{{ $detail->id }}">00</span>:<span id="seconds{{ $detail->id }}">00</span>
-                                                        </span>
-                                                    </td>
-                                                </tr>
+                                                    <tr>
+                                                        <td>Travel Time</td>
+                                                        <td class="text-wrap">
+                                                            <span class="countdown-timer"
+                                                                id="timer{{ $detail->id }}">
+                                                                <span id="hours{{ $detail->id }}">00</span>:<span
+                                                                    id="minutes{{ $detail->id }}">00</span>:<span
+                                                                    id="seconds{{ $detail->id }}">00</span>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <td>Travel Timeline</td>
-                                                    <td class="text-wrap">
-                                                        <ul id="timelineHistory{{ $detail->id }}" class="timeline-list"></ul>
-                                                    </td>
-                                                </tr>
+                                                    <tr>
+                                                        <td>Travel Timeline</td>
+                                                        <td class="text-wrap">
+                                                            <ul id="timelineHistory{{ $detail->id }}"
+                                                                class="timeline-list"></ul>
+                                                        </td>
+                                                    </tr>
                                                 </table>
                                             </div>
                                         </div>
@@ -955,6 +971,121 @@
                     </div>
                 @endforeach
 
+
+                <!-- SheetJS for Excel export -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+                <!-- jsPDF with autoTable for PDF export -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+                <!-- FileSaver.js for CSV export -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+                <script>
+                    // Function to extract table data
+                    function getTableData() {
+                        var table = document.getElementById("data-table");
+                        var data = [];
+
+                        // Extract headers
+                        var headers = [];
+                        var thead = table.querySelector("thead");
+                        if (thead) {
+                            thead.querySelectorAll("th").forEach(th => headers.push(th.innerText.trim()));
+                            data.push(headers); // Add headers to the data
+                        }
+
+                        // Extract rows
+                        var tbody = table.querySelector("tbody");
+                        if (tbody) {
+                            tbody.querySelectorAll("tr").forEach(row => {
+                                var rowData = [];
+                                row.querySelectorAll("td").forEach(cell => {
+                                    rowData.push(cell.innerText.trim());
+                                });
+                                data.push(rowData);
+                            });
+                        }
+
+                        return data;
+                    }
+
+                    // Copy function
+                    document.getElementById('copyBtn').addEventListener('click', function() {
+                        var data = getTableData();
+                        var textToCopy = data.map(row => row.join("\t")).join("\n");
+
+                        var tempTextArea = document.createElement("textarea");
+                        tempTextArea.value = textToCopy;
+                        document.body.appendChild(tempTextArea);
+                        tempTextArea.select();
+                        document.execCommand("copy");
+                        document.body.removeChild(tempTextArea);
+                        alert("Table data copied to clipboard!");
+                    });
+
+                    // Print function - prints only the table
+                    document.getElementById('printBtn').addEventListener('click', function() {
+                        var printContents = document.getElementById("data-table").outerHTML;
+                        var printWindow = window.open('', '', 'height=600,width=800');
+
+                        printWindow.document.write('<html><head><title>Print</title>');
+                        printWindow.document.write(
+                            '<style>table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #ddd; padding: 8px; } th { background-color: #f2f2f2; }</style>'
+                        ); // Optional CSS for table formatting
+                        printWindow.document.write('</head><body >');
+                        printWindow.document.write(printContents);
+                        printWindow.document.write('</body></html>');
+
+                        printWindow.document.close();
+                        printWindow.focus();
+                        printWindow.print();
+                    });
+
+                    // PDF export with landscape formatting and smaller font size using jsPDF and autoTable
+                    document.getElementById('pdfBtn').addEventListener('click', function() {
+                        var {
+                            jsPDF
+                        } = window.jspdf;
+                        var doc = new jsPDF('landscape'); // Set the orientation to landscape
+
+                        var data = getTableData();
+
+                        // Create PDF with autoTable plugin for better table formatting
+                        doc.autoTable({
+                            head: [data[0]], // Use headers from the first row of data
+                            body: data.slice(1), // Use remaining rows as body
+                            startY: 10, // Start 10 units from top
+                            theme: 'grid', // Grid layout
+                            margin: {
+                                top: 10
+                            },
+                            styles: {
+                                fontSize: 8, // Smaller font size
+                                cellPadding: 2 // Padding for cells
+                            },
+                            headStyles: {
+                                fillColor: [22, 160, 133], // Table header color (example)
+                                textColor: 255 // Header text color
+                            },
+                            pageBreak: 'auto', // Automatically add page breaks if content exceeds a single page
+                        });
+
+                        doc.save('table_data.pdf');
+                    });
+
+                    // Excel export function
+                    document.getElementById('excelBtn').addEventListener('click', function() {
+                        var data = getTableData();
+                        var wb = XLSX.utils.book_new();
+                        var ws = XLSX.utils.aoa_to_sheet(data);
+                        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+                        XLSX.writeFile(wb, "table_data.xlsx");
+                    });
+                </script>
+
+
+
                 <script>
                     function printModal(modalId) {
                         var printContent = document.getElementById(modalId).innerHTML;
@@ -1082,15 +1213,13 @@
                 <script>
                     $(document).ready(function() {
                         $('#data-table').DataTable({
-                            // DataTables configuration options
-                            "paging": true,
-                            "searching": true,
-                            "ordering": true,
-                            "info": true
+                            responsive: true, // Enable responsiveness
+                            paging: true, // Enables pagination
+                            searching: true, // Enables search
+                            ordering: true, // Enables sorting
                         });
                     });
                 </script>
-
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
                         // Get filter inputs and reset button
@@ -1167,14 +1296,13 @@
                 <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast_custom.css"
                     rel="stylesheet">
                 <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/iziToast.min.js"></script>
-
                 <script>
                     $(document).ready(function() {
-                        $('.data-table').DataTable({
-                            dom: 'Bfrtip',
-                            buttons: [
-                                'copy', 'csv', 'excel', 'pdf', 'print'
-                            ]
+                        $('#data-table').DataTable({
+                            responsive: true, // Enable responsiveness
+                            paging: true, // Enables pagination
+                            searching: true, // Enables search
+                            ordering: true, // Enables sorting
                         });
                     });
                 </script>
@@ -1212,194 +1340,202 @@
                 <script src="https://cdn.datatables.net/buttons/1.7.2/js/buttons.print.min.js"></script>
                 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4&libraries=places">
                 </script>
-           <script>
-            var timerIntervals = {}; // Store interval references
+                <script>
+                    var timerIntervals = {}; // Store interval references
 
-            function startTimer(detailId, duration) {
-                var hoursElement = document.getElementById('hours' + detailId);
-                var minutesElement = document.getElementById('minutes' + detailId);
-                var secondsElement = document.getElementById('seconds' + detailId);
+                    function startTimer(detailId, duration) {
+                        var hoursElement = document.getElementById('hours' + detailId);
+                        var minutesElement = document.getElementById('minutes' + detailId);
+                        var secondsElement = document.getElementById('seconds' + detailId);
 
-                var startTime = Date.now();
-                var endTime = startTime + duration * 1000;
+                        var startTime = Date.now();
+                        var endTime = startTime + duration * 1000;
 
-                // Timer interval
-                timerIntervals[detailId] = setInterval(function() {
-                    var now = Date.now();
-                    var elapsedTime = Math.max(now - startTime, 0);
+                        // Timer interval
+                        timerIntervals[detailId] = setInterval(function() {
+                            var now = Date.now();
+                            var elapsedTime = Math.max(now - startTime, 0);
 
-                    var hours = Math.floor(elapsedTime / (1000 * 60 * 60));
-                    var minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
-                    var seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+                            var hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+                            var minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
+                            var seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
 
-                    hoursElement.textContent = String(hours).padStart(2, '0');
-                    minutesElement.textContent = String(minutes).padStart(2, '0');
-                    secondsElement.textContent = String(seconds).padStart(2, '0');
+                            hoursElement.textContent = String(hours).padStart(2, '0');
+                            minutesElement.textContent = String(minutes).padStart(2, '0');
+                            secondsElement.textContent = String(seconds).padStart(2, '0');
 
-                }, 1000); // Update every second
-            }
-
-            function stopTimer(detailId) {
-                clearInterval(timerIntervals[detailId]);
-                console.log('Timer stopped for detail ID:', detailId);
-            }
-
-            function getCityFromLatLng(latLng, callback) {
-                var geocoder = new google.maps.Geocoder();
-                geocoder.geocode({ 'location': latLng }, function(results, status) {
-                    if (status === 'OK' && results[0]) {
-                        var city = '';
-                        for (var i = 0; i < results[0].address_components.length; i++) {
-                            var component = results[0].address_components[i];
-                            if (component.types.includes('locality') || component.types.includes('administrative_area_level_1')) {
-                                city = component.long_name;
-                                break;
-                            }
-                        }
-                        callback(city);
-                    } else {
-                        console.error('Geocoder failed due to ' + status);
-                        callback('');
+                        }, 1000); // Update every second
                     }
-                });
-            }
 
-            function initMap(detailId, startAddress, endAddress) {
-                var map = new google.maps.Map(document.getElementById('map' + detailId), {
-                    zoom: 10,
-                    center: { lat: -34.397, lng: 150.644 } // Default center; will update later
-                });
-
-                // Add traffic layer to show real-time traffic conditions
-                var trafficLayer = new google.maps.TrafficLayer();
-                trafficLayer.setMap(map);
-
-                var directionsService = new google.maps.DirectionsService();
-                var directionsRenderer = new google.maps.DirectionsRenderer({
-                    polylineOptions: {
-                        strokeColor: '#00FF00', // Green as default road color
-                        strokeWeight: 6
+                    function stopTimer(detailId) {
+                        clearInterval(timerIntervals[detailId]);
+                        console.log('Timer stopped for detail ID:', detailId);
                     }
-                });
-                directionsRenderer.setMap(map);
 
-                var request = {
-                    origin: startAddress,
-                    destination: endAddress,
-                    travelMode: 'DRIVING'
-                };
-
-                directionsService.route(request, function(result, status) {
-                    if (status === 'OK') {
-                        directionsRenderer.setDirections(result);
-                        map.setCenter(result.routes[0].legs[0].start_location);
-
-                        var durationInSeconds = result.routes[0].legs[0].duration.value;
-                        startTimer(detailId, durationInSeconds);
-
-                        var route = result.routes[0].legs[0];
-                        var step = 0;
-
-                        var timelineListElement = document.getElementById('timelineHistory' + detailId);
-
-                        // URL for the red location icon
-                        var redLocationIcon = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'; // Red location icon URL
-
-                        function moveTruck() {
-                            if (step < route.steps.length) {
-                                var stepEndLocation = route.steps[step].end_location;
-                                var placeDescription = route.steps[step].instructions;
-
-                                // Add a marker for the current step with red location icon
-                                var placeMarker = new google.maps.Marker({
-                                    position: stepEndLocation,
-                                    map: map,
-                                    title: placeDescription,
-                                    icon: redLocationIcon // Set the custom red icon
-                                });
-
-                                // Get city/municipality information
-                                getCityFromLatLng(stepEndLocation, function(city) {
-                                    // Add timeline entry
-                                    var placeElement = document.createElement('li');
-                                    placeElement.innerHTML = `<strong>Location:</strong> ${placeDescription} <br> <strong>City/Municipality:</strong> ${city}`;
-                                    timelineListElement.appendChild(placeElement);
-                                });
-
-                                // Info window for hover details
-                                var infoWindow = new google.maps.InfoWindow({
-                                    content: placeDescription
-                                });
-
-                                placeMarker.addListener('mouseover', function() {
-                                    infoWindow.open(map, placeMarker);
-                                });
-                                placeMarker.addListener('mouseout', function() {
-                                    infoWindow.close();
-                                });
-
-                                // Move truck marker to the current step location
-                                truckMarker.setPosition(stepEndLocation);
-                                map.setCenter(stepEndLocation); // Center map around the current step
-
-                                step++;
-                                setTimeout(moveTruck, 2000);
+                    function getCityFromLatLng(latLng, callback) {
+                        var geocoder = new google.maps.Geocoder();
+                        geocoder.geocode({
+                            'location': latLng
+                        }, function(results, status) {
+                            if (status === 'OK' && results[0]) {
+                                var city = '';
+                                for (var i = 0; i < results[0].address_components.length; i++) {
+                                    var component = results[0].address_components[i];
+                                    if (component.types.includes('locality') || component.types.includes(
+                                            'administrative_area_level_1')) {
+                                        city = component.long_name;
+                                        break;
+                                    }
+                                }
+                                callback(city);
                             } else {
-                                stopTimer(detailId);
-
-                                var arrivalElement = document.createElement('li');
-                                arrivalElement.innerHTML = "<strong>Truck has arrived at the destination.</strong>";
-                                timelineListElement.appendChild(arrivalElement);
-
-                                // Add a final destination marker with red location icon
-                                var finalMarker = new google.maps.Marker({
-                                    position: route.steps[step - 1].end_location,
-                                    map: map,
-                                    title: 'Final Destination',
-                                    icon: redLocationIcon // Use the same red icon
-                                });
-
-                                var finalInfoWindow = new google.maps.InfoWindow({
-                                    content: 'Final Destination'
-                                });
-
-                                finalMarker.addListener('mouseover', function() {
-                                    finalInfoWindow.open(map, finalMarker);
-                                });
-                                finalMarker.addListener('mouseout', function() {
-                                    finalInfoWindow.close();
-                                });
+                                console.error('Geocoder failed due to ' + status);
+                                callback('');
                             }
-                        }
+                        });
+                    }
 
-                        // Create the initial truck marker
-                        var truckIcon = 'https://maps.google.com/mapfiles/kml/shapes/truck.png';
-                        var truckMarker = new google.maps.Marker({
-                            position: result.routes[0].legs[0].start_location,
-                            map: map,
-                            icon: truckIcon,
-                            title: 'Moving Truck'
+                    function initMap(detailId, startAddress, endAddress) {
+                        var map = new google.maps.Map(document.getElementById('map' + detailId), {
+                            zoom: 10,
+                            center: {
+                                lat: -34.397,
+                                lng: 150.644
+                            } // Default center; will update later
                         });
 
-                        moveTruck();
-                    } else {
-                        console.error('Directions request failed due to ' + status);
-                    }
-                });
-            }
+                        // Add traffic layer to show real-time traffic conditions
+                        var trafficLayer = new google.maps.TrafficLayer();
+                        trafficLayer.setMap(map);
 
-            document.addEventListener('DOMContentLoaded', function() {
-                @foreach ($rubixdetails as $detail)
-                    document.getElementById('modal{{ $detail->id }}').addEventListener('shown.bs.modal', function() {
-                        initMap(
-                            '{{ $detail->id }}',
-                            '{{ $detail->merchant_address }}',
-                            '{{ $detail->consignee_address }}'
-                        );
+                        var directionsService = new google.maps.DirectionsService();
+                        var directionsRenderer = new google.maps.DirectionsRenderer({
+                            polylineOptions: {
+                                strokeColor: '#00FF00', // Green as default road color
+                                strokeWeight: 6
+                            }
+                        });
+                        directionsRenderer.setMap(map);
+
+                        var request = {
+                            origin: startAddress,
+                            destination: endAddress,
+                            travelMode: 'DRIVING'
+                        };
+
+                        directionsService.route(request, function(result, status) {
+                            if (status === 'OK') {
+                                directionsRenderer.setDirections(result);
+                                map.setCenter(result.routes[0].legs[0].start_location);
+
+                                var durationInSeconds = result.routes[0].legs[0].duration.value;
+                                startTimer(detailId, durationInSeconds);
+
+                                var route = result.routes[0].legs[0];
+                                var step = 0;
+
+                                var timelineListElement = document.getElementById('timelineHistory' + detailId);
+
+                                // URL for the red location icon
+                                var redLocationIcon =
+                                    'http://maps.google.com/mapfiles/ms/icons/red-dot.png'; // Red location icon URL
+
+                                function moveTruck() {
+                                    if (step < route.steps.length) {
+                                        var stepEndLocation = route.steps[step].end_location;
+                                        var placeDescription = route.steps[step].instructions;
+
+                                        // Add a marker for the current step with red location icon
+                                        var placeMarker = new google.maps.Marker({
+                                            position: stepEndLocation,
+                                            map: map,
+                                            title: placeDescription,
+                                            icon: redLocationIcon // Set the custom red icon
+                                        });
+
+                                        // Get city/municipality information
+                                        getCityFromLatLng(stepEndLocation, function(city) {
+                                            // Add timeline entry
+                                            var placeElement = document.createElement('li');
+                                            placeElement.innerHTML =
+                                                `<strong>Location:</strong> ${placeDescription} <br> <strong>City/Municipality:</strong> ${city}`;
+                                            timelineListElement.appendChild(placeElement);
+                                        });
+
+                                        // Info window for hover details
+                                        var infoWindow = new google.maps.InfoWindow({
+                                            content: placeDescription
+                                        });
+
+                                        placeMarker.addListener('mouseover', function() {
+                                            infoWindow.open(map, placeMarker);
+                                        });
+                                        placeMarker.addListener('mouseout', function() {
+                                            infoWindow.close();
+                                        });
+
+                                        // Move truck marker to the current step location
+                                        truckMarker.setPosition(stepEndLocation);
+                                        map.setCenter(stepEndLocation); // Center map around the current step
+
+                                        step++;
+                                        setTimeout(moveTruck, 2000);
+                                    } else {
+                                        stopTimer(detailId);
+
+                                        var arrivalElement = document.createElement('li');
+                                        arrivalElement.innerHTML = "<strong>Truck has arrived at the destination.</strong>";
+                                        timelineListElement.appendChild(arrivalElement);
+
+                                        // Add a final destination marker with red location icon
+                                        var finalMarker = new google.maps.Marker({
+                                            position: route.steps[step - 1].end_location,
+                                            map: map,
+                                            title: 'Final Destination',
+                                            icon: redLocationIcon // Use the same red icon
+                                        });
+
+                                        var finalInfoWindow = new google.maps.InfoWindow({
+                                            content: 'Final Destination'
+                                        });
+
+                                        finalMarker.addListener('mouseover', function() {
+                                            finalInfoWindow.open(map, finalMarker);
+                                        });
+                                        finalMarker.addListener('mouseout', function() {
+                                            finalInfoWindow.close();
+                                        });
+                                    }
+                                }
+
+                                // Create the initial truck marker
+                                var truckIcon = 'https://maps.google.com/mapfiles/kml/shapes/truck.png';
+                                var truckMarker = new google.maps.Marker({
+                                    position: result.routes[0].legs[0].start_location,
+                                    map: map,
+                                    icon: truckIcon,
+                                    title: 'Moving Truck'
+                                });
+
+                                moveTruck();
+                            } else {
+                                console.error('Directions request failed due to ' + status);
+                            }
+                        });
+                    }
+
+                    document.addEventListener('DOMContentLoaded', function() {
+                        @foreach ($rubixdetails as $detail)
+                            document.getElementById('modal{{ $detail->id }}').addEventListener('shown.bs.modal', function() {
+                                initMap(
+                                    '{{ $detail->id }}',
+                                    '{{ $detail->merchant_address }}',
+                                    '{{ $detail->consignee_address }}'
+                                );
+                            });
+                        @endforeach
                     });
-                @endforeach
-            });
-        </script>
+                </script>
 
 
 

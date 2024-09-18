@@ -13,7 +13,8 @@
 <body>
 
     @include('Components.Admin.Navbar')
-    @include('Components.Accounting.Sidebar')
+    @include('Components.Admin.Sidebar')
+    <!-- sidebar end -->
 
     <div class="body-wrapper">
         <div class="bodywrapper__inner">
@@ -38,43 +39,42 @@
                         </ul>
                     </div>
                 </form>
-                <div class="dropdown">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <i class='bx bx-export'></i> Export
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <button type="button" id="copyBtn" class="btn dropdown-item">
-                                <i class='bx bx-copy'></i> Copy
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button" id="printBtn" class="btn dropdown-item">
-                                <i class='bx bx-printer'></i> Print
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button" id="pdfBtn" class="btn dropdown-item">
-                                <i class='bx bxs-file-pdf'></i> PDF
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button" id="excelBtn" class="btn dropdown-item">
-                                <i class='bx bx-file'></i> Excel
-                            </button>
-                        </li>
-                    </ul>
-                </div>
             </div>
             <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center pb-3">
                 <h6 class="page-title"></h6>
                 <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class='bx bx-export'></i> Export
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <button type="button" id="copyBtn" class="btn dropdown-item">
+                                    <i class='bx bx-copy'></i> Copy
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" id="printBtn" class="btn dropdown-item">
+                                    <i class='bx bx-printer'></i> Print
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" id="pdfBtn" class="btn dropdown-item">
+                                    <i class='bx bxs-file-pdf'></i> PDF
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" id="excelBtn" class="btn dropdown-item">
+                                    <i class='bx bx-file'></i> Excel
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal"
                     data-bs-target="#manageAdmin">
-                    <i class="fa fa-plus"></i> Add New
+                    <i class="las la-plus"></i> Add New
                 </button>
             </div>
 
@@ -388,6 +388,8 @@
             </div>
         </div>
 
+
+
         <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <!-- Include Bootstrap JS -->
@@ -414,14 +416,6 @@
         <!-- FileSaver.js for CSV export -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
-        <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
-        <script>
-            if ($('li').hasClass('active')) {
-                $('.sidebar__menu-wrapper').animate({
-                    scrollTop: eval($(".active").offset().top - 320)
-                }, 500);
-            }
-        </script>
         <script>
             // Function to extract all table data
             function getTableData() {
@@ -538,6 +532,49 @@
             });
         </script>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var updateModal = document.getElementById('updateModal');
+                updateModal.addEventListener('show.bs.modal', function(event) {
+                    var button = event.relatedTarget;
+                    var id = button.getAttribute('data-id');
+                    var plateNumber = button.getAttribute('data-plate-number');
+                    var truckModel = button.getAttribute('data-truck-model');
+                    var parts = button.getAttribute('data-parts');
+                    var quantity = button.getAttribute('data-quantity');
+                    var price = button.getAttribute('data-price');
+                    var proofNeedToFix = button.getAttribute(
+                        'data-proof-need-to-fix'); // Assuming a URL or file path
+                    var proofPayment = button.getAttribute('data-proof-payment'); // Assuming a URL or file path
+
+                    var form = document.getElementById('updateForm');
+                    form.action = '/maintenance/' + id; // Update form action URL
+
+                    document.getElementById('plate_number').value = plateNumber;
+                    document.getElementById('truck_model').value = truckModel;
+                    document.getElementById('parts_replaced').value = parts;
+                    document.getElementById('quantity').value = quantity;
+                    document.getElementById('price_parts_replaced').value = price;
+
+                    // Handle file inputs for proof_of_need_to_fix and proof_of_payment
+                    // Note: File inputs cannot be pre-populated with files via JavaScript for security reasons.
+                    // Consider displaying current files or providing a way to remove or add new files.
+
+                    // Example of handling proof display:
+                    if (proofNeedToFix) {
+                        // Assuming proofNeedToFix contains URLs or file paths
+                        // You could create image previews or similar elements to display the current proofs
+                        console.log('Proof of Need to Fix:', proofNeedToFix);
+                    }
+
+                    if (proofPayment) {
+                        // Assuming proofPayment contains URLs or file paths
+                        // You could create image previews or similar elements to display the current proofs
+                        console.log('Proof of Payment:', proofPayment);
+                    }
+                });
+            });
+        </script>
 
         <script>
             function showImageModal(imageUrl) {
@@ -549,10 +586,19 @@
         <script>
             $(document).ready(function() {
                 $('#data-table').DataTable({
-                    responsive: true, // Enable responsiveness
+                    dom: 'Bfrtip', // Enables export buttons
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
                     paging: true, // Enables pagination
                     searching: true, // Enables search
                     ordering: true, // Enables sorting
+                    responsive: true, // Makes the table responsive
+                    columnDefs: [{
+                            orderable: false,
+                            targets: [5]
+                        } // Disable sorting on the 'Actions' column
+                    ]
                 });
             });
         </script>

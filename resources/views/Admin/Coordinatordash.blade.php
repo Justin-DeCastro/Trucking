@@ -197,11 +197,10 @@
                                 <div>
                                     <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Latest Drivers Locations</p>
                                     <p class="mb-0">
-                                        @forelse ($locationsWithAddresses as $location)
-                                            Address: {{ $location['address'] }},
+                                        @forelse ($bookingsWithLocations as $booking)
+                                            Driver:<strong> {{ $booking->driver_name }},<br></strong>
+                                            Latest Location: <strong>{{ $booking->location }}<br></strong>
                                             <br>
-                                            Updated by: {{ $location['creator'] }}
-                                            <br><br>
                                         @empty
                                             No location data available.
                                         @endforelse
