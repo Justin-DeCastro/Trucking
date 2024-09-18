@@ -3448,7 +3448,7 @@ table th:first-child {
 }
 
 table td:last-child {
-  text-align: right;
+  text-align: left;
 }
 
 table td:first-child {

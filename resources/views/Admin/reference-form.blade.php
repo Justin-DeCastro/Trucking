@@ -4,42 +4,28 @@
 
 @include('Components.Admin.Header')
 <style>
-    .btn-custom {
-        background-color: #007bff;
-        /* Custom background color */
-        color: #fff;
-        /* White text color */
-        border: none;
-        /* Remove border */
-        border-radius: 6px;
-        /* Rounded corners */
-        padding: 12px 20px;
-        /* Padding for button */
-        font-size: 16px;
-        /* Font size */
-        font-weight: bold;
-        /* Bold text */
-        margin: 0 10px;
-        /* Horizontal margin between buttons */
-        transition: background-color 0.3s ease, transform 0.2s ease;
-        /* Smooth transition for color and transform */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        /* Shadow effect */
+     .btn-custom {
+        background-color: #007bff; /* Custom background color */
+        color: #fff; /* White text color */
+        border: none; /* Remove border */
+        border-radius: 6px; /* Rounded corners */
+        padding: 12px 20px; /* Padding for button */
+        font-size: 16px; /* Font size */
+        font-weight: bold; /* Bold text */
+        margin: 0 10px; /* Horizontal margin between buttons */
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for color and transform */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
     }
 
     .btn-custom:hover {
-        background-color: #0056b3;
-        /* Darker background color on hover */
-        transform: scale(1.05);
-        /* Slightly enlarge the button */
+        background-color: #0056b3; /* Darker background color on hover */
+        transform: scale(1.05); /* Slightly enlarge the button */
     }
 
     .btn-custom:focus {
-        outline: none;
-        /* Remove focus outline */
+        outline: none; /* Remove focus outline */
     }
-
-    .card-custom {
+     .card-custom {
         border: 1px solid #e0e0e0;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -118,7 +104,7 @@
 
     <div class="page-wrapper default-version">
 
-        @include('Components.Admin.Sidebar')
+        @include('Components.Admin.CoordinatorSidebar')
         @include('Components.Admin.Navbar')
 
         <div class="container-fluid px-3 px-sm-0">
@@ -138,23 +124,18 @@
                             style="max-width: 900px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
                             <div style="text-align: center; margin-bottom: 40px;">
                                 <!-- Logo -->
-                                <img src="{{ asset('Home/GDR logo.png') }}" alt="Logo"
-                                    style="max-width: 150px; margin-bottom: 20px;">
+                                <img src="{{ asset('Home/GDR logo.png') }}" alt="Logo" style="max-width: 150px; margin-bottom: 20px;">
 
-                                <h3 style="margin-top: 0; color: #333; font-size: 28px; font-weight: bold;">Booking Form
-                                </h3>
-                                <p style="color: #666; font-size: 16px;">Fill out the form below to arrange for the
-                                    transportation of your goods.</p>
+                                <h3 style="margin-top: 0; color: #333; font-size: 28px; font-weight: bold;">Booking Form</h3>
+                                <p style="color: #666; font-size: 16px;">Fill out the form below to arrange for the transportation of your goods.</p>
                             </div>
-                            <form action="{{ route('booking.submit') }}" method="post" enctype="multipart/form-data"
-                                id="myForm">
+                            <form action="{{ route('booking.submit') }}" method="post" enctype="multipart/form-data" id="myForm">
                                 @csrf
                                 <div style="text-align: right;">
-                                    <button type="button" onclick="downloadForm()"
-                                        style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                 <button type="button" onclick="downloadForm()" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
                                         Download Form
                                     </button>
-
+         
                                 </div>
                                 <!-- Sender Information -->
                                 <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px;">
@@ -172,8 +153,7 @@
 
                                         <!-- Driver Name -->
                                         <div style="flex: 1; min-width: 220px;">
-                                            <label for="driver_name"
-                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                                            <label for="driver_name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
                                                 Driver Name
                                             </label>
                                             <select id="driver_name" name="driver_name"
@@ -186,34 +166,34 @@
 
                                         <!-- Plate Number -->
                                         <div style="flex: 1; min-width: 220px;">
-                                            <label for="plate_number"
-                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                                            <label for="plate_number" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
                                                 Plate Number
                                             </label>
                                             <input
                                                 style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                id="plate_number" name="plate_number" type="text"
-                                                placeholder="Enter Plate Number" required>
+                                                id="plate_number" name="plate_number" type="text" placeholder="Enter Plate Number" required>
                                         </div>
 
                                         <!-- Date -->
                                         <div style="flex: 1; min-width: 220px;">
-                                            <label for="Date"
-                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Date</label>
+                                            <label for="Date" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Date</label>
                                             <input
                                                 style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                id="date" name="date" type="datetime-local"
-                                                placeholder="Enter Date" required>
+                                                id="date" name="date" type="datetime-local" placeholder="Enter Date" required>
                                         </div>
                                         <div style="flex: 1; min-width: 220px;">
                                             <label for="accountName"
-                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Account
-                                                Name</label>
-                                            <input type="text" id="accountName" name="sender_name"
-                                                list="accountNames" placeholder="Type or select an account name"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Account Name</label>
+                                            <input
+                                                type="text"
+                                                id="accountName"
+                                                name="sender_name"
+                                                list="accountNames"
+                                                placeholder="Type or select an account name"
                                                 style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                required>
-                                            <datalist id="accountNames">
+                                                required
+                                            >
+                                             <datalist id="accountNames">
                                                 @foreach ($senderNames as $name)
                                                     <option value="{{ $name }}">
                                                 @endforeach
@@ -221,7 +201,7 @@
                                         </div>
 
 
-                                    </div>
+                                        </div>
 
                                     <div style="flex: 1; min-width: 220px;">
                                         <label for="product_name"
@@ -235,12 +215,10 @@
 
 
                                         <div style="flex: 1; min-width: 220px;">
-                                            <label for="transport-mode"
-                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                                            <label for="transport-mode" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
                                                 Transport Mode
                                             </label>
-                                            <select id="transport-mode" name="transport_mode"
-                                                style="padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); width: 100%;">
+                                            <select id="transport-mode" name="transport_mode" style="padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); width: 100%;">
                                                 <option value="Land Transport" selected>Land Transport</option>
                                                 <option value="Water Transport">Water Transport</option>
                                             </select>
@@ -258,12 +236,8 @@
                                 <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
                                     <!-- Delivery Type Dropdown -->
                                     <div style="flex: 1; min-width: 220px;">
-                                        <label for="delivery_type"
-                                            style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Delivery
-                                            Type</label>
-                                        <select
-                                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                            id="delivery_type" name="delivery_type" required>
+                                        <label for="delivery_type" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Delivery Type</label>
+                                        <select style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="delivery_type" name="delivery_type" required>
                                             <option value="">Select delivery type</option>
                                             <option value="Direct Delivery">Direct Delivery</option>
                                             <option value="Warehouse Transfer">Warehouse Transfer</option>
@@ -273,12 +247,8 @@
 
                                     <!-- Journey Type Dropdown -->
                                     <div style="flex: 1; min-width: 220px;">
-                                        <label for="journey_type"
-                                            style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Journey
-                                            Type</label>
-                                        <select
-                                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                            id="journey_type" name="journey_type" required>
+                                        <label for="journey_type" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Journey Type</label>
+                                        <select style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);" id="journey_type" name="journey_type" required>
                                             <option value="">Select journey type</option>
                                             <option value="Interisland">Interisland</option>
                                             <option value="Local">Local</option>
@@ -288,7 +258,7 @@
 
 
                                 <div style="margin-bottom: 40px;">
-
+                                    
                                     <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
                                         <div style="flex: 1; min-width: 220px;">
                                             <label for="origin"
@@ -311,172 +281,169 @@
                                                 style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">ETA</label>
                                             <input
                                                 style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                id="eta" name="eta" type="text" placeholder="Enter ETA"
-                                                required>
+                                                id="eta" name="eta" type="text"
+                                                placeholder="Enter ETA" required>
                                         </div>
 
-                                        <h4
-                                            style="color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">
-                                            Destination Information</h4>
+                                        <h4 style="color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">
+                                        Destination Information</h4>
                                         <div style="display: flex; flex-wrap: wrap; gap: 20px;">
-                                            <div style="flex: 1; min-width: 220px;">
-                                                <label for="consignee_name"
-                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Consignee
-                                                    Name</label>
-                                                <input
-                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                    id="consignee_name" name="consignee_name" type="text"
-                                                    placeholder="Enter Consignee's Name" required>
-                                            </div>
-                                            <div style="flex: 1; min-width: 220px;">
-                                                <label for="consignee_address"
-                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Address</label>
-                                                <input
-                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                    id="consignee_address" name="consignee_address" type="text"
-                                                    placeholder="Enter Consignee Address" required>
-                                            </div>
-                                            <div style="flex: 1; min-width: 220px;">
-                                                <label for="consignee_email"
-                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Consignee
-                                                    Email</label>
-                                                <input
-                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                    id="consignee_email" name="consignee_email" type="email"
-                                                    placeholder="Enter Consignee Email" required>
-                                            </div>
-                                            <div style="flex: 1; min-width: 220px;">
-                                                <label for="consignee_mobile"
-                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Consignee
-                                                    Mobile</label>
-                                                <input
-                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                    id="consignee_mobile" name="consignee_mobile" type="tel"
-                                                    placeholder="Enter Consignee Mobile Number" required>
-                                            </div>
-                                            <div style="flex: 1; min-width: 220px;">
-                                                <label for="consignee_city"
-                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">City</label>
-                                                <input
-                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                    id="consignee_city" name="consignee_city" type="text"
-                                                    placeholder="Enter City" required>
-                                            </div>
-                                            <div style="flex: 1; min-width: 220px;">
-                                                <label for="consignee_province"
-                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Province</label>
-                                                <input
-                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                    id="consignee_province" name="consignee_province" type="text"
-                                                    placeholder="Enter Province" required>
-                                            </div>
-                                            <div style="flex: 1; min-width: 220px;">
-                                                <label for="consignee_barangay"
-                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Barangay</label>
-                                                <input
-                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                    id="consignee_barangay" name="consignee_barangay" type="text"
-                                                    placeholder="Enter Barangay" required>
-                                            </div>
-                                            <div style="flex: 1; min-width: 220px;">
-                                                <label for="consignee_building_type"
-                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Building
-                                                    Type</label>
-                                                <input
-                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                    id="consignee_building_type" name="consignee_building_type"
-                                                    type="text" placeholder="Enter Building Type" required>
-                                            </div>
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="consignee_name"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Consignee
+                                                Name</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="consignee_name" name="consignee_name" type="text"
+                                                placeholder="Enter Consignee's Name" required>
+                                        </div>
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="consignee_address"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Address</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="consignee_address" name="consignee_address" type="text"
+                                                placeholder="Enter Consignee Address" required>
+                                        </div>
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="consignee_email"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Consignee
+                                                Email</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="consignee_email" name="consignee_email" type="email"
+                                                placeholder="Enter Consignee Email" required>
+                                        </div>
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="consignee_mobile"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Consignee
+                                                Mobile</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="consignee_mobile" name="consignee_mobile" type="tel"
+                                                placeholder="Enter Consignee Mobile Number" required>
+                                        </div>
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="consignee_city"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">City</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="consignee_city" name="consignee_city" type="text"
+                                                placeholder="Enter City" required>
+                                        </div>
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="consignee_province"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Province</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="consignee_province" name="consignee_province" type="text"
+                                                placeholder="Enter Province" required>
+                                        </div>
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="consignee_barangay"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Barangay</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="consignee_barangay" name="consignee_barangay" type="text"
+                                                placeholder="Enter Barangay" required>
+                                        </div>
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="consignee_building_type"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Building
+                                                Type</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="consignee_building_type" name="consignee_building_type"
+                                                type="text" placeholder="Enter Building Type" required>
                                         </div>
                                     </div>
+                                </div>
 
 
-                                    <!-- Merchant Information -->
-                                    <div style="margin-bottom: 40px;">
-                                        <h4
-                                            style="color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">
-                                            Origin Information</h4>
-                                        <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
-                                            <div style="flex: 1; min-width: 220px;">
-                                                <label for="merchant_name"
-                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Merchant
-                                                    Name</label>
-                                                <input
-                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                    id="merchant_name" name="merchant_name" type="text"
-                                                    placeholder="Enter Merchant's Name" required>
-                                            </div>
-                                            <div style="flex: 1; min-width: 220px;">
-                                                <label for="merchant_address"
-                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Address</label>
-                                                <input
-                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                    id="merchant_address" name="merchant_address" type="text"
-                                                    placeholder="Enter Merchant Address" required>
-                                            </div>
-                                            <div style="flex: 1; min-width: 220px;">
-                                                <label for="merchant_email"
-                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Merchant
-                                                    Email</label>
-                                                <input
-                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                    id="merchant_email" name="merchant_email" type="email"
-                                                    placeholder="Enter Merchant Email" required>
-                                            </div>
-                                            <div style="flex: 1; min-width: 220px;">
-                                                <label for="merchant_mobile"
-                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Merchant
-                                                    Mobile</label>
-                                                <input
-                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                    id="merchant_mobile" name="merchant_mobile" type="tel"
-                                                    placeholder="Enter Merchant Mobile Number" required>
-                                            </div>
-                                            <div style="flex: 1; min-width: 220px;">
-                                                <label for="merchant_city"
-                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">City</label>
-                                                <input
-                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                    id="merchant_city" name="merchant_city" type="text"
-                                                    placeholder="Enter City" required>
-                                            </div>
-                                            <div style="flex: 1; min-width: 220px;">
-                                                <label for="merchant_province"
-                                                    style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Province</label>
-                                                <input
-                                                    style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                    id="merchant_province" name="merchant_province" type="text"
-                                                    placeholder="Enter Province" required>
-                                            </div>
+                                <!-- Merchant Information -->
+                                <div style="margin-bottom: 40px;">
+                                    <h4 style="color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">
+                                        Origin Information</h4>
+                                    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="merchant_name"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Merchant
+                                                Name</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="merchant_name" name="merchant_name" type="text"
+                                                placeholder="Enter Merchant's Name" required>
+                                        </div>
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="merchant_address"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Address</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="merchant_address" name="merchant_address" type="text"
+                                                placeholder="Enter Merchant Address" required>
+                                        </div>
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="merchant_email"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Merchant
+                                                Email</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="merchant_email" name="merchant_email" type="email"
+                                                placeholder="Enter Merchant Email" required>
+                                        </div>
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="merchant_mobile"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Merchant
+                                                Mobile</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="merchant_mobile" name="merchant_mobile" type="tel"
+                                                placeholder="Enter Merchant Mobile Number" required>
+                                        </div>
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="merchant_city"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">City</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="merchant_city" name="merchant_city" type="text"
+                                                placeholder="Enter City" required>
+                                        </div>
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="merchant_province"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Province</label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="merchant_province" name="merchant_province" type="text"
+                                                placeholder="Enter Province" required>
                                         </div>
                                     </div>
-                                    <div class="container mt-4">
-                                        <div class="mb-3">
-                                            <label for="dataSelect" class="form-label">Select Truck Type</label>
-                                            <select class="form-select" id="dataSelect" aria-label="Select Data Type"
-                                                onchange="showData(this.value)">
-                                                <option value="">-- Choose an option --</option>
-                                                <option value="company-vehicles">Company Vehicles</option>
-                                                <option value="subcontractors">Subcontractors</option>
-                                            </select>
-                                        </div>
+                                </div>
+                                <div class="container mt-4">
+                                    <div class="mb-3">
+                                        <label for="dataSelect" class="form-label">Select Truck Type</label>
+                                        <select class="form-select" id="dataSelect" aria-label="Select Data Type" onchange="showData(this.value)">
+                                            <option value="">-- Choose an option --</option>
+                                            <option value="company-vehicles">Company Vehicles</option>
+                                            <option value="subcontractors">Subcontractors</option>
+                                        </select>
+                                    </div>
 
-                                        <!-- Container for displaying data in card format -->
-                                        <div id="dataContainer" class="mt-4 row">
-                                            <!-- Cards will be dynamically inserted here -->
-                                        </div>
-
-                                        <!-- Submit Button -->
+                                    <!-- Container for displaying data in card format -->
+                                    <div id="dataContainer" class="mt-4 row">
+                                        <!-- Cards will be dynamically inserted here -->
                                     </div>
 
                                     <!-- Submit Button -->
-                                    <div style="text-align: center;">
-                                        <button
-                                            style="padding: 12px 24px; background-color: #007bff; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background-color 0.3s ease;"
-                                            type="submit">
-                                            Submit Booking
-                                        </button>
-                                    </div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div style="text-align: center;">
+                                    <button
+                                        style="padding: 12px 24px; background-color: #007bff; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background-color 0.3s ease;"
+                                        type="submit">
+                                        Submit Booking
+                                    </button>
+                                </div>
 
                             </form>
 
@@ -490,42 +457,40 @@
 
         </div>
     </div>
-    </div>
-    </div>
+
+
     <script>
-        const companyVehicles = @json(
-            $vehicles->map(function ($vehicle) {
-                return [
-                    'id' => $vehicle->id,
-                    'name' => $vehicle->truck_name,
-                    'description' => $vehicle->truck_capacity . ' - Available: ' . $vehicle->quantity,
-                ];
-            }));
+       const companyVehicles = @json($vehicles->map(function ($vehicle) {
+    return [
+        'id' => $vehicle->id,
+        'name' => $vehicle->truck_name,
+        'description' => $vehicle->truck_capacity . ' - Available: ' . $vehicle->quantity
+    ];
+}));
 
-        const subcontractors = @json(
-            $subcontractors->map(function ($sub) {
-                return [
-                    'id' => $sub->id,
-                    'name' => $sub->company_name,
-                    'description' => $sub->truck_capacity . ' - Plate Number: ' . $sub->plate_number,
-                ];
-            }));
+const subcontractors = @json($subcontractors->map(function ($sub) {
+    return [
+        'id' => $sub->id,
+        'name' => $sub->company_name,
+        'description' => $sub->truck_capacity . ' - Plate Number: ' . $sub->plate_number
+    ];
+}));
 
-        function showData(type) {
-            const dataContainer = document.getElementById('dataContainer');
+function showData(type) {
+    const dataContainer = document.getElementById('dataContainer');
 
-            // Clear existing content
-            dataContainer.innerHTML = '';
+    // Clear existing content
+    dataContainer.innerHTML = '';
 
-            // Determine which data to display
-            const items = type === 'company-vehicles' ? companyVehicles : subcontractors;
-            const cardType = type === 'company-vehicles' ? 'vehicle' : 'subcontractor';
+    // Determine which data to display
+    const items = type === 'company-vehicles' ? companyVehicles : subcontractors;
+    const cardType = type === 'company-vehicles' ? 'vehicle' : 'subcontractor';
 
-            dataContainer.innerHTML = generateCards(items, cardType);
-        }
+    dataContainer.innerHTML = generateCards(items, cardType);
+}
 
-        function generateCards(items, type) {
-            return items.map(item => `
+function generateCards(items, type) {
+    return items.map(item => `
         <div class="col-md-3 mb-4">
             <div class="card position-relative" style="width: 100%;">
                 <input class="form-check-input position-absolute top-0 end-0 m-2" type="radio" name="truck_type" id="${type}-${item.id}" value="${item.id}">
@@ -538,8 +503,10 @@
             </div>
         </div>
     `).join('');
-        }
-    </script>
+}
+
+
+       </script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/jquery-3.7.1.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/vendor/bootstrap-toggle.min.js"></script>
@@ -605,7 +572,7 @@
             }
         }
     </script>
-  <script>
+        <script>
         function downloadForm() {
             // Get the form element
             const form = document.getElementById('myForm');
@@ -638,7 +605,6 @@
             link.click();
         }
     </script>
-
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/moment.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/daterangepicker.min.js"></script>
 
@@ -693,16 +659,16 @@
             });
         })(jQuery);
     </script>
-    <script>
-        document.getElementById('delivery_type').addEventListener('change', function() {
-            var vehicleChoices = document.getElementById('vehicleChoices');
-            if (this.value === 'Backload') {
-                vehicleChoices.style.display = 'none';
-            } else {
-                vehicleChoices.style.display = 'flex';
-            }
-        });
-    </script>
+ <script>
+    document.getElementById('delivery_type').addEventListener('change', function() {
+        var vehicleChoices = document.getElementById('vehicleChoices');
+        if (this.value === 'Backload') {
+            vehicleChoices.style.display = 'none';
+        } else {
+            vehicleChoices.style.display = 'flex';
+        }
+    });
+</script>
     <script>
         "use strict";
         (function($) {
@@ -922,28 +888,19 @@
                             // Populate other fields similarly
 
                             document.getElementById('consignee_name').value = item.consignee_name || '';
-                            document.getElementById('consignee_address').value = item
-                                .consignee_address || '';
-                            document.getElementById('consignee_email').value = item.consignee_email ||
-                                '';
-                            document.getElementById('consignee_mobile').value = item.consignee_mobile ||
-                                '';
+                            document.getElementById('consignee_address').value = item.consignee_address || '';
+                            document.getElementById('consignee_email').value = item.consignee_email || '';
+                            document.getElementById('consignee_mobile').value = item.consignee_mobile || '';
                             document.getElementById('consignee_city').value = item.consignee_city || '';
-                            document.getElementById('consignee_province').value = item
-                                .consignee_province || '';
-                            document.getElementById('consignee_barangay').value = item
-                                .consignee_barangay || '';
-                            document.getElementById('consignee_building_type').value = item
-                                .consignee_building_type || '';
+                            document.getElementById('consignee_province').value = item.consignee_province || '';
+                            document.getElementById('consignee_barangay').value = item.consignee_barangay || '';
+                            document.getElementById('consignee_building_type').value = item.consignee_building_type || '';
                             document.getElementById('merchant_name').value = item.merchant_name || '';
-                            document.getElementById('merchant_address').value = item.merchant_address ||
-                                '';
+                            document.getElementById('merchant_address').value = item.merchant_address || '';
                             document.getElementById('merchant_email').value = item.merchant_email || '';
-                            document.getElementById('merchant_mobile').value = item.merchant_mobile ||
-                                '';
+                            document.getElementById('merchant_mobile').value = item.merchant_mobile || '';
                             document.getElementById('merchant_city').value = item.merchant_city || '';
-                            document.getElementById('merchant_province').value = item
-                                .merchant_province || '';
+                            document.getElementById('merchant_province').value = item.merchant_province || '';
                             document.getElementById('truck_type').value = item.truck_type || '';
                             // Populate other fields similarly
                         });
@@ -951,38 +908,35 @@
                     .catch(error => console.error('Error fetching data:', error));
             }
         });
-    </script>
-    {{-- <script>
-        $(document).ready(function() {
-            $('#myForm').on('submit', function(event) {
-                event.preventDefault(); // Prevent default form submission
+        </script>
+{{-- <script>
+    $(document).ready(function() {
+    $('#myForm').on('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
 
-                var formData = $(this).serialize(); // Serialize form data
+        var formData = $(this).serialize(); // Serialize form data
 
-                $.ajax({
-                    url: $(this).attr('action'),
-                    type: 'POST',
-                    data: formData,
-                    success: function(response) {
-                        if (response.success) {
-                            alert('Form submitted successfully! Estimated Travel time: ' +
-                                response.travel_time_minutes + ' minutes.');
-                        } else {
-                            alert('Error: ' + response.message);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        alert('An error occurred: ' + error);
-                    }
-                });
-            });
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    alert('Form submitted successfully! Estimated Travel time: ' + response.travel_time_minutes + ' minutes.');
+                } else {
+                    alert('Error: ' + response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('An error occurred: ' + error);
+            }
         });
+    });
+});
 
+    
 
-
-        <
-        script src = "https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/search.js" >
-    </script>
+    <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/search.js"></script>
 
     <script>
         "use strict";

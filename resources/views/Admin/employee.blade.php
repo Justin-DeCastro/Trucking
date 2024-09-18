@@ -20,470 +20,456 @@
 
     <div class="body-wrapper">
         <div class="bodywrapper__inner">
-
             <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
                 <h6 class="page-title">All Employee</h6>
-                <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class='bx bx-export'></i> Export
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <button type="button" id="copyBtn" class="btn dropdown-item">
-                                    <i class='bx bx-copy'></i> Copy
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="printBtn" class="btn dropdown-item">
-                                    <i class='bx bx-printer'></i> Print
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="pdfBtn" class="btn dropdown-item">
-                                    <i class='bx bxs-file-pdf'></i> PDF
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="excelBtn" class="btn dropdown-item">
-                                    <i class='bx bx-file'></i> Excel
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="dropdown">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class='bx bx-export'></i> Export
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <button type="button" id="copyBtn" class="btn dropdown-item">
+                                <i class='bx bx-copy'></i> Copy
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" id="printBtn" class="btn dropdown-item">
+                                <i class='bx bx-printer'></i> Print
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" id="pdfBtn" class="btn dropdown-item">
+                                <i class='bx bxs-file-pdf'></i> PDF
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" id="excelBtn" class="btn dropdown-item">
+                                <i class='bx bx-file'></i> Excel
+                            </button>
+                        </li>
+                    </ul>
                 </div>
-                <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal"
-                    data-bs-target="#manageAdmin">
-                    <i class="las la-plus"></i> Add New
-                </button>
             </div>
+        </div>
+        <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins pb-3">
+            <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal"
+                data-bs-target="#manageAdmin">
+                <i class="fa fa-plus"></i> Add New
+            </button>
+        </div>
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body p-0">
-                            <div class="table-responsive--md table-responsive">
-                                <table id="data-table" class="table table--light style--two display nowrap">
-                                    <thead>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div class="table-responsive--md table-responsive">
+                            <table id="data-table" class="table table--light style--two display nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>ID Number</th>
+                                        <th>Position</th>
+                                        <th>Employee Name</th>
+                                        <th>Date Hired</th>
+                                        <th>Birthday</th>
+                                        <th>Birth Place</th>
+                                        <th>Civil Status</th>
+                                        <th>Gender</th>
+                                        <th>Mobile</th>
+                                        <th>Address</th>
+                                        <th>Profile Image</th>
+                                        <th>201 Files</th>
+                                        <th>Actions</th> <!-- New column for action buttons -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($employees as $employee)
                                         <tr>
-                                            <th>ID Number</th>
-                                            <th>Position</th>
-                                            <th>Employee Name</th>
-                                            <th>Date Hired</th>
-                                            <th>Birthday</th>
-                                            <th>Birth Place</th>
-                                            <th>Civil Status</th>
-                                            <th>Gender</th>
-                                            <th>Mobile</th>
-                                            <th>Address</th>
-                                            <th>Profile Image</th>
-                                            <th>201 Files</th>
-                                            <th>Actions</th> <!-- New column for action buttons -->
+                                            <td>{{ $employee->id_number }}</td>
+                                            <td>{{ $employee->position }}</td>
+                                            <td>{{ $employee->employee_name }}</td>
+                                            <td>{{ $employee->date_hired }}</td>
+                                            <td>{{ $employee->birthday }}</td>
+                                            <td>{{ $employee->birth_place }}</td>
+                                            <td>{{ $employee->civil_status }}</td>
+                                            <td>{{ $employee->gender }}</td>
+                                            <td>{{ $employee->mobile }}</td>
+                                            <td>{{ $employee->address }}</td>
+                                            <td>
+                                                <a href="{{ asset($employee->profile_image) }}" data-lightbox="profile"
+                                                    data-title="Profile Image">
+                                                    <img src="{{ asset($employee->profile_image) }}"
+                                                        alt="Profile Image"
+                                                        style="width: 50px; height: 50px; object-fit: cover;">
+                                                </a>
+                                            </td>
+                                            <td>
+                                                @if ($employee->files)
+                                                    @php
+                                                        $filePaths = json_decode($employee->files, true);
+                                                    @endphp
+                                                    @foreach ($filePaths as $filePath)
+                                                        <a href="{{ asset($filePath) }}" data-lightbox="files"
+                                                            data-title="File Image">
+                                                            <img src="{{ asset($filePath) }}" alt="File Image"
+                                                                style="width: 50px; height: 50px; object-fit: cover; margin-right: 5px;">
+                                                        </a>
+                                                    @endforeach
+                                                @else
+                                                    <p>No images available</p>
+                                                @endif
+                                            </td>
+
+
+
+                                            <td>
+                                                <button type="button" class="btn btn-info btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#employeeModal{{ $employee->id }}">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <!-- Edit Button -->
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                    data-bs-toggle="modal" data-bs-target="#editModal"
+                                                    data-id="{{ $employee->id }}"
+                                                    data-name="{{ $employee->employee_name }}"
+                                                    data-id_number="{{ $employee->id_number }}"
+                                                    data-position="{{ $employee->position }}"
+                                                    data-date_hired="{{ $employee->date_hired }}"
+                                                    data-birthday="{{ $employee->birthday }}"
+                                                    data-birth_place="{{ $employee->birth_place }}"
+                                                    data-civil_status="{{ $employee->civil_status }}"
+                                                    data-gender="{{ $employee->gender }}"
+                                                    data-mobile="{{ $employee->mobile }}"
+                                                    data-address="{{ $employee->address }}"
+                                                    data-profile_image="{{ asset($employee->profile_image) }}"
+                                                    data-files="{{ json_encode($employee->files) }}">
+                                                    <!-- Adjust based on how you store files -->
+                                                    Edit
+                                                </button>
+
+                                                <!-- Delete Button -->
+                                                <form action="{{ route('employee.destroy', $employee->id) }}"
+                                                    method="POST" style="display:inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Are you sure you want to delete this data?');">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($employees as $employee)
-                                            <tr>
-                                                <td>{{ $employee->id_number }}</td>
-                                                <td>{{ $employee->position }}</td>
-                                                <td>{{ $employee->employee_name }}</td>
-                                                <td>{{ $employee->date_hired }}</td>
-                                                <td>{{ $employee->birthday }}</td>
-                                                <td>{{ $employee->birth_place }}</td>
-                                                <td>{{ $employee->civil_status }}</td>
-                                                <td>{{ $employee->gender }}</td>
-                                                <td>{{ $employee->mobile }}</td>
-                                                <td>{{ $employee->address }}</td>
-                                                <td>
-                                                    <a href="{{ asset($employee->profile_image) }}"
-                                                        data-lightbox="profile" data-title="Profile Image">
-                                                        <img src="{{ asset($employee->profile_image) }}"
-                                                            alt="Profile Image"
-                                                            style="width: 50px; height: 50px; object-fit: cover;">
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    @if ($employee->files)
-                                                        @php
-                                                            $filePaths = json_decode($employee->files, true);
-                                                        @endphp
-                                                        @foreach ($filePaths as $filePath)
-                                                            <a href="{{ asset($filePath) }}" data-lightbox="files"
-                                                                data-title="File Image">
-                                                                <img src="{{ asset($filePath) }}" alt="File Image"
-                                                                    style="width: 50px; height: 50px; object-fit: cover; margin-right: 5px;">
-                                                            </a>
-                                                        @endforeach
-                                                    @else
-                                                        <p>No images available</p>
-                                                    @endif
-                                                </td>
-
-
-
-                                                <td>
-                                                    <button type="button" class="btn btn-info btn-sm"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#employeeModal{{ $employee->id }}">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                    <!-- Edit Button -->
-                                                    <button type="button" class="btn btn-primary btn-sm"
-                                                        data-bs-toggle="modal" data-bs-target="#editModal"
-                                                        data-id="{{ $employee->id }}"
-                                                        data-name="{{ $employee->employee_name }}"
-                                                        data-id_number="{{ $employee->id_number }}"
-                                                        data-position="{{ $employee->position }}"
-                                                        data-date_hired="{{ $employee->date_hired }}"
-                                                        data-birthday="{{ $employee->birthday }}"
-                                                        data-birth_place="{{ $employee->birth_place }}"
-                                                        data-civil_status="{{ $employee->civil_status }}"
-                                                        data-gender="{{ $employee->gender }}"
-                                                        data-mobile="{{ $employee->mobile }}"
-                                                        data-address="{{ $employee->address }}"
-                                                        data-profile_image="{{ asset($employee->profile_image) }}"
-                                                        data-files="{{ json_encode($employee->files) }}">
-                                                        <!-- Adjust based on how you store files -->
-                                                        Edit
-                                                    </button>
-
-                                                    <!-- Delete Button -->
-                                                    <form action="{{ route('employee.destroy', $employee->id) }}"
-                                                        method="POST" style="display:inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to delete this data?');">
-                                                            Delete
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Create Vehicle Modal -->
-            <div class="modal fade" id="manageAdmin" tabindex="-1" aria-labelledby="manageAdminLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="manageAdminLabel">Create Employee</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <form action="{{ route('employee.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="modal-body">
-                                <!-- Employee Name -->
-                                <div class="mb-3">
-                                    <label for="employee_name" class="form-label">Employee Name</label>
-                                    <input type="text" id="employee_name" name="employee_name"
-                                        class="form-control" required>
-                                </div>
-
-                                <!-- ID Number -->
-                                <div class="mb-3">
-                                    <label for="id_number" class="form-label">ID Number</label>
-                                    <input type="text" id="id_number" name="id_number" class="form-control"
-                                        required>
-                                </div>
-
-                                <!-- Position -->
-                                <div class="mb-3">
-                                    <label for="position" class="form-label">Position</label>
-                                    <input type="text" id="position" name="position" class="form-control"
-                                        required>
-                                </div>
-
-                                <!-- Date Hired -->
-                                <div class="mb-3">
-                                    <label for="date_hired" class="form-label">Date Hired</label>
-                                    <input type="date" id="date_hired" name="date_hired" class="form-control"
-                                        required>
-                                </div>
-
-                                <!-- Birthday -->
-                                <div class="mb-3">
-                                    <label for="birthday" class="form-label">Birthday</label>
-                                    <input type="date" id="birthday" name="birthday" class="form-control"
-                                        required>
-                                </div>
-
-                                <!-- Birth Place -->
-                                <div class="mb-3">
-                                    <label for="birth_place" class="form-label">Birth Place</label>
-                                    <input type="text" id="birth_place" name="birth_place" class="form-control"
-                                        required>
-                                </div>
-
-                                <!-- Civil Status -->
-                                <div class="mb-3">
-                                    <label for="civil_status" class="form-label">Civil Status</label>
-                                    <select id="civil_status" name="civil_status" class="form-control" required>
-                                        <option value="" disabled selected>Select Status</option>
-                                        <option value="Single">Single</option>
-                                        <option value="Married">Married</option>
-                                        <option value="Divorced">Divorced</option>
-                                        <option value="Widowed">Widowed</option>
-                                    </select>
-                                </div>
-
-                                <!-- Gender -->
-                                <div class="mb-3">
-                                    <label for="gender" class="form-label">Gender</label>
-                                    <select id="gender" name="gender" class="form-control" required>
-                                        <option value="" disabled selected>Select Gender</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </div>
-
-                                <!-- Mobile -->
-                                <div class="mb-3">
-                                    <label for="mobile" class="form-label">Mobile</label>
-                                    <input type="text" id="mobile" name="mobile" class="form-control"
-                                        required>
-                                </div>
-
-                                <!-- Address -->
-                                <div class="mb-3">
-                                    <label for="address" class="form-label">Address</label>
-                                    <input type="text" id="address" name="address" class="form-control"
-                                        required>
-                                </div>
-
-                                <!-- Profile Image -->
-                                <div class="mb-3">
-                                    <label for="profile_image" class="form-label">Profile Image</label>
-                                    <input type="file" id="profile_image" name="profile_image"
-                                        class="form-control" accept="image/*">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="files" class="form-label">Files</label>
-                                    <input type="file" id="files" name="files[]" class="form-control"
-                                        accept="image/*" multiple>
-                                </div>
-
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Cancel</button>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- Edit Modal -->
-            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Edit Employee</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <form id="editForm" action="{{ route('employee.update', 0) }}" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-                            <div class="modal-body">
-                                <input type="hidden" id="editId" name="id">
-
-                                <!-- Employee Name -->
-                                <div class="mb-3">
-                                    <label for="editName" class="form-label">Employee Name</label>
-                                    <input type="text" id="editName" name="employee_name" class="form-control"
-                                        required>
-                                </div>
-
-                                <!-- ID Number -->
-                                <div class="mb-3">
-                                    <label for="editIdNumber" class="form-label">ID Number</label>
-                                    <input type="text" id="editIdNumber" name="id_number" class="form-control"
-                                        required>
-                                </div>
-
-                                <!-- Position -->
-                                <div class="mb-3">
-                                    <label for="editPosition" class="form-label">Position</label>
-                                    <input type="text" id="editPosition" name="position" class="form-control"
-                                        required>
-                                </div>
-
-                                <!-- Date Hired -->
-                                <div class="mb-3">
-                                    <label for="editDateHired" class="form-label">Date Hired</label>
-                                    <input type="date" id="editDateHired" name="date_hired" class="form-control"
-                                        required>
-                                </div>
-
-                                <!-- Birthday -->
-                                <div class="mb-3">
-                                    <label for="editBirthday" class="form-label">Birthday</label>
-                                    <input type="date" id="editBirthday" name="birthday" class="form-control"
-                                        required>
-                                </div>
-
-                                <!-- Birth Place -->
-                                <div class="mb-3">
-                                    <label for="editBirthPlace" class="form-label">Birth Place</label>
-                                    <input type="text" id="editBirthPlace" name="birth_place"
-                                        class="form-control" required>
-                                </div>
-
-                                <!-- Civil Status -->
-                                <div class="mb-3">
-                                    <label for="editCivilStatus" class="form-label">Civil Status</label>
-                                    <select id="editCivilStatus" name="civil_status" class="form-control" required>
-                                        <option value="" disabled selected>Select Status</option>
-                                        <option value="Single">Single</option>
-                                        <option value="Married">Married</option>
-                                        <option value="Divorced">Divorced</option>
-                                        <option value="Widowed">Widowed</option>
-                                    </select>
-                                </div>
-
-                                <!-- Gender -->
-                                <div class="mb-3">
-                                    <label for="editGender" class="form-label">Gender</label>
-                                    <select id="editGender" name="gender" class="form-control" required>
-                                        <option value="" disabled selected>Select Gender</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </div>
-
-                                <!-- Mobile -->
-                                <div class="mb-3">
-                                    <label for="editMobile" class="form-label">Mobile</label>
-                                    <input type="text" id="editMobile" name="mobile" class="form-control"
-                                        required>
-                                </div>
-
-                                <!-- Address -->
-                                <div class="mb-3">
-                                    <label for="editAddress" class="form-label">Address</label>
-                                    <input type="text" id="editAddress" name="address" class="form-control"
-                                        required>
-                                </div>
-
-                                <!-- Profile Image -->
-                                <div class="mb-3">
-                                    <label for="editProfileImage" class="form-label">Profile Image</label>
-                                    <input type="file" id="editProfileImage" name="profile_image"
-                                        class="form-control" accept="image/*">
-                                </div>
-
-                                <!-- Files -->
-                                <div class="mb-3">
-                                    <label for="editFiles" class="form-label">Files</label>
-                                    <input type="file" id="editFiles" name="files[]" class="form-control"
-                                        accept="image/*" multiple>
-                                </div>
-
-                                <img id="editProfileImagePreview" src="" alt="Profile Image"
-                                    style="width: 100%; object-fit: cover;">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Update</button>
-                                <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            @foreach ($employees as $employee)
-                <div class="modal fade" id="employeeModal{{ $employee->id }}" tabindex="-1"
-                    aria-labelledby="employeeModalLabel{{ $employee->id }}" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content border-0 shadow-lg rounded-3">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="employeeModalLabel{{ $employee->id }}"></h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="card border-0 shadow-sm rounded-3">
-                                    <div class="row g-0">
-                                        <div class="col-md-4 text-center">
-                                            <img src="{{ asset($employee->profile_image) }}" alt="Profile Image"
-                                                class="img-fluid rounded-circle border border-light mb-3"
-                                                style="width: 150px; height: 200px; object-fit: cover;">
-                                            <h5 class="card-title">{{ $employee->employee_name }}</h5>
-                                            <p><strong>Position:</strong> {{ $employee->position }}</p>
-                                            <p><strong>ID Number:</strong> {{ $employee->id_number }}</p>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="card-body">
-                                                <p><strong>Birthday:</strong> {{ $employee->birthday }}</p>
-                                                <p><strong>Date Hired:</strong> {{ $employee->date_hired }}
-                                                </p>
-                                                <p><strong>Birth Place:</strong>
-                                                    {{ $employee->birth_place }}</p>
-                                                <p><strong>Civil Status:</strong>
-                                                    {{ $employee->civil_status }}</p>
-                                                <p><strong>Gender:</strong> {{ $employee->gender }}</p>
-                                                <p><strong>Mobile:</strong> {{ $employee->mobile }}</p>
-                                                <p><strong>Address:</strong> {{ $employee->address }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary"
-                                    onclick="printModal({{ $employee->id }})">Print</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-
-            <!-- Delete Modal -->
-            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Are you sure you want to delete this employee?
-                        </div>
-                        <div class="modal-footer">
-                            <form id="deleteForm" method="POST" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Yes, Delete</button>
-                                <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Cancel</button>
-                            </form>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Create Vehicle Modal -->
+        <div class="modal fade" id="manageAdmin" tabindex="-1" aria-labelledby="manageAdminLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="manageAdminLabel">Create Employee</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('employee.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-body">
+                            <!-- Employee Name -->
+                            <div class="mb-3">
+                                <label for="employee_name" class="form-label">Employee Name</label>
+                                <input type="text" id="employee_name" name="employee_name" class="form-control"
+                                    required>
+                            </div>
+
+                            <!-- ID Number -->
+                            <div class="mb-3">
+                                <label for="id_number" class="form-label">ID Number</label>
+                                <input type="text" id="id_number" name="id_number" class="form-control" required>
+                            </div>
+
+                            <!-- Position -->
+                            <div class="mb-3">
+                                <label for="position" class="form-label">Position</label>
+                                <input type="text" id="position" name="position" class="form-control" required>
+                            </div>
+
+                            <!-- Date Hired -->
+                            <div class="mb-3">
+                                <label for="date_hired" class="form-label">Date Hired</label>
+                                <input type="date" id="date_hired" name="date_hired" class="form-control"
+                                    required>
+                            </div>
+
+                            <!-- Birthday -->
+                            <div class="mb-3">
+                                <label for="birthday" class="form-label">Birthday</label>
+                                <input type="date" id="birthday" name="birthday" class="form-control" required>
+                            </div>
+
+                            <!-- Birth Place -->
+                            <div class="mb-3">
+                                <label for="birth_place" class="form-label">Birth Place</label>
+                                <input type="text" id="birth_place" name="birth_place" class="form-control"
+                                    required>
+                            </div>
+
+                            <!-- Civil Status -->
+                            <div class="mb-3">
+                                <label for="civil_status" class="form-label">Civil Status</label>
+                                <select id="civil_status" name="civil_status" class="form-control" required>
+                                    <option value="" disabled selected>Select Status</option>
+                                    <option value="Single">Single</option>
+                                    <option value="Married">Married</option>
+                                    <option value="Divorced">Divorced</option>
+                                    <option value="Widowed">Widowed</option>
+                                </select>
+                            </div>
+
+                            <!-- Gender -->
+                            <div class="mb-3">
+                                <label for="gender" class="form-label">Gender</label>
+                                <select id="gender" name="gender" class="form-control" required>
+                                    <option value="" disabled selected>Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+                            <!-- Mobile -->
+                            <div class="mb-3">
+                                <label for="mobile" class="form-label">Mobile</label>
+                                <input type="text" id="mobile" name="mobile" class="form-control" required>
+                            </div>
+
+                            <!-- Address -->
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" id="address" name="address" class="form-control" required>
+                            </div>
+
+                            <!-- Profile Image -->
+                            <div class="mb-3">
+                                <label for="profile_image" class="form-label">Profile Image</label>
+                                <input type="file" id="profile_image" name="profile_image" class="form-control"
+                                    accept="image/*">
+                            </div>
+                            <div class="mb-3">
+                                <label for="files" class="form-label">Files</label>
+                                <input type="file" id="files" name="files[]" class="form-control"
+                                    accept="image/*" multiple>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Modal -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Edit Employee</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <form id="editForm" action="{{ route('employee.update', 0) }}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-body">
+                            <input type="hidden" id="editId" name="id">
+
+                            <!-- Employee Name -->
+                            <div class="mb-3">
+                                <label for="editName" class="form-label">Employee Name</label>
+                                <input type="text" id="editName" name="employee_name" class="form-control"
+                                    required>
+                            </div>
+
+                            <!-- ID Number -->
+                            <div class="mb-3">
+                                <label for="editIdNumber" class="form-label">ID Number</label>
+                                <input type="text" id="editIdNumber" name="id_number" class="form-control"
+                                    required>
+                            </div>
+
+                            <!-- Position -->
+                            <div class="mb-3">
+                                <label for="editPosition" class="form-label">Position</label>
+                                <input type="text" id="editPosition" name="position" class="form-control"
+                                    required>
+                            </div>
+
+                            <!-- Date Hired -->
+                            <div class="mb-3">
+                                <label for="editDateHired" class="form-label">Date Hired</label>
+                                <input type="date" id="editDateHired" name="date_hired" class="form-control"
+                                    required>
+                            </div>
+
+                            <!-- Birthday -->
+                            <div class="mb-3">
+                                <label for="editBirthday" class="form-label">Birthday</label>
+                                <input type="date" id="editBirthday" name="birthday" class="form-control"
+                                    required>
+                            </div>
+
+                            <!-- Birth Place -->
+                            <div class="mb-3">
+                                <label for="editBirthPlace" class="form-label">Birth Place</label>
+                                <input type="text" id="editBirthPlace" name="birth_place" class="form-control"
+                                    required>
+                            </div>
+
+                            <!-- Civil Status -->
+                            <div class="mb-3">
+                                <label for="editCivilStatus" class="form-label">Civil Status</label>
+                                <select id="editCivilStatus" name="civil_status" class="form-control" required>
+                                    <option value="" disabled selected>Select Status</option>
+                                    <option value="Single">Single</option>
+                                    <option value="Married">Married</option>
+                                    <option value="Divorced">Divorced</option>
+                                    <option value="Widowed">Widowed</option>
+                                </select>
+                            </div>
+
+                            <!-- Gender -->
+                            <div class="mb-3">
+                                <label for="editGender" class="form-label">Gender</label>
+                                <select id="editGender" name="gender" class="form-control" required>
+                                    <option value="" disabled selected>Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+                            <!-- Mobile -->
+                            <div class="mb-3">
+                                <label for="editMobile" class="form-label">Mobile</label>
+                                <input type="text" id="editMobile" name="mobile" class="form-control" required>
+                            </div>
+
+                            <!-- Address -->
+                            <div class="mb-3">
+                                <label for="editAddress" class="form-label">Address</label>
+                                <input type="text" id="editAddress" name="address" class="form-control" required>
+                            </div>
+
+                            <!-- Profile Image -->
+                            <div class="mb-3">
+                                <label for="editProfileImage" class="form-label">Profile Image</label>
+                                <input type="file" id="editProfileImage" name="profile_image"
+                                    class="form-control" accept="image/*">
+                            </div>
+
+                            <!-- Files -->
+                            <div class="mb-3">
+                                <label for="editFiles" class="form-label">Files</label>
+                                <input type="file" id="editFiles" name="files[]" class="form-control"
+                                    accept="image/*" multiple>
+                            </div>
+
+                            <img id="editProfileImagePreview" src="" alt="Profile Image"
+                                style="width: 100%; object-fit: cover;">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        @foreach ($employees as $employee)
+            <div class="modal fade" id="employeeModal{{ $employee->id }}" tabindex="-1"
+                aria-labelledby="employeeModalLabel{{ $employee->id }}" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content border-0 shadow-lg rounded-3">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="employeeModalLabel{{ $employee->id }}"></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="row g-0">
+                                    <div class="col-md-4 text-center">
+                                        <img src="{{ asset($employee->profile_image) }}" alt="Profile Image"
+                                            class="img-fluid rounded-circle border border-light mb-3"
+                                            style="width: 150px; height: 200px; object-fit: cover;">
+                                        <h5 class="card-title">{{ $employee->employee_name }}</h5>
+                                        <p><strong>Position:</strong> {{ $employee->position }}</p>
+                                        <p><strong>ID Number:</strong> {{ $employee->id_number }}</p>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <p><strong>Birthday:</strong> {{ $employee->birthday }}</p>
+                                            <p><strong>Date Hired:</strong> {{ $employee->date_hired }}
+                                            </p>
+                                            <p><strong>Birth Place:</strong>
+                                                {{ $employee->birth_place }}</p>
+                                            <p><strong>Civil Status:</strong>
+                                                {{ $employee->civil_status }}</p>
+                                            <p><strong>Gender:</strong> {{ $employee->gender }}</p>
+                                            <p><strong>Mobile:</strong> {{ $employee->mobile }}</p>
+                                            <p><strong>Address:</strong> {{ $employee->address }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="printModal({{ $employee->id }})">Print</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+        <!-- Delete Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this employee?
+                    </div>
+                    <div class="modal-footer">
+                        <form id="deleteForm" method="POST" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>

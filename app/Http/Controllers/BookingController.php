@@ -702,6 +702,20 @@ public function updateLocationStatus(Request $request, Booking $booking)
     return redirect()->back()->with('success', 'Location status updated successfully.');
 }
 
+public function updateLocation(Request $request, $id)
+{
+    $request->validate([
+        'location' => 'required|string|max:255',
+    ]);
+
+    $booking = Booking::findOrFail($id);
+    $booking->location = $request->location; // Update 'location' field
+    $booking->location_updated_by = auth()->user()->id; // Assuming you have this field
+    $booking->location_updated_at = now(); // Assuming you have this field
+    $booking->save();
+
+    return redirect()->back()->with('success', 'Location updated successfully.');
+}
 
 
 

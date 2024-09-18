@@ -8,53 +8,26 @@
 <!-- Fancybox CSS -->
 
 @include('Components.Admin.Header')
+
 <body>
     @include('Components.Accounting.Sidebar')
-    <nav class="navbar-wrapper bg--dark d-flex flex-wrap">
+    @include('Components.Admin.Navbar')
 
-        <div class="navbar__right">
-            <ul class="navbar__action-list">
-                <li class="dropdown d-flex profile-dropdown">
-                    <button type="button" data-bs-toggle="dropdown" data-display="static" aria-haspopup="true"
-                        aria-expanded="false">
-                        <span class="navbar-user">
-                            <span class="navbar-user__thumb"><img src="Home/user-avatar-male-5.png"
-                                    alt="image"></span>
-                            <span class="navbar-user__info">
-                                <span class="navbar-user__name">admin</span>
-                            </span>
-                            <span class="icon"><i class="fas fa-chevron-circle-down"></i></span>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu--sm p-0 border-0 box--shadow1 dropdown-menu-right">
-
-                        <a href="logout" class="dropdown-menu__item d-flex align-items-center px-3 py-2">
-                            <i class="dropdown-menu__icon fas fa-sign-out-alt"></i>
-                            <span class="dropdown-menu__caption">Logout</span>
-                        </a>
-                    </div>
-                    <button type="button" class="breadcrumb-nav-open ms-2 d-none">
-                        <i class="las la-sliders-h"></i>
-                    </button>
-                </li>
-            </ul>
-        </div>
-    </nav>
     <div class="container-fluid px-3 px-sm-0">
         <div class="body-wrapper">
             <div class="bodywrapper__inner">
 
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
                     <h4>Total Balance - Approved Budget Request = Remaining Balance</h4>
-
                     <h6 class="page-title"></h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                        <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#manageDeposit">
-                            <i class="las la-plus"></i> IN
+                        <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="modal"
+                            data-bs-target="#manageDeposit">
+                            <i class="fa fa-plus"></i> IN
                         </button>
                     </div>
                 </div>
-<br>
+                <br>
                 <h4>Select To Summarize</h4>
                 <div class="d-flex mb-3 align-items-center">
                     <div class="form-group me-3">
@@ -85,12 +58,44 @@
                         </select>
                     </div>
                 </div>
-
-                <div >
-                    <strong style="color: #007bff;">Remaining Balance:</strong> <span style="color: #28a745;">₱{{ number_format($startingBalance, 2) }}</span>
+                <div class="d-flex flex-wrap justify-content-between gap-2 align-items-center breadcrumb-plugins pb-3">
+                    <div class="col-md-4">
+                        <div class="alert alert-info p-2" style="background-color:rgb(93,164,84); color: white;">
+                            <strong>Remaining Balance:</strong> &nbsp; ₱{{ number_format($startingBalance, 2) }}
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class='bx bx-export'></i> Export
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <button type="button" id="copyBtn" class="btn dropdown-item">
+                                    <i class='bx bx-copy'></i> Copy
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" id="printBtn" class="btn dropdown-item">
+                                    <i class='bx bx-printer'></i> Print
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" id="pdfBtn" class="btn dropdown-item">
+                                    <i class='bx bxs-file-pdf'></i> PDF
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" id="excelBtn" class="btn dropdown-item">
+                                    <i class='bx bx-file'></i> Excel
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
-                <table class="jobOffersTable">
+
+                <table id="data-table" class="jobOffersTable table table--light style--two display nowrap"">
                     <thead>
                         <tr>
                             <th>Date</th>
@@ -110,7 +115,8 @@
                                 <td>{{ $gdrAccounting->payment_channel }}</td>
                                 <td>
                                     @if ($gdrAccounting->proof_of_payment)
-                                        <a href="{{ asset($gdrAccounting->proof_of_payment) }}" target="_blank">View Proof</a>
+                                        <a href="{{ asset($gdrAccounting->proof_of_payment) }}" target="_blank">View
+                                            Proof</a>
                                     @else
                                         No proof uploaded
                                     @endif
@@ -145,8 +151,8 @@
 
                                     <div class="mb-3">
                                         <label for="particulars" class="form-label">Particulars</label>
-                                        <input type="text" id="particulars" name="particulars" class="form-control"
-                                            required>
+                                        <input type="text" id="particulars" name="particulars"
+                                            class="form-control" required>
                                     </div>
 
                                     <div class="mb-3">
@@ -184,264 +190,213 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Withdrawal Modal -->
-
-
-                @include('Components.Admin.Footer')
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        var deleteButtons = document.querySelectorAll('.btn-delete');
-                        var deleteForm = document.getElementById('deleteForm');
-
-                        deleteButtons.forEach(function(button) {
-                            button.addEventListener('click', function() {
-                                var url = button.getAttribute('data-url');
-                                deleteForm.setAttribute('action', url);
-                            });
-                        });
-                    });
-                </script>
+            </div>
+        </div>
+    </div>
 
 
+    <!-- Withdrawal Modal -->
 
-<script>
-    $(document).ready(function() {
-        $('.jobOffersTable').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ],
-            responsive: true // Optional: makes the table responsive
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var yearFilter = document.getElementById('yearFilter');
+            var monthFilter = document.getElementById('monthFilter');
+
+            function filterRows() {
+                var selectedYear = yearFilter.value;
+                var selectedMonth = monthFilter.value;
+                var rows = document.querySelectorAll('.jobOffersTable tbody tr');
+
+                rows.forEach(function(row) {
+                    var rowDateStr = row.getAttribute('data-month');
+
+                    // Example: "18-Sep-24 02-30 PM"
+                    var dateParts = rowDateStr.split(' '); // Split date and time
+                    var dateComponent = dateParts[0]; // "18-Sep-24"
+                    var dateElements = dateComponent.split('-'); // ["18", "Sep", "24"]
+
+                    var day = dateElements[0]; // "18" (not needed here)
+                    var month = dateElements[1]; // "Sep"
+                    var year = "20" + dateElements[2]; // "24" -> "2024"
+
+                    // Convert month to numeric format
+                    var monthMap = {
+                        "Jan": "01",
+                        "Feb": "02",
+                        "Mar": "03",
+                        "Apr": "04",
+                        "May": "05",
+                        "Jun": "06",
+                        "Jul": "07",
+                        "Aug": "08",
+                        "Sep": "09",
+                        "Oct": "10",
+                        "Nov": "11",
+                        "Dec": "12"
+                    };
+                    var rowMonth = monthMap[month]; // Convert month abbreviation to number
+
+                    if ((selectedYear === '' || year === selectedYear) &&
+                        (selectedMonth === '' || rowMonth === selectedMonth)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+
+            yearFilter.addEventListener('change', filterRows);
+            monthFilter.addEventListener('change', filterRows);
         });
-    });
-</script>
+    </script>
 
+    <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Include SweetAlert2 JS (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables Buttons Extension CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.2/css/buttons.dataTables.min.css">
+    <!-- DataTables Buttons Extension JS -->
+    <script src="https://cdn.datatables.net/buttons/1.7.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.2/js/buttons.print.min.js"></script>
 
-                <script>
-                    $('form[id^="editJobForm"]').on('submit', function(e) {
-                        e.preventDefault();
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- jsPDF with autoTable for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
-                        var form = $(this);
-                        var formData = new FormData(form[0]);
-                        var jobId = form.attr('id').replace('editJobForm', '');
+    <!-- FileSaver.js for CSV export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
-                        $.ajax({
-                            url: form.attr('action'),
-                            method: 'POST',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            success: function(response) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Success',
-                                    text: response.message,
-                                    timer: 2000,
-                                    timerProgressBar: true,
-                                    showConfirmButton: false
-                                }).then(() => {
-                                    $('#editJobModal' + jobId).modal('hide');
-                                    location.reload(); // Reload page or update table row
-                                });
-                            },
-                            error: function(xhr, status, error) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: 'Failed to update vehicle. Please try again.',
-                                    timer: 5000,
-                                    timerProgressBar: true,
-                                    showConfirmButton: true
-                                });
-                            }
-                        });
-                    });
-                </script>
-                <script>
-                    "use strict";
-                    const colors = {
-                        success: '#28c76f',
-                        error: '#eb2222',
-                        warning: '#ff9f43',
-                        info: '#1e9ff2',
-                    }
+    <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
+    <script>
+        if ($('li').hasClass('active')) {
+            $('.sidebar__menu-wrapper').animate({
+                scrollTop: eval($(".active").offset().top - 320)
+            }, 500);
+        }
+    </script>
+    <script>
+        // Function to extract all table data
+        function getTableData() {
+            // If using DataTables, get all data
+            var table = $('#data-table').DataTable();
+            var data = table.rows({
+                search: 'applied'
+            }).data().toArray();
+            var headers = table.columns().header().toArray().map(th => th.innerText);
 
-                    const icons = {
-                        success: 'fas fa-check-circle',
-                        error: 'fas fa-times-circle',
-                        warning: 'fas fa-exclamation-triangle',
-                        info: 'fas fa-exclamation-circle',
-                    }
+            return {
+                data,
+                headers
+            };
+        }
 
-                    const notifications = [];
-                    const errors = [];
+        // Copy function
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            var {
+                data
+            } = getTableData();
+            var textToCopy = data.map(row => row.join("\t")).join("\n");
 
+            var tempTextArea = document.createElement("textarea");
+            tempTextArea.value = textToCopy;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempTextArea);
+            alert("Table data copied to clipboard!");
+        });
 
-                    const triggerToaster = (status, message) => {
-                        iziToast[status]({
-                            title: status.charAt(0).toUpperCase() + status.slice(1),
-                            message: message,
-                            position: "topRight",
-                            backgroundColor: '#fff',
-                            icon: icons[status],
-                            iconColor: colors[status],
-                            progressBarColor: colors[status],
-                            titleSize: '1rem',
-                            messageSize: '1rem',
-                            titleColor: '#474747',
-                            messageColor: '#a2a2a2',
-                            transitionIn: 'obunceInLeft'
-                        });
-                    }
+        // Print function - prints only the table
+        document.getElementById('printBtn').addEventListener('click', function() {
+            var {
+                data,
+                headers
+            } = getTableData();
+            var printContents = `
+            <table border="1">
+                <thead>
+                    <tr>${headers.map(header => `<th>${header}</th>`).join('')}</tr>
+                </thead>
+                <tbody>
+                    ${data.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}
+                </tbody>
+            </table>
+        `;
+            var originalContents = document.body.innerHTML;
 
-                    if (notifications.length) {
-                        notifications.forEach(element => {
-                            triggerToaster(element[0], element[1]);
-                        });
-                    }
+            document.body.innerHTML = `<html><head><title>Print</title></head><body>${printContents}</body></html>`;
+            window.print();
+            document.body.innerHTML = originalContents;
+        });
 
-                    if (errors.length) {
-                        errors.forEach(error => {
-                            triggerToaster('error', error);
-                        });
-                    }
+        // PDF export with landscape formatting and smaller font size using jsPDF and autoTable
+        document.getElementById('pdfBtn').addEventListener('click', function() {
+            const {
+                jsPDF
+            } = window.jspdf;
+            var doc = new jsPDF('landscape'); // Set the orientation to landscape
 
-                    function notify(status, message) {
-                        if (typeof message == 'string') {
-                            triggerToaster(status, message);
-                        } else {
-                            $.each(message, (i, val) => triggerToaster(status, val));
-                        }
-                    }
-                </script>
+            var {
+                data,
+                headers
+            } = getTableData();
 
+            doc.autoTable({
+                head: [headers],
+                body: data,
+                startY: 10, // Start 10 units from top
+                theme: 'grid', // Grid layout
+                margin: {
+                    top: 10
+                },
+                styles: {
+                    fontSize: 8,
+                    cellPadding: 2
+                },
+                headStyles: {
+                    fillColor: [22, 160, 133],
+                    textColor: 255
+                },
+                pageBreak: 'auto',
+            });
 
+            doc.save('table_data.pdf');
+        });
 
-                <script>
-                    "use strict";
-                    bkLib.onDomLoaded(function() {
-                        $(".nicEdit").each(function(index) {
-                            $(this).attr("id", "nicEditor" + index);
-                            new nicEditor({
-                                fullPanel: true
-                            }).panelInstance('nicEditor' + index, {
-                                hasPanel: true
-                            });
-                        });
-                    });
+        // Excel export function
+        document.getElementById('excelBtn').addEventListener('click', function() {
+            var {
+                data,
+                headers
+            } = getTableData();
+            var wb = XLSX.utils.book_new();
+            var ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
+            XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+            XLSX.writeFile(wb, "table_data.xlsx");
+        });
+    </script>
 
-                    (function($) {
-                        $(document).on('mouseover ', '.nicEdit-main,.nicEdit-panelContain', function() {
-                            $('.nicEdit-main').focus();
-                        });
-
-                        $('.breadcrumb-nav-open').on('click', function() {
-                            $(this).toggleClass('active');
-                            $('.breadcrumb-nav').toggleClass('active');
-                        });
-
-                        $('.breadcrumb-nav-close').on('click', function() {
-                            $('.breadcrumb-nav').removeClass('active');
-                        });
-
-                        if ($('.topTap').length) {
-                            $('.breadcrumb-nav-open').removeClass('d-none');
-                        }
-
-                        $('.table-responsive').on('click', 'button[data-bs-toggle="dropdown"]', function(e) {
-                            const {
-                                top,
-                                left
-                            } = $(this).next(".dropdown-menu")[0].getBoundingClientRect();
-                            $(this).next(".dropdown-menu").css({
-                                position: "fixed",
-                                inset: "unset",
-                                transform: "unset",
-                                top: top + "px",
-                                left: left + "px",
-                            });
-                        });
-                    })(jQuery);
-                </script>
-
-
-                <script>
-                    (function($) {
-                        "use strict";
-                        $(document).on('click', '.confirmationBtn', function() {
-                            var modal = $('#confirmationModal');
-                            let data = $(this).data();
-                            modal.find('.question').text(`${data.question}`);
-                            modal.find('form').attr('action', `${data.action}`);
-                            modal.modal('show');
-                        });
-                    })(jQuery);
-                </script>
-
-                <script>
-                    if ($('li').hasClass('active')) {
-                        $('.sidebar__menu-wrapper').animate({
-                            scrollTop: eval($(".active").offset().top - 320)
-                        }, 500);
-                    }
-                </script>
-
-
-
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-                <!-- Include Bootstrap JS -->
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
-                <!-- Include SweetAlert2 JS (optional) -->
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                <!-- DataTables CSS -->
-                <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
-                <!-- DataTables JS -->
-                <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-                <!-- DataTables Buttons Extension CSS -->
-                <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.2/css/buttons.dataTables.min.css">
-                <!-- DataTables Buttons Extension JS -->
-                <script src="https://cdn.datatables.net/buttons/1.7.2/js/dataTables.buttons.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-                <script src="https://cdn.datatables.net/buttons/1.7.2/js/buttons.html5.min.js"></script>
-                <script src="https://cdn.datatables.net/buttons/1.7.2/js/buttons.print.min.js"></script>
-                <!-- jQuery (required for Fancybox) -->
-
-                <!-- Fancybox JS -->
-                <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/fancybox.min.js"></script>
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        var yearFilter = document.getElementById('yearFilter');
-                        var monthFilter = document.getElementById('monthFilter');
-
-                        function filterRows() {
-                            var selectedYear = yearFilter.value;
-                            var selectedMonth = monthFilter.value;
-                            var rows = document.querySelectorAll('.jobOffersTable tbody tr');
-
-                            rows.forEach(function(row) {
-                                var rowDate = row.getAttribute('data-month');
-                                var [rowYear, rowMonth] = rowDate.split('-');
-
-                                if ((selectedYear === '' || rowYear === selectedYear) &&
-                                    (selectedMonth === '' || rowMonth === selectedMonth)) {
-                                    row.style.display = '';
-                                } else {
-                                    row.style.display = 'none';
-                                }
-                            });
-                        }
-
-                        yearFilter.addEventListener('change', filterRows);
-                        monthFilter.addEventListener('change', filterRows);
-                    });
-                </script>
+    <script>
+        $(document).ready(function() {
+            $('#data-table').DataTable({
+                responsive: true, // Enable responsiveness
+                paging: true, // Enables pagination
+                searching: true, // Enables search
+                ordering: true, // Enables sorting
+            });
+        });
+    </script>
 
 </body>
 

@@ -343,7 +343,7 @@ public function update(Request $request, Transaction $transaction)
     public function financialreport(Request $request)
 {
     $accountId = $request->input('account');
-
+    $plateNumbers = Booking::pluck('plate_number')->unique();
     // Fetch all transactions initially
     $transactions = Transaction::all();
 
@@ -371,6 +371,7 @@ public function update(Request $request, Transaction $transaction)
                 'withdrawBalance' => $withdrawBalance,
                 'expenseBalance' => $expenseBalance,
                 'netIncome' => $netIncome,
+
             ];
         });
     });
@@ -479,7 +480,8 @@ public function update(Request $request, Transaction $transaction)
         'grandNetIncome' => $grandNetIncome,
         'grandTotalPayment' => $grandTotalPayment, // Grand total for Preventive Maintenance
         'grandTotalInitialAmount' => $grandTotalInitialAmount, // Grand total for Initial Amount
-        'grandTotalLoanPayment' => $grandTotalPayment, // Grand total for Loan Payments
+        'grandTotalLoanPayment' => $grandTotalPayment,
+        'plateNumbers' => $plateNumbers,// Grand total for Loan Payments
     ]);
 }
 
