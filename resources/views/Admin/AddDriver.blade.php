@@ -58,7 +58,8 @@
                                     <table id="data-table" class="table table--light style--two">
                                         <thead>
                                             <tr>
-                                                <th>Name</th>
+                                                <th>Driver ID</th>
+                                                <th>Driver Name</th>
                                                 <th>Address</th>
                                                 <th>Contact Number</th>
                                                 <th>Email</th>
@@ -72,6 +73,7 @@
                                         <tbody>
                                             @foreach ($couriers as $driver)
                                                 <tr>
+                                                    <td>{{ $driver->id }}</td>
                                                     <td>{{ $driver->name }}</td>
                                                     <td>{{ $driver->address }}</td>
                                                     <td>{{ $driver->contact_number }}</td>

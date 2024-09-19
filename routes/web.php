@@ -341,6 +341,8 @@ Route::get('/addtruck-archived', [AdminController::class, 'addtruck_archived'])-
 Route::get('/vehicles-archived', [VehicleController::class, 'showArchived'])->name('vehicles-archived');
 Route::post('/vehicles-archivedtbl/{id}', [VehicleController::class, 'archive'])->name('vehicles-archivedtbl');
 
+Route::get('/employee-archived', [EmployeeController::class, 'showArchived'])->name('employee-archived');
+Route::post('/employee-archivedtbl/{id}', [EmployeeController::class, 'archive'])->name('employee-archivedtbl');
 
 //
 Route::get('/confirmation', [AdminController::class, 'confirmation'])->name('confirmation');

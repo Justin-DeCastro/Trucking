@@ -57,6 +57,10 @@
                 data-bs-target="#manageAdmin">
                 <i class="fa fa-plus"></i> Add New
             </button>
+            <a href="{{ route('employee-archived') }}"> <button
+                class="btn btn-sm btn-outline--primary addAdmin" type="button">
+                <i class="fas fa-archive"></i> Archived Employee
+            </button> </a>
         </div>
 
         <div class="row">
@@ -79,6 +83,7 @@
                                         <th>Address</th>
                                         <th>Profile Image</th>
                                         <th>201 Files</th>
+                                        <th>Status</th>
                                         <th>Actions</th> <!-- New column for action buttons -->
                                     </tr>
                                 </thead>
@@ -88,8 +93,10 @@
                                             <td>{{ $employee->id_number }}</td>
                                             <td>{{ $employee->position }}</td>
                                             <td>{{ $employee->employee_name }}</td>
-                                            <td>{{ $employee->date_hired }}</td>
-                                            <td>{{ $employee->birthday }}</td>
+
+                                            <td>{{ \Carbon\Carbon::parse($employee->date_hired)->format('d-M-y') }}</td>
+
+                                            <td>{{ \Carbon\Carbon::parse( $employee->birthday)->format('d-M-y') }}</td>
                                             <td>{{ $employee->birth_place }}</td>
                                             <td>{{ $employee->civil_status }}</td>
                                             <td>{{ $employee->gender }}</td>
@@ -119,46 +126,72 @@
                                                     <p>No images available</p>
                                                 @endif
                                             </td>
+                                            <td>
+                                                @if ($employee->status === 'Active')
+                                                    <span style="background-color: #d4edda; color: #155724; padding: 2px 5px; border-radius: 3px; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);">
+                                                        {{ $employee->status }}
+                                                    </span>
+                                                @elseif ($employee->status === 'ARCHIVED')
+                                                    <span style="background-color: #f8d7da; color: #721c24; padding: 2px 5px; border-radius: 3px; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);">
+                                                        {{ $employee->status }}
+                                                    </span>
+                                                @else
+                                                    {{ $employee->status }}
+                                                @endif
+                                            </td>
+
+
 
 
 
                                             <td>
-                                                <button type="button" class="btn btn-info btn-sm"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#employeeModal{{ $employee->id }}">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <!-- Edit Button -->
-                                                <button type="button" class="btn btn-primary btn-sm"
-                                                    data-bs-toggle="modal" data-bs-target="#editModal"
-                                                    data-id="{{ $employee->id }}"
-                                                    data-name="{{ $employee->employee_name }}"
-                                                    data-id_number="{{ $employee->id_number }}"
-                                                    data-position="{{ $employee->position }}"
-                                                    data-date_hired="{{ $employee->date_hired }}"
-                                                    data-birthday="{{ $employee->birthday }}"
-                                                    data-birth_place="{{ $employee->birth_place }}"
-                                                    data-civil_status="{{ $employee->civil_status }}"
-                                                    data-gender="{{ $employee->gender }}"
-                                                    data-mobile="{{ $employee->mobile }}"
-                                                    data-address="{{ $employee->address }}"
-                                                    data-profile_image="{{ asset($employee->profile_image) }}"
-                                                    data-files="{{ json_encode($employee->files) }}">
-                                                    <!-- Adjust based on how you store files -->
-                                                    Edit
-                                                </button>
-
-                                                <!-- Delete Button -->
-                                                <form action="{{ route('employee.destroy', $employee->id) }}"
-                                                    method="POST" style="display:inline-block;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="return confirm('Are you sure you want to delete this data?');">
-                                                        Delete
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton{{ $employee->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        Actions
                                                     </button>
-                                                </form>
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $employee->id }}">
+                                                        <li>
+                                                            <a class="dropdown-item text-info" href="#" data-bs-toggle="modal" data-bs-target="#employeeModal{{ $employee->id }}">
+                                                                <i class="fas fa-eye"></i> View
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item text-primary" href="#" data-bs-toggle="modal" data-bs-target="#editModal"
+                                                                data-id="{{ $employee->id }}"
+                                                                data-name="{{ $employee->employee_name }}"
+                                                                data-id_number="{{ $employee->id_number }}"
+                                                                data-position="{{ $employee->position }}"
+                                                                data-date_hired="{{ $employee->date_hired }}"
+                                                                data-birthday="{{ $employee->birthday }}"
+                                                                data-birth_place="{{ $employee->birth_place }}"
+                                                                data-civil_status="{{ $employee->civil_status }}"
+                                                                data-gender="{{ $employee->gender }}"
+                                                                data-mobile="{{ $employee->mobile }}"
+                                                                data-address="{{ $employee->address }}"
+                                                                data-profile_image="{{ asset($employee->profile_image) }}"
+                                                                data-files="{{ json_encode($employee->files) }}">
+                                                                <i class="fas fa-edit"></i> Edit
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item text-warning" href="#" data-bs-toggle="modal" data-bs-target="#confirmationModal"
+                                                                data-url="{{ route('employee-archivedtbl', $employee->id) }}">
+                                                                <i class="fa fa-archive"></i> Archive
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <form action="{{ route('employee.destroy', $employee->id) }}" method="POST" style="display:inline;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to delete this data?');">
+                                                                    <i class="fa fa-trash"></i> Delete
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </td>
+
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -420,8 +453,10 @@
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card-body">
+
                                             <p><strong>Birthday:</strong> {{ $employee->birthday }}</p>
-                                            <p><strong>Date Hired:</strong> {{ $employee->date_hired }}
+
+                                                <p><strong>Date Hired:</strong> {{ \Carbon\Carbon::parse($employee->date_hired)->format('d-M-y h:i A') }}</td>
                                             </p>
                                             <p><strong>Birth Place:</strong>
                                                 {{ $employee->birth_place }}</p>
@@ -444,7 +479,30 @@
                 </div>
             </div>
         @endforeach
+        <div class="modal fade" id="confirmationModal" tabindex="-1"
+        aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">Confirm Archive</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to archive this employee? This action will change the
+                    employee's status to archived.
+                </div>
+                <div class="modal-footer">
+                    <form id="archiveForm" method="POST" action="{{ route('employee-archivedtbl', $employee->id) }}">
+                        @csrf
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-warning">Archive</button>
+                    </form>
 
+                </div>
+            </div>
+        </div>
+    </div>
         <!-- Delete Modal -->
         <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
             aria-hidden="true">
@@ -471,7 +529,19 @@
         </div>
     </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var archiveForm = document.getElementById('archiveForm');
+            var archiveButtons = document.querySelectorAll('.btn-delete');
 
+            archiveButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    var url = this.getAttribute('data-url'); // Get the data-url attribute value
+                    archiveForm.action = url; // Set the form action to the URL
+                });
+            });
+        });
+    </script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Include Bootstrap JS -->

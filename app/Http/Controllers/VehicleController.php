@@ -215,5 +215,25 @@ public function useVehicle($id)
         return redirect()->back()->with('error', 'No available vehicle to use!');
     }
 }
+public function showArchived()
+{
+    // $vehicles = Vehicle::all();
+    $archivedVehicles = Vehicle::where('truck_status', 'ARCHIVED')->get();
+
+    // Return a view with the archived vehicles data
+    return view('Admin.Addtruck_Archived', ['archivedVehicles' => $archivedVehicles]);
+    // return view('Admin.Addtruck_Archived',compact('vehicles'));
+}
+
+    // VehicleController.php
+public function archive($id)
+{
+    $vehicle = Vehicle::findOrFail($id);
+    $vehicle->truck_status = 'ARCHIVED';
+    $vehicle->save();
+
+    return redirect()->back()->with('success', 'Data moved to archived successfully!');
+}
+
 
 }

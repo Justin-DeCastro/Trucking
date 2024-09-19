@@ -21,9 +21,7 @@ class Vehicle extends Model
     ];
 
     // If storing document paths as a JSON array, you need to cast it
-    protected $casts = [
-        'documents' => 'array',
-    ];
+
 
     // Define a relationship with the Document model, if needed
     //

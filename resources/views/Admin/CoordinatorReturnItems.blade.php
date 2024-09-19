@@ -7,6 +7,27 @@
 
 
 <style>
+    .modal-content {
+    border-radius: 8px;
+}
+
+.modal-body {
+    display: flex;
+    align-items: center;
+}
+
+#modal-proof-of-return {
+    width: 150px; /* Adjust as needed */
+    height: auto;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+}
+
+.modal-body p {
+    margin-bottom: 8px;
+}
+
     .logo-container {
         position: relative;
         display: inline-block;
@@ -209,7 +230,15 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($returnItems as $return)
-                                        <tr>
+                                        <tr data-toggle="modal" data-target="#detailsModal"
+                                            data-return-date="{{ $return->return_date }}"
+                                            data-product-name="{{ $return->product_name }}"
+                                            data-return-reason="{{ $return->return_reason }}"
+                                            data-return-quantity="{{ $return->return_quantity }}"
+                                            data-condition="{{ $return->condition }}"
+                                            data-driver-name="{{ $currentDriverName }}"
+                                            data-status="{{ $return->status }}"
+                                            data-proof-of-return="{{ $return->proof_of_return }}">
                                             <td>{{ $return->return_date }}</td>
                                             <td>{{ $return->product_name }}</td>
                                             <td>{{ $return->return_reason }}</td>
@@ -228,17 +257,14 @@
                                                     <p>No proof available</p>
                                                 @endif
                                             </td>
-
                                             <td>
-                                                <form action="{{ route('return.approve', $return->id) }}" method="POST"
-                                                    style="display: inline;">
+                                                <form action="{{ route('return.approve', $return->id) }}" method="POST" style="display: inline;">
                                                     @csrf
                                                     <button type="submit" class="btn btn-success btn-sm">
                                                         <i class="fa-solid fa-check"></i> Approve
                                                     </button>
                                                 </form>
-                                                <form action="{{ route('return.reject', $return->id) }}" method="POST"
-                                                    style="display: inline;">
+                                                <form action="{{ route('return.reject', $return->id) }}" method="POST" style="display: inline;">
                                                     @csrf
                                                     <button type="submit" class="btn btn-danger btn-sm">
                                                         <i class="fa-solid fa-times"></i> Reject
@@ -249,6 +275,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
                 </div>
@@ -324,6 +351,40 @@
         </div>
     </div>
 
+<!-- Modal for clickable-->
+<!-- Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">Return Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex align-items-center">
+                    <!-- Image Section -->
+                    <div class="me-4">
+                        <img id="modal-proof-of-return" src="" alt="Proof of Return" class="img-fluid" style="width: 150px; height: auto; object-fit: cover; border: 2px solid #ddd; border-radius: 8px;">
+                    </div>
+                    <!-- Details Section -->
+                    <div>
+                        <p><strong>Return Date:</strong> <span id="modal-return-date"></span></p>
+                        <p><strong>Product Name:</strong> <span id="modal-product-name"></span></p>
+                        <p><strong>Return Reason:</strong> <span id="modal-return-reason"></span></p>
+                        <p><strong>Return Quantity:</strong> <span id="modal-return-quantity"></span></p>
+                        <p><strong>Condition:</strong> <span id="modal-condition"></span></p>
+                        <p><strong>Driver Name:</strong> <span id="modal-driver-name"></span></p>
+                        <p><strong>Status:</strong> <span id="modal-status"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
@@ -357,6 +418,33 @@
     <!-- Include jQuery and Bootstrap JS (if not already included) -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            $('#detailsModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var returnDate = button.data('return-date');
+                var productName = button.data('product-name');
+                var returnReason = button.data('return-reason');
+                var returnQuantity = button.data('return-quantity');
+                var condition = button.data('condition');
+                var driverName = button.data('driver-name');
+                var status = button.data('status');
+                var proofOfReturn = button.data('proof-of-return');
+
+                var modal = $(this);
+                modal.find('#modal-return-date').text(returnDate);
+                modal.find('#modal-product-name').text(productName);
+                modal.find('#modal-return-reason').text(returnReason);
+                modal.find('#modal-return-quantity').text(returnQuantity);
+                modal.find('#modal-condition').text(condition);
+                modal.find('#modal-driver-name').text(driverName);
+                modal.find('#modal-status').text(status);
+                modal.find('#modal-proof-of-return').attr('src', proofOfReturn ? '{{ asset('proofs/') }}/' + proofOfReturn : '');
+            });
+        });
+    </script>
+<!-- Bootstrap JS (Place this before your closing </body> tag) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Script to update modal image source -->
     <script>

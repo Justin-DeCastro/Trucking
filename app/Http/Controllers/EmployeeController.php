@@ -168,4 +168,24 @@ public function update(Request $request, $id)
 
         return redirect()->back()->with('success', 'Employee deleted successfully!');
     }
+    public function showArchived()
+{
+    // $vehicles = Vehicle::all();
+    $archivedEmployee = Employee::where('status', 'ARCHIVED')->get();
+
+    // Return a view with the archived vehicles data
+    return view('Admin.employee_archive', ['archivedEmployee' => $archivedEmployee]);
+    // return view('Admin.Addtruck_Archived',compact('vehicles'));
+}
+
+    // VehicleController.php
+public function archive($id)
+{
+    $employee = Employee::findOrFail($id);
+    $employee->status = 'ARCHIVED';
+    $employee->save();
+
+    return redirect()->back()->with('success', 'Data moved to archived successfully!');
+}
+
 }

@@ -22,6 +22,7 @@ class Employee extends Model
         'address',
         'profile_image',
         'files',
+        'status',
     ];
 
     protected $casts = [

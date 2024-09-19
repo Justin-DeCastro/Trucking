@@ -135,7 +135,7 @@
                                  <button type="button" onclick="downloadForm()" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
                                         Download Form
                                     </button>
-         
+
                                 </div>
                                 <!-- Sender Information -->
                                 <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px;">
@@ -258,7 +258,7 @@
 
 
                                 <div style="margin-bottom: 40px;">
-                                    
+
                                     <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
                                         <div style="flex: 1; min-width: 220px;">
                                             <label for="origin"
@@ -934,7 +934,7 @@ function generateCards(items, type) {
     });
 });
 
-    
+
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/search.js"></script>
 

@@ -156,6 +156,28 @@
                     </div>
                 </div>
 
+                <div class="col-xxl-3 col-sm-6 mt-4 mt-sm-0">
+                    <a href="#" class="text-decoration-none">
+                        <div class="bg-warning text-dark p-3 rounded d-flex align-items-center shadow-sm border border-danger warning-card">
+                            <div class="me-3">
+                                <i class="fas fa-car fa-2x"></i>
+                            </div>
+                            <div>
+                                <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Trucks with Less Than 5 Bookings</p>
+                                <p class="mb-0">
+                                    @forelse ($plateNumbersWithFewBookings as $plate)
+                                        <strong class="text-dark">Plate Number:</strong> <span class="fw-bold">{{ $plate->plate_number }}</span>
+                                        <br>
+                                        <strong class="text-dark">Total Bookings:</strong> <span class="fw-bold">{{ $plate->booking_count }}</span>
+                                        <br><br>
+                                    @empty
+                                        <span class="text-muted">No trucks with fewer than 5 bookings.</span>
+                                    @endforelse
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
 
 <!-- Notification Card for New Backload Bookings -->
 <!-- Notification Card for New Backload Bookings -->
@@ -187,52 +209,12 @@
                 <!-- Latest Location Widget -->
 
                 <div class="row mt-4">
-                    <!-- Display Latest Drivers Locations -->
-                    <div class="col-xxl-3 col-sm-6">
-                        <a href="#" class="text-decoration-none">
-                            <div class="bg-info text-white p-3 rounded d-flex align-items-center shadow-sm">
-                                <div class="me-3">
-                                    <i class="fas fa-map-marker-alt fa-2x"></i>
-                                </div>
-                                <div>
-                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Latest Drivers Locations</p>
-                                    <p class="mb-0">
-                                        @forelse ($bookingsWithLocations as $booking)
-                                            Driver:<strong> {{ $booking->driver_name }},<br></strong>
-                                            Latest Location: <strong>{{ $booking->location }}<br></strong>
-                                            <br>
-                                        @empty
-                                            No location data available.
-                                        @endforelse
-                                    </p>
-                                </div>
-                            </div>
-                        </a>
+                    <div class="col-12">
+                        <div id="map" style="height: 500px; width: 100%;"></div>
                     </div>
+                </div>
 
                     <!-- Display Plate Numbers with Fewer than 5 Bookings -->
-                    <div class="col-xxl-3 col-sm-6 mt-4 mt-sm-0">
-                        <a href="#" class="text-decoration-none">
-                            <div class="bg-warning text-dark p-3 rounded d-flex align-items-center shadow-sm border border-danger warning-card">
-                                <div class="me-3">
-                                    <i class="fas fa-car fa-2x"></i>
-                                </div>
-                                <div>
-                                    <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Trucks with Less Than 5 Bookings</p>
-                                    <p class="mb-0">
-                                        @forelse ($plateNumbersWithFewBookings as $plate)
-                                            <strong class="text-dark">Plate Number:</strong> <span class="fw-bold">{{ $plate->plate_number }}</span>
-                                            <br>
-                                            <strong class="text-dark">Total Bookings:</strong> <span class="fw-bold">{{ $plate->booking_count }}</span>
-                                            <br><br>
-                                        @empty
-                                            <span class="text-muted">No trucks with fewer than 5 bookings.</span>
-                                        @endforelse
-                                    </p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
 
 
                 </div>
@@ -270,6 +252,67 @@
 });
 
     </script>
+    <script>
+        function initMap() {
+            // Create the map centered on a default location (Manila).
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 8,
+                center: { lat: 14.5995, lng: 120.9842 }, // Manila as the default center
+            });
+
+            // The locations with addresses
+            var locations = @json($locationsWithAddresses);
+
+            // Geocoding service to convert addresses to coordinates
+            var geocoder = new google.maps.Geocoder();
+            var infowindow = new google.maps.InfoWindow();
+
+            // Iterate over each location
+            locations.forEach(function(location) {
+                geocodeAddress(geocoder, map, location, infowindow);
+            });
+        }
+
+        // Function to geocode addresses and place markers
+        function geocodeAddress(geocoder, map, location, infowindow) {
+            geocoder.geocode({ 'address': location.address }, function(results, status) {
+                if (status === 'OK') {
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        icon: {
+                            url: "Home/man-driver-driving-car-17472.svg", // Font Awesome user icon
+                            scaledSize: new google.maps.Size(40, 40), // Adjust size as needed
+                            // Custom styling for blue color
+                            anchor: new google.maps.Point(20, 20),
+                            scaledSize: new google.maps.Size(40, 40)
+                        },
+                    });
+
+                    // Add a hover listener to the marker
+                    google.maps.event.addListener(marker, 'mouseover', function() {
+                        infowindow.setContent(`
+                            <div>
+                                <strong>Address:</strong> ${location.address}<br>
+                                <strong>Driver name:</strong> ${location.creator}
+                            </div>
+                        `);
+                        infowindow.open(map, marker);
+                    });
+
+                    // Close infowindow on mouse out
+                    google.maps.event.addListener(marker, 'mouseout', function() {
+                        infowindow.close();
+                    });
+                } else {
+                    console.log('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+    </script>
+ <script async defer
+ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4&callback=initMap">
+</script>
 
     @include('Components.Admin.Footer')
 

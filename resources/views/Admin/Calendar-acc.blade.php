@@ -90,11 +90,11 @@
                                                 <div id='calendar'></div>
                                                 <div class="calendar-legend">
                                                     <h5>Legend</h5>
-                                                    <div class="legend-item">
+                                                    {{-- <div class="legend-item">
                                                         <div class="legend-color" style="background-color: green;">
                                                         </div>
                                                         <div class="legend-text">Paid</div>
-                                                    </div>
+                                                    </div> --}}
                                                     <div class="legend-item">
                                                         <div class="legend-color" style="background-color: orange;">
                                                         </div>

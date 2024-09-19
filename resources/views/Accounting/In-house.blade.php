@@ -101,7 +101,8 @@
                                             @foreach ($rates as $plateNumber => $items)
                                                 @foreach ($items as $inhouse)
                                                     <tr>
-                                                        <td>{{ \Carbon\Carbon::parse($inhouse->date)->format('F d, Y g:i A') }}
+
+                                                        <td>{{ \Carbon\Carbon::parse($inhouse->date)->format('d-M-y') }}
                                                         </td>
                                                         <td>{{ $inhouse->plate_number }}</td>
                                                         <td>₱{{ number_format($inhouse->rate_per_mile, 2) }}</td>

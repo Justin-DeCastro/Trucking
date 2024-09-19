@@ -212,33 +212,13 @@
 
                 <!-- Latest Locations Section -->
                 <div class="row mt-4">
-                    <div class="col-6">
-                        <a href="#" class="text-decoration-none">
-                            <div class="bg-info text-white p-4 rounded d-flex flex-column align-items-start shadow-sm"
-                                style="width: 100%; max-width: 1000px; margin: auto;">
-                                <div class="d-flex align-items-center mb-3">
-                                    <i class="fas fa-map-marker-alt fa-3x me-3"></i>
-                                    <div>
-                                        <p class="mb-1" style="font-size: 1.5rem; font-weight: 600;">Latest Drivers
-                                            Locations</p>
-                                    </div>
-                                </div>
-                                <div class="w-100">
-                                    <p class="mb-0">
-                                        @forelse ($locationsWithAddresses as $location)
-                                            Address: {{ $location['address'] }},
-                                            <br>
-                                            Updated by: {{ $location['creator'] }}
-                                            <br><br>
-                                        @empty
-                                            No location data available.
-                                        @endforelse
-                                    </p>
-                                </div>
-                            </div>
-                        </a>
+                    <div class="col-12">
+                        <div id="map" style="height: 500px; width: 100%;"></div>
                     </div>
                 </div>
+
+
+
 
 
 
@@ -274,7 +254,70 @@
 
 
 
+    <script>
+        function initMap() {
+            // Create the map centered on a default location (Manila).
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 8,
+                center: { lat: 14.5995, lng: 120.9842 }, // Manila as the default center
+            });
 
+            // The locations with addresses
+            var locations = @json($locationsWithAddresses);
+
+            // Geocoding service to convert addresses to coordinates
+            var geocoder = new google.maps.Geocoder();
+            var infowindow = new google.maps.InfoWindow();
+
+            // Iterate over each location
+            locations.forEach(function(location) {
+                geocodeAddress(geocoder, map, location, infowindow);
+            });
+        }
+
+        // Function to geocode addresses and place markers
+        function geocodeAddress(geocoder, map, location, infowindow) {
+            geocoder.geocode({ 'address': location.address }, function(results, status) {
+                if (status === 'OK') {
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        icon: {
+                            url: "Home/man-driver-driving-car-17472.svg", // Font Awesome user icon
+                            scaledSize: new google.maps.Size(40, 40), // Adjust size as needed
+                            // Custom styling for blue color
+                            anchor: new google.maps.Point(20, 20),
+                            scaledSize: new google.maps.Size(40, 40)
+                        },
+                    });
+
+                    // Add a hover listener to the marker
+                    google.maps.event.addListener(marker, 'mouseover', function() {
+                        infowindow.setContent(`
+                            <div>
+                                <strong>Address:</strong> ${location.address}<br>
+                                <strong>Driver name:</strong> ${location.creator}
+                            </div>
+                        `);
+                        infowindow.open(map, marker);
+                    });
+
+                    // Close infowindow on mouse out
+                    google.maps.event.addListener(marker, 'mouseout', function() {
+                        infowindow.close();
+                    });
+                } else {
+                    console.log('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+    </script>
+
+
+    <!-- Include the Google Maps JavaScript API -->
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4&callback=initMap">
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

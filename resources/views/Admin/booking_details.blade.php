@@ -364,10 +364,12 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <table id="data-table" class="table table--light style--two">
-                                   <thead>
+                                <table id="data-table" class="table table--light style--two display nowrap">
+                                    <thead>
                                         <tr>
                                             <th>Date</th>
+                                            <th>Driver ID</th>
+                                            <th>Driver Name</th>
                                             <th>Trip Ticket Number</th>
                                             <th>Truck Plate Number</th>
                                             <th>Destination</th>
@@ -379,19 +381,25 @@
                                             <th>Updated By</th>
                                             <th>Location Updated By</th>
                                             <th>Update Status</th>
-                                            <th>Actions</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($rubixdetails as $detail)
-                                            <tr>
-                                                <td>{{ \Carbon\Carbon::parse($detail->date)->format('d-M-y h:i A') }}</td>
+                                            <tr class="clickable-row" data-bs-target="#modal{{ $detail->id }}">
+                                                <td>{{ \Carbon\Carbon::parse($detail->date)->format('d-M-y h:i A') }}
+                                                </td>
+                                                <td>{{ $detail->driver ? $detail->driver->id : 'No driver assigned' }}
+                                                </td>
+                                                <td>{{ $detail->driver ? $detail->driver->name : 'No driver assigned' }}
+                                                </td>
                                                 <td>{{ $detail->trip_ticket }}</td>
                                                 <td>{{ $detail->plate_number }}</td>
-                                                <td>{{ $detail->location }}</td> <!-- Changed to 'location' -->
+                                                <td>{{ $detail->location }}</td>
                                                 <td>
                                                     @if ($detail->proof_of_delivery)
-                                                        <a href="{{ asset($detail->proof_of_delivery) }}" target="_blank">View Proof</a>
+                                                        <a href="{{ asset($detail->proof_of_delivery) }}"
+                                                            target="_blank">View Proof</a>
                                                     @else
                                                         No proof uploaded yet
                                                     @endif
@@ -411,7 +419,6 @@
                                                     @if ($detail->updater)
                                                         Approved by: {{ $detail->updater->name }}<br>
                                                         Updated on: {{ $detail->updated_at->format('d-M-y h:i A') }}
-
                                                     @else
                                                         Not updated
                                                     @endif
@@ -419,48 +426,72 @@
                                                 <td>
                                                     @if ($detail->updater)
                                                         Location Updated by: {{ $detail->updater->name }}<br>
-                                                        location: {{ $detail->location }}<br>
-
-                                                       Updated at: {{ \Carbon\Carbon::parse($detail->location_updated_at)->format('d-M-y h:i A') }}
+                                                        Location: {{ $detail->location }}<br>
+                                                        Updated at:
+                                                        {{ \Carbon\Carbon::parse($detail->location_updated_at)->format('d-M-y h:i A') }}
                                                     @else
                                                         Not updated
                                                     @endif
                                                 </td>
-                                                <td>
-                                                    <form id="statusForm" action="{{ route('update.admin.status', ['id' => $detail->id]) }}" method="POST">
+                                                <td class="update-status">
+                                                    <!-- Update Status Button -->
+                                                    <form id="statusForm"
+                                                        action="{{ route('update.admin.status', ['id' => $detail->id]) }}"
+                                                        method="POST">
                                                         @csrf
                                                         @method('PATCH')
-                                                        <input type="hidden" name="order_status" value="Confirmed_delivery">
+                                                        <input type="hidden" name="order_status"
+                                                            value="Confirmed_delivery">
                                                         @php
-                                                            $buttonClass = $detail->order_status === 'Confirmed_delivery' ? 'btn-warning' : 'btn-success';
-                                                            $buttonText = $detail->order_status === 'Confirmed_delivery' ? 'Approved' : 'Approve';
-                                                            $isDisabled = $detail->order_status === 'Confirmed_delivery' ? 'disabled' : '';
+                                                            $buttonClass =
+                                                                $detail->order_status === 'Confirmed_delivery'
+                                                                    ? 'btn-warning'
+                                                                    : 'btn-success';
+                                                            $buttonText =
+                                                                $detail->order_status === 'Confirmed_delivery'
+                                                                    ? 'Approved'
+                                                                    : 'Approve';
+                                                            $isDisabled =
+                                                                $detail->order_status === 'Confirmed_delivery'
+                                                                    ? 'disabled'
+                                                                    : '';
                                                         @endphp
-                                                        <button type="submit" id="approveButton" class="btn {{ $buttonClass }}" {{ $isDisabled }}>
+                                                        <button type="submit" id="approveButton"
+                                                            class="btn {{ $buttonClass }}" {{ $isDisabled }}>
                                                             {{ $buttonText }}
                                                         </button>
                                                     </form>
                                                 </td>
-                                                <td>
-                                                    <!-- Dropdown for actions -->
+                                                <td class="actions-dropdown">
+                                                    <!-- Actions Dropdown -->
                                                     <div class="dropdown">
-                                                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownActions" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <button class="btn btn-primary dropdown-toggle" type="button"
+                                                            id="dropdownActions{{ $detail->id }}"
+                                                            data-bs-toggle="dropdown" aria-expanded="false">
                                                             Actions
                                                         </button>
-                                                        <ul class="dropdown-menu" aria-labelledby="dropdownActions">
+                                                        <ul class="dropdown-menu"
+                                                            aria-labelledby="dropdownActions{{ $detail->id }}">
                                                             <li>
-                                                                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#waybillModal{{ $detail->id }}">
+                                                                <button type="button" class="dropdown-item"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#waybillModal{{ $detail->id }}">
                                                                     <i class="fas fa-print"></i> Print Waybill
                                                                 </button>
                                                             </li>
                                                             <li>
-                                                                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal{{ $detail->id }}">
+                                                                <button type="button" class="dropdown-item"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#modal{{ $detail->id }}">
                                                                     <i class="fas fa-eye"></i> View
                                                                 </button>
                                                             </li>
                                                             <li>
-                                                                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#locationModal{{ $detail->id }}">
-                                                                    <i class="fas fa-map-marker-alt"></i> Update Location
+                                                                <button type="button" class="dropdown-item"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#locationModal{{ $detail->id }}">
+                                                                    <i class="fas fa-map-marker-alt"></i> Update
+                                                                    Location
                                                                 </button>
                                                             </li>
                                                         </ul>
@@ -469,25 +500,40 @@
                                             </tr>
 
                                             <!-- Location Update Modal -->
-                                            <div class="modal fade" id="locationModal{{ $detail->id }}" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="locationModal{{ $detail->id }}"
+                                                tabindex="-1" aria-labelledby="locationModalLabel"
+                                                aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="locationModalLabel">Update Location for {{ $detail->driver ? $detail->driver->name : 'Unknown Driver' }}</h5>
+                                                            <h5 class="modal-title" id="locationModalLabel">Update
+                                                                Location for
+                                                                {{ $detail->driver ? $detail->driver->name : 'Unknown Driver' }}
+                                                            </h5>
 
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form action="{{ route('update.location', ['id' => $detail->id]) }}" method="POST">
+                                                            <form
+                                                                action="{{ route('update.location', ['id' => $detail->id]) }}"
+                                                                method="POST">
                                                                 @csrf
                                                                 @method('PATCH')
                                                                 <div class="mb-3">
-                                                                    <label for="location" class="form-label">New Location</label>
-                                                                    <input type="text" class="form-control" id="location" name="location" value="{{ $detail->location }}" required> <!-- Using 'location' -->
+                                                                    <label for="location" class="form-label">New
+                                                                        Location</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="location" name="location"
+                                                                        value="{{ $detail->location }}" required>
+                                                                    <!-- Using 'location' -->
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="submit" class="btn btn-primary">Update Location</button>
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary">Update
+                                                                        Location</button>
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Close</button>
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -513,7 +559,8 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalLabel{{ $detail->id }}">Details for Plate Number
                             {{ $detail->plate_number }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <!-- QR Code Section -->
                     <div class="row mt-4">
@@ -522,7 +569,6 @@
                             <img src="{{ asset($detail->qr_code_path) }}" alt="QR Code" class="img-fluid">
                         </div>
                     </div>
-
                     <div class="modal-body">
                         <div class="container">
                             <div class="row">
@@ -537,12 +583,12 @@
                                         </tr>
                                         <tr>
                                             <td>Date of Pick Up</td>
-                                            <td>{{ \Carbon\Carbon::parse($detail->date_of_pick_up)->format('F d, Y g:i A') }}
+                                            <td>{{ \Carbon\Carbon::parse($detail->date_of_pick_up)->format('d M, y') }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Created At</td>
-                                            <td>{{ \Carbon\Carbon::parse($detail->date)->format('F d, Y g:i A') }}
+                                            <td>{{ \Carbon\Carbon::parse($detail->date)->format('d M, y') }}
                                             </td>
                                         </tr>
                                         <tr>
@@ -912,8 +958,8 @@
                             <div class="mb-3">
                                 <label for="order_status{{ $detail->id }}" class="form-label">Order
                                     Status</label>
-                                <select name="order_status" id="order_status{{ $detail->id }}" class="form-select"
-                                    required>
+                                <select name="order_status" id="order_status{{ $detail->id }}"
+                                    class="form-select" required>
                                     <option value="Confirmed_delivery"
                                         {{ $detail->order_status === 'Confirmed_delivery' ? 'selected' : '' }}>
                                         Confirm Delivery</option>
@@ -933,6 +979,35 @@
     @endforeach
 
 
+    <script>
+        $(document).ready(function() {
+            // Trigger modal on row click
+            $('tr').on('click', function() {
+                var modalId = $(this).data('bs-target');
+                $(modalId).modal('show');
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.clickable-row').forEach(row => {
+                row.addEventListener('click', function(event) {
+                    // Check if the click is inside the Update Status or Actions column
+                    if (!event.target.closest('.update-status') && !event.target.closest(
+                            '.actions-dropdown')) {
+                        const target = this.getAttribute('data-bs-target');
+                        const modal = document.querySelector(target);
+
+                        if (modal) {
+                            const modalInstance = new bootstrap.Modal(modal);
+                            modalInstance.show();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
     <script>
         $(document).ready(function() {
             // Function to filter the table based on plate number and start date
@@ -1074,129 +1149,144 @@
         }
     </script>
 
-    <script>
-        var timerIntervals = {}; // Store interval references
+   <script>
+    var timerIntervals = {}; // Store interval references
 
-        function startTimer(detailId, duration) {
-            var hoursElement = document.getElementById('hours' + detailId);
-            var minutesElement = document.getElementById('minutes' + detailId);
-            var secondsElement = document.getElementById('seconds' + detailId);
+    function startTimer(detailId, duration) {
+        var hoursElement = document.getElementById('hours' + detailId);
+        var minutesElement = document.getElementById('minutes' + detailId);
+        var secondsElement = document.getElementById('seconds' + detailId);
 
-            var startTime = Date.now();
-            var endTime = startTime + duration * 1000;
+        var startTime = Date.now();
+        var endTime = startTime + duration * 1000;
 
-            // Timer interval
-            timerIntervals[detailId] = setInterval(function() {
-                var now = Date.now();
-                var elapsedTime = Math.max(now - startTime, 0);
+        // Timer interval
+        timerIntervals[detailId] = setInterval(function() {
+            var now = Date.now();
+            var elapsedTime = Math.max(now - startTime, 0);
 
-                var hours = Math.floor(elapsedTime / (1000 * 60 * 60));
-                var minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+            var hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+            var minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
 
-                hoursElement.textContent = String(hours).padStart(2, '0');
-                minutesElement.textContent = String(minutes).padStart(2, '0');
-                secondsElement.textContent = String(seconds).padStart(2, '0');
+            hoursElement.textContent = String(hours).padStart(2, '0');
+            minutesElement.textContent = String(minutes).padStart(2, '0');
+            secondsElement.textContent = String(seconds).padStart(2, '0');
 
-            }, 1000); // Update every second
-        }
+        }, 1000); // Update every second
+    }
 
-        function stopTimer(detailId) {
-            // Clear the interval to stop the timer
-            clearInterval(timerIntervals[detailId]);
-            console.log('Timer stopped for detail ID:', detailId);
-        }
+    function stopTimer(detailId) {
+        // Clear the interval to stop the timer
+        clearInterval(timerIntervals[detailId]);
+        console.log('Timer stopped for detail ID:', detailId);
+    }
 
-        function initMap(detailId, startAddress, endAddress) {
-            var map = new google.maps.Map(document.getElementById('map' + detailId), {
-                zoom: 10,
-                center: {
-                    lat: -34.397,
-                    lng: 150.644
-                } // Default center; will update later
-            });
+    function initMap(detailId, startAddress, endAddress) {
+        var map = new google.maps.Map(document.getElementById('map' + detailId), {
+            zoom: 10,
+            center: {
+                lat: -34.397,
+                lng: 150.644
+            } // Default center; will update later
+        });
 
-            var directionsService = new google.maps.DirectionsService();
-            var directionsRenderer = new google.maps.DirectionsRenderer();
-            directionsRenderer.setMap(map);
+        var directionsService = new google.maps.DirectionsService();
+        var directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);
 
-            var request = {
-                origin: startAddress,
-                destination: endAddress,
-                travelMode: 'DRIVING'
-            };
+        var request = {
+            origin: startAddress,
+            destination: endAddress,
+            travelMode: 'DRIVING'
+        };
 
-            directionsService.route(request, function(result, status) {
-                if (status === 'OK') {
-                    directionsRenderer.setDirections(result);
-                    map.setCenter(result.routes[0].legs[0].start_location);
+        directionsService.route(request, function(result, status) {
+            if (status === 'OK') {
+                directionsRenderer.setDirections(result);
+                map.setCenter(result.routes[0].legs[0].start_location);
 
-                    // Define the truck icon URL
-                    var truckIcon = 'https://maps.google.com/mapfiles/kml/shapes/truck.png';
+                // Define the truck icon URL
+                var truckIcon = 'https://maps.google.com/mapfiles/kml/shapes/truck.png';
+                // Define the red location icon URL
+                var locationIcon = 'https://maps.google.com/mapfiles/kml/paddle/red-circle.png';
 
-                    // Create the truck marker
-                    var truckMarker = new google.maps.Marker({
-                        position: result.routes[0].legs[0].start_location,
-                        map: map,
-                        icon: truckIcon,
-                        title: 'Moving Truck'
-                    });
+                // Create the truck marker
+                var truckMarker = new google.maps.Marker({
+                    position: result.routes[0].legs[0].start_location,
+                    map: map,
+                    icon: truckIcon,
+                    title: 'Moving Truck'
+                });
 
-                    // Set timer
-                    var durationInSeconds = result.routes[0].legs[0].duration.value;
-                    startTimer(detailId, durationInSeconds);
+                // Set timer
+                var durationInSeconds = result.routes[0].legs[0].duration.value;
+                startTimer(detailId, durationInSeconds);
 
-                    // Move the truck marker as the truck moves
-                    var route = result.routes[0].legs[0];
-                    var step = 0;
+                // Move the truck marker as the truck moves
+                var route = result.routes[0].legs[0];
+                var step = 0;
 
-                    // Get the timeline element where we will record each place the truck encounters
-                    var timelineListElement = document.getElementById('timelineHistory' + detailId);
+                // Get the timeline element where we will record each place the truck encounters
+                var timelineListElement = document.getElementById('timelineHistory' + detailId);
 
-                    function moveTruck() {
-                        if (step < route.steps.length) {
-                            truckMarker.setPosition(route.steps[step].end_location); // Move the truck marker
+                function moveTruck() {
+                    if (step < route.steps.length) {
+                        var stepLocation = route.steps[step].end_location;
 
-                            // Record the step in the timeline
-                            var placeDescription = route.steps[step].instructions;
-                            var placeElement = document.createElement('li');
-                            placeElement.innerHTML = placeDescription;
-                            timelineListElement.appendChild(placeElement); // Add place to the timeline
+                        // Move the truck marker
+                        truckMarker.setPosition(stepLocation);
 
-                            step++;
-                            setTimeout(moveTruck, 2000); // Simulate truck movement every 2 seconds
-                        } else {
-                            // Truck has reached the destination
-                            console.log("Truck has arrived at the destination. Stopping timer.");
-                            stopTimer(detailId); // Stop the timer when truck reaches the destination
+                        // Create a location marker
+                        var locationMarker = new google.maps.Marker({
+                            position: stepLocation,
+                            map: map,
+                            icon: locationIcon,
+                            title: route.steps[step].instructions
+                        });
 
-                            // Record final timeline entry
-                            var arrivalElement = document.createElement('li');
-                            arrivalElement.innerHTML = "<strong>Truck has arrived at the destination.</strong>";
-                            timelineListElement.appendChild(arrivalElement);
-                        }
+                        // Record the step in the timeline
+                        var placeDescription = route.steps[step].instructions;
+                        var placeElement = document.createElement('li');
+                        placeElement.innerHTML = placeDescription;
+                        timelineListElement.appendChild(placeElement); // Add place to the timeline
+
+                        step++;
+                        setTimeout(moveTruck, 2000); // Simulate truck movement every 2 seconds
+                    } else {
+                        // Truck has reached the destination
+                        console.log("Truck has arrived at the destination. Stopping timer.");
+                        stopTimer(detailId); // Stop the timer when truck reaches the destination
+
+                        // Record final timeline entry
+                        var arrivalElement = document.createElement('li');
+                        arrivalElement.innerHTML = "<strong>Truck has arrived at the destination.</strong>";
+                        timelineListElement.appendChild(arrivalElement);
                     }
-
-                    moveTruck(); // Start moving the truck
-
-                } else {
-                    console.error('Directions request failed due to ' + status);
                 }
-            });
-        }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            @foreach ($rubixdetails as $detail)
-                document.getElementById('modal{{ $detail->id }}').addEventListener('shown.bs.modal', function() {
+                moveTruck(); // Start moving the truck
+
+            } else {
+                console.error('Directions request failed due to ' + status);
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        @foreach ($rubixdetails as $detail)
+            document.getElementById('modal{{ $detail->id }}').addEventListener('shown.bs.modal',
+                function() {
                     initMap(
                         '{{ $detail->id }}',
-                        '{{ $detail->merchant_address }}',
-                        '{{ $detail->consignee_address }}'
+                        '{{ $detail->origin }}',
+                        '{{ $detail->destination }}'
                     );
                 });
-            @endforeach
-        });
-    </script>
+        @endforeach
+    });
+</script>
+
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -1233,14 +1323,36 @@
         }
     </script>
     <script>
+        $(document).ready(function() {
+            // Initialize DataTables
+            $('#data-table').DataTable({
+                responsive: true, // Enable responsiveness
+                paging: true, // Enables pagination
+                searching: true, // Enables search
+                ordering: true, // Enables sorting
+            });
+
+            // Initialize Google Maps
+            function initializeGoogleMaps() {
+                // Your Google Maps initialization code here
+            }
+
+            // Load Google Maps script
+            $.getScript(
+                'https://maps.googleapis.com/maps/api/js?key=AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4&libraries=places',
+                function() {
+                    initializeGoogleMaps();
+                }
+            );
+        });
+
         // Function to extract all table data
         function getTableData() {
-            // If using DataTables, get all data
             var table = $('#data-table').DataTable();
             var data = table.rows({
                 search: 'applied'
             }).data().toArray();
-            var headers = table.columns().header().toArray().map(th => th.innerText);
+            var headers = table.columns().header().toArray().map(th => $(th).text());
 
             return {
                 data,
@@ -1253,7 +1365,7 @@
             var {
                 data
             } = getTableData();
-            var textToCopy = data.map(row => row.join("\t")).join("\n");
+            var textToCopy = data.map(row => row.map(cell => $('<div>').html(cell).text()).join("\t")).join("\n");
 
             var tempTextArea = document.createElement("textarea");
             tempTextArea.value = textToCopy;
@@ -1264,22 +1376,32 @@
             alert("Table data copied to clipboard!");
         });
 
-        // Print function - prints only the table
+        // Print function
         document.getElementById('printBtn').addEventListener('click', function() {
             var {
                 data,
                 headers
             } = getTableData();
+
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
             var printContents = `
             <table border="1">
                 <thead>
-                    <tr>${headers.map(header => `<th>${header}</th>`).join('')}</tr>
+                    <tr>${filteredHeaders.map(header => `<th>${header}</th>`).join('')}</tr>
                 </thead>
                 <tbody>
-                    ${data.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}
+                    ${filteredData.map(row => `<tr>${row.map(cell => `<td>${$('<div>').html(cell).text()}</td>`).join('')}</tr>`).join('')}
                 </tbody>
-            </table>
-        `;
+            </table>`;
+
             var originalContents = document.body.innerHTML;
 
             document.body.innerHTML = `<html><head><title>Print</title></head><body>${printContents}</body></html>`;
@@ -1287,7 +1409,7 @@
             document.body.innerHTML = originalContents;
         });
 
-        // PDF export with landscape formatting and smaller font size using jsPDF and autoTable
+        // PDF export function
         document.getElementById('pdfBtn').addEventListener('click', function() {
             const {
                 jsPDF
@@ -1299,17 +1421,28 @@
                 headers
             } = getTableData();
 
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
+            // Convert HTML content to text
+            var cleanData = filteredData.map(row => row.map(cell => $('<div>').html(cell).text()));
+
             doc.autoTable({
-                head: [headers],
-                body: data,
-                startY: 10, // Start 10 units from top
-                theme: 'grid', // Grid layout
+                head: [filteredHeaders],
+                body: cleanData,
+                startY: 10,
+                theme: 'grid',
                 margin: {
                     top: 10
                 },
                 styles: {
                     fontSize: 8,
-                    cellPadding: 2
                 },
                 headStyles: {
                     fillColor: [22, 160, 133],
@@ -1327,39 +1460,24 @@
                 data,
                 headers
             } = getTableData();
+
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
             var wb = XLSX.utils.book_new();
-            var ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
+            var cleanData = filteredData.map(row => row.map(cell => $('<div>').html(cell).text()));
+            var ws = XLSX.utils.aoa_to_sheet([filteredHeaders, ...cleanData]);
             XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
             XLSX.writeFile(wb, "table_data.xlsx");
         });
     </script>
 
-    <script>
-        $(document).ready(function() {
-            $('#data-table').DataTable({
-                responsive: true, // Enable responsiveness
-                paging: true, // Enables pagination
-                searching: true, // Enables search
-                ordering: true, // Enables sorting
-            });
-        });
-
-        // Initialize Google Maps
-        function initializeGoogleMaps() {
-            // Your Google Maps initialization code here
-        }
-
-        $(document).ready(function() {
-            // Load Google Maps script and initialize DataTables afterward
-            $.getScript(
-                'https://maps.googleapis.com/maps/api/js?key=AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4&libraries=places',
-                function() {
-                    initializeGoogleMaps();
-                    initializeDataTable();
-                }
-            );
-        });
-    </script>
 
 </body>
 

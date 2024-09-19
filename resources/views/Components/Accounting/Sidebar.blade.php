@@ -129,11 +129,18 @@
                     </a>
                 </li>
                 <li class="sidebar-menu-item">
+                    <a href="receivable" class="nav-link">
+                        <i class="fas fa-dollar-sign menu-icon"></i> <!-- Budget icon -->
+                        <span class="menu-title">Receivable</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
                     <a href="financialreport" class="nav-link">
                         <i class="fas fa-file-alt menu-icon"></i> <!-- Financial Report icon -->
                         <span class="menu-title">Financial Report</span>
                     </a>
                 </li>
+
 
 
 

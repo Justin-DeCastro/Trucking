@@ -211,7 +211,8 @@
                                     <tbody>
                                         @foreach ($returnItems as $return)
                                             <tr>
-                                                <td>{{ $return->return_date }}</td>
+
+                                                <td>{{ \Carbon\Carbon::parse($return->return_date)->format('d M, y') }}</td>
                                                 <td>{{ $return->product_name }}</td>
                                                 <td>{{ $return->return_reason }}</td>
                                                 <td>{{ $return->return_quantity }}</td>

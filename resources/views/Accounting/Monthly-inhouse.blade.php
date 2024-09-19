@@ -79,7 +79,8 @@
                                                 $netAmount = $grossIncome - $rate->operational_costs;
                                             @endphp
                                             <tr>
-                                                <td>{{ $rate->created_at->format('M j, Y') }}</td>
+
+                                                <td>{{ $rate->created_at->format('d-M-y') }}</td>
                                                 <td>₱{{ number_format($rate->rate_per_mile, 2) }}</td>
                                                 <td>{{ number_format($rate->km, 2) }}</td>
                                                 <td>₱{{ number_format($rate->operational_costs, 2) }}</td>

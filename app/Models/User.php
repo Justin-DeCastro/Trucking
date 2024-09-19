@@ -30,6 +30,7 @@ class User extends Authenticatable
         'license_expiration',
         'verification_code',
         'is_verified',
+        'status'
     ];
 
     /**

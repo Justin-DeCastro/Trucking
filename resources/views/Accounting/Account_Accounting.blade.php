@@ -620,118 +620,94 @@
             }, 500);
         }
     </script>
-    <script>
-        // Function to extract all table data
-        function getTableData() {
-            // If using DataTables, get all data
-            var table = $('#data-table').DataTable();
-            var data = table.rows({
-                search: 'applied'
-            }).data().toArray();
-            var headers = table.columns().header().toArray().map(th => th.innerText);
 
-            return {
-                data,
-                headers
-            };
-        }
+<script>
+    $(document).ready(function() {
+        $('#data-table').DataTable();
+    });
 
-        // Copy function
-        document.getElementById('copyBtn').addEventListener('click', function() {
-            var {
-                data
-            } = getTableData();
-            var textToCopy = data.map(row => row.join("\t")).join("\n");
+    // Function to extract all table data
+    function getTableData() {
+        var table = $('#data-table').DataTable();
+        var data = table.rows({ search: 'applied' }).data().toArray();
+        var headers = table.columns().header().toArray().map(th => $(th).text());
 
-            var tempTextArea = document.createElement("textarea");
-            tempTextArea.value = textToCopy;
-            document.body.appendChild(tempTextArea);
-            tempTextArea.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempTextArea);
-            alert("Table data copied to clipboard!");
+        return { data, headers };
+    }
+
+    // Copy function
+    document.getElementById('copyBtn').addEventListener('click', function() {
+        var { data } = getTableData();
+        var textToCopy = data.map(row => row.map(cell => $('<div>').html(cell).text()).join("\t")).join("\n");
+
+        var tempTextArea = document.createElement("textarea");
+        tempTextArea.value = textToCopy;
+        document.body.appendChild(tempTextArea);
+        tempTextArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempTextArea);
+        alert("Table data copied to clipboard!");
+    });
+
+    // Print function
+    document.getElementById('printBtn').addEventListener('click', function() {
+        var { data, headers } = getTableData();
+        var printContents = `
+        <table border="1">
+            <thead>
+                <tr>${headers.map(header => `<th>${header}</th>`).join('')}</tr>
+            </thead>
+            <tbody>
+                ${data.map(row => `<tr>${row.map(cell => `<td>${$('<div>').html(cell).text()}</td>`).join('')}</tr>`).join('')}
+            </tbody>
+        </table>`;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = `<html><head><title>Print</title></head><body>${printContents}</body></html>`;
+        window.print();
+        document.body.innerHTML = originalContents;
+    });
+
+    // PDF export function
+    document.getElementById('pdfBtn').addEventListener('click', function() {
+        const { jsPDF } = window.jspdf;
+        var doc = new jsPDF('landscape'); // Set the orientation to landscape
+
+        var { data, headers } = getTableData();
+
+        // Convert HTML content to text
+        var cleanData = data.map(row => row.map(cell => $('<div>').html(cell).text()));
+
+        doc.autoTable({
+            head: [headers],
+            body: cleanData,
+            startY: 10,
+            theme: 'grid',
+            margin: { top: 10 },
+            styles: {
+                fontSize: 8,
+                cellPadding: 2
+            },
+            headStyles: {
+                fillColor: [22, 160, 133],
+                textColor: 255
+            },
+            pageBreak: 'auto',
         });
 
-        // Print function - prints only the table
-        document.getElementById('printBtn').addEventListener('click', function() {
-            var {
-                data,
-                headers
-            } = getTableData();
-            var printContents = `
-            <table border="1">
-                <thead>
-                    <tr>${headers.map(header => `<th>${header}</th>`).join('')}</tr>
-                </thead>
-                <tbody>
-                    ${data.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}
-                </tbody>
-            </table>
-        `;
-            var originalContents = document.body.innerHTML;
+        doc.save('table_data.pdf');
+    });
 
-            document.body.innerHTML = `<html><head><title>Print</title></head><body>${printContents}</body></html>`;
-            window.print();
-            document.body.innerHTML = originalContents;
-        });
-
-        // PDF export with landscape formatting and smaller font size using jsPDF and autoTable
-        document.getElementById('pdfBtn').addEventListener('click', function() {
-            const {
-                jsPDF
-            } = window.jspdf;
-            var doc = new jsPDF('landscape'); // Set the orientation to landscape
-
-            var {
-                data,
-                headers
-            } = getTableData();
-
-            doc.autoTable({
-                head: [headers],
-                body: data,
-                startY: 10, // Start 10 units from top
-                theme: 'grid', // Grid layout
-                margin: {
-                    top: 10
-                },
-                styles: {
-                    fontSize: 8,
-                    cellPadding: 2
-                },
-                headStyles: {
-                    fillColor: [22, 160, 133],
-                    textColor: 255
-                },
-                pageBreak: 'auto',
-            });
-
-            doc.save('table_data.pdf');
-        });
-
-        // Excel export function
-        document.getElementById('excelBtn').addEventListener('click', function() {
-            var {
-                data,
-                headers
-            } = getTableData();
-            var wb = XLSX.utils.book_new();
-            var ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
-            XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-            XLSX.writeFile(wb, "table_data.xlsx");
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            $('#data-table').DataTable({
-                responsive: true, // Enable responsiveness
-                paging: true, // Enables pagination
-                searching: true, // Enables search
-                ordering: true, // Enables sorting
-            });
-        });
-    </script>
+    // Excel export function
+    document.getElementById('excelBtn').addEventListener('click', function() {
+        var { data, headers } = getTableData();
+        var wb = XLSX.utils.book_new();
+        var cleanData = data.map(row => row.map(cell => $('<div>').html(cell).text()));
+        var ws = XLSX.utils.aoa_to_sheet([headers, ...cleanData]);
+        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+        XLSX.writeFile(wb, "table_data.xlsx");
+    });
+</script>
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
 

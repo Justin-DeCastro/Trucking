@@ -28,7 +28,8 @@ class Loan extends Model
     // }
     public function receivables()
     {
-        return $this->hasMany(Receivable::class, 'borrower', 'borrower'); // Link via borrower
+        return $this->hasMany(Receivable::class, 'borrower', 'borrower');
     }
+
 
 }

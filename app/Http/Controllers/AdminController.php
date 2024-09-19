@@ -28,75 +28,77 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
     public function dashboard()
-{
-    // Get the current logged-in user ID
-    $currentUserId = auth()->id();
+    {
+        // Get the current logged-in user ID
+        $currentUserId = auth()->id();
 
-    // Count the total number of bookings
-    $totalBookings = Booking::count();
+        // Count the total number of bookings
+        $totalBookings = Booking::count();
 
-    $today = Carbon::today();
-    $formattedDate = $today->format('F j, Y');
+        $today = Carbon::today();
+        $formattedDate = $today->format('F j, Y');
 
-    $todayBookings = Booking::whereDate('created_at', $today)->count();
+        $todayBookings = Booking::whereDate('created_at', $today)->count();
 
-    $outboundTruck = Booking::whereIn('status', ['For_Pick-up', 'First_delivery_attempt', 'In_Transit'])->count();
-    $inboundTruck = Booking::whereIn('status', ['Delivery_successful'])->count();
-    $MaintenanceTruck = Vehicle::whereIn('truck_status', ['maintenance'])->count();
-    $deliverySuccessfulCount = Booking::where('status', 'Delivery successful')->count();
+        // Count of different statuses in Booking
+        $outboundTruck = Booking::whereIn('status', ['For_Pick-up', 'First_delivery_attempt', 'In_Transit'])->count();
+        $inboundTruck = Booking::whereIn('status', ['Delivery_successful'])->count();
+        $MaintenanceTruck = Vehicle::whereIn('truck_status', ['maintenance'])->count();
+        $deliverySuccessfulCount = Booking::where('status', 'Delivery successful')->count();
 
-    $totalAvailableTrucks = Vehicle::sum('quantity');
-    $totalCouriers = User::where('role', 'courier')->count();
+        // Count of available trucks and couriers
+        $totalAvailableTrucks = Vehicle::sum('quantity');
+        $totalCouriers = User::where('role', 'courier')->count();
 
-    // Get couriers' license expiration dates
-    $couriers = User::where('role', 'courier')->get(['name', 'license_expiration']);
+        // Get couriers' license expiration dates
+        $couriers = User::where('role', 'courier')->get(['name', 'license_expiration']);
 
-    // Fetch the latest location for each user
-    $latestLocations = Location::select('user_id', 'latitude', 'longitude')
-    ->whereIn('id', function ($query) {
-        $query->selectRaw('MAX(id)')
-            ->from('locations')
-            ->groupBy('user_id');
-    })
-    ->get();
+        // Fetch the latest location for each booking and get driver names
+        $latestLocations = Booking::select('bookings.id', 'bookings.location', 'bookings.driver_name', 'users.name as driver_name')
+            ->leftJoin('users', 'bookings.driver_name', '=', 'users.id')
+            ->whereIn('bookings.id', function ($query) {
+                $query->selectRaw('MAX(id)')
+                    ->from('bookings')
+                    ->groupBy('id');
+            })
+            ->get();
 
-$apiKey = 'AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4';
+        $apiKey = 'AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4';
 
-$locationsWithAddresses = [];
+        $locationsWithAddresses = [];
 
-foreach ($latestLocations as $location) {
-    $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
-        'latlng' => "{$location->latitude},{$location->longitude}",
-        'key' => $apiKey
-    ]);
+        foreach ($latestLocations as $booking) {
+            // Use the booking's location field (assuming it's a formatted address)
+            $address = $booking->location;
 
-    $data = $response->json();
+            // Get the driver name directly from the join
+            $driverName = $booking->driver_name;
 
-    $address = $data['results'][0]['formatted_address'] ?? 'Address not found';
+            // Add the location and creator (driver name) to the array
+            $locationsWithAddresses[] = [
+                'id' => $booking->id,
+                'address' => $address,
+                'creator' => $driverName ? $driverName : 'Unknown'
+            ];
+        }
 
-    $user = User::find($location->user_id);
+        return view('Admin.dashboard', compact(
+            'totalBookings',
+            'outboundTruck',
+            'inboundTruck',
+            'todayBookings',
+            'formattedDate',
+            'deliverySuccessfulCount',
+            'totalAvailableTrucks',
+            'totalCouriers',
+            'couriers',
+            'locationsWithAddresses',
+            'MaintenanceTruck'
+        ));
+    }
 
-    $locationsWithAddresses[] = [
-        'user_id' => $location->user_id,
-        'address' => $address,
-        'creator' => $user ? $user->name : 'Unknown'
-    ];
-}
 
-return view('Admin.dashboard', compact(
-    'totalBookings',
-    'outboundTruck',
-    'inboundTruck',
-    'todayBookings',
-    'formattedDate',
-    'deliverySuccessfulCount',
-    'totalAvailableTrucks',
-    'totalCouriers',
-    'couriers',
-    'locationsWithAddresses',
-    'MaintenanceTruck'
-));
-}
+
 
 
 
@@ -399,10 +401,10 @@ public function coordinatordash()
     $currentUserId = auth()->id();
 
     // Fetch new backload bookings from today with location and driver data
-    $newBackloadBookings = Booking::select('bookings.id', 'bookings.delivery_type', 'bookings.created_at', 'bookings.location', 'users.name as driver_name') // Include driver_name from users table
-        ->join('users', 'bookings.driver_name', '=', 'users.id') // Join with users table to get the driver_name
+    $newBackloadBookings = Booking::select('bookings.id', 'bookings.delivery_type', 'bookings.created_at', 'bookings.location', 'users.name as driver_name')
+        ->join('users', 'bookings.driver_name', '=', 'users.id')
         ->where('bookings.delivery_type', 'Backload')
-        ->whereDate('bookings.created_at', Carbon::today()) // Ensure you are only getting today's bookings
+        ->whereDate('bookings.created_at', Carbon::today())
         ->orderBy('bookings.created_at', 'desc')
         ->get();
 
@@ -412,9 +414,9 @@ public function coordinatordash()
         ->get(['name', 'license_expiration']);
 
     // Get bookings with locations and driver names
-    $bookingsWithLocations = Booking::select('bookings.id', 'bookings.location', 'users.name as driver_name') // Include driver_name from users table
-        ->join('users', 'bookings.driver_name', '=', 'users.id') // Join with users table to get the driver_name
-        ->whereNotNull('bookings.location') // Ensure we only get bookings with a location value
+    $bookingsWithLocations = Booking::select('bookings.id', 'bookings.location', 'users.name as driver_name')
+        ->join('users', 'bookings.driver_name', '=', 'users.id')
+        ->whereNotNull('bookings.location')
         ->get();
 
     // Get plate numbers with fewer than 5 bookings and their total count
@@ -424,14 +426,40 @@ public function coordinatordash()
         ->having('booking_count', '<', 5)
         ->get();
 
+    // Get the latest booking for each unique booking id
+    $latestBookings = Booking::select('bookings.id', 'bookings.location', 'bookings.driver_name', 'users.name as driver_name')
+        ->join('users', 'bookings.driver_name', '=', 'users.id')
+        ->whereIn('bookings.id', function ($query) {
+            $query->selectRaw('MAX(id)')
+                ->from('bookings')
+                ->groupBy('id');
+        })
+        ->get();
+
+    // Prepare the data for the view
+    $locationsWithAddresses = [];
+
+    foreach ($latestBookings as $booking) {
+        $address = $booking->location;
+        $driverName = $booking->driver_name;
+
+        $locationsWithAddresses[] = [
+            'id' => $booking->id,
+            'address' => $address,
+            'creator' => $driverName ? $driverName : 'Unknown'
+        ];
+    }
+
     // Return view with the necessary data
     return view('Admin.Coordinatordash', [
         'expiringCouriers' => $expiringCouriers,
         'bookingsWithLocations' => $bookingsWithLocations,
         'newBackloadBookings' => $newBackloadBookings,
-        'plateNumbersWithFewBookings' => $plateNumbersWithFewBookings
+        'plateNumbersWithFewBookings' => $plateNumbersWithFewBookings,
+        'locationsWithAddresses' => $locationsWithAddresses,
     ]);
 }
+
 
 
     public function getNewBackloadBookings()

@@ -27,11 +27,11 @@
         <div class="body-wrapper">
             <div class="bodywrapper__inner">
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
-                    <a href="{{ route('addtruck') }}" class="btn btn-primary"><i class = "fa fa-arrow-left"></i>Back</a>
+                    <a href="{{ route('employeedetails') }}" class="btn btn-primary"><i class = "fa fa-arrow-left"></i>Back</a>
                 </div>
 
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                    <h6 class="page-title">Add Truck</h6>
+                    <h6 class="page-title">Archive Employee</h6>
                 </div>
 
                 <br>
@@ -40,101 +40,70 @@
                         <div class="card">
                             <div class="card-body p-0">
                                 <div class="table-responsive--md table-responsive">
-                                    <table class="table--light style--two table">
+                                    <table id="data-table" class="table table--light style--two display nowrap">
                                         <thead>
                                             <tr>
-                                                <th>Plate Number</th>
-                                                <th>Vehicle Name</th>
-                                                <th>Truck Model</th>
-                                                <th>Vehicle Capacity</th>
-                                                <th>Vehicle Status</th>
-                                                <th>Vehicle Quantity</th>
-                                                <th>OR/CR</th>
-                                                <th>Status</th>
+                                                <th>ID Number</th>
+                                                <th>Position</th>
+                                                <th>Employee Name</th>
+                                                <th>Date Hired</th>
+                                                <th>Birthday</th>
+                                                <th>Birth Place</th>
+                                                <th>Civil Status</th>
+                                                <th>Gender</th>
+                                                <th>Mobile</th>
+                                                <th>Address</th>
+                                                <th>Profile Image</th>
+                                                <th>201 Files</th>
+                                              <!-- New column for action buttons -->
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($archivedVehicles as $vehicle)
+                                            @foreach ($archivedEmployee as $employee)
                                                 <tr>
-                                                    <td>{{ $vehicle->plate_number }}</td>
-                                                    <td>{{ $vehicle->truck_name }}</td>
-                                                    <td>{{ $vehicle->truck_model }}</td>
-                                                    <td>{{ $vehicle->truck_capacity }}</td>
-                                                    <td>
-                                                        {{ $vehicle->truck_status }}
-                                                        <!-- Three-dots icon -->
-                                                        <button type="button" class="btn btn-light btn-sm ms-2"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#editStatusModal{{ $vehicle->id }}"
-                                                            data-id="{{ $vehicle->id }}"
-                                                            data-truck-status="{{ $vehicle->truck_status }}">
-                                                            <i class="fas fa-ellipsis-v"></i>
-                                                        </button>
-                                                    </td>
-                                                    <td>{{ $vehicle->quantity }}</td>
-                                                    <td>
-                                                        @if (!empty($vehicle->or) || !empty($vehicle->cr))
-                                                            <ul class="list-unstyled">
-                                                                @if (!empty($vehicle->or))
-                                                                    <li>
-                                                                        <a href="{{ asset($vehicle->or) }}"
-                                                                            data-lightbox="vehicle-docs"
-                                                                            data-title="Official Receipt (OR)">
-                                                                            <img src="{{ asset($vehicle->or) }}"
-                                                                                alt="Official Receipt (OR)"
-                                                                                class="img-fluid"
-                                                                                style="max-width: 100px; height: auto;">
-                                                                        </a>
-                                                                        <!-- Three-dots icon for OR -->
-                                                                        <button type="button"
-                                                                            class="btn btn-light btn-sm ms-2"
-                                                                            data-bs-toggle="modal"
-                                                                            data-bs-target="#updateOrModal"
-                                                                            data-vehicle-id="{{ $vehicle->id }}">
-                                                                            <i class="fas fa-ellipsis-v"></i>
-                                                                        </button>
-                                                                    </li>
-                                                                @else
-                                                                    <li>No Official Receipt (OR) available</li>
-                                                                @endif
+                                                    <td>{{ $employee->id_number }}</td>
+                                                    <td>{{ $employee->position }}</td>
+                                                    <td>{{ $employee->employee_name }}</td>
 
-                                                                @if (!empty($vehicle->cr))
-                                                                    <li>
-                                                                        <a href="{{ asset($vehicle->cr) }}"
-                                                                            data-lightbox="vehicle-docs"
-                                                                            data-title="Certificate of Registration (CR)">
-                                                                            <img src="{{ asset($vehicle->cr) }}"
-                                                                                alt="Certificate of Registration (CR)"
-                                                                                class="img-fluid"
-                                                                                style="max-width: 100px; height: auto;">
-                                                                        </a>
-                                                                        <!-- Three-dots icon for CR -->
-                                                                        <button type="button"
-                                                                            class="btn btn-light btn-sm ms-2"
-                                                                            data-bs-toggle="modal"
-                                                                            data-bs-target="#updateDocumentModal"
-                                                                            data-doc-id="{{ $vehicle->id }}">
-                                                                            <i class="fas fa-ellipsis-v"></i>
-                                                                        </button>
-                                                                    </li>
-                                                                @else
-                                                                    <li>No Certificate of Registration (CR) available
-                                                                    </li>
-                                                                @endif
-                                                            </ul>
+                                                    <td>{{ \Carbon\Carbon::parse($employee->date_hired)->format('d-M-y') }}</td>
+
+                                                    <td>{{ \Carbon\Carbon::parse( $employee->birthday)->format('d-M-y') }}</td>
+                                                    <td>{{ $employee->birth_place }}</td>
+                                                    <td>{{ $employee->civil_status }}</td>
+                                                    <td>{{ $employee->gender }}</td>
+                                                    <td>{{ $employee->mobile }}</td>
+                                                    <td>{{ $employee->address }}</td>
+                                                    <td>
+                                                        <a href="{{ asset($employee->profile_image) }}" data-lightbox="profile"
+                                                            data-title="Profile Image">
+                                                            <img src="{{ asset($employee->profile_image) }}"
+                                                                alt="Profile Image"
+                                                                style="width: 50px; height: 50px; object-fit: cover;">
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        @if ($employee->files)
+                                                            @php
+                                                                $filePaths = json_decode($employee->files, true);
+                                                            @endphp
+                                                            @foreach ($filePaths as $filePath)
+                                                                <a href="{{ asset($filePath) }}" data-lightbox="files"
+                                                                    data-title="File Image">
+                                                                    <img src="{{ asset($filePath) }}" alt="File Image"
+                                                                        style="width: 50px; height: 50px; object-fit: cover; margin-right: 5px;">
+                                                                </a>
+                                                            @endforeach
                                                         @else
-                                                            No documents available
+                                                            <p>No images available</p>
                                                         @endif
                                                     </td>
 
-                                                    @if ($vehicle->status == 'ARCHIVED')
-                                                        <td style = "color: orange"><b>ARCHIVED</b></td>
-                                                    @endif
+
+
+
                                                 </tr>
                                             @endforeach
                                         </tbody>
-
-                                        <!-- Modal for updating OR document -->
                                     </table>
                                 </div>
                             </div>

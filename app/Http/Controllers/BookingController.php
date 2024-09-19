@@ -55,93 +55,35 @@ class BookingController extends Controller
 
     public function getPlateNumberCounts()
     {
-        $monthlyBookings = Booking::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as count')
-        ->groupBy('year', 'month')
-        ->get()
-        ->keyBy(function ($item) {
-            return $item->year . '-' . str_pad($item->month, 2, '0', STR_PAD_LEFT);
-        })
-        ->map(function ($item) {
-            return $item->count;
-        });
-
-        // Retrieve all unique plate numbers with their counts, status counts, and order_status counts
-        $plateNumberCounts = Booking::select('plate_number')
+        // Get bookings with required data (origin, destination, trip_ticket, and date) per plate number
+        $plateNumberCounts = Booking::select('plate_number', 'origin', 'destination', 'trip_ticket', 'created_at')
             ->selectRaw('count(*) as total_bookings')
             ->selectRaw('GROUP_CONCAT(DISTINCT status) as statuses')
             ->selectRaw('GROUP_CONCAT(DISTINCT order_status) as order_statuses')
-            ->groupBy('plate_number')
+            ->groupBy('plate_number', 'origin', 'destination', 'trip_ticket', 'created_at') // grouping by necessary fields
             ->get();
 
-        // Prepare data for each status count including order_status
-        $plateNumberDetails = $plateNumberCounts->map(function ($plate) {
-            // Get booking details for the plate number
-            $statusCounts = Booking::select('status', 'order_status')
-                ->where('plate_number', $plate->plate_number)
-                ->groupBy('status', 'order_status')
-                ->selectRaw('count(*) as count')
-                ->get()
-                ->groupBy('status')
-                ->map(function ($group) {
-                    return $group->pluck('count', 'order_status')->toArray();
-                })
-                ->toArray();
-
-            $plate->status_counts = $statusCounts;
-            return $plate;
-        });
-
-        // Handle empty result set by ensuring it's an empty collection
-        if ($plateNumberCounts->isEmpty()) {
-            $plateNumberDetails = collect(); // Return an empty collection
-        }
-
-        // Pass the data to the view
+        // Return the data to the view
         return view('Admin.PlatenumberBookingCount', [
-            'plateNumberCounts' => $plateNumberDetails,
-            'monthlyBookings' => $monthlyBookings,
+            'plateNumberCounts' => $plateNumberCounts
         ]);
     }
 
 
     public function getDriverPlateNumberCounts()
-    {
-        // Fetch all drivers with their role as courier
-        $driverDetails = Booking::join('users', 'users.id', '=', 'bookings.driver_name')
-            ->where('users.role', 'courier')
-            ->select('users.name as driver_name')
-            ->selectRaw('COUNT(bookings.id) as total_bookings')
-            ->groupBy('users.name')
-            ->get();
+{
+    // Fetch all bookings with driver details
+    $bookings = Booking::join('users', 'users.id', '=', 'bookings.driver_name')
+        ->where('users.role', 'courier') // Only get couriers
+        ->select('users.id as driver_id', 'users.name as driver_name', 'bookings.created_at', 'bookings.product_name', 'bookings.origin','bookings.destination') // Select the required fields
+        ->get();
 
-        // Prepare booking details grouped by driver
-        $driverDetails = $driverDetails->map(function ($driver) {
-            // Get all bookings for the driver grouped by necessary fields
-            $bookingsByDriver = Booking::join('users', 'users.id', '=', 'bookings.driver_name')
-                ->where('users.name', $driver->driver_name)
-                ->where('users.role', 'courier')
-                ->groupBy('bookings.created_at', 'bookings.product_name', 'bookings.consignee_address')
-                ->selectRaw('count(*) as count, DATE_FORMAT(bookings.created_at, "%M %d, %Y") as date, bookings.product_name, bookings.consignee_address')
-                ->get();
+    // Return the bookings to the view
+    return view('Admin.DriverBookingCount', [
+        'bookings' => $bookings,
+    ]);
+}
 
-            // Structure data for display
-            $driver->bookingDetails = $bookingsByDriver->map(function ($booking) {
-                return [
-                    'date' => $booking->date,
-                    'product_name' => $booking->product_name,
-                    'count' => $booking->count,
-                    'consignee_address' => $booking->consignee_address,
-
-                ];
-            });
-
-            return $driver;
-        });
-
-        return view('Admin.DriverBookingCount', [
-            'driverDetails' => $driverDetails,
-        ]);
-    }
 
 
 
@@ -246,6 +188,9 @@ public function getAccountData(Request $request)
         'merchant_city' => 'required|string|max:255',
         'merchant_province' => 'required|string|max:255',
         'truck_type' => 'required',
+        'origin' => 'required',
+        'destination' => 'required',
+        'eta' => 'required',
     ]);
 
     // Extract addresses and other details

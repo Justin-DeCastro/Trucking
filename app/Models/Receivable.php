@@ -22,8 +22,9 @@ class Receivable extends Model
     //     return $this->belongsTo(Loan::class);
     // }
     public function loan()
-    {
-        return $this->belongsTo(Loan::class, 'borrower', 'borrower'); // Assuming borrower links these tables
-    }
+{
+    return $this->belongsTo(Loan::class, 'loan_id'); // Adjust 'loan_id' to your foreign key
+}
+
 
 }

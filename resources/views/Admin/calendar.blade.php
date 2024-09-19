@@ -66,7 +66,7 @@
 
     <!-- Sidebar -->
     @include('Components.Admin.Navbar')
-    @include('Components.Admin.Sidebar')
+    @include('Components.Accounting.Sidebar')
     <!-- End Sidebar -->
     <div class="container-fluid px-3 px-sm-0">
         <div class="body-wrapper">
@@ -90,11 +90,11 @@
                                                 <div id='calendar'></div>
                                                 <div class="calendar-legend">
                                                     <h5>Legend</h5>
-                                                    <div class="legend-item">
+                                                    {{-- <div class="legend-item">
                                                         <div class="legend-color" style="background-color: green;">
                                                         </div>
                                                         <div class="legend-text">Paid</div>
-                                                    </div>
+                                                    </div> --}}
                                                     <div class="legend-item">
                                                         <div class="legend-color" style="background-color: orange;">
                                                         </div>
@@ -138,7 +138,18 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
+                                    @foreach ($loans as $loan)
+                                        <form id="markAsPaidForm{{ $loan->id }}"
+                                            action="{{ route('loans.markAsPaid', $loan->id) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-success"
+                                                onclick="document.getElementById('markAsPaidForm{{ $loan->id }}').submit(); return false;">Mark
+                                                as Paid</button>
+                                        </form>
+                                    @endforeach
                                 </div>
+
                             </div>
                         </div>
                     </div>

@@ -46,7 +46,10 @@ class Booking extends Model
         'proof_of_delivery',
         'driver_id', // Add this if you have a driver_id field
         'updated_by',
-        'created_by' // Add the updated_by field
+        'created_by' ,
+        'origin',
+        'destination',
+        'eta',
     ];
 
     public function consigneeAddresses()

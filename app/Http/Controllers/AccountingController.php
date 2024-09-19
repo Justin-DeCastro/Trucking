@@ -341,149 +341,103 @@ public function update(Request $request, Transaction $transaction)
     }
 
     public function financialreport(Request $request)
-{
-    $accountId = $request->input('account');
-    $plateNumbers = Booking::pluck('plate_number')->unique();
-    // Fetch all transactions initially
-    $transactions = Transaction::all();
+    {
+        $accountId = $request->input('account');
+        $plateNumbers = Booking::pluck('plate_number')->unique();
 
-    // Group transactions by month, then by day
-    $monthlyTransactions = $transactions->groupBy(function ($transaction) {
-        return \Carbon\Carbon::parse($transaction->created_at)->format('Y-m'); // Group by month (year-month)
-    })->map(function ($monthTransactions) {
-        return $monthTransactions->groupBy(function ($transaction) {
-            return \Carbon\Carbon::parse($transaction->created_at)->format('Y-m-d'); // Group by date (year-month-day)
-        })->map(function ($dayTransactions) {
-            $depositBalance = $dayTransactions->sum(function ($transaction) {
-                return (float) $transaction->deposit_amount; // Ensure deposit_amount is cast to float
-            });
-            $withdrawBalance = $dayTransactions->sum(function ($transaction) {
-                return (float) $transaction->withdraw_amount; // Ensure withdraw_amount is cast to float
-            });
-            $expenseBalance = $dayTransactions->sum(function ($transaction) {
-                return (float) $transaction->expense_amount; // Ensure expense_amount is cast to float
-            });
-            $netIncome = $depositBalance - $withdrawBalance; // Calculate net income for the day
+        // Fetch all transactions, preventives, and loans
+        $transactions = Transaction::all();
+        $preventives = Preventive::all();
+        $loans = Loan::all();
 
+        // Fetch account names
+        $accounts = Account::all()->keyBy('id');
+
+        // Format transactions by date with account names
+        $formattedTransactions = $transactions->map(function ($transaction) use ($accounts) {
+            $accountName = $accounts->get($transaction->account_id)->name ?? 'N/A';
             return [
-                'transactions' => $dayTransactions,
-                'depositBalance' => $depositBalance,
-                'withdrawBalance' => $withdrawBalance,
-                'expenseBalance' => $expenseBalance,
-                'netIncome' => $netIncome,
-
+                'date' => \Carbon\Carbon::parse($transaction->created_at)->format('d-M-Y'),
+                'accountName' => $accountName,
+                'particulars' => $transaction->particulars,
+                'depositBalance' => (float) $transaction->deposit_amount,
+                'withdrawBalance' => (float) $transaction->withdraw_amount,
+                'netIncome' => (float) $transaction->deposit_amount - (float) $transaction->withdraw_amount,
             ];
         });
-    });
 
-    // Calculate overall totals for the first table
-    $grandTotalDeposit = $transactions->sum(function ($transaction) {
-        return (float) $transaction->deposit_amount; // Ensure deposit_amount is cast to float
-    });
-    $grandTotalWithdraw = $transactions->sum(function ($transaction) {
-        return (float) $transaction->withdraw_amount; // Ensure withdraw_amount is cast to float
-    });
-    $grandTotalExpense = $transactions->sum(function ($transaction) {
-        return (float) $transaction->expense_amount; // Ensure expense_amount is cast to float
-    });
-    $grandNetIncome = $grandTotalDeposit - $grandTotalWithdraw;
-
-    // Fetch preventive data and group by month and day
-    $preventives = Preventive::all();
-    $monthlyPreventives = $preventives->groupBy(function ($preventive) {
-        return \Carbon\Carbon::parse($preventive->created_at)->format('Y-m'); // Group by month
-    })->map(function ($monthPreventives) {
-        return $monthPreventives->groupBy(function ($preventive) {
-            return \Carbon\Carbon::parse($preventive->created_at)->format('Y-m-d'); // Group by date
-        })->map(function ($dayPreventives) {
-            $totalPayment = $dayPreventives->sum(function ($preventive) {
-                return (float) $preventive->price_parts_replaced * (int) $preventive->quantity; // Calculate per transaction, cast to numeric types
-            });
-
+        // Format preventives by date with account names
+        $formattedPreventives = $preventives->map(function ($preventive) use ($accounts) {
+            $accountName = $accounts->get($preventive->account_id)->name ?? 'N/A';
             return [
-                'preventives' => $dayPreventives,
-                'totalPayment' => $totalPayment, // Total per day
+                'date' => \Carbon\Carbon::parse($preventive->created_at)->format('d-M-Y'),
+                'accountName' => $accountName,
+                'partsReplaced' => $preventive->parts_replaced,
+                'quantity' => (int) $preventive->quantity,
+                'pricePerPiece' => (float) $preventive->price_parts_replaced,
+                'totalAmount' => (float) $preventive->price_parts_replaced * (int) $preventive->quantity,
             ];
         });
-    });
 
-    // Calculate overall totals for the Preventive Maintenance table
-    $grandTotalPayment = $preventives->sum(function ($preventive) {
-        return (float) $preventive->price_parts_replaced * (int) $preventive->quantity; // Calculate grand total payment, cast to numeric types
-    });
-
-    // Fetch loan data and group by month and day
-    $loans = Loan::all();
-    $monthlyLoans = $loans->groupBy(function ($loan) {
-        return \Carbon\Carbon::parse($loan->created_at)->format('Y-m'); // Group by month
-    })->map(function ($monthLoans) {
-        return $monthLoans->groupBy(function ($loan) {
-            return \Carbon\Carbon::parse($loan->created_at)->format('Y-m-d'); // Group by date
-        })->map(function ($dayLoans) {
-            $totalInitialAmount = $dayLoans->sum(function ($loan) {
-                return (float) $loan->initial_amount; // Calculate total initial amount
-            });
-            $totalPayment = $dayLoans->sum(function ($loan) {
-                return (float) $loan->total_payment; // Calculate total payment
-            });
-
+        // Format loans by date with account names
+        $formattedLoans = $loans->map(function ($loan) use ($accounts) {
+            $accountName = $accounts->get($loan->account_id)->name ?? 'N/A';
             return [
-                'loans' => $dayLoans,
-                'totalInitialAmount' => $totalInitialAmount, // Total initial amount per day
-                'totalPayment' => $totalPayment, // Total payment per day
+                'date' => \Carbon\Carbon::parse($loan->created_at)->format('d-M-Y'),
+                'accountName' => $accountName,
+                'borrower' => $loan->borrower,
+                'initialAmount' => (float) $loan->initial_amount,
+                'interest' => (float) $loan->interest_percentage,
+                'totalPayment' => (float) $loan->total_payment,
             ];
         });
-    });
 
-    // Calculate overall totals for the Loan table
-    $grandTotalInitialAmount = $loans->sum(function ($loan) {
-        return (float) $loan->initial_amount; // Calculate grand total initial amount
-    });
-    $grandTotalPayment = $loans->sum(function ($loan) {
-        return (float) $loan->total_payment; // Calculate grand total payment
-    });
+        // Calculate grand totals
+        $grandTotalDeposit = $transactions->sum(function ($transaction) {
+            return (float) $transaction->deposit_amount;
+        });
+        $grandTotalWithdraw = $transactions->sum(function ($transaction) {
+            return (float) $transaction->withdraw_amount;
+        });
+        $grandTotalExpense = $transactions->sum(function ($transaction) {
+            return (float) $transaction->expense_amount;
+        });
+        $grandNetIncome = $grandTotalDeposit - $grandTotalWithdraw;
 
-    // Overall balances calculation
-    $depositBalance = $transactions->sum(function ($transaction) {
-        return (float) $transaction->deposit_amount; // Ensure deposit_amount is cast to float
-    });
-    $withdrawBalance = $transactions->sum(function ($transaction) {
-        return (float) $transaction->withdraw_amount; // Ensure withdraw_amount is cast to float
-    });
-    $expenseBalance = $transactions->sum(function ($transaction) {
-        return (float) $transaction->expense_amount; // Ensure expense_amount is cast to float
-    });
+        $grandTotalPayment = $preventives->sum(function ($preventive) {
+            return (float) $preventive->price_parts_replaced * (int) $preventive->quantity;
+        });
 
-    $startingBalance = $accountId
-        ? StartingBalance::where('account_id', $accountId)->value('amount')
-        : 0;
+        $grandTotalInitialAmount = $loans->sum(function ($loan) {
+            return (float) $loan->initial_amount;
+        });
+        $grandTotalLoanPayment = $loans->sum(function ($loan) {
+            return (float) $loan->total_payment;
+        });
 
-    // Fetch all accounts
-    $netIncome = $depositBalance - $withdrawBalance;
-    $accounts = Account::all();
+        $startingBalance = $accountId
+            ? StartingBalance::where('account_id', $accountId)->value('amount')
+            : 0;
 
-    // Return view with data
-    return view('Accounting.FinancialReport', [
-        'accounts' => $accounts,
-        'transactions' => $transactions,
-        'depositBalance' => $depositBalance,
-        'withdrawBalance' => $withdrawBalance,
-        'startingBalance' => $startingBalance,
-        'expenseBalance' => $expenseBalance,
-        'netIncome' => $netIncome,
-        'monthlyTransactions' => $monthlyTransactions,
-        'monthlyPreventives' => $monthlyPreventives, // Pass preventives data to view
-        'monthlyLoans' => $monthlyLoans, // Pass loans data to view
-        'grandTotalDeposit' => $grandTotalDeposit,
-        'grandTotalWithdraw' => $grandTotalWithdraw,
-        'grandTotalExpense' => $grandTotalExpense,
-        'grandNetIncome' => $grandNetIncome,
-        'grandTotalPayment' => $grandTotalPayment, // Grand total for Preventive Maintenance
-        'grandTotalInitialAmount' => $grandTotalInitialAmount, // Grand total for Initial Amount
-        'grandTotalLoanPayment' => $grandTotalPayment,
-        'plateNumbers' => $plateNumbers,// Grand total for Loan Payments
-    ]);
-}
+        $accounts = Account::all();
+
+        return view('Accounting.FinancialReport', [
+            'accounts' => $accounts,
+            'formattedTransactions' => $formattedTransactions,
+            'formattedPreventives' => $formattedPreventives,
+            'formattedLoans' => $formattedLoans,
+            'grandTotalDeposit' => $grandTotalDeposit,
+            'grandTotalWithdraw' => $grandTotalWithdraw,
+            'grandTotalExpense' => $grandTotalExpense,
+            'grandNetIncome' => $grandNetIncome,
+            'grandTotalPayment' => $grandTotalPayment,
+            'grandTotalInitialAmount' => $grandTotalInitialAmount,
+            'grandTotalLoanPayment' => $grandTotalLoanPayment,
+            'plateNumbers' => $plateNumbers,
+            'startingBalance' => $startingBalance,
+        ]);
+    }
+
 
 
 

@@ -72,13 +72,13 @@
                                             <th>Arrival Proof</th>
                                             <th>Proof of Delivery</th>
                                             <th>Completion of Trip</th>
-                                            <th> STATUS</th>
-                                            <th class="text-end">Actions</th> <!-- New column for the button -->
+                                            <th>STATUS</th>
+                                            <th class="text-end">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($trips as $trip)
-                                            <tr>
+                                            <tr class="clickable-row" data-id="{{ $trip->id }}" data-toggle="modal" data-target="#dataModal">
                                                 <td>{{ $trip->plate_number }}</td>
                                                 <td>
                                                     @if ($trip->arrival_proof)
@@ -86,8 +86,7 @@
                                                             <img src="{{ asset('arrival_proofs/' . $file) }}"
                                                                 alt="Arrival Proof"
                                                                 style="width: 50px; height: 50px; object-fit: cover; margin-right: 5px;"
-                                                                data-toggle="modal" data-target="#imageModal"
-                                                                data-image="{{ asset('arrival_proofs/' . $file) }}">
+                                                                data-toggle="modal" data-target="#imageModal" data-image="{{ asset('arrival_proofs/' . $file) }}">
                                                         @endforeach
                                                     @else
                                                         No Image
@@ -96,11 +95,10 @@
                                                 <td>
                                                     @if ($trip->proof_of_delivery)
                                                         @foreach (json_decode($trip->proof_of_delivery, true) as $file)
-                                                            <img src="{{ asset('storage/proofs_of_delivery/' . $file) }}"
+                                                            <img src="{{ asset('proofs_of_delivery/' . $file) }}"
                                                                 alt="Proof of Delivery"
                                                                 style="width: 50px; height: 50px; object-fit: cover; margin-right: 5px;"
-                                                                data-toggle="modal" data-target="#imageModal"
-                                                                data-image="{{ asset('storage/proofs_of_delivery/' . $file) }}">
+                                                                data-toggle="modal" data-target="#imageModal" data-image="{{ asset('proofs_of_delivery/' . $file) }}">
                                                         @endforeach
                                                     @else
                                                         No Image
@@ -123,12 +121,8 @@
                                                         {{ $trip->status }}
                                                     @endif
                                                 </td>
-
-
-
                                                 <td>
-                                                    <form action="{{ route('trips.close', $trip->id) }}" method="POST"
-                                                        style="display: inline;">
+                                                    <form action="{{ route('trips.close', $trip->id) }}" method="POST" style="display: inline;">
                                                         @csrf
                                                         @method('POST')
                                                         <button type="submit"
@@ -138,8 +132,6 @@
                                                         </button>
                                                     </form>
                                                 </td>
-
-
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -150,9 +142,74 @@
 
 
 
+
                             </div>
                         </div>
                     </div>
+{{-- modal for clickable --}}
+<!-- Modal -->
+<div class="container d-flex justify-content-center">
+    <div id="dataModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 600px; width: 100%;" role="document">
+            <div class="modal-content border-0 mx-3">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title font-weight-bold">Trip Details</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="card border-0">
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <h1><strong><center>Plate Number:</strong> <span id="modal-plate-number" class="font-weight-bold"></span></h1>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <p><strong>Completion of Trip:</strong> <span id="modal-trip-completion" class="font-weight-bold"></span></p>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <p><strong>Status:</strong> <span id="modal-status" class="font-weight-bold"></span></p>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-12 d-flex">
+                                        <div class="col-md-6 pr-2">
+                                            <strong>Arrival Proof:</strong>
+                                            <div id="modal-arrival-proof" class="d-flex flex-wrap">
+                                                <!-- Images will be dynamically added here -->
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 pl-2">
+                                            <strong>Proof of Delivery:</strong>
+                                            <div id="modal-proof-of-delivery" class="d-flex flex-wrap">
+                                                <!-- Images will be dynamically added here -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center mt-4">
+                                <div class="col-6 d-flex">
+                                    <button type="button" class="btn btn-outline-primary btn-block font-weight-bold text-dark" onclick="printModalContent()">Print</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 
                     <!-- Create Vehicle Modal -->
                     <div class="modal fade" id="manageAdmin" tabindex="-1" aria-labelledby="manageAdminLabel"
@@ -206,7 +263,7 @@
                         </div> --}}
 
                                         <!-- Close Trip -->
-                                      <!--  <div class="mb-3">
+                                        <!--  <div class="mb-3">
                                             <label for="close_trip" class="form-label">Close Trip</label>
                                             <select id="close_trip" name="close_trip" class="form-control" required>
                                                 <option value="" disabled selected>Select Status</option>
@@ -372,6 +429,42 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            function printModalContent() {
+                const printWindow = window.open('', '', 'height=600,width=800');
+                printWindow.document.write('<html><head><title>Print</title>');
+                // Add CSS for portrait orientation
+                printWindow.document.write('<style>@page { size: portrait; } body { margin: 0; }</style>');
+                printWindow.document.write('</head><body >');
+                printWindow.document.write(document.querySelector('#dataModal .modal-body').innerHTML);
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.focus();
+                printWindow.print();
+            }
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('.clickable-row').forEach(function(row) {
+                    row.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        const plateNumber = this.querySelector('td').textContent.trim();
+                        const arrivalProofImages = this.querySelector('td:nth-child(2)').innerHTML;
+                        const proofOfDeliveryImages = this.querySelector('td:nth-child(3)').innerHTML;
+                        const tripCompletion = this.querySelector('td:nth-child(4)').textContent.trim();
+                        const status = this.querySelector('td:nth-child(5)').textContent.trim();
+
+                        document.getElementById('modal-plate-number').textContent = plateNumber;
+                        document.getElementById('modal-arrival-proof').innerHTML = arrivalProofImages;
+                        document.getElementById('modal-proof-of-delivery').innerHTML = proofOfDeliveryImages;
+                        document.getElementById('modal-trip-completion').textContent = tripCompletion;
+                        document.getElementById('modal-status').textContent = status;
+                    });
+                });
+            });
+        </script>
 
         <script>
             document.getElementById('editArrivalProof').addEventListener('change', function(event) {

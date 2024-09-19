@@ -71,16 +71,14 @@ public function closeTrip(Request $request, $id)
     return redirect()->back()->with('error', 'Error closing trip');
 }
 
-    public function store(Request $request)
+public function store(Request $request)
 {
     // Validate the request
     $request->validate([
         'arrival_proof.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         'proof_of_delivery.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         'trip_completion' => 'required|in:Returned Successfully,Pending',
-
         'plate_number' => 'required|string',
-
     ]);
 
     // Initialize arrays for file names
@@ -91,7 +89,7 @@ public function closeTrip(Request $request, $id)
     if ($request->hasFile('arrival_proof')) {
         foreach ($request->file('arrival_proof') as $file) {
             $fileName = time() . '_arrival_' . uniqid() . '.' . $file->extension();
-            $file->storeAs('public/arrival_proofs', $fileName);
+            $file->move(public_path('arrival_proofs'), $fileName);
             $arrivalProofFileNames[] = $fileName;
         }
     }
@@ -100,7 +98,7 @@ public function closeTrip(Request $request, $id)
     if ($request->hasFile('proof_of_delivery')) {
         foreach ($request->file('proof_of_delivery') as $file) {
             $fileName = time() . '_pod_' . uniqid() . '.' . $file->extension();
-            $file->storeAs('public/proofs_of_delivery', $fileName);
+            $file->move(public_path('proofs_of_delivery'), $fileName);
             $proofOfDeliveryFileNames[] = $fileName;
         }
     }
@@ -110,9 +108,7 @@ public function closeTrip(Request $request, $id)
         'arrival_proof' => json_encode($arrivalProofFileNames),
         'proof_of_delivery' => json_encode($proofOfDeliveryFileNames),
         'trip_completion' => $request->trip_completion,
-
         'plate_number' => $request->plate_number,
-
     ]);
 
     // Redirect or return response
