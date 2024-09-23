@@ -85,12 +85,12 @@
 
 
             <section class="breadcrumb bg-img mb-0"
-    data-background-image="https://script.viserlab.com/courierlab/demo/assets/images/frontend/breadcrumb/6652bfd4ad66b1716699092.jpg">
+  data-background-image="Home/gdr_header.png">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="breadcrumb__wrapper">
-                    <h2 class="breadcrumb__title">Order Tracking</h2>
+                    <h2 class="breadcrumb__title">Book Now</h2>
                 </div>
             </div>
         </div>
@@ -99,8 +99,8 @@
 
 <section style="padding: 60px 0; background: #f9f9f9;">
     <div style="max-width: 900px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-        <div style="text-align: center; margin-bottom: 40px;">
-            <h3 style="margin-top: 0; color: #333; font-size: 28px; font-weight: bold;">RUBIX Form</h3>
+        <div class="pt-3" style="text-align: center; margin-bottom: 40px;">
+            <h3 style="margin-top: 0; color: #333; font-size: 28px; font-weight: bold;">Booking Form</h3>
             <p style="color: #666; font-size: 16px;">Fill out the form below to arrange for the transportation of your goods.</p>
         </div>
         <form action="{{ route('booking.submit') }}" method="post" enctype="multipart/form-data" id="myForm">

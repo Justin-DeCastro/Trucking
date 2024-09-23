@@ -5,9 +5,10 @@
 
 <body>
 
-    <div class="preloader">
-        <div class="loader-p"></div>
+     <div class="preloader">
+        @include('Components.Home.Preloader')
     </div>
+
 
     <div class="body-overlay"></div>
 
@@ -15,38 +16,12 @@
 
     <a class="scroll-top"><i class="fas fa-angle-double-up"></i></a>
 
-    <div class="header-top d-lg-block d-none">
-        <div class="container">
-            <div class="top-header-wrapper d-flex justify-content-between align-items-center flex-wrap">
-                <div class="top-contact">
-                    <ul class="contact-list">
-                        <li class="contact-list__item flex-align">
-                            <span class="contact-list__item-icon flex-center">
-                                <i class="las la-envelope-open"></i> </span>
-                            <a class="contact-list__link"
-                                href="/cdn-cgi/l/email-protection#e1929491918e9395a1828e94938884938d8083cf828e8c">
-                                <span class="__cf_email__"
-                                    data-cfemail="8bf8fefbfbe4f9ffcbe8e4fef9e2eef9e7eae9a5e8e4e6">[email&#160;protected]</span>
-                            </a>
-                        </li>
-                        <li class="contact-list__item flex-align">
-                            <span class="contact-list__item-icon flex-center">
-                                <i class="las la-phone"></i> </span>
-                            <a class="contact-list__link" href="tel:+44 123 1217">
-                                +44 123 1217
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-               
-            </div>
-        </div>
-    </div>
+   
     @include('Components.Home.Navbar')
 
 
     <section class="breadcrumb bg-img mb-0"
-        data-background-image="https://script.viserlab.com/courierlab/demo/assets/images/frontend/breadcrumb/6652bfd4ad66b1716699092.jpg">
+      data-background-image="Home/gdr_header.png">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">

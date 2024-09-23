@@ -84,7 +84,7 @@
     @include('Components.Home.Navbar')
 
     <section class="breadcrumb bg-img mb-0"
-        data-background-image="https://script.viserlab.com/courierlab/demo/assets/images/frontend/breadcrumb/6652bfd4ad66b1716699092.jpg">
+        data-background-image="Home/gdr_header.png">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">

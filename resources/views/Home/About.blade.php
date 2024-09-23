@@ -83,11 +83,7 @@
 
     @include('Components.Home.Navbar')
 
-<br>
-<br>
-<br>
-<br>
-    <section class="breadcrumb bg-img mb-0" data-background-image="Home/Truckgdr-removebg-preview.png">
+    <section class="breadcrumb bg-img mb-0" data-background-image="Home/gdr_header.png">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">

@@ -1,66 +1,73 @@
 <style>
+    .wrapper {
+        position: fixed;
+        right: 20px;
+        /* Positioned 20px from the right edge */
+        top: 50%;
+        /* Positioned 50% from the top of the viewport */
+        transform: translateY(-50%);
+        /* Center vertically */
+        z-index: 1000;
+    }
 
+    .wrapper a:nth-child(1) {
+        background-color: #3b5998;
+        /* Facebook Blue */
+    }
 
-.wrapper {
-            position: fixed;
-            right: 20px; /* Positioned 20px from the right edge */
-            top: 50%; /* Positioned 50% from the top of the viewport */
-            transform: translateY(-50%); /* Center vertically */
-            z-index: 1000;
+    .wrapper a:nth-child(2) {
+        background-color: #1da1f2;
+        /* Twitter Blue */
+    }
+
+    .wrapper a:nth-child(3) {
+        background-color: #0077b5;
+        /* LinkedIn Blue */
+    }
+
+    .wrapper a:nth-child(4) {
+        background-color: #F72659;
+        /* Instagram Purple */
+    }
+
+    .wrapper a:nth-child(3) {
+        animation: 0.7s ease-out 0s 1 FadeIn;
+        transition: all 0.3s;
+    }
+
+    .wrapper a:hover:nth-child(3) {
+        background-color: #ff0000;
+        /* Red on hover */
+    }
+
+    @keyframes FadeIn {
+        0% {
+            transform: rotate(0deg);
         }
 
-        .wrapper a:nth-child(1) {
-            background-color: #3b5998; /* Facebook Blue */
+        100% {
+            transform: rotate(360deg);
         }
+    }
 
-        .wrapper a:nth-child(2) {
-            background-color: #1da1f2; /* Twitter Blue */
-        }
+    .social {
+        height: 60px;
+        /* Adjusted size for better visibility */
+        width: 60px;
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        border-radius: 50%;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        color: #fff;
+        margin: 5px;
+        /* Increased margin for spacing */
+        font-size: 20px;
+        /* Adjust font size */
+    }
 
-        .wrapper a:nth-child(3) {
-            background-color: #0077b5; /* LinkedIn Blue */
-        }
-
-        .wrapper a:nth-child(4) {
-            background-color: #F72659; /* Instagram Purple */
-        }
-
-        .wrapper a:nth-child(3) {
-            animation: 0.7s ease-out 0s 1 FadeIn;
-            transition: all 0.3s;
-        }
-
-        .wrapper a:hover:nth-child(3) {
-            background-color: #ff0000; /* Red on hover */
-        }
-
-        @keyframes FadeIn {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        .social {
-            height: 60px; /* Adjusted size for better visibility */
-            width: 60px;
-            padding: 10px;
-            display: flex;
-            flex-direction: row;
-            border-radius: 50%;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            color: #fff;
-            margin: 5px; /* Increased margin for spacing */
-            font-size: 20px; /* Adjust font size */
-        }
-
-
-</style>
-<style>
     .navbar-hidden {
         transform: translateY(-100%);
         transition: transform 0.3s ease;
@@ -162,6 +169,8 @@
         background-color: #f8f9fa;
         color: #16181b;
     }
+
+    
 </style>
 <header class="header" id="header">
     <div class="col-12">
@@ -235,11 +244,14 @@
                                 <img src="Home/user-avatar-male-5.png" alt="Profile" class="profile-image">
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                                <li><a class="dropdown-item" href="login">Login</a></li>
+                                <li>
+                                    <a class="dropdown-item login-button" href="login">Login</a>
+                                </li>
                                 {{-- <li><a class="dropdown-item" href="register">Register</a></li> --}}
                                 <!-- Add more items if needed -->
                             </ul>
                         </li>
+
                     </ul>
                 </div>
             </div>

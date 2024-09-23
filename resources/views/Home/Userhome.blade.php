@@ -1,123 +1,7 @@
 <!doctype html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
 <style>
-    .form-container {
-        width: 400px;
-        background: linear-gradient(#212121, #212121) padding-box,
-            linear-gradient(145deg, transparent 35%, #e81cff, #40c9ff) border-box;
-        border: 2px solid transparent;
-        padding: 32px 24px;
-        font-size: 14px;
-        font-family: inherit;
-        color: #e0e0e0;
-        /* Changed text color */
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        box-sizing: border-box;
-        border-radius: 16px;
-    }
-
-    .form-container button:active {
-        scale: 0.95;
-    }
-
-    .form-container .form {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .form-container .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-    }
-
-    .form-container .form-group label {
-        display: block;
-        margin-bottom: 5px;
-        color: #b0b0b0;
-        /* Changed label color */
-        font-weight: 600;
-        font-size: 12px;
-    }
-
-    .form-container .form-group input {
-        width: 100%;
-        padding: 12px 16px;
-        border-radius: 8px;
-        color: #ffffff;
-        /* Changed input text color */
-        font-family: inherit;
-        background-color: transparent;
-        border: 1px solid #414141;
-    }
-
-    .form-container .form-group textarea {
-        width: 100%;
-        padding: 12px 16px;
-        border-radius: 8px;
-        resize: none;
-        color: #ffffff;
-        /* Changed textarea text color */
-        height: 96px;
-        border: 1px solid #414141;
-        background-color: transparent;
-        font-family: inherit;
-    }
-
-    .form-container .form-group input::placeholder {
-        color: #a0a0a0;
-        /* Changed placeholder color */
-    }
-
-    .form-container .form-group textarea::placeholder {
-        color: #a0a0a0;
-        /* Changed placeholder color */
-    }
-
-    .form-container .form-group input:focus {
-        outline: none;
-        border-color: #e81cff;
-    }
-
-    .form-container .form-group textarea:focus {
-        outline: none;
-        border-color: #e81cff;
-    }
-
-    .form-container .form-submit-btn {
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
-        align-self: flex-start;
-        font-family: inherit;
-        color: #ffffff;
-        /* Changed button text color */
-        font-weight: 600;
-        width: 40%;
-        background: #313131;
-        border: 1px solid #414141;
-        padding: 12px 16px;
-        font-size: inherit;
-        gap: 8px;
-        margin-top: 8px;
-        cursor: pointer;
-        border-radius: 6px;
-    }
-
-    .form-container .form-submit-btn:hover {
-        background-color: #ffffff;
-        border-color: #ffffff;
-        color: #000000;
-        /* Changed hover text color */
-    }
-
-
-
-
-
+    
     .wave-card {
         position: relative;
         overflow: hidden;
@@ -263,11 +147,11 @@ aria-expanded="false" aria-label="Toggle navigation">
                         </div> --}}
                     </div>
                 </div>
-                <div class="col-xl-7 col-lg-6">
-                    <div class="truck-container" style="margin-top:1px">
+                <div class="col-xl-7 col-lg-8">
+                    <div class="truck-container">
                         <span class="img">
-                            <img src="Home/Truckgdr-removebg-preview.png" alt="truck" class="truck-img"
-                                style="width: 100  %; height: auto;">
+                            <img src="Home/Truckgdr.png" alt="truck" class="truck-img"
+                                style="width:800px; height: auto;">
                         </span>
                     </div>
 

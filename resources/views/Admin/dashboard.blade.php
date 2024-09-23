@@ -74,6 +74,10 @@
     .d-none {
         display: none;
     }
+
+    .mb-0{
+    color: white;
+    }
 </style>
 
 

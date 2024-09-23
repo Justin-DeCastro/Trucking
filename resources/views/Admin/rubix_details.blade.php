@@ -323,6 +323,7 @@
                                     </div>
                                 </div>
 
+
                                 <div
                                     class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins pb-3">
                                     <div class="dropdown">
@@ -418,7 +419,6 @@
                                                     @endif
                                                 </td>
                                                 <td class="update-status">
-                                                    <!-- Update Status Button -->
                                                     <form id="statusForm"
                                                         action="{{ route('update.admin.status', ['id' => $detail->id]) }}"
                                                         method="POST">
@@ -447,7 +447,6 @@
                                                     </form>
                                                 </td>
                                                 <td class="actions-dropdown">
-                                                    <!-- Actions Dropdown -->
                                                     <div class="dropdown">
                                                         <button class="btn btn-primary dropdown-toggle" type="button"
                                                             id="dropdownActions{{ $detail->id }}"
@@ -482,48 +481,6 @@
                                                     </div>
                                                 </td>
                                             </tr>
-
-                                            <!-- Location Update Modal -->
-                                            <div class="modal fade" id="locationModal{{ $detail->id }}"
-                                                tabindex="-1" aria-labelledby="locationModalLabel"
-                                                aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="locationModalLabel">Update
-                                                                Location for
-                                                                {{ $detail->driver ? $detail->driver->name : 'Unknown Driver' }}
-                                                            </h5>
-
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form
-                                                                action="{{ route('update.location', ['id' => $detail->id]) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <div class="mb-3">
-                                                                    <label for="location" class="form-label">New
-                                                                        Location</label>
-                                                                    <input type="text" class="form-control"
-                                                                        id="location" name="location"
-                                                                        value="{{ $detail->location }}" required>
-                                                                    <!-- Using 'location' -->
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="submit"
-                                                                        class="btn btn-primary">Update
-                                                                        Location</button>
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Close</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -917,8 +874,6 @@
         </style>
     @endforeach
 
-
-
     @foreach ($rubixdetails as $detail)
         <!-- Update Status Modal -->
         <div class="modal fade" id="updateStatusModal{{ $detail->id }}" tabindex="-1"
@@ -961,6 +916,57 @@
 
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const resetBtn = document.getElementById('resetBtn');
+            const plateNumberInput = document.getElementById('plate_number');
+            const startDateInput = document.getElementById('start_date');
+            const dataTable = document.getElementById('data-table');
+
+            function filterTable() {
+                const plateNumberFilter = plateNumberInput.value.toLowerCase();
+                const startDateFilter = startDateInput.value;
+
+                const rows = dataTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+                Array.from(rows).forEach(row => {
+                    const plateNumberCell = row.cells[2].textContent
+                .toLowerCase(); // Truck Plate Number column
+                    const dateCell = new Date(row.cells[0].textContent).toISOString().split('T')[
+                    0]; // Date column
+
+                    const dateMatch = startDateFilter ? dateCell === startDateFilter :
+                    true; // Exact date match
+                    const plateMatch = plateNumberFilter ? plateNumberCell.includes(plateNumberFilter) :
+                        true;
+
+                    if (dateMatch && plateMatch) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+
+            // Attach event listeners for filtering
+            plateNumberInput.addEventListener('input', filterTable);
+            startDateInput.addEventListener('change', filterTable);
+
+            // Reset button functionality
+            resetBtn.addEventListener('click', function() {
+                plateNumberInput.value = '';
+                startDateInput.value = '';
+                Array.from(dataTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr')).forEach(
+                    row => {
+                        row.style.display = '';
+                    });
+            });
+        });
+    </script>
+
+
+
+
+    <script>
         $(document).ready(function() {
             // Trigger modal on row click
             $('tr').on('click', function() {
@@ -989,47 +995,7 @@
             });
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            // Function to filter the table based on plate number and start date
-            function filterTable() {
-                var plateNumber = $('#plate_number').val().toLowerCase();
-                var startDate = $('#start_date').val();
 
-                // Loop through each row in the table
-                $('#data-table tbody tr').each(function() {
-                    var rowPlateNumber = $(this).find('td:eq(2)').text().toLowerCase();
-                    var rowDate = $(this).find('td:eq(0)').text();
-
-                    // Convert row date to Date object and get it in YYYY-MM-DD format
-                    var rowDateObj = new Date(rowDate);
-                    var formattedRowDate = rowDateObj.toISOString().split('T')[0];
-
-                    // Conditions to check if the row matches the filter inputs
-                    var matchesPlateNumber = plateNumber === '' || rowPlateNumber.includes(plateNumber);
-                    var matchesStartDate = startDate === '' || formattedRowDate === startDate;
-
-                    if (matchesPlateNumber && matchesStartDate) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            }
-
-            // Filter table when inputs change
-            $('#plate_number, #start_date').on('input', function() {
-                filterTable();
-            });
-
-            // Reset filter and show all rows when Reset button is clicked
-            $('#resetBtn').click(function() {
-                $('#plate_number').val('');
-                $('#start_date').val('');
-                $('#data-table tbody tr').show();
-            });
-        });
-    </script>
     <script>
         function printModal(modalId) {
             var modalContent = document.getElementById(modalId).innerHTML; // Get the modal content
@@ -1135,14 +1101,6 @@
             printWindow.print(); // Trigger print
         }
     </script>
-
-
-
-
-
-
-
-
 
     <script>
         var timerIntervals = {}; // Store interval references
@@ -1262,14 +1220,14 @@
                                 if (status === 'OK' && results[0]) {
                                     // Create a full address string
                                     var fullAddress = results[0].address_components.map(function(
-                                    component) {
+                                        component) {
                                         return component.long_name;
                                     }).join(', ');
 
                                     // Create an entry in the timeline for the current location
                                     var placeElement = document.createElement('li');
                                     placeElement.innerHTML = "The truck is now in: " +
-                                    fullAddress; // Show full address
+                                        fullAddress; // Show full address
                                     timelineListElement.appendChild(placeElement);
                                 }
                             });

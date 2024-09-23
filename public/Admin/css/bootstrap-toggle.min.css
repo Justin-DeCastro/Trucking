@@ -7804,7 +7804,7 @@ fieldset:disabled .btn {
 }
 .bg-info {
     --bs-bg-opacity: 1;
-    background-color: rgba(var(--bs-info-rgb), var(--bs-bg-opacity)) !important;
+    background-color: #1F61A6 !important;
 }
 .bg-warning {
     --bs-bg-opacity: 1;
