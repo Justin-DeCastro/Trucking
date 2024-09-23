@@ -20,7 +20,7 @@
         <div class="bodywrapper__inner">
 
             <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
-                <h6 class="page-title">All Admin</h6>
+                <h6 class="page-title">All Subcontractor</h6>
                 <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
                     <div class="dropdown">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
@@ -51,14 +51,16 @@
                         </ul>
                     </div>
                 </div>
+            </div>
+            <div class="d-flex mb-30 flex-wrap gap-3 justify-content-end align-items-center pb-3">
                 <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal"
                     data-bs-target="#manageSubcontractor">
                     <i class="fas fa-plus"></i> Add New
                 </button>
             </div>
-
             <div class="table-responsive">
-                <table id="data-table" class="table table--light style--two">
+                <table id="data-table" class="table table--light style--two display nowrap">
+
                     <thead>
                         <tr>
                             <th>Subcontractor ID</th>
@@ -75,7 +77,7 @@
                     </thead>
                     <tbody>
                         @foreach ($subcon as $subcontractor)
-                            <tr>
+                            <tr class="clickable-row" data-bs-target="#subcontractorModal{{ $subcontractor->id }}">
                                 <td>{{ $subcontractor->subcontractor_id }}</td>
                                 <td>{{ $subcontractor->company_name }}</td>
                                 <td>{{ $subcontractor->full_name }}</td>
@@ -92,7 +94,7 @@
                                         No File
                                     @endif
                                 </td>
-                                <td>
+                                <td class="action-btn">
                                     <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#subcontractorModal{{ $subcontractor->id }}">
                                         <i class="fa fa-eye"></i>
@@ -103,59 +105,60 @@
                     </tbody>
                 </table>
             </div>
+
             @foreach ($subcon as $subcontractor)
-                <!-- Modal -->
                 <div class="modal fade" id="subcontractorModal{{ $subcontractor->id }}" tabindex="-1"
                     aria-labelledby="subcontractorModalLabel{{ $subcontractor->id }}" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
+                    <div class="modal-dialog custom-width"> <!-- Applied custom-width class -->
                         <div class="modal-content border-0 shadow-lg rounded-3">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="subcontractorModalLabel{{ $subcontractor->id }}">
-                                    Subcontractor Details</h5>
+                            <!-- Modal Header with Background Color -->
+                            <div class="modal-header" style="background-color: #4634FF;">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <div class="card border-0 shadow-sm rounded-3">
-                                    <div class="row g-0">
-                                        <div class="col-md-4 text-center">
-                                            <!-- Display the driver's license as the image -->
-                                            @if ($subcontractor->file_upload)
-                                                <img src="{{ asset($subcontractor->file_upload) }}"
-                                                    alt="Driver License"
-                                                    class="img-fluid rounded-circle border border-light mb-3"
-                                                    style="width: 150px; height: 200px; object-fit: cover;">
-                                            @else
-                                                <img src="{{ asset('path/to/default/image.png') }}" alt="No Image"
-                                                    class="img-fluid rounded-circle border border-light mb-3"
-                                                    style="width: 150px; height: 200px; object-fit: cover;">
-                                            @endif
-                                            <h5 class="card-title">{{ $subcontractor->full_name }}</h5>
-                                            <p><strong>Subcontractor ID:</strong>
-                                                {{ $subcontractor->subcontractor_id }}</p>
-                                            <p><strong>Company Name:</strong>
-                                                {{ $subcontractor->company_name }}</p>
 
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="card-body">
+                            <div class="modal-body p-4" id="modalContent{{ $subcontractor->id }}">
+                                <!-- Profile Section -->
+                                <div class="text-center mb-3">
+                                    <img class="gdr-logo" src="{{ asset('Home/GDR Logo.png') }}" alt="Shopee Xpress Logo"
+                                        style="width: 20%; height: auto;">
+                                </div>
+                                <br>
+                                <div class="text-center mb-3">
+                                    <img src="{{ asset($subcontractor->file_upload) }}" alt="Profile Image"
+                                        class="img-fluid rounded-circle border border-light shadow mb-3"
+                                        style="width: 150px; height: 150px; object-fit: cover;">
+                                    <h5 class="modal-title"
+                                        id="subcontractorLabel{{ $subcontractor->subcontractor_id }}">
+                                        {{ $subcontractor->full_name }}
+                                    </h5>
+                                       <h5 class="mb-0">{{ $subcontractor->company_name}}</h5>
+                                <p class="text-muted mb-0"><strong>ID No.</strong> {{ $subcontractor->subcontractor_id }}</p>
+                                </div>
 
-                                                <p><strong>Address:</strong> {{ $subcontractor->address }}</p>
-                                                <p><strong>Phone Number:</strong>
-                                                    {{ $subcontractor->phone_number }}</p>
-                                                <p><strong>Truck Capacity:</strong>
-                                                    {{ $subcontractor->truck_capacity }}</p>
-                                                <p><strong>Plate Number:</strong>
-                                                    {{ $subcontractor->plate_number }}</p>
-                                                <p><strong>Email:</strong> {{ $subcontractor->email_address }}
-                                                </p>
-                                            </div>
-                                        </div>
+                                <!-- Employee Information Section -->
+                                <div class="bg-light p-3 rounded text-muted mb-1">
+                                    <small>Personal Details</small>
+                                    <div class="row">
+                                        <p class="mb-1"><strong>Address:</strong> {{ $subcontractor->address }}</p>
+                                        <p class="mb-1"><strong>Phone Number:</strong>
+                                            {{ $subcontractor->phone_number }}</p>
+                                        <p class="mb-1"><strong>Truck Capacity:</strong>
+                                            {{ $subcontractor->truck_capacity }}</p>
+                                        <p class="mb-1"><strong>Plate Number:</strong>
+                                            {{ $subcontractor->plate_number }}</p>
+                                        <p class="mb-1"><strong>Email:</strong> {{ $subcontractor->email_address }}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                            <!-- Modal Footer with Print Button -->
+                            <div class="modal-footer d-flex justify-content-end">
+                                <button type="button" class="btn btn-primary"
+                                    onclick="printModal({{ $subcontractor->id }})">
+                                    <i class="fa fa-print"></i> Print
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -163,9 +166,6 @@
             @endforeach
 
 
-
-
-            <!-- Create Vehicle Modal -->
             <div class="modal fade" id="manageSubcontractor" tabindex="-1" aria-labelledby="manageSubcontractorLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
@@ -251,7 +251,6 @@
                 </div>
             </div>
 
-            <!-- Confirmation Modal -->
             <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
@@ -282,6 +281,70 @@
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.clickable-row').forEach(row => {
+                row.addEventListener('click', function(event) {
+                    // Check if the click is inside the Actions column
+                    if (!event.target.closest('.action-btn')) {
+                        const target = this.getAttribute('data-bs-target');
+                        const modal = document.querySelector(target);
+
+                        if (modal) {
+                            const modalInstance = new bootstrap.Modal(modal);
+                            modalInstance.show();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+  <script>
+    function printModal(subcontractorId) {
+        // Get the modal content (excluding the header)
+        var modalContent = document.querySelector('#subcontractorModal' + subcontractorId + ' .modal-body').innerHTML;
+
+        // Open a new window
+        var printWindow = window.open('', '', 'height=600,width=800');
+
+        // Write the modal content to the new window
+        printWindow.document.open();
+        printWindow.document.write(`
+            <html>
+            <head>
+                <title>Print</title>
+                <style>
+                    /* Get the same styles from the current page */
+                    @media print {
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        .modal-body { width: 100%; }
+                        img { max-width: 100%; height: auto; }
+                        .text-center { text-align: center; }
+                        .rounded-circle { border-radius: 50%; }
+                        .border { border: 1px solid #ddd; }
+                        .shadow { box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+                        .bg-light { background-color: #f8f9fa; }
+
+                        /* Adjust the logo size and spacing */
+                        .gdr-logo { width: 10%; margin-bottom: 20px; } /* Adjust width as needed */
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="modal-body">
+                    ${modalContent}
+                </div>
+            </body>
+            </html>
+        `);
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+    }
+</script>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -346,8 +409,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Include Bootstrap JS -->
-   
-   
+
+
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
     <script>
         if ($('li').hasClass('active')) {
@@ -384,23 +447,16 @@
 
     <script>
         $(document).ready(function() {
-            $('#data-table').DataTable({
-                responsive: true, // Enable responsiveness
-                paging: true, // Enables pagination
-                searching: true, // Enables search
-                ordering: true, // Enables sorting
-            });
+            $('#data-table').DataTable();
         });
-    </script>
-    <script>
+
         // Function to extract all table data
         function getTableData() {
-            // If using DataTables, get all data
             var table = $('#data-table').DataTable();
             var data = table.rows({
                 search: 'applied'
             }).data().toArray();
-            var headers = table.columns().header().toArray().map(th => th.innerText);
+            var headers = table.columns().header().toArray().map(th => $(th).text());
 
             return {
                 data,
@@ -413,7 +469,7 @@
             var {
                 data
             } = getTableData();
-            var textToCopy = data.map(row => row.join("\t")).join("\n");
+            var textToCopy = data.map(row => row.map(cell => $('<div>').html(cell).text()).join("\t")).join("\n");
 
             var tempTextArea = document.createElement("textarea");
             tempTextArea.value = textToCopy;
@@ -424,30 +480,39 @@
             alert("Table data copied to clipboard!");
         });
 
-        // Print function - prints only the table
+        // Print function
         document.getElementById('printBtn').addEventListener('click', function() {
             var {
                 data,
                 headers
             } = getTableData();
+
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
             var printContents = `
-            <table border="1">
-                <thead>
-                    <tr>${headers.map(header => `<th>${header}</th>`).join('')}</tr>
-                </thead>
-                <tbody>
-                    ${data.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}
-                </tbody>
-            </table>
-        `;
+        <table border="1">
+            <thead>
+                <tr>${filteredHeaders.map(header => `<th>${header}</th>`).join('')}</tr>
+            </thead>
+            <tbody>
+                ${filteredData.map(row => `<tr>${row.map(cell => `<td>${$('<div>').html(cell).text()}</td>`).join('')}</tr>`).join('')}
+            </tbody>
+        </table>`;
+
             var originalContents = document.body.innerHTML;
 
             document.body.innerHTML = `<html><head><title>Print</title></head><body>${printContents}</body></html>`;
             window.print();
             document.body.innerHTML = originalContents;
         });
-
-        // PDF export with landscape formatting and smaller font size using jsPDF and autoTable
+        // PDF export function
         document.getElementById('pdfBtn').addEventListener('click', function() {
             const {
                 jsPDF
@@ -459,17 +524,28 @@
                 headers
             } = getTableData();
 
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
+            // Convert HTML content to text
+            var cleanData = filteredData.map(row => row.map(cell => $('<div>').html(cell).text()));
+
             doc.autoTable({
-                head: [headers],
-                body: data,
-                startY: 10, // Start 10 units from top
-                theme: 'grid', // Grid layout
+                head: [filteredHeaders],
+                body: cleanData,
+                startY: 10,
+                theme: 'grid',
                 margin: {
                     top: 10
                 },
                 styles: {
                     fontSize: 8,
-                    cellPadding: 2
                 },
                 headStyles: {
                     fillColor: [22, 160, 133],
@@ -481,14 +557,27 @@
             doc.save('table_data.pdf');
         });
 
+
+        // Excel export function
         // Excel export function
         document.getElementById('excelBtn').addEventListener('click', function() {
             var {
                 data,
                 headers
             } = getTableData();
+
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
             var wb = XLSX.utils.book_new();
-            var ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
+            var cleanData = filteredData.map(row => row.map(cell => $('<div>').html(cell).text()));
+            var ws = XLSX.utils.aoa_to_sheet([filteredHeaders, ...cleanData]);
             XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
             XLSX.writeFile(wb, "table_data.xlsx");
         });

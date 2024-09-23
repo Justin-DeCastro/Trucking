@@ -66,7 +66,7 @@
 
     <!-- Sidebar -->
     @include('Components.Admin.Navbar')
-    @include('Components.Accounting.Sidebar')
+    @include('Components.Admin.Sidebar')
     <!-- End Sidebar -->
     <div class="container-fluid px-3 px-sm-0">
         <div class="body-wrapper">

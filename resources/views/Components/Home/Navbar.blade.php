@@ -1,4 +1,66 @@
 <style>
+
+
+.wrapper {
+            position: fixed;
+            right: 20px; /* Positioned 20px from the right edge */
+            top: 50%; /* Positioned 50% from the top of the viewport */
+            transform: translateY(-50%); /* Center vertically */
+            z-index: 1000;
+        }
+
+        .wrapper a:nth-child(1) {
+            background-color: #3b5998; /* Facebook Blue */
+        }
+
+        .wrapper a:nth-child(2) {
+            background-color: #1da1f2; /* Twitter Blue */
+        }
+
+        .wrapper a:nth-child(3) {
+            background-color: #0077b5; /* LinkedIn Blue */
+        }
+
+        .wrapper a:nth-child(4) {
+            background-color: #F72659; /* Instagram Purple */
+        }
+
+        .wrapper a:nth-child(3) {
+            animation: 0.7s ease-out 0s 1 FadeIn;
+            transition: all 0.3s;
+        }
+
+        .wrapper a:hover:nth-child(3) {
+            background-color: #ff0000; /* Red on hover */
+        }
+
+        @keyframes FadeIn {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .social {
+            height: 60px; /* Adjusted size for better visibility */
+            width: 60px;
+            padding: 10px;
+            display: flex;
+            flex-direction: row;
+            border-radius: 50%;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: #fff;
+            margin: 5px; /* Increased margin for spacing */
+            font-size: 20px; /* Adjust font size */
+        }
+
+
+</style>
+<style>
     .navbar-hidden {
         transform: translateY(-100%);
         transition: transform 0.3s ease;
@@ -186,7 +248,13 @@
         </nav>
     </div>
 </header>
+<div class="wrapper">
+    <a class="social" href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a class="social" href="https://www.twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
+    <a class="social" href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+    <a class="social" href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
 
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

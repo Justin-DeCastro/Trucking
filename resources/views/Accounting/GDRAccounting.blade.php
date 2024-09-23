@@ -94,7 +94,6 @@
                     </div>
                 </div>
 
-
                 <table id="data-table" class="jobOffersTable table table--light style--two display nowrap"">
                     <thead>
                         <tr>
@@ -108,7 +107,8 @@
                     </thead>
                     <tbody>
                         @foreach ($GDR as $gdrAccounting)
-                            <tr data-month="{{ $gdrAccounting->date->format('d-M-y h-i A') }}">
+                            <tr class="clickable-row" data-bs-target="#gdrModal{{ $gdrAccounting->id }}"
+                                data-month="{{ $gdrAccounting->date->format('d-M-y h-i A') }}">
                                 <td>{{ $gdrAccounting->date->format('d-M-y h-i A') }}</td>
                                 <td>{{ $gdrAccounting->particulars }}</td>
                                 <td>{{ number_format($gdrAccounting->payment_amount, 2) }}</td>
@@ -128,6 +128,45 @@
                 </table>
 
 
+                <!-- GDR Details Modal -->
+                @foreach ($GDR as $gdrAccounting)
+                    <div class="modal fade" id="gdrModal{{ $gdrAccounting->id }}" tabindex="-1" role="dialog"
+                        aria-labelledby="gdrModalLabel{{ $gdrAccounting->id }}" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="gdrModalLabel{{ $gdrAccounting->id }}">GDR Details</h5>
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span>&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><strong>Date:</strong> {{ $gdrAccounting->date->format('d-M-y h-i A') }}</p>
+                                    <p><strong>Particulars:</strong> {{ $gdrAccounting->particulars }}</p>
+                                    <p><strong>Payment Amount:</strong>
+                                        {{ number_format($gdrAccounting->payment_amount, 2) }}</p>
+                                    <p><strong>Payment Channel:</strong> {{ $gdrAccounting->payment_channel }}</p>
+                                    <p><strong>Proof of Payment:</strong></p>
+                                    @if ($gdrAccounting->proof_of_payment)
+                                        <img src="{{ asset($gdrAccounting->proof_of_payment) }}" alt="Proof of Payment"
+                                            class="img-fluid mt-2" style="max-width: 100%; height: auto;">
+                                    @else
+                                        <p>No proof uploaded</p>
+                                    @endif
+                                    <br><br>
+                                    <p><strong>Notes:</strong> {{ $gdrAccounting->notes }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary"
+                                        onclick="printGDRDetails('{{ $gdrAccounting->id }}')">Print</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
                 <!-- Deposit Modal -->
                 <div class="modal fade" id="manageDeposit" tabindex="-1" aria-labelledby="manageDepositLabel"
                     aria-hidden="true">
@@ -145,8 +184,8 @@
 
                                     <div class="mb-3">
                                         <label for="date" class="form-label">Date</label>
-                                        <input type="datetime-local" id="date" name="date" class="form-control"
-                                            required>
+                                        <input type="datetime-local" id="date" name="date"
+                                            class="form-control" required>
                                     </div>
 
                                     <div class="mb-3">
@@ -190,6 +229,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -278,6 +318,68 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
+
+
+    <script>
+        function printGDRDetails(id) {
+            // Get the modal's body content
+            var modalBodyContent = document.querySelector(`#gdrModal${id} .modal-body`).innerHTML;
+
+            // Create a new window for printing
+            var printWindow = window.open('', '_blank');
+
+            // Write the modal content to the new window
+            printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Print GDR Details</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        .logo-container { text-align: center; margin-bottom: 20px; }
+                        .logo-container img { width: 10%; height: auto; }
+                        h5 { color: #333; text-align: center; }
+                    </style>
+                </head>
+                <body>
+                    <div class="logo-container">
+                        <img src="{{ asset('Home/GDR Logo.png') }}" alt="GDR Logo">
+                    </div>
+                    <h5>GDR Details</h5>
+                    ${modalBodyContent}
+                </body>
+            </html>
+        `);
+
+            // Close the document to trigger rendering
+            printWindow.document.close();
+
+            // Wait for the content to load, then print
+            printWindow.onload = function() {
+                printWindow.print();
+                printWindow.close();
+            };
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.clickable-row').forEach(row => {
+                row.addEventListener('click', function(event) {
+                    // Check if the click is inside the Actions column
+                    if (!event.target.closest('.action-btn')) {
+                        const target = this.getAttribute('data-bs-target');
+                        const modal = document.querySelector(target);
+
+                        if (modal) {
+                            const modalInstance = new bootstrap.Modal(modal);
+                            modalInstance.show();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
     <script>
         if ($('li').hasClass('active')) {
             $('.sidebar__menu-wrapper').animate({
@@ -286,14 +388,17 @@
         }
     </script>
     <script>
+        $(document).ready(function() {
+            $('#data-table').DataTable();
+        });
+
         // Function to extract all table data
         function getTableData() {
-            // If using DataTables, get all data
             var table = $('#data-table').DataTable();
             var data = table.rows({
                 search: 'applied'
             }).data().toArray();
-            var headers = table.columns().header().toArray().map(th => th.innerText);
+            var headers = table.columns().header().toArray().map(th => $(th).text());
 
             return {
                 data,
@@ -306,7 +411,7 @@
             var {
                 data
             } = getTableData();
-            var textToCopy = data.map(row => row.join("\t")).join("\n");
+            var textToCopy = data.map(row => row.map(cell => $('<div>').html(cell).text()).join("\t")).join("\n");
 
             var tempTextArea = document.createElement("textarea");
             tempTextArea.value = textToCopy;
@@ -317,30 +422,39 @@
             alert("Table data copied to clipboard!");
         });
 
-        // Print function - prints only the table
+        // Print function
         document.getElementById('printBtn').addEventListener('click', function() {
             var {
                 data,
                 headers
             } = getTableData();
+
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
             var printContents = `
-            <table border="1">
-                <thead>
-                    <tr>${headers.map(header => `<th>${header}</th>`).join('')}</tr>
-                </thead>
-                <tbody>
-                    ${data.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}
-                </tbody>
-            </table>
-        `;
+        <table border="1">
+            <thead>
+                <tr>${filteredHeaders.map(header => `<th>${header}</th>`).join('')}</tr>
+            </thead>
+            <tbody>
+                ${filteredData.map(row => `<tr>${row.map(cell => `<td>${$('<div>').html(cell).text()}</td>`).join('')}</tr>`).join('')}
+            </tbody>
+        </table>`;
+
             var originalContents = document.body.innerHTML;
 
             document.body.innerHTML = `<html><head><title>Print</title></head><body>${printContents}</body></html>`;
             window.print();
             document.body.innerHTML = originalContents;
         });
-
-        // PDF export with landscape formatting and smaller font size using jsPDF and autoTable
+        // PDF export function
         document.getElementById('pdfBtn').addEventListener('click', function() {
             const {
                 jsPDF
@@ -352,17 +466,28 @@
                 headers
             } = getTableData();
 
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
+            // Convert HTML content to text
+            var cleanData = filteredData.map(row => row.map(cell => $('<div>').html(cell).text()));
+
             doc.autoTable({
-                head: [headers],
-                body: data,
-                startY: 10, // Start 10 units from top
-                theme: 'grid', // Grid layout
+                head: [filteredHeaders],
+                body: cleanData,
+                startY: 10,
+                theme: 'grid',
                 margin: {
                     top: 10
                 },
                 styles: {
                     fontSize: 8,
-                    cellPadding: 2
                 },
                 headStyles: {
                     fillColor: [22, 160, 133],
@@ -374,27 +499,28 @@
             doc.save('table_data.pdf');
         });
 
+
         // Excel export function
         document.getElementById('excelBtn').addEventListener('click', function() {
             var {
                 data,
                 headers
             } = getTableData();
+
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
             var wb = XLSX.utils.book_new();
-            var ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
+            var cleanData = filteredData.map(row => row.map(cell => $('<div>').html(cell).text()));
+            var ws = XLSX.utils.aoa_to_sheet([filteredHeaders, ...cleanData]);
             XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
             XLSX.writeFile(wb, "table_data.xlsx");
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            $('#data-table').DataTable({
-                responsive: true, // Enable responsiveness
-                paging: true, // Enables pagination
-                searching: true, // Enables search
-                ordering: true, // Enables sorting
-            });
         });
     </script>
 

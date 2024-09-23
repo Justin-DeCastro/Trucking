@@ -103,6 +103,14 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/rate-per-mile/{id}', [RatePerMileController::class, 'update'])->name('rate-per-mile.update');
     Route::delete('/rate-per-mile/{id}', [RatePerMileController::class, 'destroy'])->name('rate-per-mile.destroy');
 
+//delay
+Route::get('/delay', [DelayReportController::class, 'create'])->name('delay');
+
+
+
+
+
+
 });
 
 
@@ -136,213 +144,204 @@ Route::middleware(['auth'])->group(function () {
     Route::get('addsubcon', [AdminController::class, 'addsubcon'])->name('addsubcon');
     Route::get('waybill', [AdminController::class, 'waybill'])->name('waybill');
     Route::get('add-driver', [AdminController::class, 'Add_driver'])->name('add-driver');
+    Route::get('/confirmation', [AdminController::class, 'confirmation'])->name('confirmation');
+    Route::get('/addtruck-archived', [AdminController::class, 'addtruck_archived'])->name('addtruck-archived');
+    Route::get('preventive-maintenance', [AdminController::class, 'preventive'])->name('preventive-maintenance');
+
+    //booking
+    Route::get('/booking-count', [BookingController::class, 'getBookingCountByPlateNumber']);
+    Route::get('/plate-number-counts', [BookingController::class, 'getPlateNumberCounts']);
+    Route::get('/admin-overview', [BookingController::class, 'getStatusCounts']);
+    Route::get('/driverbooking-count', [BookingController::class, 'getDriverPlateNumberCounts']);
+    Route::get('/api/getAccountData', [BookingController::class, 'getAccountData']);
+
+//financial
+Route::get('accounting-pms', [AccountingController::class, 'preventive'])->name('accounting-pms');
+Route::get('GDRAccounting', [AccountingController::class, 'GDR_Accounting'])->name('GDRAccounting');
+Route::get('receivable', [AccountingController::class, 'GDR_receivable'])->name('receivable');
+Route::get('financialreport', [AccountingController::class, 'financialreport'])->name('financialreport');
+
+//vehicles
+Route::get('/vehicles-archived', [VehicleController::class, 'showArchived'])->name('vehicles-archived');
+
+//employee
+Route::get('/employee-archived', [EmployeeController::class, 'showArchived'])->name('employee-archived');
+
+
+
+
 });
+
+
 
 
 Route::post('log_action', [AdminController::class, 'logAction'])->name('log_action');
 
+Route::post('/update-driver-license', [AdminController::class, 'storeDriverLicenseDetails'])->name('updateLicense');
+Route::get('request-budget', [AdminController::class, 'requestbudget'])->name('request-budget');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/order-for-courier', [AdminController::class, 'courier_order'])->name('order-for-courier');
+});
+Route::get('/calendar-acc', [AdminController::class, 'calendar_acc'])->name('calendar-acc');
+Route::get('/map', [AdminController::class, 'showMap']);
+Route::get('/return-items', [AdminController::class, 'return_items'])->name('return-items');
+Route::delete('/couriers/{id}', [AdminController::class, 'destroy'])->name('couriers.destroy');
+Route::get('/calendars', [AdminController::class, 'calendar'])->name('calendars');
+Route::get('/feedback', [AdminController::class, 'feedback'])->name('feedback');
+
+
+//loan controller
+Route::post('/loans/{id}/mark-as-paid', [LoanController::class, 'markAsPaid'])->name('loans.markAsPaid');
+Route::post('/loans/{id}/mark-as-unpaid', [LoanController::class, 'markAsUnpaid'])->name('loans.markAsUnpaid');
 Route::post('loanamount-store', [LoanController::class, 'store'])->name('loan.store');
-//login and register
+
+//login
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-
 //register
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::get('/register_accnt', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
-
-
-//courierdashboard
-
+Route::post('/drivers-store', [RegisterController::class, 'register'])->name('drivers.store');
 
 //store branches
 Route::post('/managebranches', [BranchController::class, 'store'])->name('managebranches.store');
 Route::post('/branches/{branch}/update', [BranchController::class, 'update'])->name('managebranches.update');
-
-//branch manager
 Route::post('/managerbranch', [BranchManagerController::class, 'store'])->name('branchmanager.store');
 Route::post('/managerbranches/{branch}/update', [BranchManagerController::class, 'update'])->name('branchmanager.update');
 
-//driver
 
+//booking
 
-// Route::post('/booking', [BookingController::class, 'submitForm'])->name('booking.submit');
-
-// In routes/web.php
 Route::post('/booking/submit', [BookingController::class, 'submitForm'])->name('booking.submit');
-Route::post('/appointment', [RubixController::class, 'submit'])->name('appointment.submit');
-
 Route::patch('/bookings/{booking}/assign-driver', [BookingController::class, 'assignDriver'])->name('bookings.assignDriver');
-
-
-Route::post('/drivers-store', [RegisterController::class, 'register'])->name('drivers.store');
-
-//manage courier order
-// Route::get('order-for-courier', [AdminController::class, 'courier_order'])->name('order-for-courier');
-//payment
-// In web.php
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/order-for-courier', [AdminController::class, 'courier_order'])->name('order-for-courier');
-});
-// Define a route for updating the payment status with POST method
-// Route::patch('/bookings/{booking}/update-order-status', [BookingController::class, 'updateOrderStatus'])->name('update.order.status');
 Route::patch('/bookings/{id}/status', [BookingController::class, 'updateOrderStatus'])->name('update.order.status');
 Route::patch('/bookings/{id}/statuses', [BookingController::class, 'updateAdminStatus'])->name('update.admin.status');
-// Route::patch('/orders/{id}/remarks', [BookingController::class, 'updateRemarks'])->name('update.order.remarks');
 Route::post('/booking/{id}/remarks', [BookingController::class, 'updateRemarks'])->name('update.order.remarks');
 Route::post('/booking/{id}/pictures', [BookingController::class, 'updatePictures'])->name('update.order.pictures');
-// routes/web.php
 Route::post('/update-order-amount', [BookingController::class, 'updateSingleOrderAmount'])
     ->name('orderamount.updateSingle');
-Route::get('/booking-count', [BookingController::class, 'getBookingCountByPlateNumber']);
-Route::get('/plate-number-counts', [BookingController::class, 'getPlateNumberCounts']);
-Route::get('/admin-overview', [BookingController::class, 'getStatusCounts']);
-Route::get('/driverbooking-count', [BookingController::class, 'getDriverPlateNumberCounts']);
-// In web.php
-Route::post('/log-activity', [ActivityLogController::class, 'logActivity'])->name('log.activity');
-Route::get('/calendar-acc', [AdminController::class, 'calendar_acc'])->name('calendar-acc');
+
 Route::patch('/booking/{id}/update-location', [BookingController::class, 'updateLocation'])->name('update.location');
-
-
-
-//plate number
-
 Route::post('/save-plate-number', [BookingController::class, 'storePlateNumber'])->name('save.plate.number');
-
-//location update
-
 Route::post('/bookings/{booking}/update-location-status', [BookingController::class, 'updateLocationStatus'])->name('update.location.status');
-
-//payment status
-
 Route::put('/bookings/{booking}/update-payment-status', [BookingController::class, 'updatePaymentStatus'])->name('update.payment.status');
+Route::post('/update-actual-weight/{id}', [BookingController::class, 'updateActualWeight'])->name('update.actual.weight');
 
-//vehicle store
+
+//vehicle
 Route::post('/vehicles', [VehicleController::class, 'store'])->name('vehicles.store');
 Route::post('/vehicles/use/{id}', [VehicleController::class, 'useVehicle']);
 Route::get('vehicles/{vehicle}/edit', [VehicleController::class, 'edit'])->name('vehicles.edit');
-
-// Route for updating an existing vehicle
 Route::put('/vehicles/{id}', [VehicleController::class, 'update'])->name('vehicles.update');
-
-
-// Route for deleting a vehicle
 Route::delete('vehicles/{vehicle}', [VehicleController::class, 'destroy'])->name('vehicles.destroy');
-Route::post('/update-actual-weight/{id}', [BookingController::class, 'updateActualWeight'])->name('update.actual.weight');
+Route::put('/vehicles/{id}/status', [VehicleController::class, 'updateStatus'])->name('vehicles.updateStatus');
+Route::post('/documents/update-or', [VehicleController::class, 'updateOr'])->name('documents.updateOr');
+Route::post('/vehicles/update-cr', [VehicleController::class, 'updateCr'])->name('vehicles.updateCr');
 
-//subcon
+Route::post('/vehicles-archivedtbl/{id}', [VehicleController::class, 'archive'])->name('vehicles-archivedtbl');
+
+
+
+//subcontractor
 Route::post('subcontractors', [SubcontractorController::class, 'store'])->name('subcontractors.store');
 
-//expense store
+//expense
 Route::post('Expenses', [ExpenseController::class, 'store'])->name('expense.store');
 Route::post('totalExpenses', [ExpenseController::class, 'submit'])->name('totalexpense.store');
 
-//payment
 Route::post('uploadPayment', [ProofPaymentController::class, 'store'])->name('uploadpayment.store');
 //account
 
-// web.php
+//accounting
 Route::put('/transactions/{transaction}', [AccountingController::class, 'update'])->name('transactions.update');
-
-// Route to delete a transaction
 Route::delete('/transactions/{transaction}', [AccountingController::class, 'destroy'])->name('transactions.destroy');
-
-//starting balance
 Route::post('/startingbalance', [AccountingController::class, 'startingbalance'])->name('startingbalance.store');
+
 
 //contact
 Route::post('/contact-store', [ContactController::class, 'store'])->name('contact.store');
 
-//qr
-// Route::get('/qrcode', [QrCodeController::class, 'generate']);
-
-//map
-Route::get('/map', [AdminController::class, 'showMap']);
-
-//salary store
+//pricing
 Route::post('salary-store', [PricingController::class, 'submit'])->name('salary.store');
 Route::put('salary-update', [PricingController::class, 'update'])->name('salary.update');
 
-Route::delete('/couriers/{id}', [AdminController::class, 'destroy'])->name('couriers.destroy');
+//employee
 
-
+Route::post('/employee-archivedtbl/{id}', [EmployeeController::class, 'archive'])->name('employee-archivedtbl');
 Route::get('/employee-details', [EmployeeController::class, 'employee_details'])->name('employeedetails');
 Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
 Route::put('/employees/{id}', [EmployeeController::class, 'update'])->name('employee.update');
 Route::delete('/employees/{id}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
 
+//qr code
 Route::get('qrcode/{qrCode}', [QRCodeController::class, 'showQRCode']);
+
+//attendance
 Route::post('attendance', [AttendanceController::class, 'recordAttendance']);
 
+//rubix
+Route::post('/appointment', [RubixController::class, 'submit'])->name('appointment.submit');
 Route::post('/rubix', [RubixController::class, 'submit'])->name('rubix.submit');
 
 //preventive maintenance
 Route::post('preventives.store', [PreventiveController::class, 'submit'])->name('preventives.store');
-Route::get('preventive-maintenance', [AdminController::class, 'preventive'])->name('preventive-maintenance');
+
 Route::get('/maintenance/{id}/edit', [PreventiveController::class, 'edit'])->name('maintenance.edit');
 Route::put('/maintenance/{id}', [PreventiveController::class, 'update'])->name('maintenance.update');
 Route::delete('/maintenance/{id}', [PreventiveController::class, 'destroy'])->name('maintenance.destroy');
-Route::get('accounting-pms', [AccountingController::class, 'preventive'])->name('accounting-pms');
-//rate per mile
+
+
+//activity
+Route::post('/log-activity', [ActivityLogController::class, 'logActivity'])->name('log.activity');
 
 //feedback
-
 Route::post('/submit-feedback', [FeedbackController::class, 'submit'])->name('feedback.store');
-Route::get('/feedback', [AdminController::class, 'feedback'])->name('feedback');
 Route::patch('/feedback/{id}/accept', [FeedbackController::class, 'accept'])->name('feedback.accept');
 Route::patch('/feedback/{id}/decline', [FeedbackController::class, 'decline'])->name('feedback.decline');
 
+//verification
 Route::get('/verify', [VerificationController::class, 'showForm'])->name('verification.form');
 Route::post('/verify', [VerificationController::class, 'verifyCode'])->name('verification.verify');
-Route::post('/loans/{id}/mark-as-paid', [LoanController::class, 'markAsPaid'])->name('loans.markAsPaid');
-Route::post('/loans/{id}/mark-as-unpaid', [LoanController::class, 'markAsUnpaid'])->name('loans.markAsUnpaid');
+
+//rate per mile
 Route::post('/upload-proof-of-payment', [RatePerMileController::class, 'uploadProofOfPayment'])->name('upload.proofOfPayment');
 
 // web.php or api.php
-Route::get('/api/getAccountData', [BookingController::class, 'getAccountData']);
+
+Route::post('/trips/{id}/close', [TripController::class, 'closeTrip'])->name('trips.close');
 Route::post('/trips', [TripController::class, 'store'])->name('trip.store');
 Route::get('/trips-get', [TripController::class, 'index'])->name('trip.get');
 Route::put('/update/{id}', [TripController::class, 'update'])->name('trip.update');
 
-Route::get('/return-items', [AdminController::class, 'return_items'])->name('return-items');
+//return items
 Route::post('/return-items-store', [ReturnItemsController::class, 'store'])->name('returns.store');
-// In web.php
 Route::post('/return/approve/{id}', [ReturnItemsController::class, 'approve'])->name('return.approve');
 Route::post('/return/reject/{id}', [ReturnItemsController::class, 'reject'])->name('return.reject');
-Route::get('/calendars', [AdminController::class, 'calendar'])->name('calendars');
 
+//budget
 Route::post('budget-request', [BudgetController::class, 'store'])->name('budget.request');
 Route::post('/budgets/{id}/approve', [BudgetController::class, 'approve'])->name('budgets.approve');
 Route::post('/budgets/{id}/deny', [BudgetController::class, 'deny'])->name('budgets.deny');
 
-Route::get('request-budget', [AdminController::class, 'requestbudget'])->name('request-budget');
+//location
 Route::post('/locations', [LocationController::class, 'store'])->name('locations.store');
-Route::get('/delay', [DelayReportController::class, 'create'])->name('delay');
+
+//delay report
+
 Route::post('/delay/submit', [DelayReportController::class, 'store'])->name('delay.submit');
-// In web.php (routes file)
+
+//gdr accounting
 Route::post('/gdr-accounting/store', [GDRAccountingController::class, 'store'])->name('GDRAccounting.store');
-Route::get('GDRAccounting', [AccountingController::class, 'GDR_Accounting'])->name('GDRAccounting');
+
+//courier  dash
 Route::patch('/couriers/{id}/status', [CourierOrderController::class, 'updateStatus'])->name('couriers.updateStatus');
 
-Route::post('/update-driver-license', [AdminController::class, 'storeDriverLicenseDetails'])->name('updateLicense');
-
-Route::get('receivable', [AccountingController::class, 'GDR_receivable'])->name('receivable');
-Route::get('financialreport', [AccountingController::class, 'financialreport'])->name('financialreport');
+//receivable
 Route::post('receivables', [ReceivableController::class, 'store'])->name('receivables.store');
 
-Route::put('/vehicles/{id}/status', [VehicleController::class, 'updateStatus'])->name('vehicles.updateStatus');
-Route::post('/documents/update-or', [VehicleController::class, 'updateOr'])->name('documents.updateOr');
-Route::post('/vehicles/update-cr', [VehicleController::class, 'updateCr'])->name('vehicles.updateCr');
-// web.php
-Route::post('/trips/{id}/close', [TripController::class, 'closeTrip'])->name('trips.close');
-Route::get('/addtruck-archived', [AdminController::class, 'addtruck_archived'])->name('addtruck-archived');
-Route::get('/vehicles-archived', [VehicleController::class, 'showArchived'])->name('vehicles-archived');
-Route::post('/vehicles-archivedtbl/{id}', [VehicleController::class, 'archive'])->name('vehicles-archivedtbl');
 
-Route::get('/employee-archived', [EmployeeController::class, 'showArchived'])->name('employee-archived');
-Route::post('/employee-archivedtbl/{id}', [EmployeeController::class, 'archive'])->name('employee-archivedtbl');
 
-//
-Route::get('/confirmation', [AdminController::class, 'confirmation'])->name('confirmation');
+
+

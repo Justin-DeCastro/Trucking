@@ -1,32 +1,32 @@
 <!-- meta tags and other links -->
 <!DOCTYPE html>
 <html lang="en">
-    <style>
-        .clickable-row {
-    cursor: pointer;
-}
+<style>
+    .clickable-row {
+        cursor: pointer;
+    }
 
-        .notification-card {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            z-index: 1050;
-            /* Ensure it's above other content */
-            width: 300px;
-            /* Adjust width as needed */
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
+    .notification-card {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1050;
+        /* Ensure it's above other content */
+        width: 300px;
+        /* Adjust width as needed */
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
 
-        .notification-card.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .notification-card.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
-        .notification-card.d-none {
-            opacity: 0;
-            transform: translateY(-100px);
-        }
-    </style>
+    .notification-card.d-none {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+</style>
 @include('Components.Admin.Header')
 
 <body>
@@ -103,7 +103,8 @@
                                                     <td>{{ $detail->origin }}</td>
                                                     <td>{{ $detail->destination }}</td>
                                                     <td>{{ $detail->trip_ticket }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($detail->created_at)->format('F d, Y') }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($detail->created_at)->format('F d, Y') }}
+                                                    </td>
                                                 </tr>
                                             @empty
                                                 <tr>
@@ -112,9 +113,6 @@
                                             @endforelse
                                         </tbody>
                                     </table>
-
-
-
                                 </div>
                             </div>
                         </div><!-- card end -->
@@ -124,25 +122,27 @@
         </div>
     </div>
     <!-- Modal -->
-<!-- Modal -->
-<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="detailModalLabel">Trip Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-
-            </div>
-            <div class="modal-body">
-                <p><strong>Plate Number:</strong> <span id="modal-plate-number"></span></p>
-                <p><strong>Origin:</strong> <span id="modal-origin"></span></p>
-                <p><strong>Destination:</strong> <span id="modal-destination"></span></p>
-                <p><strong>Trip Ticket:</strong> <span id="modal-trip-ticket"></span></p>
-                <p><strong>Date:</strong> <span id="modal-date"></span></p>
+    <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailModalLabel">Trip Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-content">
+                    <p><strong>Plate Number:</strong> <span id="modal-plate-number"></span></p>
+                    <p><strong>Origin:</strong> <span id="modal-origin"></span></p>
+                    <p><strong>Destination:</strong> <span id="modal-destination"></span></p>
+                    <p><strong>Trip Ticket:</strong> <span id="modal-trip-ticket"></span></p>
+                    <p><strong>Date:</strong> <span id="modal-date"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="printModalContent()">Print</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
     {{-- <div id="notificationCard" class="notification-card d-none">
@@ -164,10 +164,12 @@
         </div>
     </div> --}}
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <!-- Include Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Include SweetAlert2 JS (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
     <!-- DataTables JS -->
@@ -187,42 +189,88 @@
 
     <!-- FileSaver.js for CSV export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-    <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
 
-<script>
-    // Using jQuery for handling the row click event
-$(document).ready(function() {
-    // Attach a click event to table rows with the 'clickable-row' class
-    $('#data-table').on('click', '.clickable-row', function() {
-        // Get data from the clicked row
-        var plateNumber = $(this).data('plate_number');
-        var origin = $(this).data('origin');
-        var destination = $(this).data('destination');
-        var tripTicket = $(this).data('trip_ticket');
-        var date = $(this).data('date');
-
-        // Set the modal values
-        $('#modal-plate-number').text(plateNumber);
-        $('#modal-origin').text(origin);
-        $('#modal-destination').text(destination);
-        $('#modal-trip-ticket').text(tripTicket);
-        $('#modal-date').text(date);
-
-        // Show the modal
-        $('#detailModal').modal('show');
-    });
-});
-
-</script>
     <script>
+    function printModalContent() {
+        // Get the modal content
+        var modalContent = document.getElementById('modal-content').innerHTML;
+
+        // Create a new window for the print job
+        var printWindow = window.open('', '', 'height=600,width=800');
+
+        // Write the modal content into the new window for printing
+        printWindow.document.write(`
+            <html>
+            <head>
+                <title>Print Trip Details</title>
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 20px; }
+                    p { margin: 5px 0; }
+                    h5 { text-align: center; margin-bottom: 20px; }
+                    .logo-container { text-align: center; margin-bottom: 20px; }
+                    .logo-container img { width: 10%; height: auto; }
+                </style>
+            </head>
+            <body>
+                <div class="logo-container">
+                    <img src="{{ asset('Home/GDR Logo.png') }}" alt="GDR Logo">
+                </div>
+                <h5>Trip Details</h5>
+                ${modalContent}
+            </body>
+            </html>
+        `);
+
+        // Close the document stream and focus on the window for printing
+        printWindow.document.close();
+        printWindow.focus();
+
+        // Trigger the print
+        printWindow.print();
+
+        // Close the print window after printing
+        printWindow.onafterprint = function() {
+            printWindow.close();
+        };
+    }
+</script>
+
+    <script>
+        // Using jQuery for handling the row click event
+        $(document).ready(function() {
+            // Attach a click event to table rows with the 'clickable-row' class
+            $('#data-table').on('click', '.clickable-row', function() {
+                // Get data from the clicked row
+                var plateNumber = $(this).data('plate_number');
+                var origin = $(this).data('origin');
+                var destination = $(this).data('destination');
+                var tripTicket = $(this).data('trip_ticket');
+                var date = $(this).data('date');
+
+                // Set the modal values
+                $('#modal-plate-number').text(plateNumber);
+                $('#modal-origin').text(origin);
+                $('#modal-destination').text(destination);
+                $('#modal-trip-ticket').text(tripTicket);
+                $('#modal-date').text(date);
+
+                // Show the modal
+                $('#detailModal').modal('show');
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#data-table').DataTable();
+        });
+
         // Function to extract all table data
         function getTableData() {
-            // If using DataTables, get all data
             var table = $('#data-table').DataTable();
             var data = table.rows({
                 search: 'applied'
             }).data().toArray();
-            var headers = table.columns().header().toArray().map(th => th.innerText);
+            var headers = table.columns().header().toArray().map(th => $(th).text());
 
             return {
                 data,
@@ -235,7 +283,7 @@ $(document).ready(function() {
             var {
                 data
             } = getTableData();
-            var textToCopy = data.map(row => row.join("\t")).join("\n");
+            var textToCopy = data.map(row => row.map(cell => $('<div>').html(cell).text()).join("\t")).join("\n");
 
             var tempTextArea = document.createElement("textarea");
             tempTextArea.value = textToCopy;
@@ -246,30 +294,39 @@ $(document).ready(function() {
             alert("Table data copied to clipboard!");
         });
 
-        // Print function - prints only the table
+        // Print function
         document.getElementById('printBtn').addEventListener('click', function() {
             var {
                 data,
                 headers
             } = getTableData();
+
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
             var printContents = `
-            <table border="1">
-                <thead>
-                    <tr>${headers.map(header => `<th>${header}</th>`).join('')}</tr>
-                </thead>
-                <tbody>
-                    ${data.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}
-                </tbody>
-            </table>
-        `;
+        <table border="1">
+            <thead>
+                <tr>${filteredHeaders.map(header => `<th>${header}</th>`).join('')}</tr>
+            </thead>
+            <tbody>
+                ${filteredData.map(row => `<tr>${row.map(cell => `<td>${$('<div>').html(cell).text()}</td>`).join('')}</tr>`).join('')}
+            </tbody>
+        </table>`;
+
             var originalContents = document.body.innerHTML;
 
             document.body.innerHTML = `<html><head><title>Print</title></head><body>${printContents}</body></html>`;
             window.print();
             document.body.innerHTML = originalContents;
         });
-
-        // PDF export with landscape formatting and smaller font size using jsPDF and autoTable
+        // PDF export function
         document.getElementById('pdfBtn').addEventListener('click', function() {
             const {
                 jsPDF
@@ -281,17 +338,28 @@ $(document).ready(function() {
                 headers
             } = getTableData();
 
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
+            // Convert HTML content to text
+            var cleanData = filteredData.map(row => row.map(cell => $('<div>').html(cell).text()));
+
             doc.autoTable({
-                head: [headers],
-                body: data,
-                startY: 10, // Start 10 units from top
-                theme: 'grid', // Grid layout
+                head: [filteredHeaders],
+                body: cleanData,
+                startY: 10,
+                theme: 'grid',
                 margin: {
                     top: 10
                 },
                 styles: {
                     fontSize: 8,
-                    cellPadding: 2
                 },
                 headStyles: {
                     fillColor: [22, 160, 133],
@@ -303,45 +371,33 @@ $(document).ready(function() {
             doc.save('table_data.pdf');
         });
 
+
+        // Excel export function
         // Excel export function
         document.getElementById('excelBtn').addEventListener('click', function() {
             var {
                 data,
                 headers
             } = getTableData();
+
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
             var wb = XLSX.utils.book_new();
-            var ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
+            var cleanData = filteredData.map(row => row.map(cell => $('<div>').html(cell).text()));
+            var ws = XLSX.utils.aoa_to_sheet([filteredHeaders, ...cleanData]);
             XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
             XLSX.writeFile(wb, "table_data.xlsx");
         });
     </script>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Include Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
-    <script>
-        if ($('li').hasClass('active')) {
-            $('.sidebar__menu-wrapper').animate({
-                scrollTop: eval($(".active").offset().top - 320)
-            }, 500);
-        }
-    </script>
-    <!-- Include SweetAlert2 JS (optional) -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-
-
-    <script>
-        $(document).ready(function() {
-            $('#data-table').DataTable({
-                responsive: true, // Enable responsiveness
-                paging: true, // Enables pagination
-                searching: true, // Enables search
-                ordering: true, // Enables sorting
-            });
-        });
-    </script>
 
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 

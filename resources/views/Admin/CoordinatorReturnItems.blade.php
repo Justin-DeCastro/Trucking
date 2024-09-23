@@ -8,25 +8,26 @@
 
 <style>
     .modal-content {
-    border-radius: 8px;
-}
+        border-radius: 8px;
+    }
 
-.modal-body {
-    display: flex;
-    align-items: center;
-}
+    .modal-body {
+        display: flex;
+        align-items: center;
+    }
 
-#modal-proof-of-return {
-    width: 150px; /* Adjust as needed */
-    height: auto;
-    object-fit: cover;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-}
+    #modal-proof-of-return {
+        width: 150px;
+        /* Adjust as needed */
+        height: auto;
+        object-fit: cover;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+    }
 
-.modal-body p {
-    margin-bottom: 8px;
-}
+    .modal-body p {
+        margin-bottom: 8px;
+    }
 
     .logo-container {
         position: relative;
@@ -230,15 +231,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($returnItems as $return)
-                                        <tr data-toggle="modal" data-target="#detailsModal"
-                                            data-return-date="{{ $return->return_date }}"
-                                            data-product-name="{{ $return->product_name }}"
-                                            data-return-reason="{{ $return->return_reason }}"
-                                            data-return-quantity="{{ $return->return_quantity }}"
-                                            data-condition="{{ $return->condition }}"
-                                            data-driver-name="{{ $currentDriverName }}"
-                                            data-status="{{ $return->status }}"
-                                            data-proof-of-return="{{ $return->proof_of_return }}">
+                                        <tr class="clickable-row" data-bs-target="#returnModal{{ $return->id }}">
                                             <td>{{ $return->return_date }}</td>
                                             <td>{{ $return->product_name }}</td>
                                             <td>{{ $return->return_reason }}</td>
@@ -246,7 +239,7 @@
                                             <td>{{ $return->condition }}</td>
                                             <td>{{ $currentDriverName }}</td>
                                             <td>{{ $return->status }}</td>
-                                            <td>
+                                            <td class="action-btn">
                                                 @if ($return->proof_of_return)
                                                     <img src="{{ asset('proofs/' . $return->proof_of_return) }}"
                                                         alt="Proof of Return"
@@ -257,14 +250,16 @@
                                                     <p>No proof available</p>
                                                 @endif
                                             </td>
-                                            <td>
-                                                <form action="{{ route('return.approve', $return->id) }}" method="POST" style="display: inline;">
+                                            <td class="action-btn">
+                                                <form action="{{ route('return.approve', $return->id) }}"
+                                                    method="POST" style="display: inline;">
                                                     @csrf
                                                     <button type="submit" class="btn btn-success btn-sm">
                                                         <i class="fa-solid fa-check"></i> Approve
                                                     </button>
                                                 </form>
-                                                <form action="{{ route('return.reject', $return->id) }}" method="POST" style="display: inline;">
+                                                <form action="{{ route('return.reject', $return->id) }}" method="POST"
+                                                    style="display: inline;">
                                                     @csrf
                                                     <button type="submit" class="btn btn-danger btn-sm">
                                                         <i class="fa-solid fa-times"></i> Reject
@@ -351,43 +346,54 @@
         </div>
     </div>
 
-<!-- Modal for clickable-->
-<!-- Modal -->
-<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="detailsModalLabel">Return Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="d-flex align-items-center">
-                    <!-- Image Section -->
-                    <div class="me-4">
-                        <img id="modal-proof-of-return" src="" alt="Proof of Return" class="img-fluid" style="width: 150px; height: auto; object-fit: cover; border: 2px solid #ddd; border-radius: 8px;">
+    <!-- Modal for clickable-->
+    @foreach ($returnItems as $return)
+        <div class="modal fade" id="returnModal{{ $return->id }}" tabindex="-1"
+            aria-labelledby="returnModalLabel{{ $return->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="returnModalLabel">Return Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
-                    <!-- Details Section -->
-                    <div>
-                        <p><strong>Return Date:</strong> <span id="modal-return-date"></span></p>
-                        <p><strong>Product Name:</strong> <span id="modal-product-name"></span></p>
-                        <p><strong>Return Reason:</strong> <span id="modal-return-reason"></span></p>
-                        <p><strong>Return Quantity:</strong> <span id="modal-return-quantity"></span></p>
-                        <p><strong>Condition:</strong> <span id="modal-condition"></span></p>
-                        <p><strong>Driver Name:</strong> <span id="modal-driver-name"></span></p>
-                        <p><strong>Status:</strong> <span id="modal-status"></span></p>
+                    <div class="modal-body">
+                        <div class="d-flex align-items-center">
+                            <!-- Image Section -->
+                            <div class="me-4">
+                                @if ($return->proof_of_return)
+                                    <img src="{{ asset('proofs/' . $return->proof_of_return) }}"
+                                        alt="Proof of Return"
+                                        style="max-width: 130px; max-height: 100px; object-fit: cover; margin-right: 5px;"
+                                        data-toggle="modal" data-target="#imageModal"
+                                        data-image="{{ asset('proofs/' . $return->proof_of_return) }}">
+                                @else
+                                    <p>No proof available</p>
+                                @endif
+                            </div>
+                            <!-- Details Section -->
+                            <div>
+                                <p><strong>Return Date:</strong> {{ $return->return_date }}</p>
+                                <p><strong>Product Name:</strong> {{ $return->product_name }}</p>
+                                <p><strong>Return Reason:</strong> {{ $return->return_reason }}</p>
+                                <p><strong>Return Quantity:</strong> {{ $return->return_quantity }}</p>
+                                <p><strong>Condition:</strong> {{ $return->condition }}</p>
+                                <p><strong>Driver Name:</strong> {{ $return->driver_name }}</p>
+                                <p><strong>Status:</strong> {{ $return->status }}</p>
+                            </div>
+                        </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary"
+                            onclick="printReturnModalContent({{ $return->id }})">Print</button>
+                    </div>
+
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
         </div>
-    </div>
-</div>
+    @endforeach
 
-
-
-    <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Include Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
@@ -418,33 +424,88 @@
     <!-- Include jQuery and Bootstrap JS (if not already included) -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap JS (Place this before your closing </body> tag) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function printReturnModalContent(returnId) {
+        // Get the modal content by the return ID
+        var modalContent = document.getElementById('returnModal' + returnId).querySelector('.modal-body').innerHTML;
+
+        // Open a new window for the print job
+        var printWindow = window.open('', '', 'height=600,width=800');
+
+        // Write the modal content into the new window for printing
+        printWindow.document.write(`
+            <html>
+            <head>
+                <title>Print Return Details</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        padding: 20px;
+                        line-height: 1.6;
+                    }
+                    p {
+                        margin: 10px 0;
+                    }
+                    h5 {
+                        text-align: center;
+                    }
+                    .logo-container {
+                        text-align: center; /* Center the logo */
+                        margin-bottom: 20px; /* Space below the logo */
+                    }
+                    .logo-container img {
+                        width: 10%; /* Adjust logo size */
+                        height: auto;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="logo-container">
+                    <img src="{{ asset('Home/GDR Logo.png') }}" alt="GDR Logo">
+                </div>
+                <h5>Return Details</h5>
+                ${modalContent}
+            </body>
+            </html>
+        `);
+
+        // Close the document stream and focus on the window for printing
+        printWindow.document.close();
+        printWindow.focus();
+
+        // Trigger the print dialog
+        printWindow.print();
+
+        // Close the print window after printing
+        printWindow.onafterprint = function() {
+            printWindow.close();
+        };
+    }
+</script>
+
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            $('#detailsModal').on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget); // Button that triggered the modal
-                var returnDate = button.data('return-date');
-                var productName = button.data('product-name');
-                var returnReason = button.data('return-reason');
-                var returnQuantity = button.data('return-quantity');
-                var condition = button.data('condition');
-                var driverName = button.data('driver-name');
-                var status = button.data('status');
-                var proofOfReturn = button.data('proof-of-return');
+            document.querySelectorAll('.clickable-row').forEach(row => {
+                row.addEventListener('click', function(event) {
+                    // Check if the click is inside the Actions column
+                    if (!event.target.closest('.action-btn')) {
+                        const target = this.getAttribute('data-bs-target');
+                        const modal = document.querySelector(target);
 
-                var modal = $(this);
-                modal.find('#modal-return-date').text(returnDate);
-                modal.find('#modal-product-name').text(productName);
-                modal.find('#modal-return-reason').text(returnReason);
-                modal.find('#modal-return-quantity').text(returnQuantity);
-                modal.find('#modal-condition').text(condition);
-                modal.find('#modal-driver-name').text(driverName);
-                modal.find('#modal-status').text(status);
-                modal.find('#modal-proof-of-return').attr('src', proofOfReturn ? '{{ asset('proofs/') }}/' + proofOfReturn : '');
+                        if (modal) {
+                            const modalInstance = new bootstrap.Modal(modal);
+                            modalInstance.show();
+                        }
+                    }
+                });
             });
         });
     </script>
-<!-- Bootstrap JS (Place this before your closing </body> tag) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Script to update modal image source -->
     <script>
@@ -461,14 +522,17 @@
         }
     </script>
     <script>
+        $(document).ready(function() {
+            $('#data-table').DataTable();
+        });
+
         // Function to extract all table data
         function getTableData() {
-            // If using DataTables, get all data
             var table = $('#data-table').DataTable();
             var data = table.rows({
                 search: 'applied'
             }).data().toArray();
-            var headers = table.columns().header().toArray().map(th => th.innerText);
+            var headers = table.columns().header().toArray().map(th => $(th).text());
 
             return {
                 data,
@@ -481,7 +545,7 @@
             var {
                 data
             } = getTableData();
-            var textToCopy = data.map(row => row.join("\t")).join("\n");
+            var textToCopy = data.map(row => row.map(cell => $('<div>').html(cell).text()).join("\t")).join("\n");
 
             var tempTextArea = document.createElement("textarea");
             tempTextArea.value = textToCopy;
@@ -492,30 +556,39 @@
             alert("Table data copied to clipboard!");
         });
 
-        // Print function - prints only the table
+        // Print function
         document.getElementById('printBtn').addEventListener('click', function() {
             var {
                 data,
                 headers
             } = getTableData();
+
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
             var printContents = `
-            <table border="1">
-                <thead>
-                    <tr>${headers.map(header => `<th>${header}</th>`).join('')}</tr>
-                </thead>
-                <tbody>
-                    ${data.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}
-                </tbody>
-            </table>
-        `;
+        <table border="1">
+            <thead>
+                <tr>${filteredHeaders.map(header => `<th>${header}</th>`).join('')}</tr>
+            </thead>
+            <tbody>
+                ${filteredData.map(row => `<tr>${row.map(cell => `<td>${$('<div>').html(cell).text()}</td>`).join('')}</tr>`).join('')}
+            </tbody>
+        </table>`;
+
             var originalContents = document.body.innerHTML;
 
             document.body.innerHTML = `<html><head><title>Print</title></head><body>${printContents}</body></html>`;
             window.print();
             document.body.innerHTML = originalContents;
         });
-
-        // PDF export with landscape formatting and smaller font size using jsPDF and autoTable
+        // PDF export function
         document.getElementById('pdfBtn').addEventListener('click', function() {
             const {
                 jsPDF
@@ -527,17 +600,28 @@
                 headers
             } = getTableData();
 
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
+            // Convert HTML content to text
+            var cleanData = filteredData.map(row => row.map(cell => $('<div>').html(cell).text()));
+
             doc.autoTable({
-                head: [headers],
-                body: data,
-                startY: 10, // Start 10 units from top
-                theme: 'grid', // Grid layout
+                head: [filteredHeaders],
+                body: cleanData,
+                startY: 10,
+                theme: 'grid',
                 margin: {
                     top: 10
                 },
                 styles: {
                     fontSize: 8,
-                    cellPadding: 2
                 },
                 headStyles: {
                     fillColor: [22, 160, 133],
@@ -549,27 +633,29 @@
             doc.save('table_data.pdf');
         });
 
+
+        // Excel export function
         // Excel export function
         document.getElementById('excelBtn').addEventListener('click', function() {
             var {
                 data,
                 headers
             } = getTableData();
+
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
             var wb = XLSX.utils.book_new();
-            var ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
+            var cleanData = filteredData.map(row => row.map(cell => $('<div>').html(cell).text()));
+            var ws = XLSX.utils.aoa_to_sheet([filteredHeaders, ...cleanData]);
             XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
             XLSX.writeFile(wb, "table_data.xlsx");
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            $('#data-table').DataTable({
-                responsive: true, // Enable responsiveness
-                paging: true, // Enables pagination
-                searching: true, // Enables search
-                ordering: true, // Enables sorting
-            });
         });
     </script>
 

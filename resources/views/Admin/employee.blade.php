@@ -89,7 +89,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($employees as $employee)
-                                        <tr>
+                                    <tr class="clickable-row" data-bs-target="#employeeModal{{ $employee->id }}">
                                             <td>{{ $employee->id_number }}</td>
                                             <td>{{ $employee->position }}</td>
                                             <td>{{ $employee->employee_name }}</td>
@@ -430,55 +430,65 @@
             </div>
         </div>
 
-        @foreach ($employees as $employee)
-            <div class="modal fade" id="employeeModal{{ $employee->id }}" tabindex="-1"
-                aria-labelledby="employeeModalLabel{{ $employee->id }}" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content border-0 shadow-lg rounded-3">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="employeeModalLabel{{ $employee->id }}"></h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="card border-0 shadow-sm rounded-3">
-                                <div class="row g-0">
-                                    <div class="col-md-4 text-center">
-                                        <img src="{{ asset($employee->profile_image) }}" alt="Profile Image"
-                                            class="img-fluid rounded-circle border border-light mb-3"
-                                            style="width: 150px; height: 200px; object-fit: cover;">
-                                        <h5 class="card-title">{{ $employee->employee_name }}</h5>
-                                        <p><strong>Position:</strong> {{ $employee->position }}</p>
-                                        <p><strong>ID Number:</strong> {{ $employee->id_number }}</p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
 
-                                            <p><strong>Birthday:</strong> {{ $employee->birthday }}</p>
+         @foreach ($employees as $employee)
+    <div class="modal fade" id="employeeModal{{ $employee->id }}" tabindex="-1"
+        aria-labelledby="employeeModalLabel{{ $employee->id }}" aria-hidden="true">
+        <div class="modal-dialog custom-width"> <!-- Applied custom-width class -->
+            <div class="modal-content border-0 shadow-lg rounded-3">
+                <!-- Modal Header with Background Color -->
+                <div class="modal-header" style="background-color: #4634FF;">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
 
-                                                <p><strong>Date Hired:</strong> {{ \Carbon\Carbon::parse($employee->date_hired)->format('d-M-y h:i A') }}</td>
-                                            </p>
-                                            <p><strong>Birth Place:</strong>
-                                                {{ $employee->birth_place }}</p>
-                                            <p><strong>Civil Status:</strong>
-                                                {{ $employee->civil_status }}</p>
-                                            <p><strong>Gender:</strong> {{ $employee->gender }}</p>
-                                            <p><strong>Mobile:</strong> {{ $employee->mobile }}</p>
-                                            <p><strong>Address:</strong> {{ $employee->address }}</p>
-                                        </div>
-                                    </div>
-                                </div>
+                <div class="modal-body p-4">
+                    <!-- Profile Section -->
+                    <div class="text-center mb-3">
+                        <img src="{{ asset('Home/GDR Logo.png') }}" alt="GDR Logo"
+                            class="gdr-logo" style="width: 20%; height: auto;"> <!-- Adjusted logo size -->
+                    </div>
+                    <div class="text-center mb-3">
+                        <img src="{{ asset($employee->profile_image) }}" alt="Profile Image"
+                            class="img-fluid rounded-circle border border-light shadow mb-3"
+                            style="width: 150px; height: 150px; object-fit: cover;">
+                        <h5 class="modal-title" id="employeeModalLabel{{ $employee->id }}">
+                            {{ $employee->employee_name }}
+                        </h5>
+                        <h6 class="mb-0">{{ $employee->position }}</h6>
+                        <p class="text-muted mb-0"><strong>ID No.</strong> {{ $employee->id_number }}</p>
+                    </div>
+
+                    <!-- Employee Information Section -->
+                    <div class="bg-light p-3 rounded text-muted mb-1">
+                        <small>Personal Details</small>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="mb-1"><strong>Birthday:</strong> {{ $employee->birthday }}</p>
+                                <p class="mb-1"><strong>Date Hired:</strong> {{ $employee->date_hired }}</p>
+                                <p class="mb-1"><strong>Birth Place:</strong> {{ $employee->birth_place }}</p>
+                                <p class="mb-1"><strong>Mobile:</strong> {{ $employee->mobile }}</p>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary"
-                                onclick="printModal({{ $employee->id }})">Print</button>
+                            <div class="col-md-6">
+                                <p class="mb-1"><strong>Civil Status:</strong> {{ $employee->civil_status }}</p>
+                                <p class="mb-1"><strong>Gender:</strong> {{ $employee->gender }}</p>
+                                <p class="mb-1"><strong>Address:</strong> {{ $employee->address }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Modal Footer with Print Button -->
+                <div class="modal-footer d-flex justify-content-end">
+                    <button type="button" class="btn btn-primary"
+                        onclick="printModal({{ $employee->id }})">
+                        <i class="fa fa-print"></i> Print
+                    </button>
+                </div>
             </div>
-        @endforeach
+        </div>
+    </div>
+@endforeach
         <div class="modal fade" id="confirmationModal" tabindex="-1"
         aria-labelledby="confirmationModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -677,6 +687,26 @@
             XLSX.writeFile(wb, "table_data.xlsx");
         });
     </script>
+
+     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.clickable-row').forEach(row => {
+                row.addEventListener('click', function(event) {
+                    // Check if the click is inside the Actions column
+                    if (!event.target.closest('.action-btn')) {
+                        const target = this.getAttribute('data-bs-target');
+                        const modal = document.querySelector(target);
+
+                        if (modal) {
+                            const modalInstance = new bootstrap.Modal(modal);
+                            modalInstance.show();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
     <script>
         $(document).ready(function() {
             $('#data-table').DataTable({
@@ -687,52 +717,49 @@
             });
         });
     </script>
-    <script>
-        function printModal(employeeId) {
-            var modal = document.getElementById('employeeModal' + employeeId);
-            var modalContent = modal.innerHTML;
+   <script>
+    function printModal(employeeId) {
+        // Get the modal content (excluding the header)
+        var modalContent = document.querySelector('#employeeModal' + employeeId + ' .modal-body').innerHTML;
 
-            // Remove the modal header and print button from the modal content
-            modalContent = modalContent.replace(
-                /<div class="modal-header">[\s\S]*?<button[^>]*onclick="printModal\(\d+\)[^>]*>[^<]*<\/button><\/div>/,
-                '');
-            modalContent = modalContent.replace(/<button[^>]*onclick="printModal\(\d+\)[^>]*>[^<]*<\/button>/, '');
+        // Open a new window
+        var printWindow = window.open('', '', 'height=600,width=800');
 
-            var originalContent = document.body.innerHTML;
+        // Write the modal content to the new window
+        printWindow.document.open();
+        printWindow.document.write(`
+            <html>
+            <head>
+                <title>Print</title>
+                <style>
+                    /* Get the same styles from the current page */
+                    @media print {
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        .modal-body { width: 100%; }
+                        img { max-width: 100%; height: auto; }
+                        .text-center { text-align: center; }
+                        .rounded-circle { border-radius: 50%; }
+                        .border { border: 1px solid #ddd; }
+                        .shadow { box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+                        .bg-light { background-color: #f8f9fa; }
 
-            var printWindow = window.open('', '', 'height=600,width=800');
-            printWindow.document.write('<html><head><title>Print</title>');
-
-            // Include Bootstrap CSS and any additional CSS
-            printWindow.document.write(
-                '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">'
-            );
-
-            // Include any additional styles used in your modal
-            printWindow.document.write('<style>');
-            printWindow.document.write('.modal-dialog { max-width: 800px; margin: 1.75rem auto; }');
-            printWindow.document.write(
-                '.modal-content { border: 0; border-radius: .375rem; box-shadow: 0 0 1rem rgba(0,0,0,.175); }');
-            printWindow.document.write('.modal-body { padding: 1rem; }');
-            printWindow.document.write(
-                '.modal-footer { border-top: 1px solid #e9ecef; padding: 0.75rem; text-align: right; display: none; }'
-            ); // Hide footer in print view
-            printWindow.document.write(
-                '.card { border: 0; border-radius: .375rem; box-shadow: 0 0 0.125rem rgba(0,0,0,.125); }');
-            printWindow.document.write('.card-body { padding: 1.25rem; }');
-            printWindow.document.write('.row { display: flex; }');
-            printWindow.document.write('.col-md-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }');
-            printWindow.document.write('.col-md-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }');
-            printWindow.document.write('</style>');
-
-            printWindow.document.write('</head><body >');
-            printWindow.document.write(modalContent);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.focus();
-            printWindow.print();
-        }
-    </script>
+                        /* Adjust the logo size and spacing */
+                        .gdr-logo { width: 50%; margin-bottom: 20px; } /* Adjust width as needed */
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="modal-body">
+                    ${modalContent}
+                </div>
+            </body>
+            </html>
+        `);
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+    }
+</script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

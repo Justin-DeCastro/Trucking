@@ -2,278 +2,249 @@
 <!DOCTYPE html>
 <html lang="en">
 
-@include('Components.Admin.Header')
+<head>
+    @include('Components.Admin.Header')
+</head>
+<style>
+    .divider:after,
+    .divider:before {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #eee;
+    }
+
+    .form-outline {
+        position: relative;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-control {
+        border-radius: 0.5rem;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        transition: box-shadow 0.2s ease-in-out;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.5);
+    }
+
+    .form-label {
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+
+    .text-danger {
+        font-size: 0.875rem;
+        color: #dc3545;
+        margin-top: 0.25rem;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1.25rem;
+        font-size: 1rem;
+        text-transform: uppercase;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-block {
+        display: block;
+        width: 100%;
+    }
+
+    .container {
+        max-width: 1200px;
+    }
+
+    .vh-100 {
+        min-height: 100vh;
+    }
+
+    .img-fluid {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>
 
 <body>
 
+    @include('Components.Admin.Navbar')
+    @include('Components.Admin.Sidebar')
+    <!-- sidebar end -->
 
-    <div class="page-wrapper default-version">
-        @include('Components.Admin.Navbar')
-        @include('Components.Admin.Sidebar')
-        <!-- sidebar end -->
+    <div class="container py-5">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="text-center mb-3">
+                <img src="{{ asset('Home/GDR Logo.png') }}" alt="Shopee Xpress Logo" style="width: 20%; height: auto;">
+            </div>
+            <div class="text-center">
+                <h4> Create an Account</h4>
+            </div>
+            <div class="col-md-7 col-lg-5 col-xl-5">
+                <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
+                    @csrf
 
-        <!-- navbar-wrapper start -->
-        {{-- <nav class="navbar-wrapper bg--dark d-flex flex-wrap"> --}}
+                    <!-- Name input -->
+                    <div class="form-outline">
+                        <label class="form-label" for="form1Example1">Name</label>
+                        <input type="text" id="form1Example1" name="name" class="form-control form-control-lg"
+                            required />
 
-        <div class="navbar__right">
-            <ul class="navbar__action-list">
-
-
-                <li class="dropdown d-flex profile-dropdown">
-                    <button type="button" data-bs-toggle="dropdown" data-display="static" aria-haspopup="true"
-                        aria-expanded="false">
-                        <span class="navbar-user">
-                            <span class="navbar-user__thumb"><img src="Home/user-avatar-male-5.png"
-                                    alt="image"></span>
-                            <span class="navbar-user__info">
-                                <span class="navbar-user__name">Admin</span>
-                            </span>
-                            <span class="icon"><i class="fas fa-chevron-circle-down"></i></span>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu--sm p-0 border-0 box--shadow1 dropdown-menu-right">
-
-
-                        <a href="logout" class="dropdown-menu__item d-flex align-items-center px-3 py-2">
-                            <i class="dropdown-menu__icon fas fa-sign-out-alt"></i>
-                            <span class="dropdown-menu__caption">Logout</span>
-                        </a>
+                        @error('name')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
-                    <button type="button" class="breadcrumb-nav-open ms-2 d-none">
-                        <i class="fas fa-sliders-h"></i>
-                    </button>
-                </li>
-            </ul>
-        </div>
-        </nav>
-        <style>
-            .divider:after,
-            .divider:before {
-                content: "";
-                flex: 1;
-                height: 1px;
-                background: #eee;
-            }
 
-            .form-outline {
-                position: relative;
-                margin-bottom: 1.5rem;
-            }
+                    <!-- Email input -->
+                    <div class="form-outline">
+                        <label class="form-label" for="form1Example2">Email address</label>
+                        <input type="email" id="form1Example2" name="email" class="form-control form-control-lg"
+                            required />
 
-            .form-control {
-                border-radius: 0.5rem;
-                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-                transition: box-shadow 0.2s ease-in-out;
-            }
+                        @error('email')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-            .form-control:focus {
-                box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.5);
-            }
+                    <!-- Password input -->
+                    <div class="form-outline">
+                        <label class="form-label" for="form1Example3">Password</label>
+                        <input type="password" id="form1Example3" name="password" class="form-control form-control-lg"
+                            required />
 
-            .form-label {
-                margin-bottom: 0.5rem;
-                font-weight: 500;
-            }
+                        @error('password')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-            .text-danger {
-                font-size: 0.875rem;
-                color: #dc3545;
-                margin-top: 0.25rem;
-            }
+                    <!-- Confirm Password input -->
+                    <div class="form-outline">
+                        <label class="form-label" for="form1Example4">Confirm Password</label>
+                        <input type="password" id="form1Example4" name="password_confirmation"
+                            class="form-control form-control-lg" required />
 
-            .btn-primary {
-                background-color: #007bff;
-                border: none;
-                border-radius: 0.5rem;
-                padding: 0.75rem 1.25rem;
-                font-size: 1rem;
-                text-transform: uppercase;
-            }
+                    </div>
 
-            .btn-primary:hover {
-                background-color: #0056b3;
-            }
+                    <!-- Role selection -->
+                    <div class="form-outline">
+                        <label class="form-label" for="formRole">Role</label>
+                        <select id="formRole" name="role" class="form-control form-control-lg" required>
+                            <option value="" disabled selected>Select your role</option>
+                            <option value="accounting">Accounting</option>
+                            <option value="courier">Driver</option>
+                            {{-- <option value="admin">Admin</option> --}}
+                        </select>
 
-            .btn-block {
-                display: block;
-                width: 100%;
-            }
+                        @error('role')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-            .container {
-                max-width: 1200px;
-            }
+                    <!-- Conditional fields for couriers -->
+                    <div id="courierFields" class="hidden">
+                        <!-- Driver's License upload -->
+                        <div class="form-outline">
+                            <label class="form-label" for="form1Example5">Upload Driver's License</label>
+                            <input type="file" id="form1Example5" name="driver_license"
+                                class="form-control form-control-lg" />
 
-            .vh-100 {
-                min-height: 100vh;
-            }
+                            @error('driver_license')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-            .img-fluid {
-                max-width: 100%;
-                height: auto;
-            }
+                        <!-- Driver Image upload -->
+                        <div class="form-outline">
+                            <label class="form-label" for="form1Example6">Upload Driver Image</label>
+                            <input type="file" id="form1Example6" name="driver_image"
+                                class="form-control form-control-lg" />
 
-            .hidden {
-                display: none;
-            }
-        </style>
-        </head>
+                            @error('driver_image')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-        <body>
-            <section class="vh-100">
-                <div class="container py-5 h-100">
-                    <div class="row d-flex align-items-center justify-content-center h-100">
+                        <!-- Driver's License Number -->
+                        <div class="form-outline">
+                            <label class="form-label" for="form1Example10">Driver's License Number</label>
+                            <input type="text" id="form1Example10" name="license_number"
+                                class="form-control form-control-lg" />
 
-                        <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-                            <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
-                                @csrf
+                            @error('license_number')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-outline">
+                            <label class="form-label" for="form1Example7">License Expiration Date</label>
+                            <input type="date" id="form1Example7" name="license_expiration"
+                                class="form-control form-control-lg" />
 
-                                <!-- Name input -->
-                                <div class="form-outline">
-                                    <label class="form-label" for="form1Example1">Name</label>
-                                    <input type="text" id="form1Example1" name="name"
-                                        class="form-control form-control-lg" required />
+                            @error('license_number')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-                                    @error('name')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                        <!-- Contact Number -->
+                        <div class="form-outline">
+                            <label class="form-label" for="form1Example8">Contact Number</label>
+                            <input type="text" id="form1Example8" name="contact_number"
+                                class="form-control form-control-lg" />
 
-                                <!-- Email input -->
-                                <div class="form-outline">
-                                    <label class="form-label" for="form1Example2">Email address</label>
-                                    <input type="email" id="form1Example2" name="email"
-                                        class="form-control form-control-lg" required />
+                            @error('contact_number')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-                                    @error('email')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                        <!-- Address -->
+                        <div class="form-outline">
+                            <label class="form-label" for="form1Example9">Address</label>
+                            <input type="text" id="form1Example9" name="address"
+                                class="form-control form-control-lg" />
 
-                                <!-- Password input -->
-                                <div class="form-outline">
-                                    <label class="form-label" for="form1Example3">Password</label>
-                                    <input type="password" id="form1Example3" name="password"
-                                        class="form-control form-control-lg" required />
-
-                                    @error('password')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <!-- Confirm Password input -->
-                                <div class="form-outline">
-                                    <label class="form-label" for="form1Example4">Confirm Password</label>
-                                    <input type="password" id="form1Example4" name="password_confirmation"
-                                        class="form-control form-control-lg" required />
-
-                                </div>
-
-                                <!-- Role selection -->
-                                <div class="form-outline">
-                                    <label class="form-label" for="formRole">Role</label>
-                                    <select id="formRole" name="role" class="form-control form-control-lg" required>
-                                        <option value="" disabled selected>Select your role</option>
-                                        <option value="accounting">Accounting</option>
-                                        <option value="courier">Driver</option>
-                                        {{-- <option value="admin">Admin</option> --}}
-                                    </select>
-
-                                    @error('role')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <!-- Conditional fields for couriers -->
-                                <div id="courierFields" class="hidden">
-                                    <!-- Driver's License upload -->
-                                    <div class="form-outline">
-                                        <label class="form-label" for="form1Example5">Upload Driver's License</label>
-                                        <input type="file" id="form1Example5" name="driver_license"
-                                            class="form-control form-control-lg" />
-
-                                        @error('driver_license')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Driver Image upload -->
-                                    <div class="form-outline">
-                                        <label class="form-label" for="form1Example6">Upload Driver Image</label>
-                                        <input type="file" id="form1Example6" name="driver_image"
-                                            class="form-control form-control-lg" />
-
-                                        @error('driver_image')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Driver's License Number -->
-                                    <div class="form-outline">
-                                        <label class="form-label" for="form1Example10">Driver's License Number</label>
-                                        <input type="text" id="form1Example10" name="license_number"
-                                            class="form-control form-control-lg" />
-
-                                        @error('license_number')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-outline">
-                                        <label class="form-label" for="form1Example7">License Expiration Date</label>
-                                        <input type="date" id="form1Example7" name="license_expiration"
-                                            class="form-control form-control-lg" />
-
-                                        @error('license_number')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Contact Number -->
-                                    <div class="form-outline">
-                                        <label class="form-label" for="form1Example8">Contact Number</label>
-                                        <input type="text" id="form1Example8" name="contact_number"
-                                            class="form-control form-control-lg" />
-
-                                        @error('contact_number')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Address -->
-                                    <div class="form-outline">
-                                        <label class="form-label" for="form1Example9">Address</label>
-                                        <input type="text" id="form1Example9" name="address"
-                                            class="form-control form-control-lg" />
-
-                                        @error('address')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <!-- Submit button -->
-                                <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
-
-                            </form>
-
-
+                            @error('address')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
-                </div>
-            </section>
 
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
-            <script>
-                document.getElementById('formRole').addEventListener('change', function() {
-                    var role = this.value;
-                    var courierFields = document.getElementById('courierFields');
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
 
-                    if (role === 'courier') {
-                        courierFields.classList.remove('hidden');
-                    } else {
-                        courierFields.classList.add('hidden');
-                    }
-                });
-            </script>
-        </body>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
+    <script>
+        document.getElementById('formRole').addEventListener('change', function() {
+            var role = this.value;
+            var courierFields = document.getElementById('courierFields');
+
+            if (role === 'courier') {
+                courierFields.classList.remove('hidden');
+            } else {
+                courierFields.classList.add('hidden');
+            }
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
+
+</body>
 
 </html>

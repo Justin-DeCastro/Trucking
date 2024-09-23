@@ -259,7 +259,10 @@
             // Create the map centered on a default location (Manila).
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 8,
-                center: { lat: 14.5995, lng: 120.9842 }, // Manila as the default center
+                center: {
+                    lat: 14.5995,
+                    lng: 120.9842
+                }, // Manila as the default center
             });
 
             // The locations with addresses
@@ -277,7 +280,9 @@
 
         // Function to geocode addresses and place markers
         function geocodeAddress(geocoder, map, location, infowindow) {
-            geocoder.geocode({ 'address': location.address }, function(results, status) {
+            geocoder.geocode({
+                'address': location.address
+            }, function(results, status) {
                 if (status === 'OK') {
                     var marker = new google.maps.Marker({
                         map: map,
@@ -316,8 +321,7 @@
 
     <!-- Include the Google Maps JavaScript API -->
     <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4&callback=initMap">
-    </script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4&callback=initMap"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -419,10 +423,6 @@
 
         })(jQuery);
     </script>
-
-
-
-
 
 </body>
 

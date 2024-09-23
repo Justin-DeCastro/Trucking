@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register for Trucking Management System - Cabuyao, Philippines</title>
+    <meta name="description" content="Sign up for our trucking management system in Cabuyao, Philippines. Efficiently manage inbound and outbound logistics with real-time tracking and fleet management.">
+    <meta name="keywords" content="trucking management system, register, Cabuyao, Philippines, inbound logistics, outbound logistics, fleet management">
+    <meta name="author" content="GDR Trucking System">
     <!-- Include SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-
+    <link rel="icon" href="Home/GDR Logo.png" type="image/png">
     <!-- Include MDB UI Kit CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css">
 

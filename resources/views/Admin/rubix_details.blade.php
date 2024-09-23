@@ -67,7 +67,6 @@
             /* Remove margin to touch sidebar */
             margin-left: 250px;
             /* Adjust based on sidebar width */
-            margin-top: 20px;
             /* Ensure top margin is retained */
         }
 
@@ -129,18 +128,7 @@
 
 
 
-        .waybill-container {
-            width: 100%;
-            height: 100%;
-            border: 2px solid #000;
-            padding: 20px;
-            /* Ensure enough padding */
-            background-color: #fff;
-            box-sizing: border-box;
-            /* Include padding and border in the width/height */
-            overflow: auto;
-            /* Ensure content is scrollable if it overflows */
-        }
+
 
         /* Other CSS remains unchanged */
 
@@ -245,9 +233,6 @@
             margin-left: auto;
         }
 
-
-
-
         .additional-info {
             display: flex;
             justify-content: space-between;
@@ -257,7 +242,6 @@
 
         .qr-section {
             text-align: center;
-            margin-top: 10px;
         }
 
         .qr-section img {
@@ -292,6 +276,12 @@
         .dataTables_wrapper .dt-buttons {
             margin-bottom: 20px;
             /* Adjust the value as needed */
+        }
+
+        .qr-container {
+            text-align: center;
+            /* Center the QR code */
+            margin-bottom: 20px;
         }
     </style>
 
@@ -368,8 +358,6 @@
                                     <thead>
                                         <tr>
                                             <th>Date</th>
-                                            <th>Driver ID</th>
-                                            <th>Driver Name</th>
                                             <th>Trip Ticket Number</th>
                                             <th>Truck Plate Number</th>
                                             <th>Destination</th>
@@ -388,10 +376,6 @@
                                         @foreach ($rubixdetails as $detail)
                                             <tr class="clickable-row" data-bs-target="#modal{{ $detail->id }}">
                                                 <td>{{ \Carbon\Carbon::parse($detail->date)->format('d-M-y h:i A') }}
-                                                </td>
-                                                <td>{{ $detail->driver ? $detail->driver->id : 'No driver assigned' }}
-                                                </td>
-                                                <td>{{ $detail->driver ? $detail->driver->name : 'No driver assigned' }}
                                                 </td>
                                                 <td>{{ $detail->trip_ticket }}</td>
                                                 <td>{{ $detail->plate_number }}</td>
@@ -554,23 +538,25 @@
     @foreach ($rubixdetails as $detail)
         <div class="modal fade" id="modal{{ $detail->id }}" tabindex="-1"
             aria-labelledby="modalLabel{{ $detail->id }}" aria-hidden="true">
-            <div class="modal-dialog modal-lg" style="width: 70%; max-width: 1000px; height: 70%;">
+            <div class="modal-dialog modal-lg" style="max-width: 50%; width: auto;">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel{{ $detail->id }}">Details for Plate Number
+                        <h5 id="modalLabel{{ $detail->id }}">Details for Plate Number
                             {{ $detail->plate_number }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
                     <!-- QR Code Section -->
-                    <div class="row mt-4">
-                        <div class="col-md-12 text-center">
-                            <h2>QR Code</h2>
-                            <img src="{{ asset($detail->qr_code_path) }}" alt="QR Code" class="img-fluid">
-                        </div>
-                    </div>
+
                     <div class="modal-body">
                         <div class="container">
+                            <div class="row mt-4">
+                                <div class="class-col-md qr-container">
+                                    <h2>QR Code</h2>
+                                    <img src="{{ asset($detail->qr_code_path) }}" alt="QR Code" class="img-fluid">
+                                </div>
+
+                            </div>
                             <div class="row">
                                 <!-- First Table Column -->
                                 <div class="col-md-6">
@@ -682,23 +668,6 @@
                                                 </span>
                                             </td>
                                         </tr>
-
-                                        <tr>
-                                            <td>Reference 2</td>
-                                            <td class="text-wrap">{{ $detail->reference_two }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Reference 3</td>
-                                            <td class="text-wrap">{{ $detail->reference_three }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Reference 4</td>
-                                            <td class="text-wrap">{{ $detail->reference_four }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Reference 5</td>
-                                            <td class="text-wrap">{{ $detail->reference_five }}</td>
-                                        </tr>
                                         <tr>
                                             <td>Transport Mode</td>
                                             <td class="text-wrap">{{ $detail->transport_mode }}</td>
@@ -783,7 +752,7 @@
                                             <td>Province</td>
                                             <td class="text-wrap">{{ $detail->merchant_province }}</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="travel-time">
                                             <td>Travel Time</td>
                                             <td class="text-wrap">
                                                 <span class="countdown-timer" id="timer{{ $detail->id }}">
@@ -797,25 +766,23 @@
                                         <tr>
                                             <td>Travel Timeline</td>
                                             <td class="text-wrap">
-                                                <ul id="timelineHistory{{ $detail->id }}" class="timeline-list">
-                                                </ul>
+                                                <div style="max-height: 150px; overflow-y: auto;">
+                                                    <ul id="timelineHistory{{ $detail->id }}"
+                                                        class="timeline-list">
+                                                    </ul>
+                                                </div>
                                             </td>
                                         </tr>
-
-
-
                                     </table>
                                 </div>
                             </div>
-
                             <!-- Google Maps Embed -->
-                            <div class="row mt-4">
+                            <div class="row mt-4 route-map">
                                 <div class="col-md-12">
                                     <h2>Route Map</h2>
                                     <div id="map{{ $detail->id }}" style="width: 100%; height: 500px;">
                                         <!-- Map will be displayed here -->
                                     </div>
-
                                 </div>
                             </div>
 
@@ -929,11 +896,25 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary"
-                            onclick="printModal('waybillModal{{ $detail->id }}')">Print Waybill</button>
+                            onclick="printModal('waybillModal{{ $detail->id }}')">Print Booking Details</button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <style>
+            @media print {
+                #map{{ $detail->id }} {
+                    display: none;
+                    /* Hide the map when printing */
+                }
+
+                .modal-footer {
+                    display: none;
+                    /* Hide the footer with buttons */
+                }
+            }
+        </style>
     @endforeach
 
 
@@ -958,8 +939,8 @@
                             <div class="mb-3">
                                 <label for="order_status{{ $detail->id }}" class="form-label">Order
                                     Status</label>
-                                <select name="order_status" id="order_status{{ $detail->id }}"
-                                    class="form-select" required>
+                                <select name="order_status" id="order_status{{ $detail->id }}" class="form-select"
+                                    required>
                                     <option value="Confirmed_delivery"
                                         {{ $detail->order_status === 'Confirmed_delivery' ? 'selected' : '' }}>
                                         Confirm Delivery</option>
@@ -1049,105 +1030,119 @@
             });
         });
     </script>
-
-
     <script>
         function printModal(modalId) {
-            var printContent = document.getElementById(modalId).innerHTML;
-            var originalContent = document.body.innerHTML;
-            var printWindow = window.open('', '', 'height=600,width=800');
+            var modalContent = document.getElementById(modalId).innerHTML; // Get the modal content
 
-            // Write content to the new window
-            printWindow.document.open();
-            printWindow.document.write('<html><head><title>Print</title>');
-            printWindow.document.write(
-                '<style>body { margin: 20px; } table { width: 100%; border-collapse: collapse; } table, th, td { border: 1px solid black; } th, td { padding: 8px; text-align: left; } @media print { .modal-footer { display: none; } }</style>'
-            ); // Add any necessary styles here
-            printWindow.document.write('</head><body>');
-            printWindow.document.write(printContent);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
+            // Create a temporary div to manipulate the content
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = modalContent;
 
-            // Print the content
-            printWindow.print();
+            // Remove elements that you don't want to print
+            const travelTime = tempDiv.querySelector('.travel-time');
+            const travelTimeline = tempDiv.querySelector('.travel-timeline');
+            const routeMap = tempDiv.querySelector('.route-map');
+            const closeButton = tempDiv.querySelector('.btn-close'); // Close button
+            const printButton = tempDiv.querySelector('.btn-primary'); // Print button
+            const modalFooterCloseButton = tempDiv.querySelector('.modal-footer .btn-secondary'); // Close button in footer
+            const modalBody = tempDiv.querySelector('.modal-body'); // Modal body container
+            const modalHeader = tempDiv.querySelector('.modal-header'); // Capture the modal header
+            const modalDialog = tempDiv.querySelector('.modal-dialog'); // Capture the modal dialog
 
-            // Close the print window after printing
-            printWindow.onafterprint = function() {
-                printWindow.close();
-            };
-        }
-    </script>
+            // Remove unwanted elements
+            if (travelTime) travelTime.remove();
+            if (travelTimeline) travelTimeline.remove();
+            if (routeMap) routeMap.remove();
+            if (closeButton) closeButton.remove(); // Remove close button (top)
+            if (printButton) printButton.remove(); // Remove print button (top)
+            if (modalFooterCloseButton) modalFooterCloseButton.remove(); // Remove close button (bottom)
+            if (modalDialog) modalDialog.remove(); // Remove the modal dialog
 
-    <script>
-        function printModal(modalId) {
-            var printContents = document.getElementById(modalId).innerHTML;
+            if (modalBody) {
+                // Move the contents out of the modal body
+                while (modalBody.firstChild) {
+                    tempDiv.appendChild(modalBody.firstChild);
+                }
+                modalBody.remove(); // Remove the modal body container
+            }
 
-            // Create a new window for printing
-            var printWindow = window.open('', '', 'width=800,height=800'); // Adjusted width and added height
+            // Append the modal header after the QR code
+            if (modalHeader) {
+                const qrContainer = tempDiv.querySelector('.qr-container'); // Find the QR code container
+                if (qrContainer) {
+                    qrContainer.insertAdjacentElement('afterend', modalHeader); // Move the header below the QR code
+                }
+            }
 
-            // Write the HTML to the print window
-            printWindow.document.write('<html><head><title>Print Waybill</title>');
+            // Open a new window for printing
+            var printWindow = window.open('', '', 'width=1000,height=1000');
 
-            // Include the styles for printing
+            // Start writing to the print window
+            printWindow.document.write('<html><head><title>Booking Details</title>');
+
+            // Add your styles here
             printWindow.document.write('<style>');
-            printWindow.document.write(
-                'body, html { margin: 0; padding: 0; font-family: Arial, sans-serif; }'
-            ); // Remove default margins and padding
-            printWindow.document.write(
-                '.waybill-container { width: 100%; max-width: 800px; margin: 0; border: 2px solid #000; padding: 20px; background-color: #fff; box-sizing: border-box; overflow: hidden; }'
-            ); // Adjusted width for container and box-sizing
-            printWindow.document.write(
-                '.header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 5px; }'
-            );
-            printWindow.document.write('.logo img { width: 100px; }');
-            printWindow.document.write('.waybill-details { text-align: right; }');
-            printWindow.document.write('.waybill-number { font-weight: bold; font-size: 14px; }');
-            printWindow.document.write('.non-dg { font-size: 12px; color: #666; }');
-            printWindow.document.write(
-                '.order-details { display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; }');
-            printWindow.document.write('.barcode { text-align: center; margin: 10px 0; }');
-            printWindow.document.write('.barcode img { width: 50%; }');
-            printWindow.document.write('.tracking-number { font-weight: bold; font-size: 14px; margin-top: 5px; }');
-            printWindow.document.write(
-                '.address-section { border-top: 2px solid #000; padding-top: 10px; margin-top: 10px; font-size: 12px; }'
-            );
-            printWindow.document.write(
-                '.buyer-seller { display: flex; justify-content: space-between; font-weight: bold; }');
-            printWindow.document.write('.address { display: flex; justify-content: space-between; margin-top: 5px; }');
-            printWindow.document.write('.from-address, .to-address { width: 48%; }');
-            printWindow.document.write('.name { font-weight: bold; }');
-            printWindow.document.write(
-                '.additional-info { display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; }'
-            );
-            printWindow.document.write('.qr-section { text-align: center; margin-top: 10px; }');
-            printWindow.document.write('.qr-section img { width: 50px; height: 50px; }');
-            printWindow.document.write('.product-info { margin-top: 10px; font-size: 12px; }');
-            printWindow.document.write('.attempts { display: flex; justify-content: space-between; margin-top: 10px; }');
-            printWindow.document.write(
-                '.attempt { text-align: center; width: 30%; font-size: 12px; border: 1px solid #000; padding: 5px; }');
-            printWindow.document.write('.attempt-number { font-weight: bold; font-size: 14px; }');
-
-            // Media query for print
-            printWindow.document.write('@media print {');
-            printWindow.document.write(
-                '.waybill-container { width: 100%; max-width: 100%; margin: 0; padding: 20px; box-sizing: border-box; }'
-            ); // Adjust width for print
-            printWindow.document.write('.modal-footer, .modal-footer * { display: none !important; }');
-            printWindow.document.write(
-                '.modal-header, .modal-header * { display: none !important; }'); // Hide footer and header in print preview
-            printWindow.document.write('body { margin: 0; }');
-            printWindow.document.write('html { width: 100%; }');
+            printWindow.document.write(`
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+            .modal-content {
+                border: 1px solid #ddd;
+                padding: 20px;
+                border-radius: 5px;
+                background-color: #fff;
+            }
+            .qr-container {
+                text-align: center; /* Center the QR code */
+                margin-bottom: 20px;
+            }
+            .table {
+                width: 100%; /* Adjusted for proper width */
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+            .table-bordered td {
+                border: 1px solid #ddd;
+                padding: 10px;
+            }
+            .text-wrap {
+                word-wrap: break-word;
+            }
+            .waybill-container {
+                display: block;
+            }
+            .logo-container {
+                text-align: center; /* Center the logo */
+                margin-bottom: 20px; /* Space below the logo */
+            }
+        `);
             printWindow.document.write('</style>');
 
+            // Add the centered logo to the print window
+            printWindow.document.write(`
+            <div class="logo-container">
+                <img src="{{ asset('Home/GDR Logo.png') }}" alt="Shopee Xpress Logo" style="width: 10%; height: auto;">
+            </div>
+        `);
+
             printWindow.document.write('</head><body>');
-            printWindow.document.write('<div class="waybill-container">' + printContents + '</div>');
+            printWindow.document.write(tempDiv.innerHTML); // Use modified content
             printWindow.document.write('</body></html>');
 
             printWindow.document.close();
             printWindow.focus();
-            printWindow.print();
+            printWindow.print(); // Trigger print
         }
     </script>
+
+
+
+
+
+
+
+
 
     <script>
         var timerIntervals = {}; // Store interval references
@@ -1228,15 +1223,56 @@
                     // Get the timeline element where we will record each place the truck encounters
                     var timelineListElement = document.getElementById('timelineHistory' + detailId);
 
+                    // Define a custom icon for each place
+                    var placeIcon = {
+                        url: 'Home/trucklocator-removebg-preview.png', // Path to your icon
+                        scaledSize: new google.maps.Size(30, 30) // Adjust the size (width, height)
+                    };
+
                     function moveTruck() {
                         if (step < route.steps.length) {
                             truckMarker.setPosition(route.steps[step].end_location); // Move the truck marker
 
-                            // Record the step in the timeline
-                            var placeDescription = route.steps[step].instructions;
-                            var placeElement = document.createElement('li');
-                            placeElement.innerHTML = placeDescription;
-                            timelineListElement.appendChild(placeElement); // Add place to the timeline
+                            // Create a marker for the current step
+                            var placeMarker = new google.maps.Marker({
+                                position: route.steps[step].end_location,
+                                map: map,
+                                icon: placeIcon, // Use the custom icon here
+                                title: route.steps[step]
+                                    .instructions // Set the title to the step's instructions
+                            });
+
+                            // Add a listener for the hover effect
+                            var infoWindow = new google.maps.InfoWindow();
+                            placeMarker.addListener('mouseover', function() {
+                                infoWindow.setContent(route.steps[step].instructions);
+                                infoWindow.open(map, placeMarker);
+                            });
+
+                            // Add a listener to close the info window on mouseout
+                            placeMarker.addListener('mouseout', function() {
+                                infoWindow.close();
+                            });
+
+                            // Get the address details for the current step's location
+                            var geocoder = new google.maps.Geocoder();
+                            geocoder.geocode({
+                                'location': route.steps[step].end_location
+                            }, function(results, status) {
+                                if (status === 'OK' && results[0]) {
+                                    // Create a full address string
+                                    var fullAddress = results[0].address_components.map(function(
+                                    component) {
+                                        return component.long_name;
+                                    }).join(', ');
+
+                                    // Create an entry in the timeline for the current location
+                                    var placeElement = document.createElement('li');
+                                    placeElement.innerHTML = "The truck is now in: " +
+                                    fullAddress; // Show full address
+                                    timelineListElement.appendChild(placeElement);
+                                }
+                            });
 
                             step++;
                             setTimeout(moveTruck, 2000); // Simulate truck movement every 2 seconds

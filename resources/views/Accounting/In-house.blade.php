@@ -47,7 +47,7 @@
                     </select>
                 </div>
 
-                   <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins pb-3">
+                <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins pb-3">
                     <div class="dropdown">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">
@@ -100,9 +100,18 @@
                                         <tbody>
                                             @foreach ($rates as $plateNumber => $items)
                                                 @foreach ($items as $inhouse)
-                                                    <tr>
+                                                    <tr class="clickable-row" data-bs-toggle="modal"
+                                                        data-bs-target="#dynamicModal"
+                                                        data-date="{{ \Carbon\Carbon::parse($inhouse->date)->format('F d, Y g:i A') }}"
+                                                        data-plate="{{ $inhouse->plate_number }}"
+                                                        data-rate-per-mile="₱{{ number_format($inhouse->rate_per_mile, 2) }}"
+                                                        data-km="{{ $inhouse->km }}"
+                                                        data-gross-income="₱{{ number_format($inhouse->rate_per_mile * $inhouse->km, 2) }}"
+                                                        data-operational-costs="₱{{ number_format($inhouse->operational_costs, 2) }}"
+                                                        data-earnings="₱{{ number_format($inhouse->rate_per_mile * $inhouse->km - $inhouse->operational_costs, 2) }}"
+                                                        data-proof="{{ isset($inhouse->proof_of_payment) ? asset($inhouse->proof_of_payment) : '' }}">
 
-                                                        <td>{{ \Carbon\Carbon::parse($inhouse->date)->format('d-M-y') }}
+                                                        <td>{{ \Carbon\Carbon::parse($inhouse->date)->format('F d, Y g:i A') }}
                                                         </td>
                                                         <td>{{ $inhouse->plate_number }}</td>
                                                         <td>₱{{ number_format($inhouse->rate_per_mile, 2) }}</td>
@@ -110,24 +119,15 @@
                                                         <td>₱{{ number_format($inhouse->rate_per_mile * $inhouse->km, 2) }}
                                                         </td>
                                                         <td>₱{{ number_format($inhouse->operational_costs, 2) }}</td>
-
-
                                                         <td>
                                                             @if (isset($inhouse->proof_of_payment) && $inhouse->proof_of_payment)
-                                                                @php
-                                                                    $imageUrl = asset($inhouse->proof_of_payment); // Directly access the public path
-                                                                @endphp
-                                                                <img src="{{ $imageUrl }}" alt="Proof of Payment"
-                                                                    style="width: 50px; height: 50px; object-fit: cover; cursor: pointer;"
-                                                                    data-bs-toggle="modal" data-bs-target="#imageModal"
-                                                                    onclick="showImageModal('{{ $imageUrl }}')">
+                                                                <img src="{{ asset($inhouse->proof_of_payment) }}"
+                                                                    alt="Proof of Payment"
+                                                                    style="width: 50px; height: 50px; object-fit: cover; cursor: pointer;">
                                                             @else
                                                                 No proof of payment available
                                                             @endif
                                                         </td>
-
-
-
                                                         <td>₱{{ number_format($inhouse->rate_per_mile * $inhouse->km - $inhouse->operational_costs, 2) }}
                                                         </td>
                                                     </tr>
@@ -141,7 +141,36 @@
                     </div>
                 </div>
 
-
+                <!-- Dynamic Modal -->
+                <div class="modal fade" id="dynamicModal" tabindex="-1" aria-labelledby="dynamicModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="dynamicModalLabel">Trip Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>Date:</strong> <span id="modal-date"></span></p>
+                                <p><strong>Plate Number:</strong> <span id="modal-plate"></span></p>
+                                <p><strong>Rate Per km:</strong> <span id="modal-rate-per-mile"></span></p>
+                                <p><strong>Kilometers:</strong> <span id="modal-km"></span></p>
+                                <p><strong>Gross Income:</strong> <span id="modal-gross-income"></span></p>
+                                <p><strong>Operational Costs:</strong> <span id="modal-operational-costs"></span></p>
+                                <p><strong>Earnings Per Trip:</strong> <span id="modal-earnings"></span></p>
+                                <p><strong>Proof of Payment:</strong></p>
+                                <img id="modal-proof" src="" alt="Proof of Payment"
+                                    style="width: 100%; height: auto;">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary"
+                                    onclick="printDynamicModal()">Print</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Modal for Proof of Payment -->
                 <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel"
@@ -162,8 +191,8 @@
                 </div>
 
                 <!-- Modal -->
-                <div class="modal fade" id="proofOfPaymentModal" tabindex="-1" aria-labelledby="proofOfPaymentLabel"
-                    aria-hidden="true">
+                <div class="modal fade" id="proofOfPaymentModal" tabindex="-1"
+                    aria-labelledby="proofOfPaymentLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-end">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -179,14 +208,14 @@
                                     <div class="mb-3">
                                         <label for="paymentDate" class="form-label">Payment
                                             Date</label>
-                                        <input type="date" class="form-control" id="paymentDate" name="payment_date"
-                                            required>
+                                        <input type="date" class="form-control" id="paymentDate"
+                                            name="payment_date" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="plateNumber" class="form-label">Plate
                                             Number</label>
-                                        <input type="text" class="form-control" id="plateNumber" name="plate_number"
-                                            required>
+                                        <input type="text" class="form-control" id="plateNumber"
+                                            name="plate_number" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="proofOfPayment" class="form-label">Proof of
@@ -197,7 +226,8 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Close</button>
                                 <button type="submit" form="proofOfPaymentForm"
                                     class="btn btn-primary">Upload</button>
                             </div>
@@ -383,6 +413,88 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
+
+    <script>
+    function printDynamicModal() {
+        // Get the modal's body content
+        var modalContent = document.querySelector('#dynamicModal .modal-body').innerHTML;
+
+        // Create a new window for printing
+        var printWindow = window.open('', '_blank');
+
+        // Write the modal content to the new window
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Print Trip Details</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        img { max-width: 100%; height: auto; }
+                        h5 { color: #333; text-align: center; } /* Center the title */
+                        .logo-container { text-align: center; margin-bottom: 20px; } /* Center the logo */
+                        .logo-container img { width: 10%; height: auto; } /* Adjust logo size */
+                        p { margin: 5px 0; }
+                    </style>
+                </head>
+                <body>
+                    <div class="logo-container">
+                        <img src="{{ asset('Home/GDR Logo.png') }}" alt="GDR Logo">
+                    </div>
+                    <h5>Trip Details</h5>
+                    ${modalContent}
+                </body>
+            </html>
+        `);
+
+        // Close the document to trigger rendering
+        printWindow.document.close();
+
+        // Wait for the content to load, then print
+        printWindow.onload = function() {
+            printWindow.print();
+            printWindow.close();
+        };
+    }
+</script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableRows = document.querySelectorAll('.clickable-row');
+
+            tableRows.forEach(row => {
+                row.addEventListener('click', function() {
+                    const date = this.getAttribute('data-date');
+                    const plate = this.getAttribute('data-plate');
+                    const ratePerMile = this.getAttribute('data-rate-per-mile');
+                    const km = this.getAttribute('data-km');
+                    const grossIncome = this.getAttribute('data-gross-income');
+                    const operationalCosts = this.getAttribute('data-operational-costs');
+                    const earnings = this.getAttribute('data-earnings');
+                    const proof = this.getAttribute('data-proof');
+
+                    // Populate the modal with data
+                    document.getElementById('modal-date').innerText = date;
+                    document.getElementById('modal-plate').innerText = plate;
+                    document.getElementById('modal-rate-per-mile').innerText = ratePerMile;
+                    document.getElementById('modal-km').innerText = km;
+                    document.getElementById('modal-gross-income').innerText = grossIncome;
+                    document.getElementById('modal-operational-costs').innerText = operationalCosts;
+                    document.getElementById('modal-earnings').innerText = earnings;
+
+                    // Handle proof of payment image
+                    const proofElement = document.getElementById('modal-proof');
+                    if (proof) {
+                        proofElement.src = proof;
+                        proofElement.style.display = 'block';
+                    } else {
+                        proofElement.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+
     <script>
         if ($('li').hasClass('active')) {
             $('.sidebar__menu-wrapper').animate({
@@ -391,14 +503,17 @@
         }
     </script>
     <script>
+        $(document).ready(function() {
+            $('#data-table').DataTable();
+        });
+
         // Function to extract all table data
         function getTableData() {
-            // If using DataTables, get all data
             var table = $('#data-table').DataTable();
             var data = table.rows({
                 search: 'applied'
             }).data().toArray();
-            var headers = table.columns().header().toArray().map(th => th.innerText);
+            var headers = table.columns().header().toArray().map(th => $(th).text());
 
             return {
                 data,
@@ -411,7 +526,7 @@
             var {
                 data
             } = getTableData();
-            var textToCopy = data.map(row => row.join("\t")).join("\n");
+            var textToCopy = data.map(row => row.map(cell => $('<div>').html(cell).text()).join("\t")).join("\n");
 
             var tempTextArea = document.createElement("textarea");
             tempTextArea.value = textToCopy;
@@ -422,30 +537,39 @@
             alert("Table data copied to clipboard!");
         });
 
-        // Print function - prints only the table
+        // Print function
         document.getElementById('printBtn').addEventListener('click', function() {
             var {
                 data,
                 headers
             } = getTableData();
+
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
             var printContents = `
-            <table border="1">
-                <thead>
-                    <tr>${headers.map(header => `<th>${header}</th>`).join('')}</tr>
-                </thead>
-                <tbody>
-                    ${data.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}
-                </tbody>
-            </table>
-        `;
+        <table border="1">
+            <thead>
+                <tr>${filteredHeaders.map(header => `<th>${header}</th>`).join('')}</tr>
+            </thead>
+            <tbody>
+                ${filteredData.map(row => `<tr>${row.map(cell => `<td>${$('<div>').html(cell).text()}</td>`).join('')}</tr>`).join('')}
+            </tbody>
+        </table>`;
+
             var originalContents = document.body.innerHTML;
 
             document.body.innerHTML = `<html><head><title>Print</title></head><body>${printContents}</body></html>`;
             window.print();
             document.body.innerHTML = originalContents;
         });
-
-        // PDF export with landscape formatting and smaller font size using jsPDF and autoTable
+        // PDF export function
         document.getElementById('pdfBtn').addEventListener('click', function() {
             const {
                 jsPDF
@@ -457,17 +581,28 @@
                 headers
             } = getTableData();
 
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
+            // Convert HTML content to text
+            var cleanData = filteredData.map(row => row.map(cell => $('<div>').html(cell).text()));
+
             doc.autoTable({
-                head: [headers],
-                body: data,
-                startY: 10, // Start 10 units from top
-                theme: 'grid', // Grid layout
+                head: [filteredHeaders],
+                body: cleanData,
+                startY: 10,
+                theme: 'grid',
                 margin: {
                     top: 10
                 },
                 styles: {
                     fontSize: 8,
-                    cellPadding: 2
                 },
                 headStyles: {
                     fillColor: [22, 160, 133],
@@ -485,21 +620,21 @@
                 data,
                 headers
             } = getTableData();
+
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
             var wb = XLSX.utils.book_new();
-            var ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
+            var cleanData = filteredData.map(row => row.map(cell => $('<div>').html(cell).text()));
+            var ws = XLSX.utils.aoa_to_sheet([filteredHeaders, ...cleanData]);
             XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
             XLSX.writeFile(wb, "table_data.xlsx");
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            $('#data-table').DataTable({
-                responsive: true, // Enable responsiveness
-                paging: true, // Enables pagination
-                searching: true, // Enables search
-                ordering: true, // Enables sorting
-            });
         });
     </script>
 

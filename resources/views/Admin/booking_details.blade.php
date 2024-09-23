@@ -10,7 +10,14 @@
     <link href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css" rel="stylesheet">
     <!-- DataTables Buttons CSS -->
     <link href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css" rel="stylesheet">
-
+    <style>
+        @media print {
+            .modal-footer button {
+                display: none;
+                /* Hide the Close and Print buttons when printing */
+            }
+        }
+    </style>
     <!-- Custom CSS for spacing -->
     <style>
         body {
@@ -831,14 +838,7 @@
         </div>
     @endforeach
 
-    <style>
-        @media print {
-            .modal-footer button {
-                display: none;
-                /* Hide the Close and Print buttons when printing */
-            }
-        }
-    </style>
+
 
     @foreach ($rubixdetails as $detail)
         <div class="modal fade" id="waybillModal{{ $detail->id }}" tabindex="-1"

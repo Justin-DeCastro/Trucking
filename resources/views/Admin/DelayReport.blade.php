@@ -143,7 +143,7 @@
 
 <body>
 
-   
+
     @include('Components.Admin.Navbar')
     @include('Components.Admin.Driver_Sidebar')
 
@@ -160,7 +160,7 @@
                                 style="max-width: 900px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
                                <div style="text-align: center; margin-bottom: 40px;">
                                 <!-- Logo -->
-                                <img src="{{ asset('Home/GDR logo.png') }}" alt="Logo" style="max-width: 150px; margin-bottom: 20px;">
+                                <img src="Home/GDR logo.png" alt="Logo" style="max-width: 150px; margin-bottom: 20px;">
 
                                 <h3 style="margin-top: 0; color: #333; font-size: 28px; font-weight: bold;">Delay Form</h3>
                                 <p style="color: #666; font-size: 16px;">Fill out the form below to arrange for the transportation of your goods.</p>

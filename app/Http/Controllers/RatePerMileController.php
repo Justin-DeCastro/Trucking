@@ -68,7 +68,7 @@ class RatePerMileController extends Controller
             'gross_income' => 'required|numeric',
             'date' => 'required|date',
             'proof_of_payment' => 'nullable|file|mimes:jpeg,png,pdf|max:2048', // Add max file size
-            'operational_costs' =>  'required|numeric',
+            'operational_costs' => 'required|numeric',
         ]);
 
         // Handle file upload
@@ -87,11 +87,8 @@ class RatePerMileController extends Controller
             $validatedData['proof_of_payment'] = 'proofs_of_payment/' . $fileName;
         }
 
-        // Find or create a RatePerMile record
-        RatePerMile::updateOrCreate(
-            ['plate_number' => $validatedData['plate_number']],
-            $validatedData
-        );
+        // Create a new RatePerMile record
+        RatePerMile::create($validatedData);
 
         return redirect()->back()->with('success', 'Data saved successfully!');
     }

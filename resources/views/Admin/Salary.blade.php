@@ -8,6 +8,85 @@
 
 <!-- Include jQuery -->
 
+<style>
+    /* Modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 60%;
+        height: 60%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+
+    }
+
+    .modal-body {
+        overflow-y: auto;
+        /* Allows vertical scrolling if content overflows */
+        max-height: 800px;
+        /* Sets a maximum height */
+    }
+
+
+    .close-btn {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close-btn:hover,
+    .close-btn:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .modal-content {
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+        /* Bootstrap primary color */
+        color: white;
+    }
+
+    .modal-title {
+        font-weight: bold;
+    }
+
+    .modal-body {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .modal-footer {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        /* Bootstrap secondary color */
+        border: none;
+    }
+
+    .btn-primary {
+        background-color: #28a745;
+        /* Green button for printing */
+        border: none;
+    }
+
+    .close {
+        color: white;
+        font-size: 1.5rem;
+    }
+</style>
 @include('Components.Admin.Header')
 
 <body>
@@ -152,83 +231,77 @@
                                         </tbody>
 
                                     </table>
-
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Create Vehicle Modal -->
-                        <div class="modal fade" id="manageAdmin" tabindex="-1" aria-labelledby="manageAdminLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
+                        <div class="modal fade" id="salaryDetailModal" tabindex="-1" role="dialog"
+                            aria-labelledby="salaryDetailModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="manageAdminLabel">Create Vehicle</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                        <h5 class="modal-title" id="salaryDetailModalLabel">Salary Details</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
-                                    <form action="{{ route('salary.store') }}" method="POST">
-                                        @csrf
-                                        <div class="modal-body">
-                                            <div class="mb-3">
-                                                <label for="delivery_routes" class="form-label">Delivery
-                                                    Routes</label>
-                                                <input type="text" id="delivery_routes" name="delivery_routes"
-                                                    class="form-control" required
-                                                    oninput="this.value = this.value.toUpperCase();">
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label for="driver_name" class="form-label">Driver Salary</label>
-                                                <input type="number" id="driver_name" name="driver_salary"
-                                                    class="form-control" placeholder="dont use comma" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="helper_name" class="form-label">Helper Salary</label>
-                                                <input type="number" id="helper_name" name="helper_salary"
-                                                    class="form-control" placeholder="dont use comma" required>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Cancel</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Confirmation Modal -->
-                        <div class="modal fade" id="confirmationModal" tabindex="-1"
-                            aria-labelledby="confirmationModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="confirmationModalLabel">Confirm Deletion</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Are you sure you want to delete this vehicle?
+                                    <div class="modal-body" id="salaryModalBody">
+                                        <p><strong>Delivery Route:</strong> <span id="modalDeliveryRoute"></span></p>
+                                        <p><strong>Driver Salary:</strong> <span id="modalDriverSalary"></span></p>
+                                        <p><strong>Helper Salary:</strong> <span id="modalHelperSalary"></span></p>
+                                        <p><strong>Total Salary:</strong> <span id="modalTotalSalary"></span></p>
+                                        <p><strong>Updated Driver Salary (-2%):</strong> <span
+                                                id="modalUpdatedDriverSalary"></span></p>
+                                        <p><strong>Updated Helper Salary (-2%):</strong> <span
+                                                id="modalUpdatedHelperSalary"></span></p>
+                                        <p><strong>Updated Salary Rates:</strong> <span id="modalUpdatedSalary"></span>
+                                        </p>
                                     </div>
                                     <div class="modal-footer">
-                                        <form id="deleteForm" method="POST" style="display: inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">Yes, Delete</button>
-                                        </form>
                                         <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Cancel</button>
+                                            data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" id="printButton">Print</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+ <script>
+    document.getElementById('printButton').addEventListener('click', function() {
+        var printContent = document.getElementById('salaryModalBody').innerHTML;
+        var printWindow = window.open('', '', 'height=600,width=800');
+
+        printWindow.document.write('<html><head><title>Print Salary Details</title>');
+        printWindow.document.write(
+            '<style>' +
+            'body { font-family: Arial, sans-serif; padding: 20px; }' + // Keep body font and padding
+            '.center { text-align: center; margin-bottom: 20px; }' + // Center class for the image
+            'img { width: 10%; height: auto; }' + // Image style
+            'h5 { text-align: center; margin-bottom: 30px; }' + // Title style
+            '</style>');
+        printWindow.document.write('</head><body>');
+
+        // Add the logo HTML with a centering class
+        printWindow.document.write('<div class="center"><img src="{{ asset("Home/GDR Logo.png") }}" alt="GDR Logo"></div>');
+        printWindow.document.write('<h5>Salary Details</h5>'); // Title added here
+        printWindow.document.write(printContent);
+
+        printWindow.document.write('</body></html>');
+
+        printWindow.document.close();
+        printWindow.print();
+    });
+</script>
+
+
+
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/vendor/bootstrap-toggle.min.js"></script>
@@ -241,13 +314,8 @@
     <!-- Include SweetAlert2 JS (optional) -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
-    <script>
-        if ($('li').hasClass('active')) {
-            $('.sidebar__menu-wrapper').animate({
-                scrollTop: eval($(".active").offset().top - 320)
-            }, 500);
-        }
-    </script>
+
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -259,50 +327,6 @@
                     var url = button.getAttribute('data-url');
                     deleteForm.setAttribute('action', url);
                 });
-            });
-        });
-    </script>
-
-    <script>
-        $('form[id^="editJobForm"]').on('submit', function(e) {
-            e.preventDefault();
-
-            var form = $(this);
-            var formData = new FormData(form[0]);
-            var jobId = form.attr('id').replace('editJobForm', '');
-
-            $.ajax({
-                url: form.attr('action'),
-                method: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: response.message,
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    }).then(() => {
-                        $('#editJobModal' + jobId).modal('hide');
-                        location.reload(); // Reload page or update table row
-                    });
-                },
-                error: function(xhr, status, error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Failed to update vehicle. Please try again.',
-                        timer: 5000,
-                        timerProgressBar: true,
-                        showConfirmButton: true
-                    });
-                }
             });
         });
     </script>
@@ -317,6 +341,36 @@
             });
         });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const table = document.getElementById('data-table');
+
+            table.addEventListener('click', function(event) {
+                const target = event.target.closest('tr');
+                if (target) {
+                    const deliveryRoute = target.cells[0].innerText;
+                    const driverSalary = target.cells[1].innerText;
+                    const helperSalary = target.cells[2].innerText;
+                    const totalSalary = target.cells[3].innerText;
+                    const updatedDriverSalary = target.cells[4].innerText;
+                    const updatedHelperSalary = target.cells[5].innerText;
+                    const updatedSalary = target.cells[6].innerText;
+
+                    document.getElementById('modalDeliveryRoute').innerText = deliveryRoute;
+                    document.getElementById('modalDriverSalary').innerText = driverSalary;
+                    document.getElementById('modalHelperSalary').innerText = helperSalary;
+                    document.getElementById('modalTotalSalary').innerText = totalSalary;
+                    document.getElementById('modalUpdatedDriverSalary').innerText = updatedDriverSalary;
+                    document.getElementById('modalUpdatedHelperSalary').innerText = updatedHelperSalary;
+                    document.getElementById('modalUpdatedSalary').innerText = updatedSalary;
+
+                    // Show the modal
+                    $('#salaryDetailModal').modal('show');
+                }
+            });
+        });
+    </script>
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/jquery-3.7.1.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
@@ -325,63 +379,7 @@
     <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast.min.css" rel="stylesheet">
     <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast_custom.css" rel="stylesheet">
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/iziToast.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var deleteButtons = document.querySelectorAll('.btn-delete');
-            var deleteForm = document.getElementById('deleteForm');
 
-            deleteButtons.forEach(function(button) {
-                button.addEventListener('click', function() {
-                    var url = button.getAttribute('data-url');
-                    deleteForm.setAttribute('action', url);
-                });
-            });
-        });
-    </script>
-
-    <script>
-        $('form[id^="editJobForm"]').on('submit', function(e) {
-            e.preventDefault();
-
-            var form = $(this);
-            var formData = new FormData(form[0]);
-            var jobId = form.attr('id').replace('editJobForm', '');
-
-            $.ajax({
-                url: form.attr('action'),
-                method: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: response.message,
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    }).then(() => {
-                        $('#editJobModal' + jobId).modal('hide');
-                        location.reload(); // Reload page or update table row
-                    });
-                },
-                error: function(xhr, status, error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Failed to update vehicle. Please try again.',
-                        timer: 5000,
-                        timerProgressBar: true,
-                        showConfirmButton: true
-                    });
-                }
-            });
-        });
-    </script>
 
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 

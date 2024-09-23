@@ -200,7 +200,7 @@
                     <div class="sidebar__logo"
                         style="text-align: center; display: flex; flex-direction: column; align-items: center;">
                         <img src="Home/GDR logo.png" alt="Logo" class="logo">
-                        <h3 style="color: #223d54;"><b>ACCOUNTING</b></h3>
+                        <h3 style="color: #223d54;"><b>DRIVER</b></h3>
 
                     </div>
                 </div>
@@ -248,13 +248,14 @@
                         <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
                         </div>
                     </div>
+                    <div id="map" style="height: 400px;"></div>
 
                     <div class="row gy-4">
                         <div class="col-xxl-3 col-sm-6">
                             <a href="#" class="text-decoration-none">
                                 <div class="bg-info text-white p-3 rounded d-flex align-items-center shadow-sm">
                                     <div class="me-3">
-                                        <i class="fas fa-list-alt fa-2x"></i>
+                                        <i class="fas fa-route fa-2x"></i> <!-- Icon for total trips -->
                                     </div>
                                     <div>
                                         <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Your Total Trips</p>
@@ -268,7 +269,7 @@
                             <a href="#" class="text-decoration-none">
                                 <div class="bg-info text-white p-3 rounded d-flex align-items-center shadow-sm">
                                     <div class="me-3">
-                                        <i class="fas fa-list-alt fa-2x"></i>
+                                        <i class="fas fa-check-circle fa-2x"></i> <!-- Icon for successful delivery -->
                                     </div>
                                     <div>
                                         <p class="mb-1" style="font-size: 1.125rem; font-weight: 500;">Successful Delivery</p>
@@ -277,6 +278,7 @@
                                 </div>
                             </a>
                         </div>
+
                         <div class="col-xxl-3 col-sm-6">
                             <a href="#" class="text-decoration-none">
                                 <div class="bg-info text-white p-3 rounded d-flex align-items-center shadow-sm">
@@ -384,18 +386,10 @@
 
 
                         <!-- Reminder Card -->
-                        <div class="col-12 mt-4">
-                            <div class="card text-bg-warning mb-3" style="max-width: 18rem;">
-                                <div class="card-header"><i class="fas fa-exclamation-triangle"></i> Reminder</div>
-                                <div class="card-body">
-                                    <h5 class="card-title">Update Your Location</h5>
-                                    <p class="card-text">Please update your current location to help admins track your status easily. Click <button type="button" class="btn btn-outline-light" onclick="toggleMap()">here</button> to update.</p>
-                                </div>
-                            </div>
-                        </div>
+
 
                         <!-- Map Container -->
-                        <div class="col-12">
+                        {{-- <div class="col-12">
                             <div id="map" style="height: 400px;"></div>
                             <div id="cityName"></div>
 
@@ -406,7 +400,7 @@
                                 <input type="hidden" id="longitude" name="longitude">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
-                        </div>
+                        </div> --}}
 
                     </div>
                 </div>
@@ -415,8 +409,58 @@
 
 
     </div>
+</body>
+<script>
+    function initMap() {
+        // Create a map centered at a default location
+        const defaultLocation = { lat: -34.397, lng: 150.644 }; // Default to Sydney, Australia
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 15,
+            center: defaultLocation,
+        });
+
+        // Try to get the user's location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                    };
+                    map.setCenter(userLocation);
+
+                    // Place a marker at the user's location
+                    new google.maps.Marker({
+                        position: userLocation,
+                        map: map,
+                    });
+
+                    // Optionally, store the coordinates in hidden input fields
+                    document.getElementById('latitude').value = userLocation.lat;
+                    document.getElementById('longitude').value = userLocation.lng;
+                },
+                () => {
+                    handleLocationError(true, map.getCenter());
+                }
+            );
+        } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, map.getCenter());
+        }
+    }
+
+    function handleLocationError(browserHasGeolocation, pos) {
+        alert(browserHasGeolocation
+            ? "Error: The Geolocation service failed."
+            : "Error: Your browser doesn't support geolocation.");
+    }
+
+    // Initialize the map when the window loads
+    window.onload = initMap;
+</script>
 
     @include('Components.Admin.Footer')
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4"></script>
 
     <!-- Include Bootstrap JS for cards -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
@@ -447,90 +491,6 @@
 });
 
     </script>
-    <script>
-        let map;
-        let geocoder;
-        let mapInitialized = false;
-        let marker;
 
-        function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 0, lng: 0 }, // Default center
-                zoom: 8
-            });
-
-            geocoder = new google.maps.Geocoder();
-
-            // Initialize marker with a red flag icon
-            marker = new google.maps.Marker({
-                map: map,
-                title: 'Your Location',
-                icon: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png' // Red flag icon
-            });
-
-            mapInitialized = true;
-        }
-
-        function geocodeLatLng(location) {
-            geocoder.geocode({
-                location: location
-            }, (results, status) => {
-                if (status === 'OK') {
-                    if (results[0]) {
-                        const address = results[0].formatted_address;
-                        document.getElementById('cityName').innerText = address;
-                        document.getElementById('latitude').value = location.lat();
-                        document.getElementById('longitude').value = location.lng();
-                        document.getElementById('locationForm').style.display = 'block';
-                        // Update marker position
-                        marker.setPosition(location);
-                        map.setCenter(location);
-                    } else {
-                        document.getElementById('cityName').innerText = 'Address not found.';
-                    }
-                } else {
-                    document.getElementById('cityName').innerText = 'Error in reverse geocoding.';
-                }
-            });
-        }
-
-        function getCurrentLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition((position) => {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    const location = new google.maps.LatLng(lat, lng);
-
-                    if (map) {
-                        map.setCenter(location);
-                        marker.setPosition(location);
-                        map.setZoom(15); // Zoom in to the current location
-                    }
-                    geocodeLatLng(location);
-                }, () => {
-                    alert('Error retrieving your location.');
-                });
-            } else {
-                alert('Geolocation is not supported by this browser.');
-            }
-        }
-
-        // Toggle map visibility
-        function toggleMap() {
-            const mapContainer = document.getElementById('map');
-            if (mapContainer.style.display === 'none') {
-                if (!mapInitialized) {
-                    initMap();
-                }
-                mapContainer.style.display = 'block';
-                getCurrentLocation(); // Show current location
-                document.getElementById('useCurrentLocationBtn').style.display = 'block';
-            } else {
-                mapContainer.style.display = 'none';
-                document.getElementById('useCurrentLocationBtn').style.display = 'none';
-            }
-        }
-    </script>
-</body>
 
 </html>

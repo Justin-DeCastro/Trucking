@@ -7,7 +7,14 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
 @include('Components.Admin.Header')
 
+<style>
+    @media print {
+        .modal-header, .modal-footer, .btn-close, button {
+            display: none !important;
+        }
+    }
 
+</style>
 <style>
     .logo-container {
         position: relative;
@@ -146,116 +153,164 @@
     @include('Components.Admin.Navbar')
     @include('Components.Admin.Driver_Sidebar')
 
-        <div class="body-wrapper">
-            <div class="bodywrapper__inner">
-                <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
-                    <h6 class="page-title p-2">Return Information</h6>
-                    <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                        <div class="dropdown">
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class='bx bx-export'></i> Export
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <button type="button" id="copyBtn" class="btn dropdown-item">
-                                        <i class='bx bx-copy'></i> Copy
-                                    </button>
-                                </li>
-                                <li>
-                                    <button type="button" id="printBtn" class="btn dropdown-item">
-                                        <i class='bx bx-printer'></i> Print
-                                    </button>
-                                </li>
-                                <li>
-                                    <button type="button" id="pdfBtn" class="btn dropdown-item">
-                                        <i class='bx bxs-file-pdf'></i> PDF
-                                    </button>
-                                </li>
-                                <li>
-                                    <button type="button" id="excelBtn" class="btn dropdown-item">
-                                        <i class='bx bx-file'></i> Excel
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
+    <div class="body-wrapper">
+        <div class="bodywrapper__inner">
+            <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
+                <h6 class="page-title p-2">Return Information</h6>
+                <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class='bx bx-export'></i> Export
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <button type="button" id="copyBtn" class="btn dropdown-item">
+                                    <i class='bx bx-copy'></i> Copy
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" id="printBtn" class="btn dropdown-item">
+                                    <i class='bx bx-printer'></i> Print
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" id="pdfBtn" class="btn dropdown-item">
+                                    <i class='bx bxs-file-pdf'></i> PDF
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" id="excelBtn" class="btn dropdown-item">
+                                    <i class='bx bx-file'></i> Excel
+                                </button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
+            </div>
 
 
-                <div class="card">
-                    <div class="card-body p-0">
-                        <div class="d-flex justify-content-end p-2">
-                            <!-- Button to trigger modal -->
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#addReturnModal">
-                                Add Return Item
-                            </button>
-                        </div>
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="d-flex justify-content-end p-2">
+                        <!-- Button to trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#addReturnModal">
+                            Add Return Item
+                        </button>
+                    </div>
+                    <div class="table-responsive--sm table-responsive">
                         <div class="table-responsive--sm table-responsive">
-                            <div class="table-responsive--sm table-responsive">
-                                <table id="data-table" class="table table--light style--two display nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th>Return Date</th>
-                                            <th>Product Name</th>
-                                            <th>Return Reason</th>
-                                            <th>Return Quantity</th>
-                                            <th>Condition</th>
-                                            <th>Driver Name</th>
-                                            <th>Return Status</th>
-                                            <th>Proof of Return</th>
-                                            <th>Actions</th>
+                            <table id="data-table" class="table table--light style--two display nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Return Date</th>
+                                        <th>Product Name</th>
+                                        <th>Return Reason</th>
+                                        <th>Return Quantity</th>
+                                        <th>Condition</th>
+                                        <th>Driver Name</th>
+                                        <th>Return Status</th>
+                                        <th>Proof of Return</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($returnItems as $return)
+                                        <tr class="clickable-row" data-bs-target="#returnModal{{ $return->id }}">
+                                            <td>{{ $return->return_date }}</td>
+                                            <td>{{ $return->product_name }}</td>
+                                            <td>{{ $return->return_reason }}</td>
+                                            <td>{{ $return->return_quantity }}</td>
+                                            <td>{{ $return->condition }}</td>
+                                            <td>{{ $currentDriverName }}</td>
+                                            <td>{{ $return->status }}</td>
+                                            <td>
+                                                @if ($return->proof_of_return)
+                                                    <img src="{{ asset('proofs/' . $return->proof_of_return) }}"
+                                                        alt="Proof of Return"
+                                                        style="max-width: 100px; max-height: 100px; object-fit: cover;">
+                                                @else
+                                                    <p>No proof available</p>
+                                                @endif
+                                            </td>
+                                            <td class="action-btn">
+                                                <!-- Approve Form -->
+                                                <form action="{{ route('return.approve', $return->id) }}" method="POST"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    <button type="submit"
+                                                        class="btn btn-success btn-sm">Approve</button>
+                                                </form>
+
+                                                <!-- Reject Form -->
+                                                <form action="{{ route('return.reject', $return->id) }}" method="POST"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                                </form>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($returnItems as $return)
-                                            <tr>
 
-                                                <td>{{ \Carbon\Carbon::parse($return->return_date)->format('d M, y') }}</td>
-                                                <td>{{ $return->product_name }}</td>
-                                                <td>{{ $return->return_reason }}</td>
-                                                <td>{{ $return->return_quantity }}</td>
-                                                <td>{{ $return->condition }}</td>
-                                                <td>{{ $currentDriverName }}</td>
-                                                <td>{{ $return->status }}</td>
-                                                <td>
-                                                    @if ($return->proof_of_return)
-                                                        <img src="{{ asset('proofs/' . $return->proof_of_return) }}"
-                                                            alt="Proof of Return"
-                                                            style="max-width: 100px; max-height: 100px; object-fit: cover;">
-                                                    @else
-                                                        <p>No proof available</p>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <!-- Approve Form -->
-                                                    <form action="{{ route('return.approve', $return->id) }}"
-                                                        method="POST" style="display:inline;">
-                                                        @csrf
-                                                        <button type="submit"
-                                                            class="btn btn-success btn-sm">Approve</button>
-                                                    </form>
+                                        <!-- Modal for each return item -->
+                                        <div class="modal fade" id="returnModal{{ $return->id }}" tabindex="-1"
+                                            aria-labelledby="modalLabel{{ $return->id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content" id="printContent{{ $return->id }}" style="width: auto; max-width: 100%;">
+                                                    <div class="modal-header bg-primary text-white">
+                                                        <h5 class="modal-title" id="modalLabel{{ $return->id }}">
+                                                            Return Details for {{ $return->product_name }}</h5>
+                                                        <button type="button" class="btn-close" onclick="removeButtons({{ $return->id }})" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body" style="text-align: center;">
+                                                        <!-- Logo added here -->
+                                                        <img src="Home/GDR logo.png" alt="Company Logo"
+                                                             style="max-width: 150px; margin-bottom: 20px;">
+                                                        <!-- End of logo -->
 
-                                                    <!-- Reject Form -->
-                                                    <form action="{{ route('return.reject', $return->id) }}"
-                                                        method="POST" style="display:inline;">
-                                                        @csrf
-                                                        <button type="submit"
-                                                            class="btn btn-danger btn-sm">Reject</button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
+                                                        <p><strong>Proof of Return:</strong></p>
+                                                        @if ($return->proof_of_return)
+                                                            <img src="{{ asset('proofs/' . $return->proof_of_return) }}" alt="Proof of Return"
+                                                                style="max-width: 100%; max-height: 300px; object-fit: contain; border: 1px solid #ddd;">
+                                                        @else
+                                                            <p>No proof available</p>
+                                                        @endif
+                                                        <hr>
+                                                        <div class="row">
+                                                            <div class="col-6 text-start">
+                                                                <p><strong>Return Date:</strong> {{ \Carbon\Carbon::parse($return->return_date)->format('F d, Y g:i A') }}</p>
+                                                                <p><strong>Product Name:</strong> {{ $return->product_name }}</p>
+                                                                <p><strong>Return Reason:</strong> {{ $return->return_reason }}</p>
+                                                            </div>
+                                                            <div class="col-6 text-start">
+                                                                <p><strong>Return Quantity:</strong> {{ $return->return_quantity }}</p>
+                                                                <p><strong>Condition:</strong> {{ $return->condition }}</p>
+                                                                <p><strong>Driver Name:</strong> {{ $currentDriverName }}</p>
+                                                                <p><strong>Status:</strong> <span class="badge bg-success">{{ $return->status }}</span></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" onclick="removeButtons({{ $return->id }})">Close</button>
+                                                        <button type="button" class="btn btn-primary" onclick="printModal({{ $return->id }})">Print</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
+
+
+
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
     </div>
     </div>
@@ -279,7 +334,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="product_name" class="form-label">Product Name</label>
-                            <input type="text" class="form-control" id="product_name" name="product_name" required>
+                            <input type="text" class="form-control" id="product_name" name="product_name"
+                                required>
                         </div>
                         <div class="mb-3">
                             <label for="return_reason" class="form-label">Return Reason</label>
@@ -309,12 +365,20 @@
 
                 </div>
             </div>
+
+
         </div>
     </div>
 
     @include('Components.Admin.Footer')
 
-
+    <script>
+        function removeButtons(id) {
+            // Hide the close and print buttons
+            document.querySelector(`#returnModal${id} .btn-secondary`).style.display = 'none';
+            document.querySelector(`#returnModal${id} .btn-primary`).style.display = 'none';
+        }
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Include Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
@@ -341,6 +405,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.clickable-row').forEach(row => {
+                row.addEventListener('click', function(event) {
+                    // Check if the click is inside the Actions column
+                    if (!event.target.closest('.action-btn')) {
+                        const target = this.getAttribute('data-bs-target');
+                        const modal = document.querySelector(target);
+
+                        if (modal) {
+                            const modalInstance = new bootstrap.Modal(modal);
+                            modalInstance.show();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
     <script>
         if ($('li').hasClass('active')) {
             $('.sidebar__menu-wrapper').animate({
@@ -349,14 +433,17 @@
         }
     </script>
     <script>
+        $(document).ready(function() {
+            $('#data-table').DataTable();
+        });
+
         // Function to extract all table data
         function getTableData() {
-            // If using DataTables, get all data
             var table = $('#data-table').DataTable();
             var data = table.rows({
                 search: 'applied'
             }).data().toArray();
-            var headers = table.columns().header().toArray().map(th => th.innerText);
+            var headers = table.columns().header().toArray().map(th => $(th).text());
 
             return {
                 data,
@@ -369,7 +456,7 @@
             var {
                 data
             } = getTableData();
-            var textToCopy = data.map(row => row.join("\t")).join("\n");
+            var textToCopy = data.map(row => row.map(cell => $('<div>').html(cell).text()).join("\t")).join("\n");
 
             var tempTextArea = document.createElement("textarea");
             tempTextArea.value = textToCopy;
@@ -380,30 +467,39 @@
             alert("Table data copied to clipboard!");
         });
 
-        // Print function - prints only the table
+        // Print function
         document.getElementById('printBtn').addEventListener('click', function() {
             var {
                 data,
                 headers
             } = getTableData();
+
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
             var printContents = `
-            <table border="1">
-                <thead>
-                    <tr>${headers.map(header => `<th>${header}</th>`).join('')}</tr>
-                </thead>
-                <tbody>
-                    ${data.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}
-                </tbody>
-            </table>
-        `;
+        <table border="1">
+            <thead>
+                <tr>${filteredHeaders.map(header => `<th>${header}</th>`).join('')}</tr>
+            </thead>
+            <tbody>
+                ${filteredData.map(row => `<tr>${row.map(cell => `<td>${$('<div>').html(cell).text()}</td>`).join('')}</tr>`).join('')}
+            </tbody>
+        </table>`;
+
             var originalContents = document.body.innerHTML;
 
             document.body.innerHTML = `<html><head><title>Print</title></head><body>${printContents}</body></html>`;
             window.print();
             document.body.innerHTML = originalContents;
         });
-
-        // PDF export with landscape formatting and smaller font size using jsPDF and autoTable
+        // PDF export function
         document.getElementById('pdfBtn').addEventListener('click', function() {
             const {
                 jsPDF
@@ -415,17 +511,28 @@
                 headers
             } = getTableData();
 
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
+            // Convert HTML content to text
+            var cleanData = filteredData.map(row => row.map(cell => $('<div>').html(cell).text()));
+
             doc.autoTable({
-                head: [headers],
-                body: data,
-                startY: 10, // Start 10 units from top
-                theme: 'grid', // Grid layout
+                head: [filteredHeaders],
+                body: cleanData,
+                startY: 10,
+                theme: 'grid',
                 margin: {
                     top: 10
                 },
                 styles: {
                     fontSize: 8,
-                    cellPadding: 2
                 },
                 headStyles: {
                     fillColor: [22, 160, 133],
@@ -437,30 +544,49 @@
             doc.save('table_data.pdf');
         });
 
+
         // Excel export function
         document.getElementById('excelBtn').addEventListener('click', function() {
             var {
                 data,
                 headers
             } = getTableData();
+
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
             var wb = XLSX.utils.book_new();
-            var ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
+            var cleanData = filteredData.map(row => row.map(cell => $('<div>').html(cell).text()));
+            var ws = XLSX.utils.aoa_to_sheet([filteredHeaders, ...cleanData]);
             XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
             XLSX.writeFile(wb, "table_data.xlsx");
         });
     </script>
+<script>
+    function printModal(modalId) {
+        // Get the modal content by ID
+        var printContents = document.getElementById('printContent' + modalId).innerHTML;
+        var originalContents = document.body.innerHTML;
 
-    <script>
-        $(document).ready(function() {
-            $('#data-table').DataTable({
-                responsive: true, // Enable responsiveness
-                paging: true, // Enables pagination
-                searching: true, // Enables search
-                ordering: true, // Enables sorting
-            });
-        });
-    </script>
+        // Replace the body content with modal content
+        document.body.innerHTML = printContents;
 
+        // Trigger the print dialog
+        window.print();
+
+        // Revert back to the original page content
+        document.body.innerHTML = originalContents;
+
+        // Reload the page to ensure the content is restored
+        location.reload();
+    }
+</script>
 </body>
 
 </html>

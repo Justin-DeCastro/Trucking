@@ -83,7 +83,7 @@
                         </div> --}}
                     </div>
                 </div>
-                  <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins pb-3">
+                <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins pb-3">
                     <div class="dropdown">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">
@@ -132,10 +132,9 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse($transactions as $transaction)
-                                                <tr>
-
-
+                                            @foreach ($transactions as $transaction)
+                                                <tr class="clickable-row"
+                                                    data-bs-target="#accountModal{{ $transaction->id }}">
                                                     <td> {{ \Carbon\Carbon::parse($transaction->date)->format('d-M-y h-i A') }}
                                                     </td>
 
@@ -161,11 +160,7 @@
 
                                                     <td class="text-start">{{ $transaction->notes }}</td>
                                                 </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="7">No records found</td>
-                                                </tr>
-                                            @endforelse
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -173,6 +168,50 @@
                         </div>
                     </div>
                 </div>
+
+                @foreach ($transactions as $transaction)
+                    <!-- Modal Structure -->
+                    <div class="modal fade" id="accountModal{{ $transaction->id }}" tabindex="-1"
+                        aria-labelledby="accountModalLabel {{ $transaction->id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="accountModalLabel">Transaction Details</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><strong>Date:</strong>
+                                        {{ \Carbon\Carbon::parse($transaction->date)->format('d-M-y h-i A') }}</p>
+                                    <p><strong>Particulars:</strong> {{ $transaction->particulars }}</p>
+                                    <p><strong>Payment Amount:</strong>
+                                        ₱{{ number_format($transaction->deposit_amount, 2, '.', ',') }}</p>
+                                    <p><strong>Expense Amount:</strong>
+                                        ₱{{ number_format($transaction->withdraw_amount, 2, '.', ',') }}</p>
+                                    <p><strong>Payment Channel:</strong> {{ $transaction->payment_channel }}</p>
+                                    <p><strong>Notes:</strong> {{ $transaction->notes }}</p>
+
+                                    @if ($transaction->proof_payment)
+                                        <p><strong>Proof of Payment:</strong></p>
+                                        <a href="{{ asset($transaction->proof_payment) }}" data-fancybox="gallery"
+                                            data-caption="Proof of Payment">
+                                            <img src="{{ asset($transaction->proof_payment) }}"
+                                                alt="Proof of Payment" style="max-width: 100px;">
+                                        </a>
+                                    @else
+                                        <p>No Proof Uploaded</p>
+                                    @endif
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary"
+                                        onclick="printTransactionModalContent({{ $transaction->id }})">Print</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
 
 
                 <!-- Modal Structure -->
@@ -197,14 +236,14 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="particulars" class="form-label">Particulars</label>
-                                        <input type="text" class="form-control" id="particulars" name="particulars"
-                                            required>
+                                        <input type="text" class="form-control" id="particulars"
+                                            name="particulars" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="deposit_amount" class="form-label">Payment
                                             Received</label>
-                                        <input type="number" step="0.01" class="form-control" id="deposit_amount"
-                                            name="deposit_amount" required>
+                                        <input type="number" step="0.01" class="form-control"
+                                            id="deposit_amount" name="deposit_amount" required>
                                     </div>
 
 
@@ -613,6 +652,69 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
+<script>
+    function printTransactionModalContent(id) {
+        // Get the modal's body content
+        var modalBodyContent = document.querySelector(`#accountModal${id} .modal-body`).innerHTML;
+
+        // Create a new window for printing
+        var printWindow = window.open('', '_blank');
+
+        // Write the modal content to the new window
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Print Transaction Details</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        .logo-container { text-align: center; margin-bottom: 20px; } /* Center the logo */
+                        .logo-container img { width: 10%; height: auto; } /* Adjust logo size */
+                        h5 { color: #333; text-align: center; } /* Center the title */
+                        p { margin: 5px 0; }
+                    </style>
+                </head>
+                <body>
+                    <div class="logo-container">
+                        <img src="{{ asset('Home/GDR Logo.png') }}" alt="GDR Logo">
+                    </div>
+                    <h5>Transaction Details</h5>
+                    ${modalBodyContent}
+                </body>
+            </html>
+        `);
+
+        // Close the document to trigger rendering
+        printWindow.document.close();
+
+        // Wait for the content to load, then print
+        printWindow.onload = function() {
+            printWindow.print();
+            printWindow.close();
+        };
+    }
+</script>
+
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.clickable-row').forEach(row => {
+                row.addEventListener('click', function(event) {
+                    // Check if the click is inside the Actions column
+                    if (!event.target.closest('.action-btn')) {
+                        const target = this.getAttribute('data-bs-target');
+                        const modal = document.querySelector(target);
+
+                        if (modal) {
+                            const modalInstance = new bootstrap.Modal(modal);
+                            modalInstance.show();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
     <script>
         if ($('li').hasClass('active')) {
             $('.sidebar__menu-wrapper').animate({
@@ -621,38 +723,48 @@
         }
     </script>
 
-<script>
-    $(document).ready(function() {
-        $('#data-table').DataTable();
-    });
+    <script>
+        $(document).ready(function() {
+            $('#data-table').DataTable();
+        });
 
-    // Function to extract all table data
-    function getTableData() {
-        var table = $('#data-table').DataTable();
-        var data = table.rows({ search: 'applied' }).data().toArray();
-        var headers = table.columns().header().toArray().map(th => $(th).text());
+        // Function to extract all table data
+        function getTableData() {
+            var table = $('#data-table').DataTable();
+            var data = table.rows({
+                search: 'applied'
+            }).data().toArray();
+            var headers = table.columns().header().toArray().map(th => $(th).text());
 
-        return { data, headers };
-    }
+            return {
+                data,
+                headers
+            };
+        }
 
-    // Copy function
-    document.getElementById('copyBtn').addEventListener('click', function() {
-        var { data } = getTableData();
-        var textToCopy = data.map(row => row.map(cell => $('<div>').html(cell).text()).join("\t")).join("\n");
+        // Copy function
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            var {
+                data
+            } = getTableData();
+            var textToCopy = data.map(row => row.map(cell => $('<div>').html(cell).text()).join("\t")).join("\n");
 
-        var tempTextArea = document.createElement("textarea");
-        tempTextArea.value = textToCopy;
-        document.body.appendChild(tempTextArea);
-        tempTextArea.select();
-        document.execCommand("copy");
-        document.body.removeChild(tempTextArea);
-        alert("Table data copied to clipboard!");
-    });
+            var tempTextArea = document.createElement("textarea");
+            tempTextArea.value = textToCopy;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempTextArea);
+            alert("Table data copied to clipboard!");
+        });
 
-    // Print function
-    document.getElementById('printBtn').addEventListener('click', function() {
-        var { data, headers } = getTableData();
-        var printContents = `
+        // Print function
+        document.getElementById('printBtn').addEventListener('click', function() {
+            var {
+                data,
+                headers
+            } = getTableData();
+            var printContents = `
         <table border="1">
             <thead>
                 <tr>${headers.map(header => `<th>${header}</th>`).join('')}</tr>
@@ -661,53 +773,63 @@
                 ${data.map(row => `<tr>${row.map(cell => `<td>${$('<div>').html(cell).text()}</td>`).join('')}</tr>`).join('')}
             </tbody>
         </table>`;
-        var originalContents = document.body.innerHTML;
+            var originalContents = document.body.innerHTML;
 
-        document.body.innerHTML = `<html><head><title>Print</title></head><body>${printContents}</body></html>`;
-        window.print();
-        document.body.innerHTML = originalContents;
-    });
-
-    // PDF export function
-    document.getElementById('pdfBtn').addEventListener('click', function() {
-        const { jsPDF } = window.jspdf;
-        var doc = new jsPDF('landscape'); // Set the orientation to landscape
-
-        var { data, headers } = getTableData();
-
-        // Convert HTML content to text
-        var cleanData = data.map(row => row.map(cell => $('<div>').html(cell).text()));
-
-        doc.autoTable({
-            head: [headers],
-            body: cleanData,
-            startY: 10,
-            theme: 'grid',
-            margin: { top: 10 },
-            styles: {
-                fontSize: 8,
-                cellPadding: 2
-            },
-            headStyles: {
-                fillColor: [22, 160, 133],
-                textColor: 255
-            },
-            pageBreak: 'auto',
+            document.body.innerHTML = `<html><head><title>Print</title></head><body>${printContents}</body></html>`;
+            window.print();
+            document.body.innerHTML = originalContents;
         });
 
-        doc.save('table_data.pdf');
-    });
+        // PDF export function
+        document.getElementById('pdfBtn').addEventListener('click', function() {
+            const {
+                jsPDF
+            } = window.jspdf;
+            var doc = new jsPDF('landscape'); // Set the orientation to landscape
 
-    // Excel export function
-    document.getElementById('excelBtn').addEventListener('click', function() {
-        var { data, headers } = getTableData();
-        var wb = XLSX.utils.book_new();
-        var cleanData = data.map(row => row.map(cell => $('<div>').html(cell).text()));
-        var ws = XLSX.utils.aoa_to_sheet([headers, ...cleanData]);
-        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-        XLSX.writeFile(wb, "table_data.xlsx");
-    });
-</script>
+            var {
+                data,
+                headers
+            } = getTableData();
+
+            // Convert HTML content to text
+            var cleanData = data.map(row => row.map(cell => $('<div>').html(cell).text()));
+
+            doc.autoTable({
+                head: [headers],
+                body: cleanData,
+                startY: 10,
+                theme: 'grid',
+                margin: {
+                    top: 10
+                },
+                styles: {
+                    fontSize: 8,
+                    cellPadding: 2
+                },
+                headStyles: {
+                    fillColor: [22, 160, 133],
+                    textColor: 255
+                },
+                pageBreak: 'auto',
+            });
+
+            doc.save('table_data.pdf');
+        });
+
+        // Excel export function
+        document.getElementById('excelBtn').addEventListener('click', function() {
+            var {
+                data,
+                headers
+            } = getTableData();
+            var wb = XLSX.utils.book_new();
+            var cleanData = data.map(row => row.map(cell => $('<div>').html(cell).text()));
+            var ws = XLSX.utils.aoa_to_sheet([headers, ...cleanData]);
+            XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+            XLSX.writeFile(wb, "table_data.xlsx");
+        });
+    </script>
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
 

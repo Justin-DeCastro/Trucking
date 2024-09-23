@@ -45,47 +45,33 @@
 
 
     @include('Components.Accounting.Sidebar')
+     @include('Components.Admin.Navbar')
+
     <!-- sidebar end -->
 
-    <!-- navbar-wrapper start -->
-
-    <div class="navbar__left">
-        <button type="button" class="res-sidebar-open-btn me-3"><i class="las la-bars"></i></button>
-        <form class="navbar-search">
-            <input type="search" name="#0" class="navbar-search-field" id="searchInput" autocomplete="off"
-                placeholder="Search here...">
-            <i class="las la-search"></i>
-            <ul class="search-list"></ul>
-        </form>
-    </div>
-    <div class="navbar__right">
-        <ul class="navbar__action-list">
-
-        </ul>
-    </div>
-    </nav>
-    <!-- navbar-wrapper end -->
 
 
-    <div class="container-fluid px-3 px-sm-0">
         <div class="body-wrapper">
             <div class="bodywrapper__inner">
 
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                    <h6 class="page-title">Financial Table </h6>
+                    <h6 class="page-title">Financial Report Table</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-sm btn-outline--primary dropdown-toggle" id="dropdownAccountButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button type="button" class="btn btn-sm btn-outline--primary dropdown-toggle"
+                                id="dropdownAccountButton" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-plus"></i> Manage Account
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownAccountButton">
                                 <li>
-                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#manageDeposit">
+                                    <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                        data-bs-target="#manageDeposit">
                                         <i class="fas fa-plus"></i> Add Deposit
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#manageWithdraw">
+                                    <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                        data-bs-target="#manageWithdraw">
                                         <i class="fas fa-minus"></i> Add Expense
                                     </a>
                                 </li>
@@ -103,220 +89,334 @@
                     </div>
                 </div>
 
-                <div class="dt-buttons btn-group d-flex justify-content-end gap-2 ">
-                    <!-- Navigation links -->
-                    <!-- Navigation links -->
-
-
-
-                    <div class="dropdown">
-
-                    </div>
-                </div>
-                <!-- Financial Transactions Table -->
-                <!-- Tab Content -->
                 <!-- Tab Content -->
 
-                    <ul class="nav nav-tabs" id="financialTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="accounts-tab" data-bs-toggle="tab" href="#accounts"
-                                role="tab" aria-controls="accounts" aria-selected="true">Accounts</a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="preventive-maintenance-tab" data-bs-toggle="tab"
-                                href="#preventive-maintenance" role="tab" aria-controls="preventive-maintenance"
-                                aria-selected="false">Preventive Maintenance</a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="loans-tab" data-bs-toggle="tab" href="#loans" role="tab"
-                                aria-controls="loans" aria-selected="false">Loans</a>
-                        </li>
-                    </ul>
-                    <br>
-                    <div class="tab-content" id="financialTabsContent">
-                        <!-- Accounts Tab -->
-                        <div class="tab-pane fade show active" id="accounts" role="tabpanel" aria-labelledby="accounts-tab">
-                            <div class="row">
-                                <!-- Left Column: Accounts -->
-                                <div class="col-md-2">
-                                    <div class="list-group">
-                                        <!-- Add All Accounts Link -->
-                                        <a href="#" class="list-group-item list-group-item-action" onclick="filterData(''); return false;">
-                                            All Accounts
+                <ul class="nav nav-tabs" id="financialTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="accounts-tab" data-bs-toggle="tab" href="#accounts"
+                            role="tab" aria-controls="accounts" aria-selected="true">Accounts</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="preventive-maintenance-tab" data-bs-toggle="tab"
+                            href="#preventive-maintenance" role="tab" aria-controls="preventive-maintenance"
+                            aria-selected="false">Preventive Maintenance</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="loans-tab" data-bs-toggle="tab" href="#loans" role="tab"
+                            aria-controls="loans" aria-selected="false">Loans</a>
+                    </li>
+                </ul>
+                <br>
+                <div class="tab-content" id="financialTabsContent">
+                    <!-- Accounts Tab -->
+                    <div class="tab-pane fade show active" id="accounts" role="tabpanel"
+                        aria-labelledby="accounts-tab">
+                        <div class="row">
+                            <!-- Left Column: Accounts -->
+                            <div class="col-md-2">
+                                <div class="list-group">
+                                    <!-- Add All Accounts Link -->
+                                    <a href="#" class="list-group-item list-group-item-action"
+                                        onclick="filterData(''); return false;">
+                                        All Accounts
+                                    </a>
+                                    @foreach ($accounts as $account)
+                                        <a href="#" class="list-group-item list-group-item-action"
+                                            onclick="filterData('{{ $account->name }}'); return false;">
+                                            {{ $account->name }}
                                         </a>
-                                        @foreach ($accounts as $account)
-                                            <a href="#" class="list-group-item list-group-item-action" onclick="filterData('{{ $account->name }}'); return false;">
-                                                {{ $account->name }}
-                                            </a>
-                                        @endforeach
-                                    </div>
+                                    @endforeach
                                 </div>
+                            </div>
 
-                                <!-- Right Column: Table -->
-                                <div class="col-md-10">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            @if ($formattedTransactions->isEmpty())
-                                                <p class="no-data-message">No data available.</p>
-                                            @else
-                                                <table id="data-table" class="table table--light style--two display nowrap">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Date</th>
-                                                            <th>Account Name</th>
-                                                            <th>Particulars</th>
-                                                            <th>Service Fee</th>
-                                                            <th>Expenses</th>
-                                                            <th>Net Income</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="table-body">
-                                                        @foreach ($formattedTransactions as $data)
-                                                            <tr class="data-row" data-account="{{ $data['accountName'] }}" data-date="{{ $data['date'] }}" data-net-income="{{ $data['netIncome'] }}">
-                                                                <td>{{ $data['date'] }}</td>
-                                                                <td>{{ $data['accountName'] }}</td>
-                                                                <td>{{ $data['particulars'] }}</td>
-                                                                <td>₱ {{ number_format($data['depositBalance'], 2) }}</td>
-                                                                <td>₱ {{ number_format($data['withdrawBalance'], 2) }}</td>
-                                                                <td class="text-start">₱ {{ number_format($data['netIncome'], 2) }}</td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-
-                                                <div class="mt-4">
-                                                    <h5>Total Net Income Per Day</h5>
-                                                    <ul id="total-net-income-list">
-                                                        <!-- Totals will be updated here -->
+                            <!-- Right Column: Table -->
+                            <div class="col-md-10">
+                                <div class="card">
+                                    <div class="card-body">
+                                        @if ($formattedTransactions->isEmpty())
+                                            <p class="no-data-message">No data available.</p>
+                                        @else
+                                            <div
+                                                class="d-flex flex-wrap justify-content-between gap-2 align-items-center breadcrumb-plugins pb-3">
+                                                <h6 class="page-title">Financial Table for Job Offers</h6>
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class='bx bx-export'></i> Export
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li>
+                                                            <button type="button" id="copyBtn"
+                                                                class="btn dropdown-item">
+                                                                <i class='bx bx-copy'></i> Copy
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button type="button" id="printBtn"
+                                                                class="btn dropdown-item">
+                                                                <i class='bx bx-printer'></i> Print
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button type="button" id="pdfBtn"
+                                                                class="btn dropdown-item">
+                                                                <i class='bx bxs-file-pdf'></i> PDF
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button type="button" id="excelBtn"
+                                                                class="btn dropdown-item">
+                                                                <i class='bx bx-file'></i> Excel
+                                                            </button>
+                                                        </li>
                                                     </ul>
                                                 </div>
-                                            @endif
-                                        </div>
+                                            </div>
+                                            <table id="data-table"
+                                                class="table table--light style--two display nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <th>Account Name</th>
+                                                        <th>Particulars</th>
+                                                        <th>Service Fee</th>
+                                                        <th>Expenses</th>
+                                                        <th>Net Income</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="table-body">
+                                                    @foreach ($formattedTransactions as $data)
+                                                        <tr class="data-row" data-account="{{ $data['accountName'] }}"
+                                                            data-date="{{ $data['date'] }}"
+                                                            data-net-income="{{ $data['netIncome'] }}">
+                                                            <td>{{ $data['date'] }}</td>
+                                                            <td>{{ $data['accountName'] }}</td>
+                                                            <td>{{ $data['particulars'] }}</td>
+                                                            <td>₱ {{ number_format($data['depositBalance'], 2) }}</td>
+                                                            <td>₱ {{ number_format($data['withdrawBalance'], 2) }}</td>
+                                                            <td class="text-start">₱
+                                                                {{ number_format($data['netIncome'], 2) }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                            <div class="mt-4">
+                                                <h5>Total Net Income Per Day</h5>
+                                                <ul id="total-net-income-list">
+                                                    <!-- Totals will be updated here -->
+                                                </ul>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Preventive Maintenance Tab -->
-                        <div class="tab-pane fade" id="preventive-maintenance" role="tabpanel" aria-labelledby="preventive-maintenance-tab">
-                            <div class="d-flex flex-wrap justify-content-between gap-2 align-items-center breadcrumb-plugins pb-3">
-                                <h6 class="page-title">Financial Table for Preventive Maintenance</h6>
-                                <div class="dropdown">
-                                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class='bx bx-export'></i> Export
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <button type="button" id="copyBtn1" class="btn dropdown-item">
-                                                <i class='bx bx-copy'></i> Copy
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button type="button" id="printBtn1" class="btn dropdown-item">
-                                                <i class='bx bx-printer'></i> Print
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button type="button" id="pdfBtn1" class="btn dropdown-item">
-                                                <i class='bx bxs-file-pdf'></i> PDF
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button type="button" id="excelBtn1" class="btn dropdown-item">
-                                                <i class='bx bx-file'></i> Excel
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
+                    <!-- Preventive Maintenance Tab -->
+                    <div class="tab-pane fade" id="preventive-maintenance" role="tabpanel"
+                        aria-labelledby="preventive-maintenance-tab">
+                        <div
+                            class="d-flex flex-wrap justify-content-between gap-2 align-items-center breadcrumb-plugins pb-3">
+                            <h6 class="page-title">Financial Table for Preventive Maintenance</h6>
+                            <div class="dropdown">
+                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class='bx bx-export'></i> Export
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <button type="button" id="copyBtn1" class="btn dropdown-item">
+                                            <i class='bx bx-copy'></i> Copy
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" id="printBtn1" class="btn dropdown-item">
+                                            <i class='bx bx-printer'></i> Print
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" id="pdfBtn1" class="btn dropdown-item">
+                                            <i class='bx bxs-file-pdf'></i> PDF
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" id="excelBtn1" class="btn dropdown-item">
+                                            <i class='bx bx-file'></i> Excel
+                                        </button>
+                                    </li>
+                                </ul>
                             </div>
-                            @if ($formattedPreventives->isEmpty())
-                                <p class="no-data-message">No data available.</p>
-                            @else
-                                <table id="data-table1" class="table table--light style--two display nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Parts Replaced</th>
-                                            <th>Quantity</th>
-                                            <th>Price per Piece</th>
-                                            <th class="text-start">Total Amount</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($formattedPreventives as $data)
-                                            <tr>
-                                                <td>{{ $data['date'] }}</td>
-                                                <td>{{ $data['partsReplaced'] }}</td>
-                                                <td>{{ $data['quantity'] }}</td>
-                                                <td>₱ {{ number_format($data['pricePerPiece'], 2) }}</td>
-                                                <td class="text-start">₱ {{ number_format($data['totalAmount'], 2) }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            @endif
                         </div>
-
-                        <!-- Loans Tab -->
-                        <div class="tab-pane fade" id="loans" role="tabpanel" aria-labelledby="loans-tab">
-                            <div class="d-flex flex-wrap justify-content-between gap-2 align-items-center breadcrumb-plugins pb-3">
-                                <h6 class="page-title">Financial Table for Loans</h6>
-                                <div class="dropdown">
-                                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class='bx bx-export'></i> Export
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <button type="button" id="copyBtn2" class="btn dropdown-item">
-                                                <i class='bx bx-copy'></i> Copy
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button type="button" id="printBtn2" class="btn dropdown-item">
-                                                <i class='bx bx-printer'></i> Print
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button type="button" id="pdfBtn2" class="btn dropdown-item">
-                                                <i class='bx bxs-file-pdf'></i> PDF
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button type="button" id="excelBtn2" class="btn dropdown-item">
-                                                <i class='bx bx-file'></i> Excel
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            @if ($formattedLoans->isEmpty())
-                                <p class="no-data-message">No data available.</p>
-                            @else
-                                <table id="data-table2" class="table table--light style--two display nowrap">
-                                    <thead>
+                        @if ($formattedPreventives->isEmpty())
+                            <p class="no-data-message">No data available.</p>
+                        @else
+                            <table id="data-table1" class="table table--light style--two display nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Parts Replaced</th>
+                                        <th>Quantity</th>
+                                        <th>Price per Piece</th>
+                                        <th class="text-start">Total Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($formattedPreventives as $data)
                                         <tr>
-                                            <th>Date</th>
-                                            <th>Borrower</th>
-                                            <th>Initial Amount</th>
-                                            <th>Interest</th>
-                                            <th class="text-start">Total Payment</th>
+                                            <td>{{ $data['date'] }}</td>
+                                            <td>{{ $data['partsReplaced'] }}</td>
+                                            <td>{{ $data['quantity'] }}</td>
+                                            <td>₱ {{ number_format($data['pricePerPiece'], 2) }}</td>
+                                            <td class="text-start">₱ {{ number_format($data['totalAmount'], 2) }}</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($formattedLoans as $data)
-                                            <tr>
-                                                <td>{{ $data['date'] }}</td>
-                                                <td>{{ $data['borrower'] }}</td>
-                                                <td>₱ {{ number_format($data['initialAmount'], 2) }}</td>
-                                                <td>₱ {{ number_format($data['interest'], 2) }}</td>
-                                                <td class="text-start">₱ {{ number_format($data['totalPayment'], 2) }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endif
+                    </div>
+
+                    <!-- Loans Tab -->
+                    <div class="tab-pane fade" id="loans" role="tabpanel" aria-labelledby="loans-tab">
+                        <div
+                            class="d-flex flex-wrap justify-content-between gap-2 align-items-center breadcrumb-plugins pb-3">
+                            <h6 class="page-title">Financial Table for Loans</h6>
+                            <div class="dropdown">
+                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class='bx bx-export'></i> Export
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <button type="button" id="copyBtn2" class="btn dropdown-item">
+                                            <i class='bx bx-copy'></i> Copy
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" id="printBtn2" class="btn dropdown-item">
+                                            <i class='bx bx-printer'></i> Print
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" id="pdfBtn2" class="btn dropdown-item">
+                                            <i class='bx bxs-file-pdf'></i> PDF
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" id="excelBtn2" class="btn dropdown-item">
+                                            <i class='bx bx-file'></i> Excel
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        @if ($formattedLoans->isEmpty())
+                            <p class="no-data-message">No data available.</p>
+                        @else
+                            <table id="data-table2" class="table table--light style--two display nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Borrower</th>
+                                        <th>Initial Amount</th>
+                                        <th>Interest</th>
+                                        <th class="text-start">Total Payment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($formattedLoans as $data)
+                                        <tr>
+                                            <td>{{ $data['date'] }}</td>
+                                            <td>{{ $data['borrower'] }}</td>
+                                            <td>₱ {{ number_format($data['initialAmount'], 2) }}</td>
+                                            <td>₱ {{ number_format($data['interest'], 2) }}</td>
+                                            <td class="text-start">₱ {{ number_format($data['totalPayment'], 2) }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Accounts Modal -->
+                <div class="modal fade" id="accountsModal" tabindex="-1" role="dialog"
+                    aria-labelledby="accountsModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" r ole="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="accountsModalLabel">Account Details</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>Date:</strong> <span id="modal-account-date"></span></p>
+                                <p><strong>Account Name:</strong> <span id="modal-account-name"></span></p>
+                                <p><strong>Particulars:</strong> <span id="modal-account-particulars"></span></p>
+                                <p><strong>Service Fee:</strong> <span id="modal-account-service-fee"></span></p>
+                                <p><strong>Expenses:</strong> <span id="modal-account-expenses"></span></p>
+                                <p><strong>Net Income:</strong> <span id="modal-account-net-income"></span></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="print-account">Print</button>
+                            </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Preventive Maintenance Modal -->
+                <div class="modal fade" id="preventiveMaintenanceModal" tabindex="-1" role="dialog"
+                    aria-labelledby="preventiveMaintenanceModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="preventiveMaintenanceModalLabel">Preventive Maintenance
+                                    Details</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>Date:</strong> <span id="modal-preventive-date"></span></p>
+                                <p><strong>Parts Replaced:</strong> <span id="modal-preventive-parts"></span></p>
+                                <p><strong>Quantity:</strong> <span id="modal-preventive-quantity"></span></p>
+                                <p><strong>Price per Piece:</strong> <span
+                                        id="modal-preventive-price-per-piece"></span></p>
+                                <p><strong>Total Amount:</strong> <span id="modal-preventive-total"></span></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="print-preventive">Print</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loans Modal -->
+                <div class="modal fade" id="loansModal" tabindex="-1" role="dialog"
+                    aria-labelledby="loansModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="loansModalLabel">Loan Details</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>Date:</strong> <span id="modal-loan-date"></span></p>
+                                <p><strong>Borrower:</strong> <span id="modal-loan-borrower"></span></p>
+                                <p><strong>Initial Amount:</strong> <span id="modal-loan-initial-amount"></span></p>
+                                <p><strong>Interest:</strong> <span id="modal-loan-interest"></span></p>
+                                <p><strong>Total Payment:</strong> <span id="modal-loan-total-payment"></span></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="print-loan">Print</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
 
@@ -636,6 +736,161 @@
 
 
                 <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
+
+                <script>
+                    $(document).ready(function() {
+                        // For Accounts Table
+                        $('#data-table tbody').on('click', '.data-row', function() {
+                            const date = $(this).data('date');
+                            const accountName = $(this).data('account');
+                            const particulars = $(this).children('td').eq(2).text();
+                            const serviceFee = $(this).children('td').eq(3).text();
+                            const expenses = $(this).children('td').eq(4).text();
+                            const netIncome = $(this).children('td').eq(5).text();
+
+                            $('#modal-account-date').text(date);
+                            $('#modal-account-name').text(accountName);
+                            $('#modal-account-particulars').text(particulars);
+                            $('#modal-account-service-fee').text(serviceFee);
+                            $('#modal-account-expenses').text(expenses);
+                            $('#modal-account-net-income').text(netIncome);
+
+                            $('#accountsModal').modal('show');
+                        });
+
+                        // For Preventive Maintenance Table
+                        $('#data-table1 tbody').on('click', 'tr', function() {
+                            const date = $(this).children('td').eq(0).text();
+                            const partsReplaced = $(this).children('td').eq(1).text();
+                            const quantity = $(this).children('td').eq(2).text();
+                            const pricePerPiece = $(this).children('td').eq(3).text();
+                            const totalAmount = $(this).children('td').eq(4).text();
+
+                            $('#modal-preventive-date').text(date);
+                            $('#modal-preventive-parts').text(partsReplaced);
+                            $('#modal-preventive-quantity').text(quantity);
+                            $('#modal-preventive-price-per-piece').text(pricePerPiece);
+                            $('#modal-preventive-total').text(totalAmount);
+
+                            $('#preventiveMaintenanceModal').modal('show');
+                        });
+
+                        // For Loans Table
+                        $('#data-table2 tbody').on('click', 'tr', function() {
+                            const date = $(this).children('td').eq(0).text();
+                            const borrower = $(this).children('td').eq(1).text();
+                            const initialAmount = $(this).children('td').eq(2).text();
+                            const interest = $(this).children('td').eq(3).text();
+                            const totalPayment = $(this).children('td').eq(4).text();
+
+                            $('#modal-loan-date').text(date);
+                            $('#modal-loan-borrower').text(borrower);
+                            $('#modal-loan-initial-amount').text(initialAmount);
+                            $('#modal-loan-interest').text(interest);
+                            $('#modal-loan-total-payment').text(totalPayment);
+
+                            $('#loansModal').modal('show');
+                        });
+                    });
+                </script>
+
+                <script>
+                    $('#print-account').click(function() {
+                        const printContent = `
+            <html>
+                <head>
+                    <title>Print Account Details</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        .logo-container { text-align: center; margin-bottom: 20px; }
+                        .logo-container img { width: 10%; height: auto; }
+                        h5 { color: #333; text-align: center; }
+                    </style>
+                </head>
+                <body>
+                    <div class="logo-container">
+                        <img src="{{ asset('Home/GDR Logo.png') }}" alt="GDR Logo">
+                    </div>
+                    <h5>Account Details</h5>
+                    <p>Date: ${$('#modal-account-date').text()}</p>
+                    <p>Account Name: ${$('#modal-account-name').text()}</p>
+                    <p>Particulars: ${$('#modal-account-particulars').text()}</p>
+                    <p>Service Fee: ${$('#modal-account-service-fee').text()}</p>
+                    <p>Expenses: ${$('#modal-account-expenses').text()}</p>
+                    <p>Net Income: ${$('#modal-account-net-income').text()}</p>
+                </body>
+            </html>
+        `;
+                        const newWin = window.open('', '', 'width=600,height=400');
+                        newWin.document.write(printContent);
+                        newWin.document.close();
+                        newWin.print();
+                    });
+
+                    $('#print-preventive').click(function() {
+                        const printContent = `
+            <html>
+                <head>
+                    <title>Print Preventive Maintenance Details</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        .logo-container { text-align: center; margin-bottom: 20px; }
+                        .logo-container img { width: 10%; height: auto; }
+                        h5 { color: #333; text-align: center; }
+                    </style>
+                </head>
+                <body>
+                    <div class="logo-container">
+                        <img src="{{ asset('Home/GDR Logo.png') }}" alt="GDR Logo">
+                    </div>
+                    <h5>Preventive Maintenance Details</h5>
+                    <p>Date: ${$('#modal-preventive-date').text()}</p>
+                    <p>Parts Replaced: ${$('#modal-preventive-parts').text()}</p>
+                    <p>Quantity: ${$('#modal-preventive-quantity').text()}</p>
+                    <p>Price per Piece: ${$('#modal-preventive-price-per-piece').text()}</p>
+                    <p>Total Amount: ${$('#modal-preventive-total').text()}</p>
+                </body>
+            </html>
+        `;
+                        const newWin = window.open('', '', 'width=600,height=400');
+                        newWin.document.write(printContent);
+                        newWin.document.close();
+                        newWin.print();
+                    });
+
+                    $('#print-loan').click(function() {
+                        const printContent = `
+            <html>
+                <head>
+                    <title>Print Loan Details</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        .logo-container { text-align: center; margin-bottom: 20px; }
+                        .logo-container img { width: 10%; height: auto; }
+                        h5 { color: #333; text-align: center; }
+                    </style>
+                </head>
+                <body>
+                    <div class="logo-container">
+                        <img src="{{ asset('Home/GDR Logo.png') }}" alt="GDR Logo">
+                    </div>
+                    <h5>Loan Details</h5>
+                    <p>Date: ${$('#modal-loan-date').text()}</p>
+                    <p>Borrower: ${$('#modal-loan-borrower').text()}</p>
+                    <p>Initial Amount: ${$('#modal-loan-initial-amount').text()}</p>
+                    <p>Interest: ${$('#modal-loan-interest').text()}</p>
+                    <p>Total Payment: ${$('#modal-loan-total-payment').text()}</p>
+                </body>
+            </html>
+        `;
+                        const newWin = window.open('', '', 'width=600,height=400');
+                        newWin.document.write(printContent);
+                        newWin.document.close();
+                        newWin.print();
+                    });
+                </script>
+
+
                 <script>
                     function filterData(accountName) {
                         var rows = document.querySelectorAll('#table-body .data-row');
@@ -655,35 +910,35 @@
                         }, 500);
                     }
                 </script>
-                     <script>
-                        // Function to filter data based on account name
-                        function filterData(accountName) {
-                            const rows = document.querySelectorAll('#table-body .data-row');
-                            let totalNetIncome = 0;
-                            rows.forEach(row => {
-                                const rowAccount = row.getAttribute('data-account');
-                                const rowNetIncome = parseFloat(row.getAttribute('data-net-income'));
-                                if (accountName === '' || rowAccount === accountName) {
-                                    row.style.display = '';
-                                    totalNetIncome += rowNetIncome;
-                                } else {
-                                    row.style.display = 'none';
-                                }
-                            });
+                <script>
+                    // Function to filter data based on account name
+                    function filterData(accountName) {
+                        const rows = document.querySelectorAll('#table-body .data-row');
+                        let totalNetIncome = 0;
+                        rows.forEach(row => {
+                            const rowAccount = row.getAttribute('data-account');
+                            const rowNetIncome = parseFloat(row.getAttribute('data-net-income'));
+                            if (accountName === '' || rowAccount === accountName) {
+                                row.style.display = '';
+                                totalNetIncome += rowNetIncome;
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        });
 
-                            // Update the total net income display
-                            updateTotalNetIncome(totalNetIncome);
-                        }
+                        // Update the total net income display
+                        updateTotalNetIncome(totalNetIncome);
+                    }
 
-                        // Function to update the total net income display
-                        function updateTotalNetIncome(totalNetIncome) {
-                            const list = document.getElementById('total-net-income-list');
-                            list.innerHTML = `<li>Total Net Income: ₱ ${totalNetIncome.toFixed(2)}</li>`;
-                        }
+                    // Function to update the total net income display
+                    function updateTotalNetIncome(totalNetIncome) {
+                        const list = document.getElementById('total-net-income-list');
+                        list.innerHTML = `<li>Total Net Income: ₱ ${totalNetIncome.toFixed(2)}</li>`;
+                    }
 
-                        // Initialize with "All Accounts" filter
-                        filterData('');
-                    </script>
+                    // Initialize with "All Accounts" filter
+                    filterData('');
+                </script>
                 <script>
                     $(document).ready(function() {
                         // Initialize DataTables for all tables

@@ -69,14 +69,15 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($feedbacks as $feedback)
-                                            <tr>
+                                            <tr class="clickable-row"
+                                                data-bs-target="#feedbackModal{{ $feedback->id }}">
                                                 <td>{{ $feedback->name }}</td>
                                                 <td>{{ $feedback->position }}</td>
                                                 <td
                                                     style="white-space: normal; word-break: break-word; overflow-wrap: break-word; max-width:300px">
                                                     {{ $feedback->message }}</td>
                                                 <td>{{ $feedback->status }}</td>
-                                                <td>
+                                                <td class="action-btn">
                                                     <!-- Accept Button -->
                                                     <form action="{{ route('feedback.accept', $feedback->id) }}"
                                                         method="POST" style="display:inline;">
@@ -103,6 +104,35 @@
                     </div>
                 </div>
             </div>
+
+            @foreach ($feedbacks as $feedback)
+                <div class="modal fade" id="feedbackModal{{ $feedback->id }}" tabindex="-1"
+                    aria-labelledby="feedbackModalLabel{{ $feedback->id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="feedbackModalLabel{{ $feedback->id }}">Feedback Details for
+                                    {{ $feedback->name }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>Name:</strong> {{ $feedback->name }}</p>
+                                <p><strong>Position:</strong> {{ $feedback->position }}</p>
+                                <p><strong>Message:</strong></p>
+                                <p style="white-space: normal; word-break: break-word; overflow-wrap: break-word;">
+                                    {{ $feedback->message }}</p>
+                                <p><strong>Status:</strong> {{ $feedback->status }}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary"
+                                    onclick="printModalContent({{ $feedback->id }})">Print</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
     </div>
 
@@ -133,6 +163,99 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
+
+    <script>
+        function printModalContent(feedbackId) {
+            var modalContent = document.getElementById('feedbackModal' + feedbackId).querySelector('.modal-body').innerHTML;
+            var originalContent = document.body.innerHTML;
+
+            // Open a new window for the print job
+            var printWindow = window.open('', '', 'height=600,width=800');
+
+            // Write the formatted content into the new window for printing
+            printWindow.document.write(`
+            <html>
+            <head>
+                <title>Print Feedback Details</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        padding: 20px;
+                        line-height: 1.6; /* Increased line height for better readability */
+                    }
+                    p {
+                        margin: 10px 0; /* Add vertical spacing between paragraphs */
+                        padding: 5px 0;
+                    }
+                    h5 {
+                        text-align: center;
+                        margin-bottom: 30px; /* Increased bottom margin for better separation */
+                    }
+                    img {
+                        max-width: 100px;
+                        max-height: 100px;
+                        margin-top: 10px; /* Add space between images and other content */
+                    }
+                    .section {
+                        margin-bottom: 20px; /* Add space between sections */
+                    }
+                    .strong {
+                        font-weight: bold;
+                    }
+                    .logo-container {
+                        text-align: center;
+                        margin-bottom: 20px;
+                    }
+                    .logo-container img {
+                        width: 10%;
+                        height: auto;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="logo-container">
+                    <img src="{{ asset('Home/GDR Logo.png') }}" alt="GDR Logo">
+                </div>
+                <h5>Feedback Details</h5>
+                ${modalContent}
+            </body>
+            </html>
+        `);
+
+            // Close the document stream and focus on the window for printing
+            printWindow.document.close();
+            printWindow.focus();
+
+            // Trigger the print dialog
+            printWindow.print();
+
+            // Close the print window after printing
+            printWindow.onafterprint = function() {
+                printWindow.close();
+            };
+        }
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.clickable-row').forEach(row => {
+                row.addEventListener('click', function(event) {
+                    // Check if the click is inside the Actions column
+                    if (!event.target.closest('.action-btn')) {
+                        const target = this.getAttribute('data-bs-target');
+                        const modal = document.querySelector(target);
+
+                        if (modal) {
+                            const modalInstance = new bootstrap.Modal(modal);
+                            modalInstance.show();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
     <script>
         if ($('li').hasClass('active')) {
             $('.sidebar__menu-wrapper').animate({
@@ -141,14 +264,17 @@
         }
     </script>
     <script>
+        $(document).ready(function() {
+            $('#data-table').DataTable();
+        });
+
         // Function to extract all table data
         function getTableData() {
-            // If using DataTables, get all data
             var table = $('#data-table').DataTable();
             var data = table.rows({
                 search: 'applied'
             }).data().toArray();
-            var headers = table.columns().header().toArray().map(th => th.innerText);
+            var headers = table.columns().header().toArray().map(th => $(th).text());
 
             return {
                 data,
@@ -161,7 +287,7 @@
             var {
                 data
             } = getTableData();
-            var textToCopy = data.map(row => row.join("\t")).join("\n");
+            var textToCopy = data.map(row => row.map(cell => $('<div>').html(cell).text()).join("\t")).join("\n");
 
             var tempTextArea = document.createElement("textarea");
             tempTextArea.value = textToCopy;
@@ -172,30 +298,39 @@
             alert("Table data copied to clipboard!");
         });
 
-        // Print function - prints only the table
+        // Print function
         document.getElementById('printBtn').addEventListener('click', function() {
             var {
                 data,
                 headers
             } = getTableData();
+
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
             var printContents = `
-            <table border="1">
-                <thead>
-                    <tr>${headers.map(header => `<th>${header}</th>`).join('')}</tr>
-                </thead>
-                <tbody>
-                    ${data.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}
-                </tbody>
-            </table>
-        `;
+        <table border="1">
+            <thead>
+                <tr>${filteredHeaders.map(header => `<th>${header}</th>`).join('')}</tr>
+            </thead>
+            <tbody>
+                ${filteredData.map(row => `<tr>${row.map(cell => `<td>${$('<div>').html(cell).text()}</td>`).join('')}</tr>`).join('')}
+            </tbody>
+        </table>`;
+
             var originalContents = document.body.innerHTML;
 
             document.body.innerHTML = `<html><head><title>Print</title></head><body>${printContents}</body></html>`;
             window.print();
             document.body.innerHTML = originalContents;
         });
-
-        // PDF export with landscape formatting and smaller font size using jsPDF and autoTable
+        // PDF export function
         document.getElementById('pdfBtn').addEventListener('click', function() {
             const {
                 jsPDF
@@ -207,17 +342,28 @@
                 headers
             } = getTableData();
 
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
+            // Convert HTML content to text
+            var cleanData = filteredData.map(row => row.map(cell => $('<div>').html(cell).text()));
+
             doc.autoTable({
-                head: [headers],
-                body: data,
-                startY: 10, // Start 10 units from top
-                theme: 'grid', // Grid layout
+                head: [filteredHeaders],
+                body: cleanData,
+                startY: 10,
+                theme: 'grid',
                 margin: {
                     top: 10
                 },
                 styles: {
                     fontSize: 8,
-                    cellPadding: 2
                 },
                 headStyles: {
                     fillColor: [22, 160, 133],
@@ -229,14 +375,27 @@
             doc.save('table_data.pdf');
         });
 
+
+        // Excel export function
         // Excel export function
         document.getElementById('excelBtn').addEventListener('click', function() {
             var {
                 data,
                 headers
             } = getTableData();
+
+            // Find the index of the "Action" column
+            var actionColumnIndex = headers.indexOf('Action');
+
+            // Filter out the "Action" column from headers
+            var filteredHeaders = headers.filter((header, index) => index !== actionColumnIndex);
+
+            // Filter out the "Action" column from data
+            var filteredData = data.map(row => row.filter((cell, index) => index !== actionColumnIndex));
+
             var wb = XLSX.utils.book_new();
-            var ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
+            var cleanData = filteredData.map(row => row.map(cell => $('<div>').html(cell).text()));
+            var ws = XLSX.utils.aoa_to_sheet([filteredHeaders, ...cleanData]);
             XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
             XLSX.writeFile(wb, "table_data.xlsx");
         });
@@ -257,16 +416,7 @@
     </script>
 
 
-    <script>
-        $(document).ready(function() {
-            $('#data-table').DataTable({
-                responsive: true, // Enable responsiveness
-                paging: true, // Enables pagination
-                searching: true, // Enables search
-                ordering: true, // Enables sorting
-            });
-        });
-    </script>
+
 
 
 </body>

@@ -18,16 +18,21 @@ class ReceivableController extends Controller
             'pay_later_date' => 'nullable|date',
         ]);
 
+        // Only save pay_now_date if it has a value
+        $pay_now_date = $request->pay_now_date ? $request->pay_now_date : null;
+        $pay_later_date = $request->pay_later_date ? $request->pay_later_date : null;
+
         Receivable::create([
             'issuer' => $request->issuer,
             'borrower' => $request->borrower,
             'principal' => $request->principal,
             'mode_of_payment' => $request->mode_of_payment,
             'date_borrowed' => $request->date_borrowed,
-            'pay_now_date' => $request->pay_now_date,
-            'pay_later_date' => $request->pay_later_date,
+            'pay_now_date' => $pay_now_date,
+            'pay_later_date' => $pay_later_date,
         ]);
 
         return redirect()->back()->with('success', 'Receivable created successfully.');
     }
+
 }

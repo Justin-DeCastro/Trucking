@@ -123,6 +123,11 @@
                         <div
                             style="max-width: 900px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
                             <div style="text-align: center; margin-bottom: 40px;">
+                                <div style="text-align: right;">
+                                    <button type="button" onclick="downloadForm()" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                        Download Form
+                                    </button>
+                                </div>
                                 <!-- Logo -->
                                 <img src="{{ asset('Home/GDR logo.png') }}" alt="Logo" style="max-width: 150px; margin-bottom: 20px;">
 
@@ -131,25 +136,12 @@
                             </div>
                             <form action="{{ route('booking.submit') }}" method="post" enctype="multipart/form-data" id="myForm">
                                 @csrf
-                                <div style="text-align: right;">
-                                 <button type="button" onclick="downloadForm()" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                                        Download Form
-                                    </button>
 
-                                </div>
                                 <!-- Sender Information -->
                                 <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px;">
                                     <!-- Top Section: Trip Ticket, Driver Name, and Plate Number -->
                                     <div style="display: flex; flex-wrap: wrap; gap: 20px;">
-                                        <!-- Trip Ticket -->
-                                        {{-- <div style="flex: 1; min-width: 220px;">
-                                            <label for="trip_ticket" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
-                                                Trip Ticket
-                                            </label>
-                                            <input
-                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                id="trip_ticket" name="trip_ticket" type="text" placeholder="Enter Trip Ticket Number" required>
-                                        </div> --}}
+
 
                                         <!-- Driver Name -->
                                         <div style="flex: 1; min-width: 220px;">
@@ -193,7 +185,7 @@
                                                 style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
                                                 required
                                             >
-                                             <datalist id="accountNames">
+                                            <datalist id="accountNames">
                                                 @foreach ($senderNames as $name)
                                                     <option value="{{ $name }}">
                                                 @endforeach
@@ -257,37 +249,41 @@
                                 </div>
 
 
-                                <div style="margin-bottom: 40px;">
-
                                     <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
+                                        <div style="flex: 1; min-width: 220px;">
+                                            <label for="destination"
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Destination
+                                               </label>
+                                            <input
+                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
+                                                id="destination" name="destination" type="text"
+                                                placeholder="Enter Destination Address" required>
+                                        </div>
                                         <div style="flex: 1; min-width: 220px;">
                                             <label for="origin"
                                                 style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Origin</label>
                                             <input
                                                 style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
                                                 id="origin" name="origin" type="text"
-                                                placeholder="Enter Origin" required>
-                                        </div>
-                                        <div style="flex: 1; min-width: 220px;">
-                                            <label for="destination"
-                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Destination</label>
-                                            <input
-                                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                id="destination" name="destination" type="text"
-                                                placeholder="Enter Destination" required>
+                                                placeholder="Enter Origin Address" required>
                                         </div>
                                         <div style="flex: 1; min-width: 220px;">
                                             <label for="eta"
-                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">ETA</label>
+                                                style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">ETA
+                                               </label>
                                             <input
                                                 style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ddd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);"
-                                                id="eta" name="eta" type="text"
-                                                placeholder="Enter ETA" required>
+                                                id="ceta" name="eta" type="text"
+                                                placeholder="Enter Estimated Travel  Arrival" required>
                                         </div>
 
-                                        <h4 style="color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">
-                                        Destination Information</h4>
-                                        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                                    </div>
+
+
+                                <div style="margin-bottom: 40px;">
+                                    <h4 style="color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">
+                                       Consignee Information</h4>
+                                    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
                                         <div style="flex: 1; min-width: 220px;">
                                             <label for="consignee_name"
                                                 style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Consignee
@@ -363,7 +359,7 @@
                                 <!-- Merchant Information -->
                                 <div style="margin-bottom: 40px;">
                                     <h4 style="color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">
-                                        Origin Information</h4>
+                                        Merchant Information</h4>
                                     <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
                                         <div style="flex: 1; min-width: 220px;">
                                             <label for="merchant_name"
@@ -419,22 +415,24 @@
                                     </div>
                                 </div>
                                 <div class="container mt-4">
-                                    <div class="mb-3">
-                                        <label for="dataSelect" class="form-label">Select Truck Type</label>
-                                        <select class="form-select" id="dataSelect" aria-label="Select Data Type" onchange="showData(this.value)">
-                                            <option value="">-- Choose an option --</option>
-                                            <option value="company-vehicles">Company Vehicles</option>
-                                            <option value="subcontractors">Subcontractors</option>
-                                        </select>
-                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Select Truck Type</label>
+                                            <div id="checkboxContainer" class="form-check">
+                                                <!-- Checkboxes will be dynamically inserted here -->
+                                            </div>
+                                        </div>
 
-                                    <!-- Container for displaying data in card format -->
-                                    <div id="dataContainer" class="mt-4 row">
-                                        <!-- Cards will be dynamically inserted here -->
+                                        <div class="col-md-8">
+                                            <!-- Container for displaying data in card format -->
+                                            <div id="dataContainer" class="row">
+                                                <!-- Cards will be dynamically inserted here -->
+                                            </div>
+                                        </div>
                                     </div>
-
-                                    <!-- Submit Button -->
                                 </div>
+
+
 
                                 <!-- Submit Button -->
                                 <div style="text-align: center;">
@@ -457,56 +455,132 @@
 
         </div>
     </div>
-
-
-    <script>
-       const companyVehicles = @json($vehicles->map(function ($vehicle) {
-    return [
-        'id' => $vehicle->id,
-        'name' => $vehicle->truck_name,
-        'description' => $vehicle->truck_capacity . ' - Available: ' . $vehicle->quantity
-    ];
-}));
-
-const subcontractors = @json($subcontractors->map(function ($sub) {
-    return [
-        'id' => $sub->id,
-        'name' => $sub->company_name,
-        'description' => $sub->truck_capacity . ' - Plate Number: ' . $sub->plate_number
-    ];
-}));
-
-function showData(type) {
+    </div>
+    </div>
+   <script>
+   document.addEventListener('DOMContentLoaded', () => {
+    const checkboxContainer = document.getElementById('checkboxContainer');
     const dataContainer = document.getElementById('dataContainer');
 
-    // Clear existing content
-    dataContainer.innerHTML = '';
+    const companyVehicles = @json($vehicles->map(function ($vehicle) {
+        return [
+            'id' => $vehicle->id,
+            'name' => $vehicle->truck_name,
+            'description' =>'Capacity: ' . $vehicle->truck_capacity . ' Available: ' . $vehicle->quantity
+        ];
+    }));
 
-    // Determine which data to display
-    const items = type === 'company-vehicles' ? companyVehicles : subcontractors;
-    const cardType = type === 'company-vehicles' ? 'vehicle' : 'subcontractor';
+    // Group subcontractors by company_name
+    const subcontractors = @json($subcontractors->map(function ($sub) {
+        return [
+            'id' => $sub->id,
+            'name' => $sub->company_name,
+            'description' =>'Capacity: '. $sub->truck_capacity . ' Plate Number: ' . $sub->plate_number
+        ];
+    }));
 
-    dataContainer.innerHTML = generateCards(items, cardType);
-}
+    const groupedSubcontractors = subcontractors.reduce((acc, sub) => {
+        if (!acc[sub.name]) acc[sub.name] = [];
+        acc[sub.name].push(sub); // Add subcontractors under the same company name
+        return acc;
+    }, {});
 
-function generateCards(items, type) {
-    return items.map(item => `
-        <div class="col-md-3 mb-4">
-            <div class="card position-relative" style="width: 100%;">
-                <input class="form-check-input position-absolute top-0 end-0 m-2" type="radio" name="truck_type" id="${type}-${item.id}" value="${item.id}">
-                <div class="card-body">
-                    <h5 class="card-title">${item.name}</h5>
-                    <p class="card-text">
-                        ${item.description}
-                    </p>
+    // Create checkboxes
+    const options = [
+        { value: 'company-vehicles', label: 'Company Vehicles' },
+        { value: 'subcontractors', label: 'Subcontractors' }
+    ];
+
+    options.forEach(option => {
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'form-check-input';
+        checkbox.id = option.value;
+        checkbox.value = option.value;
+        checkbox.addEventListener('change', handleCheckboxChange);
+
+        const label = document.createElement('label');
+        label.className = 'form-check-label';
+        label.htmlFor = option.value;
+        label.innerText = option.label;
+
+        const div = document.createElement('div');
+        div.className = 'form-check';
+        div.id = option.value + '-container'; // Unique container for each checkbox
+        div.appendChild(checkbox);
+        div.appendChild(label);
+
+        // Append a placeholder div for showing subcontractors' names when selected
+        const subcontractorList = document.createElement('div');
+        subcontractorList.id = option.value + '-list';
+        subcontractorList.style.display = 'none'; // Hidden by default
+        subcontractorList.className = 'ms-3 mt-2'; // Some margin for positioning
+
+        div.appendChild(subcontractorList);
+
+        checkboxContainer.appendChild(div);
+    });
+
+    function handleCheckboxChange(event) {
+        const selectedCheckbox = event.target.value;
+        const subcontractorList = document.getElementById('subcontractors-list');
+
+        if (selectedCheckbox === 'subcontractors') {
+            if (event.target.checked) {
+                // Show the list of unique company names below the Subcontractor checkbox
+                subcontractorList.innerHTML = Object.keys(groupedSubcontractors).map(companyName => `
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="selected_company" value="${companyName}">
+                        <label class="form-check-label">${companyName}</label>
+                    </div>
+                `).join('');
+                subcontractorList.style.display = 'block';
+
+                // Add event listener to the company name checkboxes
+                subcontractorList.querySelectorAll('input').forEach(companyCheckbox => {
+                    companyCheckbox.addEventListener('change', function () {
+                        if (this.checked) {
+                            // Clear the dataContainer and display the subcontractors under the selected company name
+                            const selectedCompanySubcontractors = groupedSubcontractors[this.value];
+                            dataContainer.innerHTML = generateCards(selectedCompanySubcontractors, 'subcontractor');
+                        }
+                    });
+                });
+            } else {
+                // Hide the list and clear data container if unchecked
+                subcontractorList.style.display = 'none';
+                dataContainer.innerHTML = '';
+            }
+        } else if (selectedCheckbox === 'company-vehicles') {
+            if (event.target.checked) {
+                // Display company vehicles directly
+                dataContainer.innerHTML = generateCards(companyVehicles, 'vehicle');
+            } else {
+                // Clear data if unchecked
+                dataContainer.innerHTML = '';
+            }
+        }
+    }
+
+    function generateCards(items, type) {
+        return items.map(item => `
+            <div class="col-md-4 mb-4">
+                <div class="card position-relative" style="width: 100%;">
+                    <input class="form-check-input position-absolute top-0 end-0 m-2" type="radio" name="truck_type" id="${type}-${item.id}" value="${item.id}">
+                    <div class="card-body">
+                        <h5 class="card-title">${item.name}</h5>
+                        <p class="card-text">
+                            ${item.description}
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-    `).join('');
-}
+        `).join('');
+    }
+});
 
 
-       </script>
+   </script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/jquery-3.7.1.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/vendor/bootstrap-toggle.min.js"></script>
@@ -515,64 +589,8 @@ function generateCards(items, type) {
     <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast_custom.css" rel="stylesheet">
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/iziToast.min.js"></script>
 
+
     <script>
-        "use strict";
-        const colors = {
-            success: '#28c76f',
-            error: '#eb2222',
-            warning: '#ff9f43',
-            info: '#1e9ff2',
-        }
-
-        const icons = {
-            success: 'fas fa-check-circle',
-            error: 'fas fa-times-circle',
-            warning: 'fas fa-exclamation-triangle',
-            info: 'fas fa-exclamation-circle',
-        }
-
-        const notifications = [];
-        const errors = [];
-
-
-        const triggerToaster = (status, message) => {
-            iziToast[status]({
-                title: status.charAt(0).toUpperCase() + status.slice(1),
-                message: message,
-                position: "topRight",
-                backgroundColor: '#fff',
-                icon: icons[status],
-                iconColor: colors[status],
-                progressBarColor: colors[status],
-                titleSize: '1rem',
-                messageSize: '1rem',
-                titleColor: '#474747',
-                messageColor: '#a2a2a2',
-                transitionIn: 'obunceInLeft'
-            });
-        }
-
-        if (notifications.length) {
-            notifications.forEach(element => {
-                triggerToaster(element[0], element[1]);
-            });
-        }
-
-        if (errors.length) {
-            errors.forEach(error => {
-                triggerToaster('error', error);
-            });
-        }
-
-        function notify(status, message) {
-            if (typeof message == 'string') {
-                triggerToaster(status, message);
-            } else {
-                $.each(message, (i, val) => triggerToaster(status, val));
-            }
-        }
-    </script>
-        <script>
         function downloadForm() {
             // Get the form element
             const form = document.getElementById('myForm');
@@ -582,7 +600,7 @@ function generateCards(items, type) {
 
             // Capture the links to external stylesheets
             const stylesheets = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
-                .map(link => <link rel="stylesheet" href="${link.href}">)
+                .map(link => `<link rel="stylesheet" href="${link.href}">`)
                 .join('\n');
 
             // Construct the full HTML content
@@ -605,6 +623,24 @@ function generateCards(items, type) {
             link.click();
         }
     </script>
+
+
+    <!-- Your other script inclusions -->
+
+    <script>
+        document.getElementById('delivery_type').addEventListener('change', function() {
+            var vehicleChoices = document.getElementById('vehicleChoices');
+            if (this.value === 'Backload') {
+                vehicleChoices.style.display = 'none';
+            } else {
+                vehicleChoices.style.display = 'flex';
+            }
+        });
+    </script>
+
+
+
+
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/moment.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/daterangepicker.min.js"></script>
 
@@ -613,52 +649,7 @@ function generateCards(items, type) {
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
 
 
-    <script>
-        "use strict";
-        bkLib.onDomLoaded(function() {
-            $(".nicEdit").each(function(index) {
-                $(this).attr("id", "nicEditor" + index);
-                new nicEditor({
-                    fullPanel: true
-                }).panelInstance('nicEditor' + index, {
-                    hasPanel: true
-                });
-            });
-        });
 
-        (function($) {
-            $(document).on('mouseover ', '.nicEdit-main,.nicEdit-panelContain', function() {
-                $('.nicEdit-main').focus();
-            });
-
-            $('.breadcrumb-nav-open').on('click', function() {
-                $(this).toggleClass('active');
-                $('.breadcrumb-nav').toggleClass('active');
-            });
-
-            $('.breadcrumb-nav-close').on('click', function() {
-                $('.breadcrumb-nav').removeClass('active');
-            });
-
-            if ($('.topTap').length) {
-                $('.breadcrumb-nav-open').removeClass('d-none');
-            }
-
-            $('.table-responsive').on('click', 'button[data-bs-toggle="dropdown"]', function(e) {
-                const {
-                    top,
-                    left
-                } = $(this).next(".dropdown-menu")[0].getBoundingClientRect();
-                $(this).next(".dropdown-menu").css({
-                    position: "fixed",
-                    inset: "unset",
-                    transform: "unset",
-                    top: top + "px",
-                    left: left + "px",
-                });
-            });
-        })(jQuery);
-    </script>
  <script>
     document.getElementById('delivery_type').addEventListener('change', function() {
         var vehicleChoices = document.getElementById('vehicleChoices');
@@ -669,193 +660,7 @@ function generateCards(items, type) {
         }
     });
 </script>
-    <script>
-        "use strict";
-        (function($) {
-            function getCustomerInformation(value, searchBy = 'mobile', customerType = 'sender') {
-                $.ajax({
-                    url: `https://script.viserlab.com/courierlab/demo/staff/customer/search`,
-                    method: 'get',
-                    data: {
-                        searchBy: searchBy,
-                        search: value
-                    },
-                    success: function(response) {
-                        if (!$.isEmptyObject(response)) {
 
-                            $(`input[name='${customerType}_customer_email']`).val(response.email);
-                            $(`input[name='${customerType}_customer_phone']`).val(response.mobile);
-
-                            $(`input[name='${customerType}_customer_firstname']`).val(response.firstname)
-                                .attr('readonly', true);
-                            $(`input[name='${customerType}_customer_lastname']`).val(response.lastname)
-                                .attr('readonly', true);
-                            $(`input[name='${customerType}_customer_address']`).val(response.address).attr(
-                                'readonly', true);
-                            $(`input[name='${customerType}_customer_city']`).val(response.city).attr(
-                                'readonly', true);
-                            $(`input[name='${customerType}_customer_state']`).val(response.state).attr(
-                                'readonly', true);
-                        }
-                    }
-                });
-            }
-
-            $('#sender_phone').on('focusout', function() {
-                let value = $(this).val();
-                if (value.length > 0) {
-                    getCustomerInformation(value);
-                }
-            });
-
-            $('#sender_email').on('focusout', function() {
-                let value = $(this).val();
-                if (value.length > 0) {
-                    getCustomerInformation(value, 'email');
-                }
-            });
-
-            $('#receiver_phone').on('focusout', function() {
-                let value = $(this).val();
-                if (value.length > 0) {
-                    getCustomerInformation(value, 'mobile', 'receiver');
-                }
-            });
-
-            $('#receiver_email').on('focusout', function() {
-                let value = $(this).val();
-                if (value.length > 0) {
-                    getCustomerInformation(value, 'email', 'receiver');
-                }
-            });
-
-            $('.addUserData').on('click', function() {
-                let length = $("#addedField").find('.single-item').length;
-                let html = `
-                <div class="row single-item mb-4">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <select class="select2 selected_type form-control" name="items[${length}][type]" data-minimum-results-for-search="-1" required>
-                                <option disabled selected value="">Select Courier/Parcel Type</option>
-                                                                    <option value="1" data-unit="KG" data-price=10 >Food</option>
-                                                                    <option value="2" data-unit="LITER" data-price=5 >Oil</option>
-                                                                    <option value="3" data-unit="MITER" data-price=10 >Wood</option>
-                                                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Courier/Parcel Name"  name="items[${length}][name]">
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="number" class="form-control quantity" placeholder="Quantity" disabled name="items[${length}][quantity]"  required>
-                                <span class="input-group-text unit"><i class="las la-balance-scale"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text"  class="form-control single-item-amount" placeholder="Enter Price" name="items[${length}][amount]" required readonly>
-                                <span class="input-group-text">USD</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <button class="btn btn--danger w-100 removeBtn h-45" type="button">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                </div>`;
-                $('#addedField').append(html)
-            });
-
-            $('#addedField').on('change', '.selected_type', function(e) {
-                let unit = $(this).find('option:selected').data('unit');
-                let parent = $(this).closest('.single-item');
-                $(parent).find('.quantity').attr('disabled', false);
-                $(parent).find('.unit').html(`${unit || '<i class="las la-balance-scale"></i>'}`);
-                calculation();
-            });
-
-            $('#addedField').on('click', '.removeBtn', function(e) {
-                let length = $("#addedField").find('.single-item').length;
-                if (length <= 1) {
-                    notify('warning', "At least one item required");
-                } else {
-                    $(this).closest('.single-item').remove();
-                }
-                calculation();
-            });
-
-            let discount = 0;
-
-            $('.discount').on('input', function(e) {
-                this.value = this.value.replace(/^\.|[^\d\.]/g, '');
-
-                discount = parseFloat($(this).val() || 0);
-                if (discount >= 100) {
-                    discount = 100;
-                    notify('warning', "Discount can not bigger than 100 %");
-                    $(this).val(discount);
-                }
-                calculation();
-            });
-
-            $('#addedField').on('input', '.quantity', function(e) {
-                this.value = this.value.replace(/^\.|[^\d\.]/g, '');
-
-                let quantity = $(this).val();
-                if (quantity <= 0) {
-                    quantity = 0;
-                }
-                quantity = parseFloat(quantity);
-
-                let parent = $(this).closest('.single-item');
-                let price = parseFloat($(parent).find('.selected_type option:selected').data('price') || 0);
-                let subTotal = price * quantity;
-
-                $(parent).find('.single-item-amount').val(subTotal.toFixed(2));
-
-                calculation()
-            });
-
-            function calculation() {
-                let items = $('#addedField').find('.single-item');
-                let subTotal = 0;
-
-                $.each(items, function(i, item) {
-                    let price = parseFloat($(item).find('.selected_type option:selected').data('price') || 0);
-                    let quantity = parseFloat($(item).find('.quantity').val() || 0);
-                    subTotal += price * quantity;
-                });
-
-                subTotal = parseFloat(subTotal);
-
-                let discountAmount = (subTotal / 100) * discount;
-                let total = subTotal - discountAmount;
-
-                $('.subtotal').text(subTotal.toFixed(2));
-                $('.total').text(total.toFixed(2));
-            };
-
-            let latestDate = `2024-08-13 05:53:07`;
-            $('input[name="estimate_date"]').daterangepicker({
-                singleDatePicker: true,
-                opens: "right",
-                autoApply: true,
-                startDate: latestDate,
-                locale: {
-                    format: "YYYY-MM-DD",
-                }
-            });
-
-
-        })(jQuery);
-    </script>
     <script>
         if ($('li').hasClass('active')) {
             $('#sidebar__menuWrapper').animate({
@@ -909,47 +714,12 @@ function generateCards(items, type) {
             }
         });
         </script>
-{{-- <script>
-    $(document).ready(function() {
-    $('#myForm').on('submit', function(event) {
-        event.preventDefault(); // Prevent default form submission
-
-        var formData = $(this).serialize(); // Serialize form data
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: formData,
-            success: function(response) {
-                if (response.success) {
-                    alert('Form submitted successfully! Estimated Travel time: ' + response.travel_time_minutes + ' minutes.');
-                } else {
-                    alert('Error: ' + response.message);
-                }
-            },
-            error: function(xhr, status, error) {
-                alert('An error occurred: ' + error);
-            }
-        });
-    });
-});
 
 
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/search.js"></script>
 
-    <script>
-        "use strict";
 
-        function getEmptyMessage() {
-            return `<li class="text-muted">
-                <div class="empty-search text-center">
-                    <img src="https://script.viserlab.com/courierlab/demo/assets/images/empty_list.png" alt="empty">
-                    <p class="text-muted">No search result found</p>
-                </div>
-            </li>`
-        }
-    </script>
 </body>
 
 </html>

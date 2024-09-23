@@ -97,7 +97,70 @@
         background-color: #007bff;
         border-color: #007bff;
     }
+      /* Print styles */
+    @media print {
+        body {
+            margin: 0;
+            padding: 0;
+            font-size: 12pt; /* Adjust as needed */
+        }
+
+        .form-section {
+            page-break-inside: avoid; /* Prevents breaking sections */
+        }
+
+        .form-group {
+            display: block; /* Stack elements vertically for print */
+            gap: 0; /* Remove gap */
+        }
+
+        .form-group div {
+            width: 100%; /* Full width for print */
+        }
+
+        input {
+            border: none; /* Remove border for cleaner print */
+            box-shadow: none; /* Remove shadow for cleaner print */
+            padding: 5px; /* Adjust padding for print */
+        }
+    }
+
+    #formContainer {
+        width: 100%;
+        height: auto; /* Use auto height to ensure it adjusts dynamically */
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .form-section {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+
+    #checkboxContainer .form-check {
+        flex: 1 1 100px;
+    }
+}
+
+
+
+
 </style>
+
 
 
 <body>
@@ -119,13 +182,14 @@
                         </div>
                     </div>
 
-                    <section style="padding: 60px 0;">
-                        <div
-                            style="max-width: 900px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+                    <section>
+                       <div id="formContainer"
+                            style="max-width: 800px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
                             <div style="text-align: center; margin-bottom: 40px;">
-                                <div style="text-align: right;">
-                                    <button type="button" onclick="downloadForm()" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                                        Download Form
+
+                               <div style="text-align: right; margin-top: 20px;">
+                                    <button id="downloadBtn" style="padding: 12px 24px; background-color: #28a745; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background-color 0.3s ease;">
+                                        Download Form as PDF
                                     </button>
                                 </div>
                                 <!-- Logo -->
@@ -215,14 +279,8 @@
                                                 <option value="Water Transport">Water Transport</option>
                                             </select>
                                         </div>
-
-
-
-
-
                                     </div>
                                 </div>
-
 
                                 <!-- Item List and Weight -->
                                 <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
@@ -355,7 +413,6 @@
                                     </div>
                                 </div>
 
-
                                 <!-- Merchant Information -->
                                 <div style="margin-bottom: 40px;">
                                     <h4 style="color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">
@@ -432,8 +489,6 @@
                                     </div>
                                 </div>
 
-
-
                                 <!-- Submit Button -->
                                 <div style="text-align: center;">
                                     <button
@@ -442,11 +497,7 @@
                                         Submit Booking
                                     </button>
                                 </div>
-
                             </form>
-
-
-
                         </div>
                     </section>
 
@@ -455,96 +506,173 @@
 
         </div>
     </div>
-    </div>
-    </div>
-    <script>
-     document.addEventListener('DOMContentLoaded', () => {
-    const checkboxContainer = document.getElementById('checkboxContainer');
-    const dataContainer = document.getElementById('dataContainer');
 
-    const companyVehicles = @json($vehicles->map(function ($vehicle) {
-        return [
-            'id' => $vehicle->id,
-            'name' => $vehicle->truck_name,
-            'description' => $vehicle->truck_capacity . ' - Available: ' . $vehicle->quantity
-        ];
-    }));
+   <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkboxContainer = document.getElementById('checkboxContainer');
+            const dataContainer = document.getElementById('dataContainer');
 
-    const subcontractors = @json($subcontractors->map(function ($sub) {
-        return [
-            'id' => $sub->id,
-            'name' => $sub->company_name,
-            'description' => $sub->truck_capacity . ' - Plate Number: ' . $sub->plate_number
-        ];
-    }));
+            const companyVehicles = @json($vehicles->map(function ($vehicle) {
+                return [
+                    'id' => $vehicle->id,
+                    'name' => $vehicle->truck_name,
+                    'description' => $vehicle->truck_capacity . ' - Available: ' . $vehicle->quantity
+                ];
+            }));
 
-    // Create checkboxes
-    const options = [
-        { value: 'company-vehicles', label: 'Company Vehicles' },
-        { value: 'subcontractors', label: 'Subcontractors' }
-    ];
+            // Group subcontractors by company_name
+            const subcontractors = @json($subcontractors->map(function ($sub) {
+                return [
+                    'id' => $sub->id,
+                    'name' => $sub->company_name,
+                    'description' =>'Capacity: '. $sub->truck_capacity . ' Plate Number: ' . $sub->plate_number
+                ];
+            }));
 
-    options.forEach(option => {
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.className = 'form-check-input';
-        checkbox.id = option.value;
-        checkbox.value = option.value;
-        checkbox.addEventListener('change', handleCheckboxChange);
+            const groupedSubcontractors = subcontractors.reduce((acc, sub) => {
+                if (!acc[sub.name]) acc[sub.name] = [];
+                acc[sub.name].push(sub); // Add subcontractors under the same company name
+                return acc;
+            }, {});
 
-        const label = document.createElement('label');
-        label.className = 'form-check-label';
-        label.htmlFor = option.value;
-        label.innerText = option.label;
+            // Create checkboxes
+            const options = [
+                { value: 'company-vehicles', label: 'Company Vehicles' },
+                { value: 'subcontractors', label: 'Subcontractors' }
+            ];
 
-        const div = document.createElement('div');
-        div.className = 'form-check';
-        div.appendChild(checkbox);
-        div.appendChild(label);
+            options.forEach(option => {
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'form-check-input';
+                checkbox.id = option.value;
+                checkbox.value = option.value;
+                checkbox.addEventListener('change', handleCheckboxChange);
 
-        checkboxContainer.appendChild(div);
-    });
+                const label = document.createElement('label');
+                label.className = 'form-check-label';
+                label.htmlFor = option.value;
+                label.innerText = option.label;
 
-    function handleCheckboxChange() {
-        const selectedValues = Array.from(checkboxContainer.querySelectorAll('input:checked')).map(cb => cb.value);
+                const div = document.createElement('div');
+                div.className = 'form-check';
+                div.id = option.value + '-container'; // Unique container for each checkbox
+                div.appendChild(checkbox);
+                div.appendChild(label);
 
-        // Fetch and display data based on selected values
-        displayData(selectedValues);
-    }
+                // Append a placeholder div for showing subcontractors' names when selected
+                const subcontractorList = document.createElement('div');
+                subcontractorList.id = option.value + '-list';
+                subcontractorList.style.display = 'none'; // Hidden by default
+                subcontractorList.className = 'ms-3 mt-2'; // Some margin for positioning
 
-    function displayData(selectedValues) {
-        // Clear the dataContainer
-        dataContainer.innerHTML = '';
+                div.appendChild(subcontractorList);
 
-        // Display data for each selected type
-        selectedValues.forEach(value => {
-            const items = value === 'company-vehicles' ? companyVehicles : subcontractors;
-            const cardType = value === 'company-vehicles' ? 'vehicle' : 'subcontractor';
+                checkboxContainer.appendChild(div);
+            });
 
-            dataContainer.innerHTML += generateCards(items, cardType);
-        });
-    }
+            function handleCheckboxChange(event) {
+                const selectedCheckbox = event.target.value;
+                const subcontractorList = document.getElementById('subcontractors-list');
 
-    function generateCards(items, type) {
-        return items.map(item => `
-            <div class="col-md-4 mb-4">
-                <div class="card position-relative" style="width: 100%;">
-                    <input class="form-check-input position-absolute top-0 end-0 m-2" type="radio" name="truck_type" id="${type}-${item.id}" value="${item.id}">
-                    <div class="card-body">
-                        <h5 class="card-title">${item.name}</h5>
-                        <p class="card-text">
-                            ${item.description}
-                        </p>
+                if (selectedCheckbox === 'subcontractors') {
+                    if (event.target.checked) {
+                        // Show the list of unique company names below the Subcontractor checkbox
+                        subcontractorList.innerHTML = Object.keys(groupedSubcontractors).map(companyName => `
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="selected_company" value="${companyName}">
+                                <label class="form-check-label">${companyName}</label>
+                            </div>
+                        `).join('');
+                        subcontractorList.style.display = 'block';
+
+                        // Add event listener to the company name checkboxes
+                        subcontractorList.querySelectorAll('input').forEach(companyCheckbox => {
+                            companyCheckbox.addEventListener('change', function () {
+                                if (this.checked) {
+                                    // Clear the dataContainer and display the subcontractors under the selected company name
+                                    const selectedCompanySubcontractors = groupedSubcontractors[this.value];
+                                    dataContainer.innerHTML = generateCards(selectedCompanySubcontractors, 'subcontractor');
+                                }
+                            });
+                        });
+                    } else {
+                        // Hide the list and clear data container if unchecked
+                        subcontractorList.style.display = 'none';
+                        dataContainer.innerHTML = '';
+                    }
+                } else if (selectedCheckbox === 'company-vehicles') {
+                    if (event.target.checked) {
+                        // Display company vehicles directly
+                        dataContainer.innerHTML = generateCards(companyVehicles, 'vehicle');
+                    } else {
+                        // Clear data if unchecked
+                        dataContainer.innerHTML = '';
+                    }
+                }
+            }
+
+            function generateCards(items, type) {
+                return items.map(item => `
+                    <div class="col-md-4 mb-4">
+                        <div class="card position-relative" style="width: 100%;">
+                            <input class="form-check-input position-absolute top-0 end-0 m-2" type="radio" name="truck_type" id="${type}-${item.id}" value="${item.id}">
+                            <div class="card-body">
+                                <h5 class="card-title">${item.name}</h5>
+                                <p class="card-text">
+                                    ${item.description}
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        `).join('');
-    }
-});
+                `).join('');
+            }
+        });
+   </script>
+   <!-- Your HTML structure -->
+
+
+ <script>
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+        const submitButton = document.querySelector('button[type="submit"]');
+        const downloadButton = document.getElementById('downloadBtn');
+
+        // Hide the buttons
+        submitButton.style.display = 'none';
+        downloadButton.style.display = 'none';
+
+        const element = document.getElementById('formContainer'); // Target the specific container
+        html2pdf()
+            .from(element)
+            .set({
+                filename: 'form.pdf',
+                image: {
+                    type: 'jpeg',
+                    quality: 1
+                },
+                html2canvas: {
+                    scale: 2
+                },
+                jsPDF: {
+                    unit: 'in',
+                    format: 'legal',
+                    orientation: 'portrait'
+                }
+            })
+            .save()
+            .then(() => {
+                // Show the buttons again after PDF generation
+                submitButton.style.display = '';
+                downloadButton.style.display = '';
+            });
+    });
+</script>
 
 
 
-       </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/jquery-3.7.1.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/vendor/bootstrap-toggle.min.js"></script>
@@ -552,41 +680,6 @@
     <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast.min.css" rel="stylesheet">
     <link href="https://script.viserlab.com/courierlab/demo/assets/global/css/iziToast_custom.css" rel="stylesheet">
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/iziToast.min.js"></script>
-
-
-    <script>
-        function downloadForm() {
-            // Get the form element
-            const form = document.getElementById('myForm');
-
-            // Capture the form's HTML content
-            const formHtml = form.outerHTML;
-
-            // Capture the links to external stylesheets
-            const stylesheets = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
-                .map(link => `<link rel="stylesheet" href="${link.href}">`)
-                .join('\n');
-
-            // Construct the full HTML content
-            const fullHtml = `
-                <html>
-                <head>
-                    ${stylesheets}
-                </head>
-                <body>${formHtml}</body>
-                </html>
-            `;
-
-            // Create a Blob (file) with the HTML content
-            const blob = new Blob([fullHtml], { type: 'text/html' });
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = 'form.html'; // The file name
-
-            // Trigger the download
-            link.click();
-        }
-    </script>
 
 
     <!-- Your other script inclusions -->

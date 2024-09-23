@@ -55,32 +55,35 @@ class AdminController extends Controller
 
         // Fetch the latest location for each booking and get driver names
         $latestLocations = Booking::select('bookings.id', 'bookings.location', 'bookings.driver_name', 'users.name as driver_name')
-            ->leftJoin('users', 'bookings.driver_name', '=', 'users.id')
-            ->whereIn('bookings.id', function ($query) {
-                $query->selectRaw('MAX(id)')
-                    ->from('bookings')
-                    ->groupBy('id');
-            })
-            ->get();
+        ->leftJoin('users', 'bookings.driver_name', '=', 'users.id')
+        ->whereIn('bookings.id', function ($query) {
+            $query->selectRaw('MAX(id)')
+                ->from('bookings')
+                ->groupBy('id');
+        })
+        ->where('bookings.order_status', '!=', 'Confirmed_delivery') // Exclude 'Confirmed_delivery' status
+        ->get();
 
-        $apiKey = 'AIzaSyCUlV2s9XbLAsllvpPnFoxkznXbdFqUXK4';
+    $locationsWithAddresses = [];
 
-        $locationsWithAddresses = [];
+    foreach ($latestLocations as $booking) {
+        // Use the booking's location field (assuming it's a formatted address)
+        $address = $booking->location;
 
-        foreach ($latestLocations as $booking) {
-            // Use the booking's location field (assuming it's a formatted address)
-            $address = $booking->location;
+        // Get the driver name directly from the join
+        $driverName = $booking->driver_name;
 
-            // Get the driver name directly from the join
-            $driverName = $booking->driver_name;
+        // Add the location and creator (driver name) to the array
+        $locationsWithAddresses[] = [
+            'id' => $booking->id,
+            'address' => $address,
+            'creator' => $driverName ? $driverName : 'Unknown'
+        ];
+    }
 
-            // Add the location and creator (driver name) to the array
-            $locationsWithAddresses[] = [
-                'id' => $booking->id,
-                'address' => $address,
-                'creator' => $driverName ? $driverName : 'Unknown'
-            ];
-        }
+    // Pass the locationsWithAddresses to the view
+
+
 
         return view('Admin.dashboard', compact(
             'totalBookings',

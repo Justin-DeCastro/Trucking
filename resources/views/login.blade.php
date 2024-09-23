@@ -2,18 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Include SweetAlert2 CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-
-<!-- Include SweetAlert2 JS -->
-
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>Trucking Management System in Cabuyao, Philippines</title>
+    <meta name="description" content="Efficient trucking management system in Cabuyao, Philippines, specializing in inbound and outbound logistics, real-time tracking, and operational efficiency.">
+    <meta name="keywords" content="Trucking Management System, Cabuyao, Philippines, inbound logistics, outbound logistics, transportation, tracking, fleet management">
+    <meta name="author" content="GDR Trucking System">
+    <link rel="icon" href="Home/GDR Logo.png" type="image/png">
+    <!-- Include SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Login</title>
-    <style>
 
+    <style>
         .divider:after,
         .divider:before {
             content: "";
@@ -39,6 +42,7 @@
         }
     </style>
 </head>
+
 <body>
     <section class="vh-100 d-flex align-items-center">
         <div class="container py-5 h-100">
