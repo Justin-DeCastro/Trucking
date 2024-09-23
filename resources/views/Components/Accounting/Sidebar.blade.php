@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="https://cdn.lineicons.com/2.0/LineIcons.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <style>
     .logo-container {
         position: relative;
@@ -69,87 +72,104 @@
             </div>
 
 
-        <div class="sidebar__menu-wrapper">
-            <ul class="sidebar__menu">
-                <li class="sidebar-menu-item active">
-                    <a href="accountingdash" class="nav-link">
-                        <i class="fas fa-tachometer-alt menu-icon"></i> <!-- Dashboard icon -->
-                        <span class="menu-title">Dashboard</span>
-                    </a>
-                </li>
+            <div class="sidebar__menu-wrapper">
+                <ul class="sidebar__menu">
+                    <li class="sidebar-menu-item active">
+                        <a href="accountingdash" class="nav-link">
+                            <i class="fas fa-tachometer-alt menu-icon"></i> <!-- Dashboard icon -->
+                            <span class="menu-title">Dashboard</span>
+                        </a>
+                    </li>
 
-                <!-- Updated Dropdown Menu for ManageReport -->
-                <li class="sidebar-menu-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="manageReportDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-chart-bar menu-icon"></i> <!-- Reports icon -->
-                        <span class="menu-title">In House Reports</span>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="manageReportDropdown">
-                        <li><a class="dropdown-item" href="rate-per-mile">Per Trip</a></li>
-                        <li><a class="dropdown-item" href="rate-per-month">Per Month</a></li>
-                        <li><a class="dropdown-item" href="rate-per-year">Per Year</a></li>
-                    </ul>
-                </li>
+                    <!-- Updated Dropdown Menu for ManageReport -->
+                    <li class="sidebar-menu-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="manageReportDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-chart-bar menu-icon"></i> <!-- Reports icon -->
+                            <span class="menu-title">In House Reports</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="manageReportDropdown">
+                            <li><a class="dropdown-item" href="rate-per-mile">Per Trip</a></li>
+                            <li><a class="dropdown-item" href="rate-per-month">Per Month</a></li>
+                            <li><a class="dropdown-item" href="rate-per-year">Per Year</a></li>
+                        </ul>
+                    </li>
 
-                <!-- Other Menu Items -->
-                <li class="sidebar-menu-item">
-                    <a href="account-accounting" class="nav-link">
-                        <i class="fas fa-user-cog menu-icon"></i> <!-- Accounts icon -->
-                        <span class="menu-title">Accounts</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <a href="loanamount" class="nav-link">
-                        <i class="fas fa-money-bill-wave menu-icon"></i> <!-- Loan icon -->
-                        <span class="menu-title">Consign</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <a href="accounting-pms" class="nav-link">
-                        <i class="fas fa-cogs menu-icon"></i> <!-- PMS icon -->
-                        <span class="menu-title">PMS</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <a href="calendar-acc" class="nav-link">
-                        <i class="fas fa-calendar-alt menu-icon"></i> <!-- Calendar icon -->
-                        <span class="menu-title">Calendar</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <a href="requestbudget" class="nav-link">
-                        <i class="fas fa-dollar-sign menu-icon"></i> <!-- Budget icon -->
-                        <span class="menu-title">Request Budget</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <a href="GDRAccounting" class="nav-link">
-                        <i class="fas fa-file-invoice menu-icon"></i> <!-- GDR Account icon -->
-                        <span class="menu-title">GDR ACCOUNT</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <a href="receivable" class="nav-link">
-                        <i class="fas fa-dollar-sign menu-icon"></i> <!-- Budget icon -->
-                        <span class="menu-title">Receivable</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <a href="financialreport" class="nav-link">
-                        <i class="fas fa-file-alt menu-icon"></i> <!-- Financial Report icon -->
-                        <span class="menu-title">Financial Report</span>
-                    </a>
-                </li>
+                    <!-- Other Menu Items -->
+                    <li class="sidebar-menu-item">
+                        <a href="account-accounting" class="nav-link">
+                            <i class="fas fa-user-cog menu-icon"></i> <!-- Accounts icon -->
+                            <span class="menu-title">Accounts</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="loanamount" class="nav-link">
+                            <i class="fas fa-money-bill-wave menu-icon"></i> <!-- Loan icon -->
+                            <span class="menu-title">Consign</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="accounting-pms" class="nav-link">
+                            <i class="fas fa-cogs menu-icon"></i> <!-- PMS icon -->
+                            <span class="menu-title">PMS</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="calendar-acc" class="nav-link">
+                            <i class="fas fa-calendar-alt menu-icon"></i> <!-- Calendar icon -->
+                            <span class="menu-title">Calendar</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="requestbudget" class="nav-link">
+                            <i class="fas fa-dollar-sign menu-icon"></i> <!-- Budget icon -->
+                            <span class="menu-title">Request Budget</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="GDRAccounting" class="nav-link">
+                            <i class="fas fa-file-invoice menu-icon"></i> <!-- GDR Account icon -->
+                            <span class="menu-title">GDR ACCOUNT</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="receivable" class="nav-link">
+                            <i class="fas fa-dollar-sign menu-icon"></i> <!-- Budget icon -->
+                            <span class="menu-title">Receivable</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="financialreport" class="nav-link">
+                            <i class="fas fa-file-alt menu-icon"></i> <!-- Financial Report icon -->
+                            <span class="menu-title">Financial Report</span>
+                        </a>
+                    </li>
 
 
 
 
-            </ul>
+                </ul>
+            </div>
+
         </div>
-
     </div>
-</div>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get the current page URL
+            var currentUrl = window.location.pathname.split("/").pop();
+
+            // Select all menu items
+            var menuItems = document.querySelectorAll(".sidebar-menu-item a");
+
+            menuItems.forEach(function(item) {
+                var link = item.getAttribute("href");
+
+                // Check if the href matches the current URL
+                if (link === currentUrl) {
+                    item.parentElement.classList.add("active");
+                }
+            });
+        });
+    </script>

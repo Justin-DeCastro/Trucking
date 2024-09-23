@@ -34,7 +34,7 @@
         /* White text for header */
     }
 
-    .jobOffersTable tbody tr:nth-child(even) {
+    .jobOffersTable tbody tr:nth-chil   d(even) {
         background-color: #f2f2f2;
         /* Light grey for alternate rows */
     }

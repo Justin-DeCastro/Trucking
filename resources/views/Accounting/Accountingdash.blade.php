@@ -9,7 +9,7 @@
     <div class="page-wrapper default-version">
 
         @include('Components.Accounting.Sidebar')
-        {{-- @include('Components.Accounting.Navbar') --}}
+       @include('Components.Admin.Navbar')
 
         {{-- <nav class="navbar-wrapper bg--dark d-flex flex-wrap"> --}}
 

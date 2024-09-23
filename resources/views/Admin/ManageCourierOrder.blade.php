@@ -149,9 +149,8 @@
 <body>
 
 
-    @include('Components.Admin.Driver_Sidebar')
     @include('Components.Admin.Navbar')
-
+    @include('Components.Admin.Driver_Sidebar')
 
     <div class="body-wrapper">
         <div class="bodywrapper__inner">

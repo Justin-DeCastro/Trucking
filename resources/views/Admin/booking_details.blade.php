@@ -307,10 +307,10 @@
 </head>
 
 <body>
-
+    @include('Components.Admin.CoordinatorSidebar')
     @include('Components.Admin.Navbar')
 
-    @include('Components.Admin.CoordinatorSidebar')
+
 
     <div class="body-wrapper">
         <div class="bodywrapper__inner">
@@ -1149,143 +1149,143 @@
         }
     </script>
 
-   <script>
-    var timerIntervals = {}; // Store interval references
+    <script>
+        var timerIntervals = {}; // Store interval references
 
-    function startTimer(detailId, duration) {
-        var hoursElement = document.getElementById('hours' + detailId);
-        var minutesElement = document.getElementById('minutes' + detailId);
-        var secondsElement = document.getElementById('seconds' + detailId);
+        function startTimer(detailId, duration) {
+            var hoursElement = document.getElementById('hours' + detailId);
+            var minutesElement = document.getElementById('minutes' + detailId);
+            var secondsElement = document.getElementById('seconds' + detailId);
 
-        var startTime = Date.now();
-        var endTime = startTime + duration * 1000;
+            var startTime = Date.now();
+            var endTime = startTime + duration * 1000;
 
-        // Timer interval
-        timerIntervals[detailId] = setInterval(function() {
-            var now = Date.now();
-            var elapsedTime = Math.max(now - startTime, 0);
+            // Timer interval
+            timerIntervals[detailId] = setInterval(function() {
+                var now = Date.now();
+                var elapsedTime = Math.max(now - startTime, 0);
 
-            var hours = Math.floor(elapsedTime / (1000 * 60 * 60));
-            var minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+                var hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+                var minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
 
-            hoursElement.textContent = String(hours).padStart(2, '0');
-            minutesElement.textContent = String(minutes).padStart(2, '0');
-            secondsElement.textContent = String(seconds).padStart(2, '0');
+                hoursElement.textContent = String(hours).padStart(2, '0');
+                minutesElement.textContent = String(minutes).padStart(2, '0');
+                secondsElement.textContent = String(seconds).padStart(2, '0');
 
-        }, 1000); // Update every second
-    }
+            }, 1000); // Update every second
+        }
 
-    function stopTimer(detailId) {
-        // Clear the interval to stop the timer
-        clearInterval(timerIntervals[detailId]);
-        console.log('Timer stopped for detail ID:', detailId);
-    }
+        function stopTimer(detailId) {
+            // Clear the interval to stop the timer
+            clearInterval(timerIntervals[detailId]);
+            console.log('Timer stopped for detail ID:', detailId);
+        }
 
-    function initMap(detailId, startAddress, endAddress) {
-        var map = new google.maps.Map(document.getElementById('map' + detailId), {
-            zoom: 10,
-            center: {
-                lat: -34.397,
-                lng: 150.644
-            } // Default center; will update later
-        });
+        function initMap(detailId, startAddress, endAddress) {
+            var map = new google.maps.Map(document.getElementById('map' + detailId), {
+                zoom: 10,
+                center: {
+                    lat: -34.397,
+                    lng: 150.644
+                } // Default center; will update later
+            });
 
-        var directionsService = new google.maps.DirectionsService();
-        var directionsRenderer = new google.maps.DirectionsRenderer();
-        directionsRenderer.setMap(map);
+            var directionsService = new google.maps.DirectionsService();
+            var directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setMap(map);
 
-        var request = {
-            origin: startAddress,
-            destination: endAddress,
-            travelMode: 'DRIVING'
-        };
+            var request = {
+                origin: startAddress,
+                destination: endAddress,
+                travelMode: 'DRIVING'
+            };
 
-        directionsService.route(request, function(result, status) {
-            if (status === 'OK') {
-                directionsRenderer.setDirections(result);
-                map.setCenter(result.routes[0].legs[0].start_location);
+            directionsService.route(request, function(result, status) {
+                if (status === 'OK') {
+                    directionsRenderer.setDirections(result);
+                    map.setCenter(result.routes[0].legs[0].start_location);
 
-                // Define the truck icon URL
-                var truckIcon = 'https://maps.google.com/mapfiles/kml/shapes/truck.png';
-                // Define the red location icon URL
-                var locationIcon = 'https://maps.google.com/mapfiles/kml/paddle/red-circle.png';
+                    // Define the truck icon URL
+                    var truckIcon = 'https://maps.google.com/mapfiles/kml/shapes/truck.png';
+                    // Define the red location icon URL
+                    var locationIcon = 'https://maps.google.com/mapfiles/kml/paddle/red-circle.png';
 
-                // Create the truck marker
-                var truckMarker = new google.maps.Marker({
-                    position: result.routes[0].legs[0].start_location,
-                    map: map,
-                    icon: truckIcon,
-                    title: 'Moving Truck'
-                });
+                    // Create the truck marker
+                    var truckMarker = new google.maps.Marker({
+                        position: result.routes[0].legs[0].start_location,
+                        map: map,
+                        icon: truckIcon,
+                        title: 'Moving Truck'
+                    });
 
-                // Set timer
-                var durationInSeconds = result.routes[0].legs[0].duration.value;
-                startTimer(detailId, durationInSeconds);
+                    // Set timer
+                    var durationInSeconds = result.routes[0].legs[0].duration.value;
+                    startTimer(detailId, durationInSeconds);
 
-                // Move the truck marker as the truck moves
-                var route = result.routes[0].legs[0];
-                var step = 0;
+                    // Move the truck marker as the truck moves
+                    var route = result.routes[0].legs[0];
+                    var step = 0;
 
-                // Get the timeline element where we will record each place the truck encounters
-                var timelineListElement = document.getElementById('timelineHistory' + detailId);
+                    // Get the timeline element where we will record each place the truck encounters
+                    var timelineListElement = document.getElementById('timelineHistory' + detailId);
 
-                function moveTruck() {
-                    if (step < route.steps.length) {
-                        var stepLocation = route.steps[step].end_location;
+                    function moveTruck() {
+                        if (step < route.steps.length) {
+                            var stepLocation = route.steps[step].end_location;
 
-                        // Move the truck marker
-                        truckMarker.setPosition(stepLocation);
+                            // Move the truck marker
+                            truckMarker.setPosition(stepLocation);
 
-                        // Create a location marker
-                        var locationMarker = new google.maps.Marker({
-                            position: stepLocation,
-                            map: map,
-                            icon: locationIcon,
-                            title: route.steps[step].instructions
-                        });
+                            // Create a location marker
+                            var locationMarker = new google.maps.Marker({
+                                position: stepLocation,
+                                map: map,
+                                icon: locationIcon,
+                                title: route.steps[step].instructions
+                            });
 
-                        // Record the step in the timeline
-                        var placeDescription = route.steps[step].instructions;
-                        var placeElement = document.createElement('li');
-                        placeElement.innerHTML = placeDescription;
-                        timelineListElement.appendChild(placeElement); // Add place to the timeline
+                            // Record the step in the timeline
+                            var placeDescription = route.steps[step].instructions;
+                            var placeElement = document.createElement('li');
+                            placeElement.innerHTML = placeDescription;
+                            timelineListElement.appendChild(placeElement); // Add place to the timeline
 
-                        step++;
-                        setTimeout(moveTruck, 2000); // Simulate truck movement every 2 seconds
-                    } else {
-                        // Truck has reached the destination
-                        console.log("Truck has arrived at the destination. Stopping timer.");
-                        stopTimer(detailId); // Stop the timer when truck reaches the destination
+                            step++;
+                            setTimeout(moveTruck, 2000); // Simulate truck movement every 2 seconds
+                        } else {
+                            // Truck has reached the destination
+                            console.log("Truck has arrived at the destination. Stopping timer.");
+                            stopTimer(detailId); // Stop the timer when truck reaches the destination
 
-                        // Record final timeline entry
-                        var arrivalElement = document.createElement('li');
-                        arrivalElement.innerHTML = "<strong>Truck has arrived at the destination.</strong>";
-                        timelineListElement.appendChild(arrivalElement);
+                            // Record final timeline entry
+                            var arrivalElement = document.createElement('li');
+                            arrivalElement.innerHTML = "<strong>Truck has arrived at the destination.</strong>";
+                            timelineListElement.appendChild(arrivalElement);
+                        }
                     }
+
+                    moveTruck(); // Start moving the truck
+
+                } else {
+                    console.error('Directions request failed due to ' + status);
                 }
+            });
+        }
 
-                moveTruck(); // Start moving the truck
-
-            } else {
-                console.error('Directions request failed due to ' + status);
-            }
+        document.addEventListener('DOMContentLoaded', function() {
+            @foreach ($rubixdetails as $detail)
+                document.getElementById('modal{{ $detail->id }}').addEventListener('shown.bs.modal',
+                    function() {
+                        initMap(
+                            '{{ $detail->id }}',
+                            '{{ $detail->origin }}',
+                            '{{ $detail->destination }}'
+                        );
+                    });
+            @endforeach
         });
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        @foreach ($rubixdetails as $detail)
-            document.getElementById('modal{{ $detail->id }}').addEventListener('shown.bs.modal',
-                function() {
-                    initMap(
-                        '{{ $detail->id }}',
-                        '{{ $detail->origin }}',
-                        '{{ $detail->destination }}'
-                    );
-                });
-        @endforeach
-    });
-</script>
+    </script>
 
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
