@@ -18,163 +18,166 @@
     @include('Components.Accounting.Sidebar')
     @include('Components.Admin.Navbar')
 
-
-    <div class="body-wrapper">
-        <div class="bodywrapper__inner">
-            <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
-                <h6 class="page-title">Monthly Inhouse Earning</h6>
-                <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class='bx bx-export'></i> Export
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <button type="button" id="copyBtn" class="btn dropdown-item">
-                                    <i class='bx bx-copy'></i> Copy
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="printBtn" class="btn dropdown-item">
-                                    <i class='bx bx-printer'></i> Print
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="pdfBtn" class="btn dropdown-item">
-                                    <i class='bx bxs-file-pdf'></i> PDF
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="excelBtn" class="btn dropdown-item">
-                                    <i class='bx bx-file'></i> Excel
-                                </button>
-                            </li>
-                        </ul>
+    <div class="container-fluid px-3 px-sm-0">
+        <div class="body-wrapper">
+            <div class="bodywrapper__inner">
+                <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
+                    <h6 class="page-title">Monthly Inhouse Earning</h6>
+                    <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class='bx bx-export'></i> Export
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <button type="button" id="copyBtn" class="btn dropdown-item">
+                                        <i class='bx bx-copy'></i> Copy
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="printBtn" class="btn dropdown-item">
+                                        <i class='bx bx-printer'></i> Print
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="pdfBtn" class="btn dropdown-item">
+                                        <i class='bx bxs-file-pdf'></i> PDF
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="excelBtn" class="btn dropdown-item">
+                                        <i class='bx bx-file'></i> Excel
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Display the overall Outstanding Balance and Remaining Balance -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body p-0">
-                            <div class="table-responsive--md table-responsive">
-                                <table id="data-table" class="table table--light style--two display nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Rate per Mile</th>
-                                            <th>Kilometers</th>
-                                            <th>Operational Costs</th>
-                                            <th>Gross Income</th>
-                                            <th>Net</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse($rates as $rate)
-                                            @php
-                                                $grossIncome = $rate->rate_per_mile * $rate->km;
-                                                $netAmount = $grossIncome - $rate->operational_costs;
-                                            @endphp
-                                            <tr class="clickable-row" data-bs-toggle="modal"
-                                                data-bs-target="#detailsModal"
-                                                data-date="{{ \Carbon\Carbon::parse($rate->date)->format('d-M-y h:i') }}"
-                                                data-rate-per-mile="₱{{ number_format($rate->rate_per_mile, 2) }}"
-                                                data-kilometers="{{ number_format($rate->km, 2) }}"
-                                                data-operational-costs="₱{{ number_format($rate->operational_costs, 2) }}"
-                                                data-gross-income="₱{{ number_format($grossIncome, 2) }}"
-                                                data-net-amount="₱{{ number_format($netAmount, 2) }}">
-
-
-                                                <td>{{ \Carbon\Carbon::parse($rate->date)->format('d-M-y h:i') }}</td>
-                                                <td>₱{{ number_format($rate->rate_per_mile, 2) }}</td>
-                                                <td>{{ number_format($rate->km, 2) }}</td>
-                                                <td>₱{{ number_format($rate->operational_costs, 2) }}</td>
-                                                <td>₱{{ number_format($grossIncome, 2) }}</td>
-                                                <td>₱{{ number_format($netAmount, 2) }}</td>
-                                            </tr>
-                                        @empty
+                <!-- Display the overall Outstanding Balance and Remaining Balance -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body p-0">
+                                <div class="table-responsive--md table-responsive">
+                                    <table id="data-table" class="table table--light style--two display nowrap">
+                                        <thead>
                                             <tr>
-                                                <td colspan="6" class="text-center">No data available.</td>
+                                                <th>Date</th>
+                                                <th>Rate per Mile</th>
+                                                <th>Kilometers</th>
+                                                <th>Operational Costs</th>
+                                                <th>Gross Income</th>
+                                                <th>Net</th>
                                             </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            @forelse($rates as $rate)
+                                                @php
+                                                    $grossIncome = $rate->rate_per_mile * $rate->km;
+                                                    $netAmount = $grossIncome - $rate->operational_costs;
+                                                @endphp
+                                                <tr class="clickable-row" data-bs-toggle="modal"
+                                                    data-bs-target="#detailsModal"
+                                                    data-date="{{ \Carbon\Carbon::parse($rate->date)->format('d-M-y h:i') }}"
+                                                    data-rate-per-mile="₱{{ number_format($rate->rate_per_mile, 2) }}"
+                                                    data-kilometers="{{ number_format($rate->km, 2) }}"
+                                                    data-operational-costs="₱{{ number_format($rate->operational_costs, 2) }}"
+                                                    data-gross-income="₱{{ number_format($grossIncome, 2) }}"
+                                                    data-net-amount="₱{{ number_format($netAmount, 2) }}">
+
+
+                                                    <td>{{ \Carbon\Carbon::parse($rate->date)->format('d-M-y h:i') }}
+                                                    </td>
+                                                    <td>₱{{ number_format($rate->rate_per_mile, 2) }}</td>
+                                                    <td>{{ number_format($rate->km, 2) }}</td>
+                                                    <td>₱{{ number_format($rate->operational_costs, 2) }}</td>
+                                                    <td>₱{{ number_format($grossIncome, 2) }}</td>
+                                                    <td>₱{{ number_format($netAmount, 2) }}</td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="6" class="text-center">No data available.</td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Modal to display details -->
-            <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="detailsModalLabel">Trip Details</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p><strong>Date:</strong> <span id="modal-date"></span></p>
-                            <p><strong>Rate per Mile:</strong> <span id="modal-rate-per-mile"></span></p>
-                            <p><strong>Kilometers:</strong> <span id="modal-kilometers"></span></p>
-                            <p><strong>Operational Costs:</strong> <span id="modal-operational-costs"></span></p>
-                            <p><strong>Gross Income:</strong> <span id="modal-gross-income"></span></p>
-                            <p><strong>Net:</strong> <span id="modal-net-amount"></span></p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="printDetailsModal()">Print</button>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- Add Account Modal -->
-            <div class="modal fade" id="manageAccount" tabindex="-1" aria-labelledby="manageAccountLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="manageAccountLabel">In-house Earning
+                <!-- Modal to display details -->
+                <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="detailsModalLabel">Trip Details</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
-                        </div>
-                        <form action="{{ route('earning.store') }}" method="POST">
-                            @csrf
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="rate_per_mile" class="form-label">Rate Per
-                                        Mile/KM</label>
-                                    <input type="text" id="rate_per_mile" name="rate_per_mile"
-                                        class="form-control" required>
-                                </div>
                             </div>
                             <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="km" class="form-label">Input KM</label>
-                                    <input type="text" id="km" name="km" class="form-control"
-                                        required>
-                                </div>
-                            </div>
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="operational_costs" class="form-label">Operational Costs</label>
-                                    <input type="text" id="operational_costs" name="operational_costs"
-                                        class="form-control" required>
-                                </div>
+                                <p><strong>Date:</strong> <span id="modal-date"></span></p>
+                                <p><strong>Rate per Mile:</strong> <span id="modal-rate-per-mile"></span></p>
+                                <p><strong>Kilometers:</strong> <span id="modal-kilometers"></span></p>
+                                <p><strong>Operational Costs:</strong> <span id="modal-operational-costs"></span></p>
+                                <p><strong>Gross Income:</strong> <span id="modal-gross-income"></span></p>
+                                <p><strong>Net:</strong> <span id="modal-net-amount"></span></p>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Create</button>
-                                <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary"
+                                    onclick="printDetailsModal()">Print</button>
                             </div>
-                        </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Account Modal -->
+                <div class="modal fade" id="manageAccount" tabindex="-1" aria-labelledby="manageAccountLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="manageAccountLabel">In-house Earning
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <form action="{{ route('earning.store') }}" method="POST">
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="rate_per_mile" class="form-label">Rate Per
+                                            Mile/KM</label>
+                                        <input type="text" id="rate_per_mile" name="rate_per_mile"
+                                            class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="km" class="form-label">Input KM</label>
+                                        <input type="text" id="km" name="km" class="form-control"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="operational_costs" class="form-label">Operational Costs</label>
+                                        <input type="text" id="operational_costs" name="operational_costs"
+                                            class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Create</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -209,12 +212,12 @@
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
 
-  <script>
-    function printDetailsModal() {
-        var modalContent = document.querySelector('#detailsModal .modal-body').innerHTML;
+    <script>
+        function printDetailsModal() {
+            var modalContent = document.querySelector('#detailsModal .modal-body').innerHTML;
 
-        var printWindow = window.open('', '_blank');
-        printWindow.document.write(`
+            var printWindow = window.open('', '_blank');
+            printWindow.document.write(`
             <html>
                 <head>
                     <title>Print Trip Details</title>
@@ -235,13 +238,13 @@
                 </body>
             </html>
         `);
-        printWindow.document.close();
-        printWindow.onload = function() {
-            printWindow.print();
-            printWindow.close();
-        };
-    }
-</script>
+            printWindow.document.close();
+            printWindow.onload = function() {
+                printWindow.print();
+                printWindow.close();
+            };
+        }
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

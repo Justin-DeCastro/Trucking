@@ -34,7 +34,7 @@
         /* White text for header */
     }
 
-    .jobOffersTable tbody tr:nth-chil   d(even) {
+    .jobOffersTable tbody tr:nth-chil d(even) {
         background-color: #f2f2f2;
         /* Light grey for alternate rows */
     }
@@ -45,12 +45,11 @@
 
 
     @include('Components.Accounting.Sidebar')
-     @include('Components.Admin.Navbar')
+    @include('Components.Admin.Navbar')
 
     <!-- sidebar end -->
 
-
-
+    <div class="container-fluid px-3 px-sm-0">
         <div class="body-wrapper">
             <div class="bodywrapper__inner">
 
@@ -172,34 +171,39 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <table id="data-table"
-                                                class="table table--light style--two display nowrap">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Date</th>
-                                                        <th>Account Name</th>
-                                                        <th>Particulars</th>
-                                                        <th>Service Fee</th>
-                                                        <th>Expenses</th>
-                                                        <th>Net Income</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="table-body">
-                                                    @foreach ($formattedTransactions as $data)
-                                                        <tr class="data-row" data-account="{{ $data['accountName'] }}"
-                                                            data-date="{{ $data['date'] }}"
-                                                            data-net-income="{{ $data['netIncome'] }}">
-                                                            <td>{{ $data['date'] }}</td>
-                                                            <td>{{ $data['accountName'] }}</td>
-                                                            <td>{{ $data['particulars'] }}</td>
-                                                            <td>₱ {{ number_format($data['depositBalance'], 2) }}</td>
-                                                            <td>₱ {{ number_format($data['withdrawBalance'], 2) }}</td>
-                                                            <td class="text-start">₱
-                                                                {{ number_format($data['netIncome'], 2) }}</td>
+                                            <div class="table-responsive--md table-responsive">
+                                                <table id="data-table"
+                                                    class="table table--light style--two display nowrap">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Date</th>
+                                                            <th>Account Name</th>
+                                                            <th>Particulars</th>
+                                                            <th>Service Fee</th>
+                                                            <th>Expenses</th>
+                                                            <th>Net Income</th>
                                                         </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                                                    </thead>
+                                                    <tbody id="table-body">
+                                                        @foreach ($formattedTransactions as $data)
+                                                            <tr class="data-row"
+                                                                data-account="{{ $data['accountName'] }}"
+                                                                data-date="{{ $data['date'] }}"
+                                                                data-net-income="{{ $data['netIncome'] }}">
+                                                                <td>{{ $data['date'] }}</td>
+                                                                <td>{{ $data['accountName'] }}</td>
+                                                                <td>{{ $data['particulars'] }}</td>
+                                                                <td>₱ {{ number_format($data['depositBalance'], 2) }}
+                                                                </td>
+                                                                <td>₱ {{ number_format($data['withdrawBalance'], 2) }}
+                                                                </td>
+                                                                <td class="text-start">₱
+                                                                    {{ number_format($data['netIncome'], 2) }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                             <div class="mt-4">
                                                 <h5>Total Net Income Per Day</h5>
                                                 <ul id="total-net-income-list">
@@ -251,28 +255,31 @@
                         @if ($formattedPreventives->isEmpty())
                             <p class="no-data-message">No data available.</p>
                         @else
-                            <table id="data-table1" class="table table--light style--two display nowrap">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Parts Replaced</th>
-                                        <th>Quantity</th>
-                                        <th>Price per Piece</th>
-                                        <th class="text-start">Total Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($formattedPreventives as $data)
+                            <div class="table-responsive--md table-responsive">
+                                <table id="data-table1" class="table table--light style--two display nowrap">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $data['date'] }}</td>
-                                            <td>{{ $data['partsReplaced'] }}</td>
-                                            <td>{{ $data['quantity'] }}</td>
-                                            <td>₱ {{ number_format($data['pricePerPiece'], 2) }}</td>
-                                            <td class="text-start">₱ {{ number_format($data['totalAmount'], 2) }}</td>
+                                            <th>Date</th>
+                                            <th>Parts Replaced</th>
+                                            <th>Quantity</th>
+                                            <th>Price per Piece</th>
+                                            <th class="text-start">Total Amount</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($formattedPreventives as $data)
+                                            <tr>
+                                                <td>{{ $data['date'] }}</td>
+                                                <td>{{ $data['partsReplaced'] }}</td>
+                                                <td>{{ $data['quantity'] }}</td>
+                                                <td>₱ {{ number_format($data['pricePerPiece'], 2) }}</td>
+                                                <td class="text-start">₱ {{ number_format($data['totalAmount'], 2) }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         @endif
                     </div>
 
@@ -313,29 +320,31 @@
                         @if ($formattedLoans->isEmpty())
                             <p class="no-data-message">No data available.</p>
                         @else
-                            <table id="data-table2" class="table table--light style--two display nowrap">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Borrower</th>
-                                        <th>Initial Amount</th>
-                                        <th>Interest</th>
-                                        <th class="text-start">Total Payment</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($formattedLoans as $data)
+                            <div class="table-responsive--md table-responsive">
+                                <table id="data-table2" class="table table--light style--two display nowrap">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $data['date'] }}</td>
-                                            <td>{{ $data['borrower'] }}</td>
-                                            <td>₱ {{ number_format($data['initialAmount'], 2) }}</td>
-                                            <td>₱ {{ number_format($data['interest'], 2) }}</td>
-                                            <td class="text-start">₱ {{ number_format($data['totalPayment'], 2) }}
-                                            </td>
+                                            <th>Date</th>
+                                            <th>Borrower</th>
+                                            <th>Initial Amount</th>
+                                            <th>Interest</th>
+                                            <th class="text-start">Total Payment</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($formattedLoans as $data)
+                                            <tr>
+                                                <td>{{ $data['date'] }}</td>
+                                                <td>{{ $data['borrower'] }}</td>
+                                                <td>₱ {{ number_format($data['initialAmount'], 2) }}</td>
+                                                <td>₱ {{ number_format($data['interest'], 2) }}</td>
+                                                <td class="text-start">₱ {{ number_format($data['totalPayment'], 2) }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         @endif
                     </div>
                 </div>

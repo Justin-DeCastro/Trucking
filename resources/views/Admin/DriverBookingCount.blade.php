@@ -2,18 +2,23 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
+<style>
+    .clickable-row {
+        cursor: pointer;
+    }
+</style>
+
 @include('Components.Admin.Header')
 
 <body>
-
-
     <div class="page-wrapper default-version">
         @include('Components.Admin.Navbar')
         @include('Components.Admin.Sidebar')
 
+    <div class="container-fluid px-3 px-sm-0">
         <div class="body-wrapper">
             <div class="bodywrapper__inner">
-
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
                     <h6 class="page-title">Manage Driver</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
@@ -71,10 +76,13 @@
                                                 <tr data-id="{{ $booking->id }}" class="clickable-row">
                                                     <td>{{ $booking->driver_id }}</td> <!-- Display Driver ID -->
                                                     <td>{{ $booking->driver_name }}</td> <!-- Display Driver Name -->
-                                                    <td>{{ \Carbon\Carbon::parse($booking->created_at)->format('d-M-y h:i A') }}</td> <!-- Display Date -->
+                                                    <td>{{ \Carbon\Carbon::parse($booking->created_at)->format('d-M-y h:i A') }}
+                                                    </td> <!-- Display Date -->
                                                     <td>{{ $booking->product_name }}</td> <!-- Display Product Name -->
-                                                    <td class="text-start">{{ $booking->origin }}</td> <!-- Display Consignee Address -->
-                                                    <td class="text-start">{{ $booking->destination }}</td> <!-- Display Consignee Address -->
+                                                    <td class="text-start">{{ $booking->origin }}</td>
+                                                    <!-- Display Consignee Address -->
+                                                    <td class="text-start">{{ $booking->destination }}</td>
+                                                    <!-- Display Consignee Address -->
                                                 </tr>
                                             @empty
                                                 <tr>
@@ -93,60 +101,60 @@
             </div>
         </div>
     </div>
- {{-- modal for clickable
 
-  --}}
-  <!-- Modal Structure -->
-<div id="data-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dataModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="dataModalLabel">Booking Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Data will be injected here -->
-                <p><strong>Driver ID:</strong> <span id="modal-driver-id"></span></p>
-                <p><strong>Driver Name:</strong> <span id="modal-driver-name"></span></p>
-                <p><strong>Date:</strong> <span id="modal-date"></span></p>
-                <p><strong>Product Name:</strong> <span id="modal-product-name"></span></p>
-                <p><strong>Origin:</strong> <span id="modal-origin"></span></p>
-                <p><strong>Destination:</strong> <span id="modal-destination"></span></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <!-- Modal Structure -->
+    <div id="data-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dataModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dataModalLabel">Booking Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Data will be injected here -->
+                    <p><strong>Driver ID:</strong> <span id="modal-driver-id"></span></p>
+                    <p><strong>Driver Name:</strong> <span id="modal-driver-name"></span></p>
+                    <p><strong>Date:</strong> <span id="modal-date"></span></p>
+                    <p><strong>Product Name:</strong> <span id="modal-product-name"></span></p>
+                    <p><strong>Origin:</strong> <span id="modal-origin"></span></p>
+                    <p><strong>Destination:</strong> <span id="modal-destination"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Add click event listener to all table rows with class 'clickable-row'
-        document.querySelectorAll('.clickable-row').forEach(function(row) {
-            row.addEventListener('click', function() {
-                // Extract data from the clicked row
-                const driverId = this.cells[0].innerText;
-                const driverName = this.cells[1].innerText;
-                const date = this.cells[2].innerText;
-                const productName = this.cells[3].innerText;
-                const origin = this.cells[4].innerText;
-                const destination = this.cells[5].innerText;
 
-                // Populate modal with extracted data
-                document.getElementById('modal-driver-id').innerText = driverId;
-                document.getElementById('modal-driver-name').innerText = driverName;
-                document.getElementById('modal-date').innerText = date;
-                document.getElementById('modal-product-name').innerText = productName;
-                document.getElementById('modal-origin').innerText = origin;
-                document.getElementById('modal-destination').innerText = destination;
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click event listener to all table rows with class 'clickable-row'
+            document.querySelectorAll('.clickable-row').forEach(function(row) {
+                row.addEventListener('click', function() {
+                    // Extract data from the clicked row
+                    const driverId = this.cells[0].innerText;
+                    const driverName = this.cells[1].innerText;
+                    const date = this.cells[2].innerText;
+                    const productName = this.cells[3].innerText;
+                    const origin = this.cells[4].innerText;
+                    const destination = this.cells[5].innerText;
 
-                // Show the modal
-                $('#data-modal').modal('show');
+                    // Populate modal with extracted data
+                    document.getElementById('modal-driver-id').innerText = driverId;
+                    document.getElementById('modal-driver-name').innerText = driverName;
+                    document.getElementById('modal-date').innerText = date;
+                    document.getElementById('modal-product-name').innerText = productName;
+                    document.getElementById('modal-origin').innerText = origin;
+                    document.getElementById('modal-destination').innerText = destination;
+
+                    // Show the modal
+                    $('#data-modal').modal('show');
+                });
             });
         });
-    });
     </script>
 
     <!-- DataTables CSS -->

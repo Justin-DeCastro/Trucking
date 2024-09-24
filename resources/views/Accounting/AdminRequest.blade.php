@@ -17,338 +17,344 @@
     @include('Components.Admin.Sidebar')
     <!-- sidebar end -->
 
-    <div class="body-wrapper">
-        <div class="bodywrapper__inner">
-            <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
-                <h6 class="page-title">Budget Table</h6>
-                <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class='bx bx-export'></i> Export
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <button type="button" id="copyBtn" class="btn dropdown-item">
-                                    <i class='bx bx-copy'></i> Copy
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="printBtn" class="btn dropdown-item">
-                                    <i class='bx bx-printer'></i> Print
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="pdfBtn" class="btn dropdown-item">
-                                    <i class='bx bxs-file-pdf'></i> PDF
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="excelBtn" class="btn dropdown-item">
-                                    <i class='bx bx-file'></i> Excel
-                                </button>
-                            </li>
-                        </ul>
+    <div class="container-fluid px-3 px-sm-0">
+        <div class="body-wrapper">
+            <div class="bodywrapper__inner">
+                <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
+                    <h6 class="page-title">Budget Table</h6>
+                    <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class='bx bx-export'></i> Export
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <button type="button" id="copyBtn" class="btn dropdown-item">
+                                        <i class='bx bx-copy'></i> Copy
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="printBtn" class="btn dropdown-item">
+                                        <i class='bx bx-printer'></i> Print
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="pdfBtn" class="btn dropdown-item">
+                                        <i class='bx bxs-file-pdf'></i> PDF
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="excelBtn" class="btn dropdown-item">
+                                        <i class='bx bx-file'></i> Excel
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body p-0">
-                            <div class="table-responsive--md table-responsive">
-                                <table id="data-table" class="table table--light style--two display nowrap">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body p-0">
+                                <div class="table-responsive--md table-responsive">
+                                    <table id="data-table" class="table table--light style--two display nowrap">
 
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Requestee</th>
-                                            <th>Department</th>
-                                            <th>Amount</th>
-                                            <th>Expense Details</th>
-                                            <th>Voucher</th>
-                                            <th>Status</th>
-                                            <th>Approved By</th> <!-- Added column -->
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($budgets as $budget)
-                                            <tr class="clickable-row" data-bs-target="#budgetModal{{ $budget->id }}"
-                                                id="row-{{ $budget->id }}">
-                                                <td>{{ \Carbon\Carbon::parse($budget->date)->format('d-M-y h-i A') }}
-                                                </td>
-                                                <td>{{ $budget->requestee }}</td>
-                                                <td>{{ $budget->department }}</td>
-                                                <td>{{ number_format($budget->budget_amount, 2) }}</td>
-                                                <td>{{ $budget->expense_details }}</td>
-                                                <td>{{ $budget->voucher }}</td>
-                                                <td id="status-{{ $budget->id }}">
-                                                    @if ($budget->status === 'Pending')
-                                                        <span
-                                                            style="background-color: yellow; box-shadow: 0 4px 8px rgba(255, 255, 0, 0.5); padding: 2px 4px;">
-                                                            {{ $budget->status }}
-                                                        </span>
-                                                    @elseif ($budget->status === 'Approved')
-                                                        <span
-                                                            style="background-color: green; color: white; box-shadow: 0 4px 8px rgba(0, 255, 0, 0.5); padding: 2px 4px;">
-                                                            {{ $budget->status }}
-                                                        </span>
-                                                    @elseif ($budget->status === 'Denied')
-                                                        <span
-                                                            style="background-color: red; color: white; box-shadow: 0 4px 8px rgba(255, 0, 0, 0.5); padding: 2px 4px;">
-                                                            {{ $budget->status }}
-                                                        </span>
-                                                    @else
-                                                        {{ $budget->status }}
-                                                    @endif
-                                                </td>
-
-
-
-                                                <td>{{ $budget->approved_by ? \App\Models\User::find($budget->approved_by)->name : 'N/A' }}
-                                                </td> <!-- Display approved by -->
-                                                <td class="action-btn">
-                                                    <form action="{{ route('budgets.approve', $budget->id) }}"
-                                                        method="POST" style="display:inline;" class="approve-form">
-                                                        @csrf
-                                                        <button type="submit"
-                                                            class="btn btn-success approve-btn {{ $budget->status == 'Approved' ? 'disabled' : '' }}"
-                                                            {{ $budget->status == 'Approved' ? 'disabled' : '' }}>
-                                                            Approve
-                                                        </button>
-                                                    </form>
-                                                    <form action="{{ route('budgets.deny', $budget->id) }}"
-                                                        method="POST" style="display:inline;" class="deny-form">
-                                                        @csrf
-                                                        <button type="submit"
-                                                            class="btn btn-danger deny-btn {{ $budget->status == 'Denied' ? 'disabled' : '' }}"
-                                                            {{ $budget->status == 'Denied' ? 'disabled' : '' }}>
-                                                            Deny
-                                                        </button>
-                                                    </form>
-                                                </td>
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Requestee</th>
+                                                <th>Department</th>
+                                                <th>Amount</th>
+                                                <th>Expense Details</th>
+                                                <th>Voucher</th>
+                                                <th>Status</th>
+                                                <th>Approved By</th> <!-- Added column -->
+                                                <th>Action</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($budgets as $budget)
+                                                <tr class="clickable-row"
+                                                    data-bs-target="#budgetModal{{ $budget->id }}"
+                                                    id="row-{{ $budget->id }}">
+                                                    <td>{{ \Carbon\Carbon::parse($budget->date)->format('d-M-y h-i A') }}
+                                                    </td>
+                                                    <td>{{ $budget->requestee }}</td>
+                                                    <td>{{ $budget->department }}</td>
+                                                    <td>{{ number_format($budget->budget_amount, 2) }}</td>
+                                                    <td>{{ $budget->expense_details }}</td>
+                                                    <td>{{ $budget->voucher }}</td>
+                                                    <td id="status-{{ $budget->id }}">
+                                                        @if ($budget->status === 'Pending')
+                                                            <span
+                                                                style="background-color: yellow; box-shadow: 0 4px 8px rgba(255, 255, 0, 0.5); padding: 2px 4px;">
+                                                                {{ $budget->status }}
+                                                            </span>
+                                                        @elseif ($budget->status === 'Approved')
+                                                            <span
+                                                                style="background-color: green; color: white; box-shadow: 0 4px 8px rgba(0, 255, 0, 0.5); padding: 2px 4px;">
+                                                                {{ $budget->status }}
+                                                            </span>
+                                                        @elseif ($budget->status === 'Denied')
+                                                            <span
+                                                                style="background-color: red; color: white; box-shadow: 0 4px 8px rgba(255, 0, 0, 0.5); padding: 2px 4px;">
+                                                                {{ $budget->status }}
+                                                            </span>
+                                                        @else
+                                                            {{ $budget->status }}
+                                                        @endif
+                                                    </td>
 
-            <!-- Create Vehicle Modal -->
-            <div class="modal fade" id="requestBudgetModal" tabindex="-1" aria-labelledby="requestBudgetModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="requestBudgetModalLabel">Budget Request Form
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <form action="{{ route('budget.request') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="modal-body">
-                                <div class="row mb-3">
-                                    <!-- Date -->
-                                    <div class="col-md-6">
-                                        <label for="date" class="form-label">Date</label>
-                                        <input type="date" id="date" name="date" class="form-control"
-                                            required>
-                                    </div>
-                                    <!-- Requestee -->
-                                    <div class="col-md-6">
-                                        <label for="requestee" class="form-label">Requestee</label>
-                                        <input type="text" id="requestee" name="requestee" class="form-control"
-                                            required>
-                                    </div>
-                                    <!-- Department -->
-                                    <div class="col-md-6">
-                                        <label for="department" class="form-label">Department</label>
-                                        <select id="department" name="department" class="form-control" required>
-                                            <option value="" disabled selected>Select
-                                                Department</option>
-                                            <option value="logistics">Logistics</option>
-                                            <option value="maintenance">Maintenance</option>
-                                            <option value="operations">Operations</option>
-                                        </select>
-                                    </div>
-                                    <!-- Budget Amount -->
-                                    <div class="col-md-6">
-                                        <label for="budget_amount" class="form-label">Budget
-                                            Amount</label>
-                                        <input type="number" id="budget_amount" name="budget_amount"
-                                            class="form-control" placeholder="Enter Amount" required>
-                                    </div>
-                                    <!-- Expense Details -->
-                                    <div class="col-md-12">
-                                        <label for="expense_details" class="form-label">Expense
-                                            Details</label>
-                                        <textarea id="expense_details" name="expense_details" class="form-control" placeholder="Describe the Expense"
-                                            rows="3" required></textarea>
-                                    </div>
-                                    <!-- Voucher Attachment -->
-                                    <div class="col-md-12">
-                                        <label for="voucher" class="form-label">Voucher
-                                            Type</label>
-                                        <select id="voucher" name="voucher" class="form-control" required>
-                                            <option value="" disabled selected>Select a
-                                                voucher type</option>
-                                            <option value="cash">Cash</option>
-                                            <option value="cheques">Cheques</option>
-                                            <option value="bank_transfer">Bank Transfer</option>
-                                        </select>
-                                    </div>
+
+
+                                                    <td>{{ $budget->approved_by ? \App\Models\User::find($budget->approved_by)->name : 'N/A' }}
+                                                    </td> <!-- Display approved by -->
+                                                    <td class="action-btn">
+                                                        <form action="{{ route('budgets.approve', $budget->id) }}"
+                                                            method="POST" style="display:inline;" class="approve-form">
+                                                            @csrf
+                                                            <button type="submit"
+                                                                class="btn btn-success approve-btn {{ $budget->status == 'Approved' ? 'disabled' : '' }}"
+                                                                {{ $budget->status == 'Approved' ? 'disabled' : '' }}>
+                                                                Approve
+                                                            </button>
+                                                        </form>
+                                                        <form action="{{ route('budgets.deny', $budget->id) }}"
+                                                            method="POST" style="display:inline;" class="deny-form">
+                                                            @csrf
+                                                            <button type="submit"
+                                                                class="btn btn-danger deny-btn {{ $budget->status == 'Denied' ? 'disabled' : '' }}"
+                                                                {{ $budget->status == 'Denied' ? 'disabled' : '' }}>
+                                                                Deny
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Submit
-                                    Request</button>
-                                <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- withdrawal -->
-            <div class="modal fade" id="manageWithdraw" tabindex="-1" aria-labelledby="manageSubcontractorLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="manageSubcontractorLabel">Withdraw</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <form action="{{ route('withdraw.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="modal-body">
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="amount" class="form-label">Date</label>
-                                        <input type="date" id="date" name="date" class="form-control"
-                                            required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="particulars" class="form-label">Particulars</label>
-                                        <input type="text" id="particulars" name="particulars"
-                                            class="form-control" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="deposit_amount" class="form-label">Deposit Amount</label>
-                                        <input type="text" id="deposit_amount" class="form-control" required
-                                            readonly>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="withdraw_amount" class="form-label">Withdraw
-                                            Amount</label>
-                                        <input type="text" id="withdraw_amount" name="withdraw_amount"
-                                            class="form-control" placeholder="Enter Amount"required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="notes" class="form-label">Notes</label>
-                                        <input type="text" id="notes" name="notes" class="form-control"
-                                            required>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Cancel</button>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- Confirmation Modal -->
-            <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="confirmationModalLabel">Confirm Deletion</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Are you sure you want to delete this vehicle?
-                        </div>
-                        <div class="modal-footer">
-                            <form id="deleteForm" method="POST" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Yes, Delete</button>
-                            </form>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            @foreach ($budgets as $budget)
-                <div class="modal fade" id="budgetModal{{ $budget->id }}" tabindex="-1"
-                    aria-labelledby="budgetModalLabel{{ $budget->id }}" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
+                <!-- Create Vehicle Modal -->
+                <div class="modal fade" id="requestBudgetModal" tabindex="-1" aria-labelledby="requestBudgetModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="budgetModalLabel{{ $budget->id }}">Budget Details for
-                                    {{ $budget->requestee }}</h5>
+                                <h5 class="modal-title" id="requestBudgetModalLabel">Budget Request Form
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form action="{{ route('budget.request') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="row mb-3">
+                                        <!-- Date -->
+                                        <div class="col-md-6">
+                                            <label for="date" class="form-label">Date</label>
+                                            <input type="date" id="date" name="date" class="form-control"
+                                                required>
+                                        </div>
+                                        <!-- Requestee -->
+                                        <div class="col-md-6">
+                                            <label for="requestee" class="form-label">Requestee</label>
+                                            <input type="text" id="requestee" name="requestee" class="form-control"
+                                                required>
+                                        </div>
+                                        <!-- Department -->
+                                        <div class="col-md-6">
+                                            <label for="department" class="form-label">Department</label>
+                                            <select id="department" name="department" class="form-control" required>
+                                                <option value="" disabled selected>Select
+                                                    Department</option>
+                                                <option value="logistics">Logistics</option>
+                                                <option value="maintenance">Maintenance</option>
+                                                <option value="operations">Operations</option>
+                                            </select>
+                                        </div>
+                                        <!-- Budget Amount -->
+                                        <div class="col-md-6">
+                                            <label for="budget_amount" class="form-label">Budget
+                                                Amount</label>
+                                            <input type="number" id="budget_amount" name="budget_amount"
+                                                class="form-control" placeholder="Enter Amount" required>
+                                        </div>
+                                        <!-- Expense Details -->
+                                        <div class="col-md-12">
+                                            <label for="expense_details" class="form-label">Expense
+                                                Details</label>
+                                            <textarea id="expense_details" name="expense_details" class="form-control" placeholder="Describe the Expense"
+                                                rows="3" required></textarea>
+                                        </div>
+                                        <!-- Voucher Attachment -->
+                                        <div class="col-md-12">
+                                            <label for="voucher" class="form-label">Voucher
+                                                Type</label>
+                                            <select id="voucher" name="voucher" class="form-control" required>
+                                                <option value="" disabled selected>Select a
+                                                    voucher type</option>
+                                                <option value="cash">Cash</option>
+                                                <option value="cheques">Cheques</option>
+                                                <option value="bank_transfer">Bank Transfer</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Submit
+                                        Request</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- withdrawal -->
+                <div class="modal fade" id="manageWithdraw" tabindex="-1"
+                    aria-labelledby="manageSubcontractorLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="manageSubcontractorLabel">Withdraw</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form action="{{ route('withdraw.store') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="amount" class="form-label">Date</label>
+                                            <input type="date" id="date" name="date" class="form-control"
+                                                required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="particulars" class="form-label">Particulars</label>
+                                            <input type="text" id="particulars" name="particulars"
+                                                class="form-control" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="deposit_amount" class="form-label">Deposit Amount</label>
+                                            <input type="text" id="deposit_amount" class="form-control" required
+                                                readonly>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="withdraw_amount" class="form-label">Withdraw
+                                                Amount</label>
+                                            <input type="text" id="withdraw_amount" name="withdraw_amount"
+                                                class="form-control" placeholder="Enter Amount"required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="notes" class="form-label">Notes</label>
+                                            <input type="text" id="notes" name="notes" class="form-control"
+                                                required>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirmation Modal -->
+                <div class="modal fade" id="confirmationModal" tabindex="-1"
+                    aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmationModalLabel">Confirm Deletion</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <p><strong>Date:</strong>
-                                    {{ \Carbon\Carbon::parse($budget->date)->format('d-M-y h:i A') }}</p>
-                                <p><strong>Requestee:</strong> {{ $budget->requestee }}</p>
-                                <p><strong>Department:</strong> {{ $budget->department }}</p>
-                                <p><strong>Amount:</strong> ₱{{ number_format($budget->budget_amount, 2) }}</p>
-                                <p><strong>Expense Details:</strong> {{ $budget->expense_details }}</p>
-                                <p><strong>Voucher:</strong> {{ $budget->voucher }}</p>
-                                <p><strong>Status:</strong>
-                                    @if ($budget->status === 'Pending')
-                                        <span
-                                            style="background-color: yellow; box-shadow: 0 4px 8px rgba(255, 255, 0, 0.5); padding: 2px 4px;">
-                                            {{ $budget->status }}
-                                        </span>
-                                    @elseif ($budget->status === 'Approved')
-                                        <span
-                                            style="background-color: green; color: white; box-shadow: 0 4px 8px rgba(0, 255, 0, 0.5); padding: 2px 4px;">
-                                            {{ $budget->status }}
-                                        </span>
-                                    @elseif ($budget->status === 'Denied')
-                                        <span
-                                            style="background-color: red; color: white; box-shadow: 0 4px 8px rgba(255, 0, 0, 0.5); padding: 2px 4px;">
-                                            {{ $budget->status }}
-                                        </span>
-                                    @else
-                                        {{ $budget->status }}
-                                    @endif
-                                </p>
-                                <p><strong>Approved By:</strong>
-                                    {{ $budget->approved_by ? \App\Models\User::find($budget->approved_by)->name : 'N/A' }}
-                                </p>
+                                Are you sure you want to delete this vehicle?
                             </div>
                             <div class="modal-footer">
+                                <form id="deleteForm" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                                </form>
                                 <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary"
-                                    onclick="printModalContent({{ $budget->id }})">Print</button>
+                                    data-bs-dismiss="modal">Cancel</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            @endforeach
 
+                @foreach ($budgets as $budget)
+                    <div class="modal fade" id="budgetModal{{ $budget->id }}" tabindex="-1"
+                        aria-labelledby="budgetModalLabel{{ $budget->id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="budgetModalLabel{{ $budget->id }}">Budget Details
+                                        for
+                                        {{ $budget->requestee }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><strong>Date:</strong>
+                                        {{ \Carbon\Carbon::parse($budget->date)->format('d-M-y h:i A') }}</p>
+                                    <p><strong>Requestee:</strong> {{ $budget->requestee }}</p>
+                                    <p><strong>Department:</strong> {{ $budget->department }}</p>
+                                    <p><strong>Amount:</strong> ₱{{ number_format($budget->budget_amount, 2) }}</p>
+                                    <p><strong>Expense Details:</strong> {{ $budget->expense_details }}</p>
+                                    <p><strong>Voucher:</strong> {{ $budget->voucher }}</p>
+                                    <p><strong>Status:</strong>
+                                        @if ($budget->status === 'Pending')
+                                            <span
+                                                style="background-color: yellow; box-shadow: 0 4px 8px rgba(255, 255, 0, 0.5); padding: 2px 4px;">
+                                                {{ $budget->status }}
+                                            </span>
+                                        @elseif ($budget->status === 'Approved')
+                                            <span
+                                                style="background-color: green; color: white; box-shadow: 0 4px 8px rgba(0, 255, 0, 0.5); padding: 2px 4px;">
+                                                {{ $budget->status }}
+                                            </span>
+                                        @elseif ($budget->status === 'Denied')
+                                            <span
+                                                style="background-color: red; color: white; box-shadow: 0 4px 8px rgba(255, 0, 0, 0.5); padding: 2px 4px;">
+                                                {{ $budget->status }}
+                                            </span>
+                                        @else
+                                            {{ $budget->status }}
+                                        @endif
+                                    </p>
+                                    <p><strong>Approved By:</strong>
+                                        {{ $budget->approved_by ? \App\Models\User::find($budget->approved_by)->name : 'N/A' }}
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary"
+                                        onclick="printModalContent({{ $budget->id }})">Print</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
+            </div>
         </div>
     </div>
 

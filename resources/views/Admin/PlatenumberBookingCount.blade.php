@@ -36,9 +36,9 @@
         @include('Components.Admin.Navbar')
         @include('Components.Admin.Sidebar')
 
+    <div class="container-fluid px-3 px-sm-0">
         <div class="body-wrapper">
             <div class="bodywrapper__inner">
-
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
                     <h6 class="page-title">Plate Number</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
@@ -189,17 +189,18 @@
 
     <!-- FileSaver.js for CSV export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
 
     <script>
-    function printModalContent() {
-        // Get the modal content
-        var modalContent = document.getElementById('modal-content').innerHTML;
+        function printModalContent() {
+            // Get the modal content
+            var modalContent = document.getElementById('modal-content').innerHTML;
 
-        // Create a new window for the print job
-        var printWindow = window.open('', '', 'height=600,width=800');
+            // Create a new window for the print job
+            var printWindow = window.open('', '', 'height=600,width=800');
 
-        // Write the modal content into the new window for printing
-        printWindow.document.write(`
+            // Write the modal content into the new window for printing
+            printWindow.document.write(`
             <html>
             <head>
                 <title>Print Trip Details</title>
@@ -221,19 +222,19 @@
             </html>
         `);
 
-        // Close the document stream and focus on the window for printing
-        printWindow.document.close();
-        printWindow.focus();
+            // Close the document stream and focus on the window for printing
+            printWindow.document.close();
+            printWindow.focus();
 
-        // Trigger the print
-        printWindow.print();
+            // Trigger the print
+            printWindow.print();
 
-        // Close the print window after printing
-        printWindow.onafterprint = function() {
-            printWindow.close();
-        };
-    }
-</script>
+            // Close the print window after printing
+            printWindow.onafterprint = function() {
+                printWindow.close();
+            };
+        }
+    </script>
 
     <script>
         // Using jQuery for handling the row click event

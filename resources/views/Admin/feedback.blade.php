@@ -16,123 +16,129 @@
     @include('Components.Admin.Sidebar')
     <!-- sidebar end -->
 
-    <div class="body-wrapper">
-        <div class="bodywrapper__inner">
-            <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
-                <h6 class="page-title">Manage Driver</h6>
-                <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class='bx bx-export'></i> Export
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <button type="button" id="copyBtn" class="btn dropdown-item">
-                                    <i class='bx bx-copy'></i> Copy
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="printBtn" class="btn dropdown-item">
-                                    <i class='bx bx-printer'></i> Print
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="pdfBtn" class="btn dropdown-item">
-                                    <i class='bx bxs-file-pdf'></i> PDF
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="excelBtn" class="btn dropdown-item">
-                                    <i class='bx bx-file'></i> Excel
-                                </button>
-                            </li>
-                        </ul>
+    <div class="container-fluid px-3 px-sm-0">
+        <div class="body-wrapper">
+            <div class="bodywrapper__inner">
+                <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
+                    <h6 class="page-title">Manage Driver</h6>
+                    <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class='bx bx-export'></i> Export
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <button type="button" id="copyBtn" class="btn dropdown-item">
+                                        <i class='bx bx-copy'></i> Copy
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="printBtn" class="btn dropdown-item">
+                                        <i class='bx bx-printer'></i> Print
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="pdfBtn" class="btn dropdown-item">
+                                        <i class='bx bxs-file-pdf'></i> PDF
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="excelBtn" class="btn dropdown-item">
+                                        <i class='bx bx-file'></i> Excel
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body p-0">
-                            <div class="table-responsive--sm table-responsive">
-                                <table id="data-table" class="table table--light style--two display nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Message</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($feedbacks as $feedback)
-                                            <tr class="clickable-row"
-                                                data-bs-target="#feedbackModal{{ $feedback->id }}">
-                                                <td>{{ $feedback->name }}</td>
-                                                <td>{{ $feedback->position }}</td>
-                                                <td
-                                                    style="white-space: normal; word-break: break-word; overflow-wrap: break-word; max-width:300px">
-                                                    {{ $feedback->message }}</td>
-                                                <td>{{ $feedback->status }}</td>
-                                                <td class="action-btn">
-                                                    <!-- Accept Button -->
-                                                    <form action="{{ route('feedback.accept', $feedback->id) }}"
-                                                        method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <button type="submit" class="btn btn-success">Accept</button>
-                                                    </form>
-
-                                                    <!-- Decline Button -->
-                                                    <form action="{{ route('feedback.decline', $feedback->id) }}"
-                                                        method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <button type="submit" class="btn btn-danger">Decline</button>
-                                                    </form>
-                                                </td>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body p-0">
+                                <div class="table-responsive--sm table-responsive">
+                                    <table id="data-table" class="table table--light style--two display nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Position</th>
+                                                <th>Message</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($feedbacks as $feedback)
+                                                <tr class="clickable-row"
+                                                    data-bs-target="#feedbackModal{{ $feedback->id }}">
+                                                    <td>{{ $feedback->name }}</td>
+                                                    <td>{{ $feedback->position }}</td>
+                                                    <td
+                                                        style="white-space: normal; word-break: break-word; overflow-wrap: break-word; max-width:300px">
+                                                        {{ $feedback->message }}</td>
+                                                    <td>{{ $feedback->status }}</td>
+                                                    <td class="action-btn">
+                                                        <!-- Accept Button -->
+                                                        <form action="{{ route('feedback.accept', $feedback->id) }}"
+                                                            method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('PATCH')
+                                                            <button type="submit"
+                                                                class="btn btn-success">Accept</button>
+                                                        </form>
 
-                                </table>
+                                                        <!-- Decline Button -->
+                                                        <form action="{{ route('feedback.decline', $feedback->id) }}"
+                                                            method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('PATCH')
+                                                            <button type="submit"
+                                                                class="btn btn-danger">Decline</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                @foreach ($feedbacks as $feedback)
+                    <div class="modal fade" id="feedbackModal{{ $feedback->id }}" tabindex="-1"
+                        aria-labelledby="feedbackModalLabel{{ $feedback->id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="feedbackModalLabel{{ $feedback->id }}">Feedback Details
+                                        for
+                                        {{ $feedback->name }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><strong>Name:</strong> {{ $feedback->name }}</p>
+                                    <p><strong>Position:</strong> {{ $feedback->position }}</p>
+                                    <p><strong>Message:</strong></p>
+                                    <p style="white-space: normal; word-break: break-word; overflow-wrap: break-word;">
+                                        {{ $feedback->message }}</p>
+                                    <p><strong>Status:</strong> {{ $feedback->status }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary"
+                                        onclick="printModalContent({{ $feedback->id }})">Print</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
-
-            @foreach ($feedbacks as $feedback)
-                <div class="modal fade" id="feedbackModal{{ $feedback->id }}" tabindex="-1"
-                    aria-labelledby="feedbackModalLabel{{ $feedback->id }}" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="feedbackModalLabel{{ $feedback->id }}">Feedback Details for
-                                    {{ $feedback->name }}</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p><strong>Name:</strong> {{ $feedback->name }}</p>
-                                <p><strong>Position:</strong> {{ $feedback->position }}</p>
-                                <p><strong>Message:</strong></p>
-                                <p style="white-space: normal; word-break: break-word; overflow-wrap: break-word;">
-                                    {{ $feedback->message }}</p>
-                                <p><strong>Status:</strong> {{ $feedback->status }}</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary"
-                                    onclick="printModalContent({{ $feedback->id }})">Print</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
         </div>
     </div>
 

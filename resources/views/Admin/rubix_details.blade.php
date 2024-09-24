@@ -28,35 +28,7 @@
             min-height: 100vh;
         }
 
-        .navbar-wrapper {
-            background-color: #333;
-            color: #fff;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .navbar-search {
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-
-        .navbar-search input {
-            padding: 10px;
-            border: none;
-            border-radius: 20px;
-            width: 200px;
-            outline: none;
-        }
-
-        .navbar-search i {
-            position: absolute;
-            right: 10px;
-            color: #666;
-        }
+     
 
         .container-fluid {
             padding: 15px;
@@ -126,22 +98,7 @@
             }
         }
 
-
-
-
-
-        /* Other CSS remains unchanged */
-
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #000;
-            padding-bottom: 5px;
-
-        }
-
+       
         .logo img {
             width: 100px;
         }
@@ -292,33 +249,30 @@
 <body>
 
     @include('Components.Admin.Navbar')
-
     @include('Components.Admin.Sidebar')
 
     <div class="body-wrapper">
         <div class="bodywrapper__inner">
-
             <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                <h6 class="page-title">Booking History</h6>
+                <h3 class="page-title p-2">Booking History</h3      >
             </div>
             <br>
-
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body p-0">
                             <div class="table-responsive--sm table-responsive">
-                                <div class="row mb-4 pb-4">
-                                    <div class="col-md-2">
+                                <div class="row mb-4 ">
+                                    <div class="col-md-2 p-4">
                                         <label for="plate_number">Truck Plate Number:</label>
                                         <input type="text" id="plate_number" class="form-control"
                                             placeholder="Enter plate number">
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 p-4">
                                         <label for="start_date">Start Date:</label>
                                         <input type="date" id="start_date" class="form-control">
                                     </div>
-                                    <div class="col-md-2 d-flex align-items-end">
+                                    <div class="col-md-2 d-flex align-items-end p-4">
                                         <button id="resetBtn" class="btn btn-secondary w-100">Reset Filter</button>
                                     </div>
                                 </div>
@@ -914,7 +868,6 @@
         </div>
     @endforeach
 
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const resetBtn = document.getElementById('resetBtn');
@@ -930,12 +883,12 @@
 
                 Array.from(rows).forEach(row => {
                     const plateNumberCell = row.cells[2].textContent
-                .toLowerCase(); // Truck Plate Number column
+                        .toLowerCase(); // Truck Plate Number column
                     const dateCell = new Date(row.cells[0].textContent).toISOString().split('T')[
-                    0]; // Date column
+                        0]; // Date column
 
                     const dateMatch = startDateFilter ? dateCell === startDateFilter :
-                    true; // Exact date match
+                        true; // Exact date match
                     const plateMatch = plateNumberFilter ? plateNumberCell.includes(plateNumberFilter) :
                         true;
 
@@ -962,9 +915,6 @@
             });
         });
     </script>
-
-
-
 
     <script>
         $(document).ready(function() {
@@ -1295,13 +1245,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
-    <script>
-        if ($('li').hasClass('active')) {
-            $('.sidebar__menu-wrapper').animate({
-                scrollTop: eval($(".active").offset().top - 320)
-            }, 500);
-        }
-    </script>
+   
     <script>
         $(document).ready(function() {
             // Initialize DataTables
@@ -1457,7 +1401,6 @@
             XLSX.writeFile(wb, "table_data.xlsx");
         });
     </script>
-
 
 </body>
 

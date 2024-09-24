@@ -15,7 +15,7 @@
     @include('Components.Admin.Sidebar')
 
 
-
+    <div class="container-fluid px-3 px-sm-0">
     <div class="body-wrapper">
         <div class="bodywrapper__inner">
 
@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <div class="table-responsive">
+            <div class="table-responsive--sm table-responsive">
                 <table id="data-table" class="table table--light style--two display nowrap">
                     <thead>
                         <tr>

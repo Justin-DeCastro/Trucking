@@ -10,14 +10,7 @@
     <link href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css" rel="stylesheet">
     <!-- DataTables Buttons CSS -->
     <link href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css" rel="stylesheet">
-    <style>
-        @media print {
-            .modal-footer button {
-                display: none;
-                /* Hide the Close and Print buttons when printing */
-            }
-        }
-    </style>
+
     <!-- Custom CSS for spacing -->
     <style>
         body {
@@ -35,35 +28,7 @@
             min-height: 100vh;
         }
 
-        .navbar-wrapper {
-            background-color: #333;
-            color: #fff;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-        }
 
-        .navbar-search {
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-
-        .navbar-search input {
-            padding: 10px;
-            border: none;
-            border-radius: 20px;
-            width: 200px;
-            outline: none;
-        }
-
-        .navbar-search i {
-            position: absolute;
-            right: 10px;
-            color: #666;
-        }
 
         .container-fluid {
             padding: 15px;
@@ -74,7 +39,6 @@
             /* Remove margin to touch sidebar */
             margin-left: 250px;
             /* Adjust based on sidebar width */
-            margin-top: 20px;
             /* Ensure top margin is retained */
         }
 
@@ -134,32 +98,6 @@
             }
         }
 
-
-
-        .waybill-container {
-            width: 100%;
-            height: 100%;
-            border: 2px solid #000;
-            padding: 20px;
-            /* Ensure enough padding */
-            background-color: #fff;
-            box-sizing: border-box;
-            /* Include padding and border in the width/height */
-            overflow: auto;
-            /* Ensure content is scrollable if it overflows */
-        }
-
-        /* Other CSS remains unchanged */
-
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #000;
-            padding-bottom: 5px;
-
-        }
 
         .logo img {
             width: 100px;
@@ -252,9 +190,6 @@
             margin-left: auto;
         }
 
-
-
-
         .additional-info {
             display: flex;
             justify-content: space-between;
@@ -264,7 +199,6 @@
 
         .qr-section {
             text-align: center;
-            margin-top: 10px;
         }
 
         .qr-section img {
@@ -300,6 +234,12 @@
             margin-bottom: 20px;
             /* Adjust the value as needed */
         }
+
+        .qr-container {
+            text-align: center;
+            /* Center the QR code */
+            margin-bottom: 20px;
+        }
     </style>
 
     @include('Components.Admin.Header')
@@ -307,249 +247,200 @@
 </head>
 
 <body>
-    @include('Components.Admin.CoordinatorSidebar')
+
     @include('Components.Admin.Navbar')
-
-
-
-    <div class="body-wrapper">
-        <div class="bodywrapper__inner">
-
-            <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                <h6 class="page-title">Booking History</h6>
-            </div>
-            <br>
-
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body p-0">
-                            <div class="table-responsive--sm table-responsive">
-                                <div class="row mb-4 pb-4">
-                                    <div class="col-md-2">
-                                        <label for="plate_number">Truck Plate Number:</label>
-                                        <input type="text" id="plate_number" class="form-control"
-                                            placeholder="Enter plate number">
+    @include('Components.Admin.CoordinatorSidebar')
+    <div class="container-fluid px-3 px-sm-0">
+        <div class="body-wrapper">
+            <div class="bodywrapper__inner">
+                <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
+                    <h3 class="page-title">Booking History</h3>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body p-0">
+                                <div class="table-responsive--sm table-responsive">
+                                    <div class="row mb-4 ">
+                                        <div class="col-md-2 pb-2">
+                                            <label for="plate_number">Truck Plate Number:</label>
+                                            <input type="text" id="plate_number" class="form-control"
+                                                placeholder="Enter plate number">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="start_date">Start Date:</label>
+                                            <input type="date" id="start_date" class="form-control">
+                                        </div>
+                                        <div class="col-md-2 d-flex align-items-end ">
+                                            <button id="resetBtn" class="btn btn-secondary w-100">Reset Filter</button>
+                                        </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <label for="start_date">Start Date:</label>
-                                        <input type="date" id="start_date" class="form-control">
-                                    </div>
-                                    <div class="col-md-2 d-flex align-items-end">
-                                        <button id="resetBtn" class="btn btn-secondary w-100">Reset Filter</button>
-                                    </div>
-                                </div>
 
-                                <div
-                                    class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins pb-3">
-                                    <div class="dropdown">
-                                        <button type="button" class="btn btn-primary dropdown-toggle"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class='bx bx-export'></i> Export
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <button type="button" id="copyBtn" class="btn dropdown-item">
-                                                    <i class='bx bx-copy'></i> Copy
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button type="button" id="printBtn" class="btn dropdown-item">
-                                                    <i class='bx bx-printer'></i> Print
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button type="button" id="pdfBtn" class="btn dropdown-item">
-                                                    <i class='bx bxs-file-pdf'></i> PDF
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button type="button" id="excelBtn" class="btn dropdown-item">
-                                                    <i class='bx bx-file'></i> Excel
-                                                </button>
-                                            </li>
-                                        </ul>
+
+                                    <div
+                                        class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins pb-3">
+                                        <div class="dropdown">
+                                            <button type="button" class="btn btn-primary dropdown-toggle"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class='bx bx-export'></i> Export
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <button type="button" id="copyBtn" class="btn dropdown-item">
+                                                        <i class='bx bx-copy'></i> Copy
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button" id="printBtn" class="btn dropdown-item">
+                                                        <i class='bx bx-printer'></i> Print
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button" id="pdfBtn" class="btn dropdown-item">
+                                                        <i class='bx bxs-file-pdf'></i> PDF
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button" id="excelBtn" class="btn dropdown-item">
+                                                        <i class='bx bx-file'></i> Excel
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
-                                <table id="data-table" class="table table--light style--two display nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Driver ID</th>
-                                            <th>Driver Name</th>
-                                            <th>Trip Ticket Number</th>
-                                            <th>Truck Plate Number</th>
-                                            <th>Destination</th>
-                                            <th>Proof of Delivery</th>
-                                            <th>Remarks</th>
-                                            <th>Status</th>
-                                            <th>Reference</th>
-                                            <th>Booking Created By</th>
-                                            <th>Updated By</th>
-                                            <th>Location Updated By</th>
-                                            <th>Update Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($rubixdetails as $detail)
-                                            <tr class="clickable-row" data-bs-target="#modal{{ $detail->id }}">
-                                                <td>{{ \Carbon\Carbon::parse($detail->date)->format('d-M-y h:i A') }}
-                                                </td>
-                                                <td>{{ $detail->driver ? $detail->driver->id : 'No driver assigned' }}
-                                                </td>
-                                                <td>{{ $detail->driver ? $detail->driver->name : 'No driver assigned' }}
-                                                </td>
-                                                <td>{{ $detail->trip_ticket }}</td>
-                                                <td>{{ $detail->plate_number }}</td>
-                                                <td>{{ $detail->location }}</td>
-                                                <td>
-                                                    @if ($detail->proof_of_delivery)
-                                                        <a href="{{ asset($detail->proof_of_delivery) }}"
-                                                            target="_blank">View Proof</a>
-                                                    @else
-                                                        No proof uploaded yet
-                                                    @endif
-                                                </td>
-                                                <td>{{ $detail->remarks }}</td>
-                                                <td>{{ $detail->status }}</td>
-                                                <td>{{ $detail->order_status }}</td>
-                                                <td>
-                                                    @if ($detail->creator)
-                                                        Created by: {{ $detail->creator->name }}<br>
-                                                        Created on: {{ $detail->created_at->format('d-M-y h:i A') }}
-                                                    @else
-                                                        Not available
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($detail->updater)
-                                                        Approved by: {{ $detail->updater->name }}<br>
-                                                        Updated on: {{ $detail->updated_at->format('d-M-y h:i A') }}
-                                                    @else
-                                                        Not updated
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($detail->updater)
-                                                        Location Updated by: {{ $detail->updater->name }}<br>
-                                                        Location: {{ $detail->location }}<br>
-                                                        Updated at:
-                                                        {{ \Carbon\Carbon::parse($detail->location_updated_at)->format('d-M-y h:i A') }}
-                                                    @else
-                                                        Not updated
-                                                    @endif
-                                                </td>
-                                                <td class="update-status">
-                                                    <!-- Update Status Button -->
-                                                    <form id="statusForm"
-                                                        action="{{ route('update.admin.status', ['id' => $detail->id]) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <input type="hidden" name="order_status"
-                                                            value="Confirmed_delivery">
-                                                        @php
-                                                            $buttonClass =
-                                                                $detail->order_status === 'Confirmed_delivery'
-                                                                    ? 'btn-warning'
-                                                                    : 'btn-success';
-                                                            $buttonText =
-                                                                $detail->order_status === 'Confirmed_delivery'
-                                                                    ? 'Approved'
-                                                                    : 'Approve';
-                                                            $isDisabled =
-                                                                $detail->order_status === 'Confirmed_delivery'
-                                                                    ? 'disabled'
-                                                                    : '';
-                                                        @endphp
-                                                        <button type="submit" id="approveButton"
-                                                            class="btn {{ $buttonClass }}" {{ $isDisabled }}>
-                                                            {{ $buttonText }}
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                                <td class="actions-dropdown">
-                                                    <!-- Actions Dropdown -->
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-primary dropdown-toggle" type="button"
-                                                            id="dropdownActions{{ $detail->id }}"
-                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                            Actions
-                                                        </button>
-                                                        <ul class="dropdown-menu"
-                                                            aria-labelledby="dropdownActions{{ $detail->id }}">
-                                                            <li>
-                                                                <button type="button" class="dropdown-item"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#waybillModal{{ $detail->id }}">
-                                                                    <i class="fas fa-print"></i> Print Waybill
-                                                                </button>
-                                                            </li>
-                                                            <li>
-                                                                <button type="button" class="dropdown-item"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#modal{{ $detail->id }}">
-                                                                    <i class="fas fa-eye"></i> View
-                                                                </button>
-                                                            </li>
-                                                            <li>
-                                                                <button type="button" class="dropdown-item"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#locationModal{{ $detail->id }}">
-                                                                    <i class="fas fa-map-marker-alt"></i> Update
-                                                                    Location
-                                                                </button>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
+                                    <table id="data-table" class="table table--light style--two display nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Trip Ticket Number</th>
+                                                <th>Truck Plate Number</th>
+                                                <th>Destination</th>
+                                                <th>Proof of Delivery</th>
+                                                <th>Remarks</th>
+                                                <th>Status</th>
+                                                <th>Reference</th>
+                                                <th>Booking Created By</th>
+                                                <th>Updated By</th>
+                                                <th>Location Updated By</th>
+                                                <th>Update Status</th>
+                                                <th>Action</th>
                                             </tr>
-
-                                            <!-- Location Update Modal -->
-                                            <div class="modal fade" id="locationModal{{ $detail->id }}"
-                                                tabindex="-1" aria-labelledby="locationModalLabel"
-                                                aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="locationModalLabel">Update
-                                                                Location for
-                                                                {{ $detail->driver ? $detail->driver->name : 'Unknown Driver' }}
-                                                            </h5>
-
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($rubixdetails as $detail)
+                                                <tr class="clickable-row" data-bs-target="#modal{{ $detail->id }}">
+                                                    <td>{{ \Carbon\Carbon::parse($detail->date)->format('d-M-y h:i A') }}
+                                                    </td>
+                                                    <td>{{ $detail->trip_ticket }}</td>
+                                                    <td>{{ $detail->plate_number }}</td>
+                                                    <td>{{ $detail->location }}</td>
+                                                    <td>
+                                                        @if ($detail->proof_of_delivery)
+                                                            <a href="{{ asset($detail->proof_of_delivery) }}"
+                                                                target="_blank">View Proof</a>
+                                                        @else
+                                                            No proof uploaded yet
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $detail->remarks }}</td>
+                                                    <td>{{ $detail->status }}</td>
+                                                    <td>{{ $detail->order_status }}</td>
+                                                    <td>
+                                                        @if ($detail->creator)
+                                                            Created by: {{ $detail->creator->name }}<br>
+                                                            Created on:
+                                                            {{ $detail->created_at->format('d-M-y h:i A') }}
+                                                        @else
+                                                            Not available
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if ($detail->updater)
+                                                            Approved by: {{ $detail->updater->name }}<br>
+                                                            Updated on:
+                                                            {{ $detail->updated_at->format('d-M-y h:i A') }}
+                                                        @else
+                                                            Not updated
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if ($detail->updater)
+                                                            Location Updated by: {{ $detail->updater->name }}<br>
+                                                            Location: {{ $detail->location }}<br>
+                                                            Updated at:
+                                                            {{ \Carbon\Carbon::parse($detail->location_updated_at)->format('d-M-y h:i A') }}
+                                                        @else
+                                                            Not updated
+                                                        @endif
+                                                    </td>
+                                                    <td class="update-status">
+                                                        <form id="statusForm"
+                                                            action="{{ route('update.admin.status', ['id' => $detail->id]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('PATCH')
+                                                            <input type="hidden" name="order_status"
+                                                                value="Confirmed_delivery">
+                                                            @php
+                                                                $buttonClass =
+                                                                    $detail->order_status === 'Confirmed_delivery'
+                                                                        ? 'btn-warning'
+                                                                        : 'btn-success';
+                                                                $buttonText =
+                                                                    $detail->order_status === 'Confirmed_delivery'
+                                                                        ? 'Approved'
+                                                                        : 'Approve';
+                                                                $isDisabled =
+                                                                    $detail->order_status === 'Confirmed_delivery'
+                                                                        ? 'disabled'
+                                                                        : '';
+                                                            @endphp
+                                                            <button type="submit" id="approveButton"
+                                                                class="btn {{ $buttonClass }}" {{ $isDisabled }}>
+                                                                {{ $buttonText }}
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <td class="actions-dropdown">
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-primary dropdown-toggle"
+                                                                type="button" id="dropdownActions{{ $detail->id }}"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                                Actions
+                                                            </button>
+                                                            <ul class="dropdown-menu"
+                                                                aria-labelledby="dropdownActions{{ $detail->id }}">
+                                                                <li>
+                                                                    <button type="button" class="dropdown-item"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#waybillModal{{ $detail->id }}">
+                                                                        <i class="fas fa-print"></i> Print Waybill
+                                                                    </button>
+                                                                </li>
+                                                                <li>
+                                                                    <button type="button" class="dropdown-item"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#modal{{ $detail->id }}">
+                                                                        <i class="fas fa-eye"></i> View
+                                                                    </button>
+                                                                </li>
+                                                                <li>
+                                                                    <button type="button" class="dropdown-item"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#locationModal{{ $detail->id }}">
+                                                                        <i class="fas fa-map-marker-alt"></i> Update
+                                                                        Location
+                                                                    </button>
+                                                                </li>
+                                                            </ul>
                                                         </div>
-                                                        <div class="modal-body">
-                                                            <form
-                                                                action="{{ route('update.location', ['id' => $detail->id]) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <div class="mb-3">
-                                                                    <label for="location" class="form-label">New
-                                                                        Location</label>
-                                                                    <input type="text" class="form-control"
-                                                                        id="location" name="location"
-                                                                        value="{{ $detail->location }}" required>
-                                                                    <!-- Using 'location' -->
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="submit"
-                                                                        class="btn btn-primary">Update
-                                                                        Location</button>
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Close</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -561,23 +452,25 @@
     @foreach ($rubixdetails as $detail)
         <div class="modal fade" id="modal{{ $detail->id }}" tabindex="-1"
             aria-labelledby="modalLabel{{ $detail->id }}" aria-hidden="true">
-            <div class="modal-dialog modal-lg" style="width: 70%; max-width: 1000px; height: 70%;">
+            <div class="modal-dialog modal-lg" style="max-width: 50%; width: auto;">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel{{ $detail->id }}">Details for Plate Number
+                        <h5 id="modalLabel{{ $detail->id }}">Details for Plate Number
                             {{ $detail->plate_number }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
                     <!-- QR Code Section -->
-                    <div class="row mt-4">
-                        <div class="col-md-12 text-center">
-                            <h2>QR Code</h2>
-                            <img src="{{ asset($detail->qr_code_path) }}" alt="QR Code" class="img-fluid">
-                        </div>
-                    </div>
+
                     <div class="modal-body">
                         <div class="container">
+                            <div class="row mt-4">
+                                <div class="class-col-md qr-container">
+                                    <h2>QR Code</h2>
+                                    <img src="{{ asset($detail->qr_code_path) }}" alt="QR Code" class="img-fluid">
+                                </div>
+
+                            </div>
                             <div class="row">
                                 <!-- First Table Column -->
                                 <div class="col-md-6">
@@ -590,12 +483,12 @@
                                         </tr>
                                         <tr>
                                             <td>Date of Pick Up</td>
-                                            <td>{{ \Carbon\Carbon::parse($detail->date_of_pick_up)->format('d M, y') }}
+                                            <td>{{ \Carbon\Carbon::parse($detail->date_of_pick_up)->format('F d, Y g:i A') }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Created At</td>
-                                            <td>{{ \Carbon\Carbon::parse($detail->date)->format('d M, y') }}
+                                            <td>{{ \Carbon\Carbon::parse($detail->date)->format('F d, Y g:i A') }}
                                             </td>
                                         </tr>
                                         <tr>
@@ -689,23 +582,6 @@
                                                 </span>
                                             </td>
                                         </tr>
-
-                                        <tr>
-                                            <td>Reference 2</td>
-                                            <td class="text-wrap">{{ $detail->reference_two }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Reference 3</td>
-                                            <td class="text-wrap">{{ $detail->reference_three }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Reference 4</td>
-                                            <td class="text-wrap">{{ $detail->reference_four }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Reference 5</td>
-                                            <td class="text-wrap">{{ $detail->reference_five }}</td>
-                                        </tr>
                                         <tr>
                                             <td>Transport Mode</td>
                                             <td class="text-wrap">{{ $detail->transport_mode }}</td>
@@ -790,7 +666,7 @@
                                             <td>Province</td>
                                             <td class="text-wrap">{{ $detail->merchant_province }}</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="travel-time">
                                             <td>Travel Time</td>
                                             <td class="text-wrap">
                                                 <span class="countdown-timer" id="timer{{ $detail->id }}">
@@ -804,25 +680,23 @@
                                         <tr>
                                             <td>Travel Timeline</td>
                                             <td class="text-wrap">
-                                                <ul id="timelineHistory{{ $detail->id }}" class="timeline-list">
-                                                </ul>
+                                                <div style="max-height: 150px; overflow-y: auto;">
+                                                    <ul id="timelineHistory{{ $detail->id }}"
+                                                        class="timeline-list">
+                                                    </ul>
+                                                </div>
                                             </td>
                                         </tr>
-
-
-
                                     </table>
                                 </div>
                             </div>
-
                             <!-- Google Maps Embed -->
-                            <div class="row mt-4">
+                            <div class="row mt-4 route-map">
                                 <div class="col-md-12">
                                     <h2>Route Map</h2>
                                     <div id="map{{ $detail->id }}" style="width: 100%; height: 500px;">
                                         <!-- Map will be displayed here -->
                                     </div>
-
                                 </div>
                             </div>
 
@@ -838,7 +712,14 @@
         </div>
     @endforeach
 
-
+    <style>
+        @media print {
+            .modal-footer button {
+                display: none;
+                /* Hide the Close and Print buttons when printing */
+            }
+        }
+    </style>
 
     @foreach ($rubixdetails as $detail)
         <div class="modal fade" id="waybillModal{{ $detail->id }}" tabindex="-1"
@@ -929,14 +810,26 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary"
-                            onclick="printModal('waybillModal{{ $detail->id }}')">Print Waybill</button>
+                            onclick="printModal('waybillModal{{ $detail->id }}')">Print Booking Details</button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <style>
+            @media print {
+                #map{{ $detail->id }} {
+                    display: none;
+                    /* Hide the map when printing */
+                }
+
+                .modal-footer {
+                    display: none;
+                    /* Hide the footer with buttons */
+                }
+            }
+        </style>
     @endforeach
-
-
 
     @foreach ($rubixdetails as $detail)
         <!-- Update Status Modal -->
@@ -958,8 +851,8 @@
                             <div class="mb-3">
                                 <label for="order_status{{ $detail->id }}" class="form-label">Order
                                     Status</label>
-                                <select name="order_status" id="order_status{{ $detail->id }}"
-                                    class="form-select" required>
+                                <select name="order_status" id="order_status{{ $detail->id }}" class="form-select"
+                                    required>
                                     <option value="Confirmed_delivery"
                                         {{ $detail->order_status === 'Confirmed_delivery' ? 'selected' : '' }}>
                                         Confirm Delivery</option>
@@ -978,6 +871,53 @@
         </div>
     @endforeach
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const resetBtn = document.getElementById('resetBtn');
+            const plateNumberInput = document.getElementById('plate_number');
+            const startDateInput = document.getElementById('start_date');
+            const dataTable = document.getElementById('data-table');
+
+            function filterTable() {
+                const plateNumberFilter = plateNumberInput.value.toLowerCase();
+                const startDateFilter = startDateInput.value;
+
+                const rows = dataTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+                Array.from(rows).forEach(row => {
+                    const plateNumberCell = row.cells[2].textContent
+                        .toLowerCase(); // Truck Plate Number column
+                    const dateCell = new Date(row.cells[0].textContent).toISOString().split('T')[
+                        0]; // Date column
+
+                    const dateMatch = startDateFilter ? dateCell === startDateFilter :
+                        true; // Exact date match
+                    const plateMatch = plateNumberFilter ? plateNumberCell.includes(plateNumberFilter) :
+                        true;
+
+                    if (dateMatch && plateMatch) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+
+            // Attach event listeners for filtering
+            plateNumberInput.addEventListener('input', filterTable);
+            startDateInput.addEventListener('change', filterTable);
+
+            // Reset button functionality
+            resetBtn.addEventListener('click', function() {
+                plateNumberInput.value = '';
+                startDateInput.value = '';
+                Array.from(dataTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr')).forEach(
+                    row => {
+                        row.style.display = '';
+                    });
+            });
+        });
+    </script>
 
     <script>
         $(document).ready(function() {
@@ -1008,144 +948,110 @@
             });
         });
     </script>
+
     <script>
-        $(document).ready(function() {
-            // Function to filter the table based on plate number and start date
-            function filterTable() {
-                var plateNumber = $('#plate_number').val().toLowerCase();
-                var startDate = $('#start_date').val();
+        function printModal(modalId) {
+            var modalContent = document.getElementById(modalId).innerHTML; // Get the modal content
 
-                // Loop through each row in the table
-                $('#data-table tbody tr').each(function() {
-                    var rowPlateNumber = $(this).find('td:eq(2)').text().toLowerCase();
-                    var rowDate = $(this).find('td:eq(0)').text();
+            // Create a temporary div to manipulate the content
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = modalContent;
 
-                    // Convert row date to Date object and get it in YYYY-MM-DD format
-                    var rowDateObj = new Date(rowDate);
-                    var formattedRowDate = rowDateObj.toISOString().split('T')[0];
+            // Remove elements that you don't want to print
+            const travelTime = tempDiv.querySelector('.travel-time');
+            const travelTimeline = tempDiv.querySelector('.travel-timeline');
+            const routeMap = tempDiv.querySelector('.route-map');
+            const closeButton = tempDiv.querySelector('.btn-close'); // Close button
+            const printButton = tempDiv.querySelector('.btn-primary'); // Print button
+            const modalFooterCloseButton = tempDiv.querySelector('.modal-footer .btn-secondary'); // Close button in footer
+            const modalBody = tempDiv.querySelector('.modal-body'); // Modal body container
+            const modalHeader = tempDiv.querySelector('.modal-header'); // Capture the modal header
+            const modalDialog = tempDiv.querySelector('.modal-dialog'); // Capture the modal dialog
 
-                    // Conditions to check if the row matches the filter inputs
-                    var matchesPlateNumber = plateNumber === '' || rowPlateNumber.includes(plateNumber);
-                    var matchesStartDate = startDate === '' || formattedRowDate === startDate;
+            // Remove unwanted elements
+            if (travelTime) travelTime.remove();
+            if (travelTimeline) travelTimeline.remove();
+            if (routeMap) routeMap.remove();
+            if (closeButton) closeButton.remove(); // Remove close button (top)
+            if (printButton) printButton.remove(); // Remove print button (top)
+            if (modalFooterCloseButton) modalFooterCloseButton.remove(); // Remove close button (bottom)
+            if (modalDialog) modalDialog.remove(); // Remove the modal dialog
 
-                    if (matchesPlateNumber && matchesStartDate) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
+            if (modalBody) {
+                // Move the contents out of the modal body
+                while (modalBody.firstChild) {
+                    tempDiv.appendChild(modalBody.firstChild);
+                }
+                modalBody.remove(); // Remove the modal body container
             }
 
-            // Filter table when inputs change
-            $('#plate_number, #start_date').on('input', function() {
-                filterTable();
-            });
+            // Append the modal header after the QR code
+            if (modalHeader) {
+                const qrContainer = tempDiv.querySelector('.qr-container'); // Find the QR code container
+                if (qrContainer) {
+                    qrContainer.insertAdjacentElement('afterend', modalHeader); // Move the header below the QR code
+                }
+            }
 
-            // Reset filter and show all rows when Reset button is clicked
-            $('#resetBtn').click(function() {
-                $('#plate_number').val('');
-                $('#start_date').val('');
-                $('#data-table tbody tr').show();
-            });
-        });
-    </script>
+            // Open a new window for printing
+            var printWindow = window.open('', '', 'width=1000,height=1000');
 
+            // Start writing to the print window
+            printWindow.document.write('<html><head><title>Booking Details</title>');
 
-    <script>
-        function printModal(modalId) {
-            var printContent = document.getElementById(modalId).innerHTML;
-            var originalContent = document.body.innerHTML;
-            var printWindow = window.open('', '', 'height=600,width=800');
-
-            // Write content to the new window
-            printWindow.document.open();
-            printWindow.document.write('<html><head><title>Print</title>');
-            printWindow.document.write(
-                '<style>body { margin: 20px; } table { width: 100%; border-collapse: collapse; } table, th, td { border: 1px solid black; } th, td { padding: 8px; text-align: left; } @media print { .modal-footer { display: none; } }</style>'
-            ); // Add any necessary styles here
-            printWindow.document.write('</head><body>');
-            printWindow.document.write(printContent);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-
-            // Print the content
-            printWindow.print();
-
-            // Close the print window after printing
-            printWindow.onafterprint = function() {
-                printWindow.close();
-            };
-        }
-    </script>
-
-    <script>
-        function printModal(modalId) {
-            var printContents = document.getElementById(modalId).innerHTML;
-
-            // Create a new window for printing
-            var printWindow = window.open('', '', 'width=800,height=800'); // Adjusted width and added height
-
-            // Write the HTML to the print window
-            printWindow.document.write('<html><head><title>Print Waybill</title>');
-
-            // Include the styles for printing
+            // Add your styles here
             printWindow.document.write('<style>');
-            printWindow.document.write(
-                'body, html { margin: 0; padding: 0; font-family: Arial, sans-serif; }'
-            ); // Remove default margins and padding
-            printWindow.document.write(
-                '.waybill-container { width: 100%; max-width: 800px; margin: 0; border: 2px solid #000; padding: 20px; background-color: #fff; box-sizing: border-box; overflow: hidden; }'
-            ); // Adjusted width for container and box-sizing
-            printWindow.document.write(
-                '.header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 5px; }'
-            );
-            printWindow.document.write('.logo img { width: 100px; }');
-            printWindow.document.write('.waybill-details { text-align: right; }');
-            printWindow.document.write('.waybill-number { font-weight: bold; font-size: 14px; }');
-            printWindow.document.write('.non-dg { font-size: 12px; color: #666; }');
-            printWindow.document.write(
-                '.order-details { display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; }');
-            printWindow.document.write('.barcode { text-align: center; margin: 10px 0; }');
-            printWindow.document.write('.barcode img { width: 50%; }');
-            printWindow.document.write('.tracking-number { font-weight: bold; font-size: 14px; margin-top: 5px; }');
-            printWindow.document.write(
-                '.address-section { border-top: 2px solid #000; padding-top: 10px; margin-top: 10px; font-size: 12px; }'
-            );
-            printWindow.document.write(
-                '.buyer-seller { display: flex; justify-content: space-between; font-weight: bold; }');
-            printWindow.document.write('.address { display: flex; justify-content: space-between; margin-top: 5px; }');
-            printWindow.document.write('.from-address, .to-address { width: 48%; }');
-            printWindow.document.write('.name { font-weight: bold; }');
-            printWindow.document.write(
-                '.additional-info { display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; }'
-            );
-            printWindow.document.write('.qr-section { text-align: center; margin-top: 10px; }');
-            printWindow.document.write('.qr-section img { width: 50px; height: 50px; }');
-            printWindow.document.write('.product-info { margin-top: 10px; font-size: 12px; }');
-            printWindow.document.write('.attempts { display: flex; justify-content: space-between; margin-top: 10px; }');
-            printWindow.document.write(
-                '.attempt { text-align: center; width: 30%; font-size: 12px; border: 1px solid #000; padding: 5px; }');
-            printWindow.document.write('.attempt-number { font-weight: bold; font-size: 14px; }');
-
-            // Media query for print
-            printWindow.document.write('@media print {');
-            printWindow.document.write(
-                '.waybill-container { width: 100%; max-width: 100%; margin: 0; padding: 20px; box-sizing: border-box; }'
-            ); // Adjust width for print
-            printWindow.document.write('.modal-footer, .modal-footer * { display: none !important; }');
-            printWindow.document.write(
-                '.modal-header, .modal-header * { display: none !important; }'); // Hide footer and header in print preview
-            printWindow.document.write('body { margin: 0; }');
-            printWindow.document.write('html { width: 100%; }');
+            printWindow.document.write(`
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+            .modal-content {
+                border: 1px solid #ddd;
+                padding: 20px;
+                border-radius: 5px;
+                background-color: #fff;
+            }
+            .qr-container {
+                text-align: center; /* Center the QR code */
+                margin-bottom: 20px;
+            }
+            .table {
+                width: 100%; /* Adjusted for proper width */
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+            .table-bordered td {
+                border: 1px solid #ddd;
+                padding: 10px;
+            }
+            .text-wrap {
+                word-wrap: break-word;
+            }
+            .waybill-container {
+                display: block;
+            }
+            .logo-container {
+                text-align: center; /* Center the logo */
+                margin-bottom: 20px; /* Space below the logo */
+            }
+        `);
             printWindow.document.write('</style>');
 
+            // Add the centered logo to the print window
+            printWindow.document.write(`
+            <div class="logo-container">
+                <img src="{{ asset('Home/GDR Logo.png') }}" alt="Shopee Xpress Logo" style="width: 10%; height: auto;">
+            </div>
+        `);
+
             printWindow.document.write('</head><body>');
-            printWindow.document.write('<div class="waybill-container">' + printContents + '</div>');
+            printWindow.document.write(tempDiv.innerHTML); // Use modified content
             printWindow.document.write('</body></html>');
 
             printWindow.document.close();
             printWindow.focus();
-            printWindow.print();
+            printWindow.print(); // Trigger print
         }
     </script>
 
@@ -1208,8 +1114,6 @@
 
                     // Define the truck icon URL
                     var truckIcon = 'https://maps.google.com/mapfiles/kml/shapes/truck.png';
-                    // Define the red location icon URL
-                    var locationIcon = 'https://maps.google.com/mapfiles/kml/paddle/red-circle.png';
 
                     // Create the truck marker
                     var truckMarker = new google.maps.Marker({
@@ -1230,26 +1134,56 @@
                     // Get the timeline element where we will record each place the truck encounters
                     var timelineListElement = document.getElementById('timelineHistory' + detailId);
 
+                    // Define a custom icon for each place
+                    var placeIcon = {
+                        url: 'Home/trucklocator-removebg-preview.png', // Path to your icon
+                        scaledSize: new google.maps.Size(30, 30) // Adjust the size (width, height)
+                    };
+
                     function moveTruck() {
                         if (step < route.steps.length) {
-                            var stepLocation = route.steps[step].end_location;
+                            truckMarker.setPosition(route.steps[step].end_location); // Move the truck marker
 
-                            // Move the truck marker
-                            truckMarker.setPosition(stepLocation);
-
-                            // Create a location marker
-                            var locationMarker = new google.maps.Marker({
-                                position: stepLocation,
+                            // Create a marker for the current step
+                            var placeMarker = new google.maps.Marker({
+                                position: route.steps[step].end_location,
                                 map: map,
-                                icon: locationIcon,
-                                title: route.steps[step].instructions
+                                icon: placeIcon, // Use the custom icon here
+                                title: route.steps[step]
+                                    .instructions // Set the title to the step's instructions
                             });
 
-                            // Record the step in the timeline
-                            var placeDescription = route.steps[step].instructions;
-                            var placeElement = document.createElement('li');
-                            placeElement.innerHTML = placeDescription;
-                            timelineListElement.appendChild(placeElement); // Add place to the timeline
+                            // Add a listener for the hover effect
+                            var infoWindow = new google.maps.InfoWindow();
+                            placeMarker.addListener('mouseover', function() {
+                                infoWindow.setContent(route.steps[step].instructions);
+                                infoWindow.open(map, placeMarker);
+                            });
+
+                            // Add a listener to close the info window on mouseout
+                            placeMarker.addListener('mouseout', function() {
+                                infoWindow.close();
+                            });
+
+                            // Get the address details for the current step's location
+                            var geocoder = new google.maps.Geocoder();
+                            geocoder.geocode({
+                                'location': route.steps[step].end_location
+                            }, function(results, status) {
+                                if (status === 'OK' && results[0]) {
+                                    // Create a full address string
+                                    var fullAddress = results[0].address_components.map(function(
+                                        component) {
+                                        return component.long_name;
+                                    }).join(', ');
+
+                                    // Create an entry in the timeline for the current location
+                                    var placeElement = document.createElement('li');
+                                    placeElement.innerHTML = "The truck is now in: " +
+                                        fullAddress; // Show full address
+                                    timelineListElement.appendChild(placeElement);
+                                }
+                            });
 
                             step++;
                             setTimeout(moveTruck, 2000); // Simulate truck movement every 2 seconds
@@ -1287,7 +1221,6 @@
         });
     </script>
 
-
     <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Include Bootstrap JS -->
@@ -1315,13 +1248,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
     <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
-    <script>
-        if ($('li').hasClass('active')) {
-            $('.sidebar__menu-wrapper').animate({
-                scrollTop: eval($(".active").offset().top - 320)
-            }, 500);
-        }
-    </script>
+
     <script>
         $(document).ready(function() {
             // Initialize DataTables
@@ -1477,7 +1404,6 @@
             XLSX.writeFile(wb, "table_data.xlsx");
         });
     </script>
-
 
 </body>
 

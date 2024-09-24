@@ -18,6 +18,7 @@
     @include('Components.Accounting.Sidebar')
     <!-- sidebar end -->
 
+    <div class="container-fluid px-3 px-sm-0">
     <div class="body-wrapper">
         <div class="bodywrapper__inner">
             <h4> Preventive Maintenance Service Table</h4>
@@ -457,7 +458,6 @@
                     </div>
                 </div>
             @endforeach
-
         </div>
     </div>
 

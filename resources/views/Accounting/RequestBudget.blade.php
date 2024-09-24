@@ -15,6 +15,7 @@
     @include('Components.Accounting.Sidebar')
     @include('Components.Admin.Navbar')
 
+    <div class="container-fluid px-3 px-sm-0">
     <div class="body-wrapper">
         <div class="bodywrapper__inner">
 

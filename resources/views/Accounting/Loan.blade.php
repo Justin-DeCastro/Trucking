@@ -16,302 +16,311 @@
     @include('Components.Accounting.Sidebar')
     @include('Components.Admin.Navbar')
 
-    <div class="body-wrapper">
-        <div class="bodywrapper__inner">
+    <div class="container-fluid px-3 px-sm-0">
+        <div class="body-wrapper">
+            <div class="bodywrapper__inner">
 
-            <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
-                <h6 class="page-title">Consign Table</h6>
-                <div class="dropdown">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <i class='bx bx-export'></i> Export
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <button type="button" id="copyBtn" class="btn dropdown-item">
-                                <i class='bx bx-copy'></i> Copy
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button" id="printBtn" class="btn dropdown-item">
-                                <i class='bx bx-printer'></i> Print
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button" id="pdfBtn" class="btn dropdown-item">
-                                <i class='bx bxs-file-pdf'></i> PDF
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button" id="excelBtn" class="btn dropdown-item">
-                                <i class='bx bx-file'></i> Excel
-                            </button>
-                        </li>
-                    </ul>
+                <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
+                    <h6 class="page-title">Consign Table</h6>
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class='bx bx-export'></i> Export
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <button type="button" id="copyBtn" class="btn dropdown-item">
+                                    <i class='bx bx-copy'></i> Copy
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" id="printBtn" class="btn dropdown-item">
+                                    <i class='bx bx-printer'></i> Print
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" id="pdfBtn" class="btn dropdown-item">
+                                    <i class='bx bxs-file-pdf'></i> PDF
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" id="excelBtn" class="btn dropdown-item">
+                                    <i class='bx bx-file'></i> Excel
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins pb-3">
-                <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal"
-                    data-bs-target="#manageSubcontractor">
-                    <i class="fa fa-plus"></i> New Consign
-                </button>
-            </div>
+                <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins pb-3">
+                    <button class="btn btn-sm btn-outline--primary addAdmin" type="button" data-bs-toggle="modal"
+                        data-bs-target="#manageSubcontractor">
+                        <i class="fa fa-plus"></i> New Consign
+                    </button>
+                </div>
 
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body p-0">
-                            <div class="table-responsive--md table-responsive">
-                                <table id="data-table" class="table table--light style--two display nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Borrower</th>
-                                            <th>Initial Amount</th>
-                                            <th>Interest Rate (%)</th>
-                                            <th>Installment Payment (Per Month)</th>
-                                            <th>Payment Terms</th>
-                                            <th>Total Payment</th>
-                                            <th>Mode of Payment</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($loans as $loan)
-                                            <tr class="clickable-row" data-bs-target="#consignModal{{ $loan->id }}">
-                                                <td>{{ \Carbon\Carbon::parse($loan->date)->format('d-M-y h-i A') }}</td>
-                                                <td>{{ $loan->borrower }}</td>
-                                                <td>{{ number_format($loan->initial_amount, 2) }}</td>
-                                                <td>{{ number_format((float) $loan->interest_percentage, 2) }}</td>
-                                                <td>{{ number_format((float) $loan->payment_per_month, 2) }}</td>
-                                                <td>{{ $loan->payment_terms }} Month/s</td>
-                                                <td>{{ number_format((float) $loan->total_payment, 2) }}</td>
-                                                <td>{{ $loan->mode_of_payment }}</td>
-                                                <td class="action-btn">
-                                                    @if ($loan->status === 'Paid')
-                                                        <button type="button" class="btn btn-secondary"
-                                                            disabled>Paid</button>
-                                                    @elseif($loan->status === 'Unpaid')
-                                                        <form action="{{ route('loans.markAsPaid', $loan->id) }}"
-                                                            method="POST" style="display:inline;">
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-success">Mark as
-                                                                Paid</button>
-                                                        </form>
-                                                    @endif
-                                                </td>
-
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body p-0">
+                                <div class="table-responsive--md table-responsive">
+                                    <table id="data-table" class="table table--light style--two display nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Borrower</th>
+                                                <th>Initial Amount</th>
+                                                <th>Interest Rate (%)</th>
+                                                <th>Installment Payment (Per Month)</th>
+                                                <th>Payment Terms</th>
+                                                <th>Total Payment</th>
+                                                <th>Mode of Payment</th>
+                                                <th>Status</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($loans as $loan)
+                                                <tr class="clickable-row"
+                                                    data-bs-target="#consignModal{{ $loan->id }}">
+                                                    <td>{{ \Carbon\Carbon::parse($loan->date)->format('d-M-y h-i A') }}
+                                                    </td>
+                                                    <td>{{ $loan->borrower }}</td>
+                                                    <td>{{ number_format($loan->initial_amount, 2) }}</td>
+                                                    <td>{{ number_format((float) $loan->interest_percentage, 2) }}</td>
+                                                    <td>{{ number_format((float) $loan->payment_per_month, 2) }}</td>
+                                                    <td>{{ $loan->payment_terms }} Month/s</td>
+                                                    <td>{{ number_format((float) $loan->total_payment, 2) }}</td>
+                                                    <td>{{ $loan->mode_of_payment }}</td>
+                                                    <td class="action-btn">
+                                                        @if ($loan->status === 'Paid')
+                                                            <button type="button" class="btn btn-secondary"
+                                                                disabled>Paid</button>
+                                                        @elseif($loan->status === 'Unpaid')
+                                                            <form action="{{ route('loans.markAsPaid', $loan->id) }}"
+                                                                method="POST" style="display:inline;">
+                                                                @csrf
+                                                                <button type="submit" class="btn btn-success">Mark as
+                                                                    Paid</button>
+                                                            </form>
+                                                        @endif
+                                                    </td>
+
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Loan Details Modal -->
-            @foreach ($loans as $loan)
-                <div class="modal fade" id="consignModal{{ $loan->id }}" tabindex="-1" role="dialog"
-                    aria-labelledby="consignModalLabel{{ $loan->id }}" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
+                <!-- Loan Details Modal -->
+                @foreach ($loans as $loan)
+                    <div class="modal fade" id="consignModal{{ $loan->id }}" tabindex="-1" role="dialog"
+                        aria-labelledby="consignModalLabel{{ $loan->id }}" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="consignModalLabel{{ $loan->id }}">Loan Details</h5>
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span>&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><strong>Date:</strong>
+                                        {{ \Carbon\Carbon::parse($loan->date)->format('d-M-y h-i A') }}
+                                    </p>
+                                    <p><strong>Borrower:</strong> {{ $loan->borrower }}</p>
+                                    <p><strong>Initial Amount:</strong> {{ number_format($loan->initial_amount, 2) }}
+                                    </p>
+                                    <p><strong>Interest Rate (%):</strong>
+                                        {{ number_format((float) $loan->interest_percentage, 2) }}</p>
+                                    <p><strong>Installment Payment (Per Month):</strong>
+                                        {{ number_format((float) $loan->payment_per_month, 2) }}</p>
+                                    <p><strong>Payment Terms:</strong> {{ $loan->payment_terms }} Month/s</p>
+                                    <p><strong>Total Payment:</strong>
+                                        {{ number_format((float) $loan->total_payment, 2) }}
+                                    </p>
+                                    <p><strong>Mode of Payment:</strong> {{ $loan->mode_of_payment }}</p>
+                                    <p><strong>Status:</strong> {{ $loan->status }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary"
+                                        onclick="printLoanDetails('{{ $loan->id }}')">Print</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
+                <!-- Create Loan Modal -->
+                <div class="modal fade" id="manageSubcontractor" tabindex="-1"
+                    aria-labelledby="manageSubcontractorLabel" aria-hidden="true">
+                    <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="consignModalLabel{{ $loan->id }}">Loan Details</h5>
-                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                    <span>&times;</span>
-                                </button>
+                                <h5 class="modal-title" id="manageSubcontractorLabel">Loan Form</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <p><strong>Date:</strong>
-                                    {{ \Carbon\Carbon::parse($loan->date)->format('d-M-y h-i A') }}
-                                </p>
-                                <p><strong>Borrower:</strong> {{ $loan->borrower }}</p>
-                                <p><strong>Initial Amount:</strong> {{ number_format($loan->initial_amount, 2) }}</p>
-                                <p><strong>Interest Rate (%):</strong>
-                                    {{ number_format((float) $loan->interest_percentage, 2) }}</p>
-                                <p><strong>Installment Payment (Per Month):</strong>
-                                    {{ number_format((float) $loan->payment_per_month, 2) }}</p>
-                                <p><strong>Payment Terms:</strong> {{ $loan->payment_terms }} Month/s</p>
-                                <p><strong>Total Payment:</strong> {{ number_format((float) $loan->total_payment, 2) }}
-                                </p>
-                                <p><strong>Mode of Payment:</strong> {{ $loan->mode_of_payment }}</p>
-                                <p><strong>Status:</strong> {{ $loan->status }}</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary"
-                                    onclick="printLoanDetails('{{ $loan->id }}')">Print</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-
-            <!-- Create Loan Modal -->
-            <div class="modal fade" id="manageSubcontractor" tabindex="-1" aria-labelledby="manageSubcontractorLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="manageSubcontractorLabel">Loan Form</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <form action="{{ route('loan.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="modal-body">
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="date" class="form-label">Date</label>
-                                        <input type="date" id="date" name="date" class="form-control"
-                                            required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="borrower" class="form-label">Borrower</label>
-                                        <input type="text" id="borrower" name="borrower" class="form-control"
-                                            required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="initial_amount" class="form-label">Initial
-                                            Amount</label>
-                                        <input type="number" id="initial_amount" name="initial_amount"
-                                            class="form-control" placeholder="Enter Amount" required>
-                                    </div>
-                                    <!-- Input for Interest Percentage -->
-                                    <div class="col-md-6">
-                                        <label for="interest_percentage" class="form-label">Interest
-                                            Percentage
-                                            (%)</label>
-                                        <input type="number" id="interest_percentage" name="interest_percentage"
-                                            class="form-control" placeholder="Enter Interest %" required>
-                                    </div>
-
-                                    <!-- Payment Per Month -->
-                                    <div class="col-md-6">
-                                        <label for="payment_per_month" class="form-label">Payment
-                                            Per Month</label>
-                                        <input type="number" id="payment_per_month" name="payment_per_month"
-                                            class="form-control" readonly>
-                                    </div>
-
-                                    <!-- Payment Terms -->
-                                    <div class="col-md-6">
-                                        <label for="payment_terms" class="form-label">Payment Terms
-                                            (Months)</label>
-                                        <input type="number" id="payment_terms" name="payment_terms"
-                                            class="form-control" placeholder="Enter Terms in Months" required>
-                                    </div>
-
-                                    <!-- Total Payment -->
-                                    <div class="col-md-6">
-                                        <label for="total_payment" class="form-label">Total
-                                            Payment</label>
-                                        <input type="number" id="total_payment" name="total_payment"
-                                            class="form-control" readonly>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="mode_of_payment" class="form-label">Mode of
-                                            Payment</label>
-                                        <select id="mode_of_payment" name="mode_of_payment" class="form-control">
-                                            <option value="" disabled selected>Select Mode of
-                                                Payment
-                                            </option>
-                                            <option value="cash">Cash</option>
-                                            <option value="cheque">Cheque</option>
-                                        </select>
-                                    </div>
-
-
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- withdrawal -->
-            <div class="modal fade" id="manageWithdraw" tabindex="-1" aria-labelledby="manageSubcontractorLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="manageSubcontractorLabel">Withdraw</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <form action="{{ route('withdraw.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="modal-body">
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="amount" class="form-label">Date</label>
-                                        <input type="date" id="date" name="date" class="form-control"
-                                            required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="particulars" class="form-label">Particulars</label>
-                                        <input type="text" id="particulars" name="particulars"
-                                            class="form-control" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="deposit_amount" class="form-label">Deposit Amount</label>
-                                        <input type="text" id="deposit_amount" class="form-control" required
-                                            readonly>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="withdraw_amount" class="form-label">Withdraw
-                                            Amount</label>
-                                        <input type="text" id="withdraw_amount" name="withdraw_amount"
-                                            class="form-control" placeholder="Enter Amount"required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="notes" class="form-label">Notes</label>
-                                        <input type="text" id="notes" name="notes" class="form-control"
-                                            required>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Cancel</button>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- Confirmation Modal -->
-            <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="confirmationModalLabel">Confirm Deletion</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Are you sure you want to delete this vehicle?
-                        </div>
-                        <div class="modal-footer">
-                            <form id="deleteForm" method="POST" style="display: inline;">
+                            <form action="{{ route('loan.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                                <div class="modal-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="date" class="form-label">Date</label>
+                                            <input type="date" id="date" name="date" class="form-control"
+                                                required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="borrower" class="form-label">Borrower</label>
+                                            <input type="text" id="borrower" name="borrower"
+                                                class="form-control" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="initial_amount" class="form-label">Initial
+                                                Amount</label>
+                                            <input type="number" id="initial_amount" name="initial_amount"
+                                                class="form-control" placeholder="Enter Amount" required>
+                                        </div>
+                                        <!-- Input for Interest Percentage -->
+                                        <div class="col-md-6">
+                                            <label for="interest_percentage" class="form-label">Interest
+                                                Percentage
+                                                (%)</label>
+                                            <input type="number" id="interest_percentage" name="interest_percentage"
+                                                class="form-control" placeholder="Enter Interest %" required>
+                                        </div>
+
+                                        <!-- Payment Per Month -->
+                                        <div class="col-md-6">
+                                            <label for="payment_per_month" class="form-label">Payment
+                                                Per Month</label>
+                                            <input type="number" id="payment_per_month" name="payment_per_month"
+                                                class="form-control" readonly>
+                                        </div>
+
+                                        <!-- Payment Terms -->
+                                        <div class="col-md-6">
+                                            <label for="payment_terms" class="form-label">Payment Terms
+                                                (Months)</label>
+                                            <input type="number" id="payment_terms" name="payment_terms"
+                                                class="form-control" placeholder="Enter Terms in Months" required>
+                                        </div>
+
+                                        <!-- Total Payment -->
+                                        <div class="col-md-6">
+                                            <label for="total_payment" class="form-label">Total
+                                                Payment</label>
+                                            <input type="number" id="total_payment" name="total_payment"
+                                                class="form-control" readonly>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="mode_of_payment" class="form-label">Mode of
+                                                Payment</label>
+                                            <select id="mode_of_payment" name="mode_of_payment" class="form-control">
+                                                <option value="" disabled selected>Select Mode of
+                                                    Payment
+                                                </option>
+                                                <option value="cash">Cash</option>
+                                                <option value="cheque">Cheque</option>
+                                            </select>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                </div>
                             </form>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- withdrawal -->
+                <div class="modal fade" id="manageWithdraw" tabindex="-1"
+                    aria-labelledby="manageSubcontractorLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="manageSubcontractorLabel">Withdraw</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form action="{{ route('withdraw.store') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="amount" class="form-label">Date</label>
+                                            <input type="date" id="date" name="date" class="form-control"
+                                                required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="particulars" class="form-label">Particulars</label>
+                                            <input type="text" id="particulars" name="particulars"
+                                                class="form-control" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="deposit_amount" class="form-label">Deposit Amount</label>
+                                            <input type="text" id="deposit_amount" class="form-control" required
+                                                readonly>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="withdraw_amount" class="form-label">Withdraw
+                                                Amount</label>
+                                            <input type="text" id="withdraw_amount" name="withdraw_amount"
+                                                class="form-control" placeholder="Enter Amount"required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="notes" class="form-label">Notes</label>
+                                            <input type="text" id="notes" name="notes" class="form-control"
+                                                required>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirmation Modal -->
+                <div class="modal fade" id="confirmationModal" tabindex="-1"
+                    aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmationModalLabel">Confirm Deletion</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this vehicle?
+                            </div>
+                            <div class="modal-footer">
+                                <form id="deleteForm" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                                </form>
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Cancel</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -438,12 +447,12 @@
         });
     </script>
 
-   <script>
-    function printLoanDetails(loanId) {
-        var modalContent = document.querySelector('#consignModal' + loanId + ' .modal-body').innerHTML;
-        var printWindow = window.open('', '', 'height=600,width=800');
+    <script>
+        function printLoanDetails(loanId) {
+            var modalContent = document.querySelector('#consignModal' + loanId + ' .modal-body').innerHTML;
+            var printWindow = window.open('', '', 'height=600,width=800');
 
-        printWindow.document.write(`
+            printWindow.document.write(`
             <html>
                 <head>
                     <title>Loan Details</title>
@@ -465,13 +474,13 @@
             </html>
         `);
 
-        printWindow.document.close();
-        printWindow.onload = function() {
-            printWindow.print();
-            printWindow.close();
-        };
-    }
-</script>
+            printWindow.document.close();
+            printWindow.onload = function() {
+                printWindow.print();
+                printWindow.close();
+            };
+        }
+    </script>
 
 
     <script>

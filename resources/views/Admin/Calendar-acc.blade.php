@@ -22,16 +22,6 @@
     @include('Components.admin.header')
 
     <style>
-        .calendar-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        #calendar {
-            flex: 1;
-        }
-
         .calendar-legend {
             width: 200px;
             /* Adjust as needed */
@@ -87,7 +77,7 @@
                                             </div>
                                             <br>
                                             <div class="calendar-container">
-                                                <div id='calendar'></div>
+
                                                 <div class="calendar-legend">
                                                     <h5>Legend</h5>
                                                     {{-- <div class="legend-item">
@@ -101,6 +91,7 @@
                                                         <div class="legend-text">Unpaid</div>
                                                     </div>
                                                 </div>
+                                                                                                <div id='calendar'></div>
                                             </div>
                                         </div>
                                     </div>
@@ -158,44 +149,11 @@
         </div>
     </div>
 
-    <!-- Core JS Files -->
+    <script src="https://script.viserlab.com/courierlab/demo/assets/global/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="Admin/assets/js/core/jquery-3.7.1.min.js"></script>
-    <script src="Admin/assets/js/core/popper.min.js"></script>
-    <script src="Admin/assets/js/core/bootstrap.min.js"></script>
-
-    <!-- jQuery Scrollbar -->
-    <script src="Admin/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-    <!-- Moment JS -->
-    <script src="Admin/assets/js/plugin/moment/moment.min.js"></script>
-
-    <!-- Chart JS -->
-    <script src="Admin/assets/js/plugin/chart.js/chart.min.js"></script>
-
-    <!-- jQuery Sparkline -->
-    <script src="Admin/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
-
-    <!-- Chart Circle -->
-    <script src="Admin/assets/js/plugin/chart-circle/circles.min.js"></script>
-
-    <!-- Datatables -->
-    <script src="Admin/assets/js/plugin/datatables/datatables.min.js"></script>
-
-    <!-- Bootstrap Notify -->
-    <script src="Admin/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-
-    <!-- jQuery Vector Maps -->
-    <script src="Admin/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-    <script src="Admin/assets/js/plugin/jsvectormap/world.js"></script>
-
-    <!-- Sweet Alert -->
-    <script src="Admin/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
-
-    <!-- Kaiadmin JS -->
-    <script src="Admin/assets/js/kaiadmin.min.js"></script>
-
-    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="Admin/assets/js/setting-demo2.js"></script>
+    <!-- Include Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -208,7 +166,6 @@
     <script src='calendar/fullcalendar/packages/interaction/main.js'></script>
     <script src='calendar/fullcalendar/packages/daygrid/main.js'></script>
     <script src="calendar/js/main.js"></script>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');

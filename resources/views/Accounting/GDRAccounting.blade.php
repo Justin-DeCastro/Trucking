@@ -93,39 +93,40 @@
                         </ul>
                     </div>
                 </div>
-
-                <table id="data-table" class="jobOffersTable table table--light style--two display nowrap"">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Particulars</th>
-                            <th>Payment Amount</th>
-                            <th>Payment Channel</th>
-                            <th>Proof of Payment</th>
-                            <th>Notes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($GDR as $gdrAccounting)
-                            <tr class="clickable-row" data-bs-target="#gdrModal{{ $gdrAccounting->id }}"
-                                data-month="{{ $gdrAccounting->date->format('d-M-y h-i A') }}">
-                                <td>{{ $gdrAccounting->date->format('d-M-y h-i A') }}</td>
-                                <td>{{ $gdrAccounting->particulars }}</td>
-                                <td>{{ number_format($gdrAccounting->payment_amount, 2) }}</td>
-                                <td>{{ $gdrAccounting->payment_channel }}</td>
-                                <td>
-                                    @if ($gdrAccounting->proof_of_payment)
-                                        <a href="{{ asset($gdrAccounting->proof_of_payment) }}" target="_blank">View
-                                            Proof</a>
-                                    @else
-                                        No proof uploaded
-                                    @endif
-                                </td>
-                                <td class="text-start">{{ $gdrAccounting->notes }}</td>
+                <div class="table-responsive--md table-responsive">
+                    <table id="data-table" class="jobOffersTable table table--light style--two display nowrap"">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Particulars</th>
+                                <th>Payment Amount</th>
+                                <th>Payment Channel</th>
+                                <th>Proof of Payment</th>
+                                <th>Notes</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($GDR as $gdrAccounting)
+                                <tr class="clickable-row" data-bs-target="#gdrModal{{ $gdrAccounting->id }}"
+                                    data-month="{{ $gdrAccounting->date->format('d-M-y h-i A') }}">
+                                    <td>{{ $gdrAccounting->date->format('d-M-y h-i A') }}</td>
+                                    <td>{{ $gdrAccounting->particulars }}</td>
+                                    <td>{{ number_format($gdrAccounting->payment_amount, 2) }}</td>
+                                    <td>{{ $gdrAccounting->payment_channel }}</td>
+                                    <td>
+                                        @if ($gdrAccounting->proof_of_payment)
+                                            <a href="{{ asset($gdrAccounting->proof_of_payment) }}" target="_blank">View
+                                                Proof</a>
+                                        @else
+                                            No proof uploaded
+                                        @endif
+                                    </td>
+                                    <td class="text-start">{{ $gdrAccounting->notes }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
 
                 <!-- GDR Details Modal -->
@@ -135,7 +136,8 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="gdrModalLabel{{ $gdrAccounting->id }}">GDR Details</h5>
+                                    <h5 class="modal-title" id="gdrModalLabel{{ $gdrAccounting->id }}">GDR Details
+                                    </h5>
                                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                         <span>&times;</span>
                                     </button>

@@ -66,7 +66,7 @@
                 <div class="sidebar__logo"
                     style="text-align: center; display: flex; flex-direction: column; align-items: center;">
                     <img src="Home/GDR logo.png" alt="Logo" class="logo">
-                    <h3 style="color: #223d54;"><b>ACCOUNTING</b></h3>
+                    <h5 style="color: #223d54;"><b>ACCOUNTING</b></h5>
 
                 </div>
             </div>

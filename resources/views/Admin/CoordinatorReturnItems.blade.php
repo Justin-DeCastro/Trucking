@@ -166,54 +166,53 @@
     @include('Components.Admin.CoordinatorSidebar')
     @include('Components.Admin.Navbar')
 
-
-    <div class="body-wrapper">
-        <div class="bodywrapper__inner">
-            <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                <h6 class="page-title p-2">Return Information</h6>
-                <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class='bx bx-export'></i> Export
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <button type="button" id="copyBtn" class="btn dropdown-item">
-                                    <i class='bx bx-copy'></i> Copy
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="printBtn" class="btn dropdown-item">
-                                    <i class='bx bx-printer'></i> Print
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="pdfBtn" class="btn dropdown-item">
-                                    <i class='bx bxs-file-pdf'></i> PDF
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="excelBtn" class="btn dropdown-item">
-                                    <i class='bx bx-file'></i> Excel
-                                </button>
-                            </li>
-                        </ul>
+    <div class="container-fluid px-3 px-sm-0">
+        <div class="body-wrapper">
+            <div class="bodywrapper__inner">
+                <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
+                    <h6 class="page-title p-2">Return Information</h6>
+                    <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class='bx bx-export'></i> Export
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <button type="button" id="copyBtn" class="btn dropdown-item">
+                                        <i class='bx bx-copy'></i> Copy
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="printBtn" class="btn dropdown-item">
+                                        <i class='bx bx-printer'></i> Print
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="pdfBtn" class="btn dropdown-item">
+                                        <i class='bx bxs-file-pdf'></i> PDF
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="excelBtn" class="btn dropdown-item">
+                                        <i class='bx bx-file'></i> Excel
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
 
 
-            <div class="card">
-                <div class="card-body p-0">
-                    <div class="d-flex justify-content-end p-2">
-                        <!-- Button to trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#addReturnModal">
-                            Add Return Item
-                        </button>
-                    </div>
-                    <div class="table-responsive--sm table-responsive">
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div class="d-flex justify-content-end p-2">
+                            <!-- Button to trigger modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#addReturnModal">
+                                Add Return Item
+                            </button>
+                        </div>
                         <div class="table-responsive--sm table-responsive">
                             <table id="data-table" class="table table--light style--two">
                                 <thead>
@@ -277,6 +276,7 @@
             </div>
         </div>
     </div>
+
     <!-- Modal for Adding Return Items -->
     <div class="modal fade" id="addReturnModal" tabindex="-1" aria-labelledby="addReturnModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -427,16 +427,16 @@
 
     <!-- Bootstrap JS (Place this before your closing </body> tag) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    function printReturnModalContent(returnId) {
-        // Get the modal content by the return ID
-        var modalContent = document.getElementById('returnModal' + returnId).querySelector('.modal-body').innerHTML;
+    <script>
+        function printReturnModalContent(returnId) {
+            // Get the modal content by the return ID
+            var modalContent = document.getElementById('returnModal' + returnId).querySelector('.modal-body').innerHTML;
 
-        // Open a new window for the print job
-        var printWindow = window.open('', '', 'height=600,width=800');
+            // Open a new window for the print job
+            var printWindow = window.open('', '', 'height=600,width=800');
 
-        // Write the modal content into the new window for printing
-        printWindow.document.write(`
+            // Write the modal content into the new window for printing
+            printWindow.document.write(`
             <html>
             <head>
                 <title>Print Return Details</title>
@@ -472,19 +472,19 @@
             </html>
         `);
 
-        // Close the document stream and focus on the window for printing
-        printWindow.document.close();
-        printWindow.focus();
+            // Close the document stream and focus on the window for printing
+            printWindow.document.close();
+            printWindow.focus();
 
-        // Trigger the print dialog
-        printWindow.print();
+            // Trigger the print dialog
+            printWindow.print();
 
-        // Close the print window after printing
-        printWindow.onafterprint = function() {
-            printWindow.close();
-        };
-    }
-</script>
+            // Close the print window after printing
+            printWindow.onafterprint = function() {
+                printWindow.close();
+            };
+        }
+    </script>
 
 
 

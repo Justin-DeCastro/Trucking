@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
 <style>
-    
     .wave-card {
         position: relative;
         overflow: hidden;
@@ -280,52 +279,110 @@ aria-expanded="false" aria-label="Toggle navigation">
             </div>
         </div>
     </section>
-
-    <section class="team-section py-120">
+    <br>
+    <section class="about-section py-60">
         <div class="container">
-            <div class="section-heading">
-                <h3 class="section-heading__title">Our Expert Team</h3>
-                <p class="section-heading__desc">
-                    Our expert team is efficient and reliable in the delivery of packages, documents, and goods as part
-                    of a
-                    courier service.
-                </p>
-            </div>
-            <div class="row gy-5">
-                <!-- Team Member 1 -->
-                @foreach ($employees as $employee)
-                    @if ($employee->status === 'Active')
-                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                            <div class="wave-card">
-                                <div class="wave-overlay"></div>
-                                <div class="team-card__thumb">
-                                    <img src="{{ asset($employee->profile_image) }}" alt="team member">
-                                </div>
-                                <div class="team-card__content">
-                                    <h6 class="team-card__title">{{ $employee->name }}</h6>
-                                    <p class="team-card__designation">{{ $employee->position }}</p>
-                                    <div class="team-card__footer">
-                                        <p class="work-success">ID NUMBER :</p>
-                                        <span class="work-count">
-                                            <span class="icon"><i class="fas fa-id-card"></i></span>
-                                            {{ $employee->id_number }}
-                                        </span>
+            <div class="row gx-4 gy-4">
+                <div class="col-lg-8">
+                    <div class="row gy-3">
+                        <div class="col-sm-7 col-xsm-6">
+                            <div class="about-img-overlay position-relative h-100">
+                                <div class="about-card-content flex-align position-absolute">
+                                    <div class="overlay-card">
+                                        <h3 class="overlay-card__title">
+                                            100
+                                        </h3>
+                                        <p class="overlay-card__desc">
+                                            Satisfied Clients
+                                        </p>
                                     </div>
+                                    <div class="overlay-card">
+                                        <h3 class="overlay-card__title">
+                                            50
+                                        </h3>
+                                        <p class="overlay-card__desc">
+                                            Delivery Man
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="section-thumb h-100">
+                                    <img src="Home/gdr_img.jpg" alt="about image">
                                 </div>
                             </div>
                         </div>
-                    @endif
-                @endforeach
+                        <div class="col-sm-5 col-xsm-6">
+                            <div class="about-img-overlay-alt h-100">
+                                <div class="about-card-content">
+                                    <div class="overlay-card w-100">
+                                        <h3 class="overlay-card__title d-inline">
+                                            30+
+                                        </h3>
+                                        <p class="overlay-card__desc d-inline">
+                                            Years Experiences in Courier Service
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="section-thumb h-100">
+                                    <img src="Home/GDRbox.png" alt="about image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-lg-4">
+                    <div class="section-heading style-left" style="text-align:justify">
+                        <h3 class="section-heading__title">30+ Years Experiences in Courier Service</h3>
+                        <p class="section-heading__desc">
+                            GDR LOGISTICS INC. was founded through the collaborative efforts, experiences, and expertise
+                            of its owners: Mr. Gilbert Cporcuera of GPC Express, Mr. Dennis Jamir of DNJ Trucking, and
+                            Mr. Roberto Jamir Jr. of TR3 Logistics.
+                        </p>
+                        <p class="section-heading__desc">
+                            Our company is dedicated to providing timely, secure, and dependable distribution services
+                            to any location in the Philippines. We are committed to building strong relationships with
+                            our clients to ensure they receive reliable service.
+                        </p>
+                    </div>
+                    <ul class="about-services" style="text-align:justify">
+                        <li class="about-services__item">
+                            <div class="about-services__thumb">
+                                <span class="icon">
+                                    <i class="fas fa-eye"></i> </span>
+                            </div>
+                            <div class="about-services__content">
+                                <h6 class="about-services__title">
+                                    Our Vision
+                                </h6>
+                                <p class="about-services__desc">
+                                    GDR Logistics Inc. vision itself as top option in the logistics industry setting
+                                    standards of low cost logistic solution while prodiving excellent service.
+                                </p>
+                            </div>
+                        </li>
+                        <li class="about-services__item">
+                            <div class="about-services__thumb">
+                                <span class="icon">
+                                    <i class="fas fa-bullseye"></i> </span>
+                            </div>
+                            <div class="about-services__content">
+                                <h6 class="about-services__title">
+                                    Our Mission
+                                </h6>
+                                <p class="about-services__desc">
+                                    GDR Logistics Inc. aims to provide worry-free, personalized and professional
+                                    services to our clients. We aim to provide our client with efficient, reliable and
+                                    innovative solutions that will contribute to the success of their busienss.
+                                </p>
+                            </div>
+                        </li>
 
-
-                <!-- Team Member 2 -->
-
-
-                <!-- Repeat similar structure for other team members -->
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
-    <section class="feature-section py-60">
+
+     <section class="feature-section py-60">
         <div class="container">
             <div class="row gx-0 gy-5">
                 <div class="col-sm-4">
@@ -381,121 +438,44 @@ aria-expanded="false" aria-label="Toggle navigation">
             </div>
         </div>
     </section>
-    <section class="about-section py-60">
+    <section class="team-section py-4 pt-4">
         <div class="container">
-            <div class="row gx-4 gy-4">
-                <div class="col-lg-7">
-                    <div class="row gy-3">
-                        <div class="col-sm-7 col-xsm-6">
-                            <div class="about-img-overlay position-relative h-100">
-                                <div class="about-card-content flex-align position-absolute">
-                                    <div class="overlay-card">
-                                        <h3 class="overlay-card__title">
-                                            100
-                                        </h3>
-                                        <p class="overlay-card__desc">
-                                            Satisfied Clients
-                                        </p>
-                                    </div>
-                                    <div class="overlay-card">
-                                        <h3 class="overlay-card__title">
-                                            50
-                                        </h3>
-                                        <p class="overlay-card__desc">
-                                            Delivery Man
-                                        </p>
-                                    </div>
+            <div class="row gy-5">
+                <!-- Team Member 1 -->
+                @foreach ($employees as $employee)
+                    @if ($employee->status === 'Active')
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                            <div class="wave-card">
+                                <div class="wave-overlay"></div>
+                                <div class="team-card__thumb">
+                                    <img src="{{ asset($employee->profile_image) }}" alt="team member">
                                 </div>
-                                <div class="section-thumb h-100">
-                                    <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/about/6652bdd4420ea1716698580.jpg"
-                                        alt="about image">
+                                <div class="team-card__content">
+                                    <h6 class="team-card__title">{{ $employee->name }}</h6>
+                                    <p class="team-card__designation">{{ $employee->position }}</p>
+                                    <div class="team-card__footer">
+                                        <p class="work-success">ID NUMBER :</p>
+                                        <span class="work-count">
+                                            <span class="icon"><i class="fas fa-id-card"></i></span>
+                                            {{ $employee->id_number }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-5 col-xsm-6">
-                            <div class="about-img-overlay-alt h-100">
-                                <div class="about-card-content">
-                                    <div class="overlay-card w-100">
-                                        <h3 class="overlay-card__title d-inline">
-                                            30+
-                                        </h3>
-                                        <p class="overlay-card__desc d-inline">
-                                            Years Experiences in Courier Service
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="section-thumb h-100">
-                                    <img src="https://script.viserlab.com/courierlab/demo/assets/images/frontend/about/6652bdd53f83f1716698581.png"
-                                        alt="about image">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="section-heading style-left">
-                        <h3 class="section-heading__title">30+ Years Experiences in Courier Service</h3>
-                        <p class="section-heading__desc">
-                            With over three decades in the courier industry, we have perfected our services to ensure
-                            fast, reliable, and secure deliveries. Our experienced team is dedicated to providing
-                            top-notch service, meeting all your delivery needs with professionalism and care.
-                        </p>
-                    </div>
-                    <ul class="about-services">
-                        <li class="about-services__item">
-                            <div class="about-services__thumb">
-                                <span class="icon">
-                                    <i class="fas fa-shipping-fast"></i>
-                                </span>
-                            </div>
-                            <div class="about-services__content">
-                                <h6 class="about-services__title">
-                                    Fast Delivery
-                                </h6>
-                                <p class="about-services__desc">
-                                    Experience swift and timely deliveries with our top-tier logistics solutions. We
-                                    ensure your parcels reach their destination quickly and efficiently.
-                                </p>
-                            </div>
-                        </li>
-                        <li class="about-services__item">
-                            <div class="about-services__thumb">
-                                <span class="icon">
-                                    <i class="fas fa-dollar-sign"></i>
-                                </span>
-                            </div>
-                            <div class="about-services__content">
-                                <h6 class="about-services__title">
-                                    Lowest Cost
-                                </h6>
-                                <p class="about-services__desc">
-                                    Enjoy the most competitive prices in the market without compromising on service
-                                    quality. We offer cost-effective solutions for all your courier needs.
-                                </p>
-                            </div>
-                        </li>
-                        <li class="about-services__item">
-                            <div class="about-services__thumb">
-                                <span class="icon">
-                                    <i class="fas fa-lock"></i>
-                                </span>
-                            </div>
-                            <div class="about-services__content">
-                                <h6 class="about-services__title">
-                                    Secured Services
-                                </h6>
-                                <p class="about-services__desc">
-                                    Your security is our priority. Our advanced security protocols ensure your parcels
-                                    are protected throughout the delivery process, providing you peace of mind.
-                                </p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+                    @endif
+                @endforeach
+
+
+                <!-- Team Member 2 -->
+
+
+                <!-- Repeat similar structure for other team members -->
             </div>
         </div>
     </section>
-
+   
+    
     <section class="service-section py-60 section-bg">
         <div class="container">
             <div class="row">

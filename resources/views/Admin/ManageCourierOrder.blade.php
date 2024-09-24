@@ -8,12 +8,15 @@
 
 <style>
     @media print {
-        .modal-header, .modal-footer, .btn-close, button {
+
+        .modal-header,
+        .modal-footer,
+        .btn-close,
+        button {
             display: none !important;
         }
     }
-</style>
-<style>
+
     .logo-container {
         position: relative;
         display: inline-block;
@@ -152,275 +155,286 @@
     @include('Components.Admin.Navbar')
     @include('Components.Admin.Driver_Sidebar')
 
-    <div class="body-wrapper">
-        <div class="bodywrapper__inner">
+    <div class="container-fluid px-3 px-sm-0">
+        <div class="body-wrapper">
+            <div class="bodywrapper__inner">
 
-            <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
-                <h6 class="page-title p-2">Order Information</h6>
-                <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class='bx bx-export'></i> Export
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <button type="button" id="copyBtn" class="btn dropdown-item">
-                                    <i class='bx bx-copy'></i> Copy
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="printBtn" class="btn dropdown-item">
-                                    <i class='bx bx-printer'></i> Print
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="pdfBtn" class="btn dropdown-item">
-                                    <i class='bx bxs-file-pdf'></i> PDF
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" id="excelBtn" class="btn dropdown-item">
-                                    <i class='bx bx-file'></i> Excel
-                                </button>
-                            </li>
-                        </ul>
+                <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">
+                    <h6 class="page-title p-2">Order Information</h6>
+                    <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class='bx bx-export'></i> Export
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <button type="button" id="copyBtn" class="btn dropdown-item">
+                                        <i class='bx bx-copy'></i> Copy
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="printBtn" class="btn dropdown-item">
+                                        <i class='bx bx-printer'></i> Print
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="pdfBtn" class="btn dropdown-item">
+                                        <i class='bx bxs-file-pdf'></i> PDF
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" id="excelBtn" class="btn dropdown-item">
+                                        <i class='bx bx-file'></i> Excel
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
 
 
-            <div class="card">
-                <div class="card-body p-0">
-                    <div class="table-responsive--sm table-responsive">
-                        <table id="data-table" class="table table--light style--two">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Pick Up Date</th>
-                                    <th>Tracking Number</th>
-                                    <th>Truck Plate Number</th>
-                                    <th>Destination</th>
-                                    <th>Status</th>
-                                    <th>Remarks</th>
-                                    <th>Proof of Delivery</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($bookings as $detail)
-                                    <tr class="clickable-row" data-bs-target="#orderModal{{ $detail->id }}">
-                                        <td>{{ \Carbon\Carbon::parse($detail->date)->format('F d, Y g:i A') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($detail->date_of_pick_up)->format('F d, Y g:i A') }}
-                                        </td>
-                                        <td>{{ $detail->tracking_number }}</td>
-                                        <td>{{ $detail->plate_number }}</td>
-                                        <td>{{ $detail->consignee_address }}</td>
-                                        <td>{{ $detail->status }}</td>
-                                        <td>{{ $detail->remarks }}</td>
-                                        <td>
-                                            @if ($detail->proof_of_delivery)
-                                                <a href="{{ asset($detail->proof_of_delivery) }}" target="_blank">View
-                                                    Proof</a>
-                                            @else
-                                                No proof uploaded
-                                            @endif
-                                        </td>
-                                        <td class="action-btn">
-                                            <!-- Dropdown for Actions -->
-                                            <div class="dropdown">
-                                                <button class="btn btn-primary dropdown-toggle" type="button"
-                                                    id="actionsDropdown{{ $detail->id }}" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                    Actions
-                                                </button>
-                                                <ul class="dropdown-menu"
-                                                    aria-labelledby="actionsDropdown{{ $detail->id }}">
-                                                    <!-- Show Travel Guide -->
-                                                    <li>
-                                                        <button class="dropdown-item" type="button"
-                                                            data-bs-toggle="modal" data-bs-target="#routeModal"
-                                                            data-merchant-address="{{ $detail->merchant_address }}"
-                                                            data-consignee-address="{{ $detail->consignee_address }}"
-                                                            data-id="{{ $detail->id }}">
-                                                            Show Travel Guide for Booking #{{ $detail->id }}
-                                                        </button>
-                                                    </li>
-                                                    <!-- Update Status -->
-                                                    <li>
-                                                        <button class="dropdown-item" type="button"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#updateStatusModal{{ $detail->id }}">
-                                                            Update Status
-                                                        </button>
-                                                    </li>
-                                                    <!-- Update Location -->
-                                                    <li>
-                                                        <button class="dropdown-item" type="button"
-                                                            data-id="{{ $detail->id }}" data-bs-toggle="modal"
-                                                            data-bs-target="#updateLocationModal">
-                                                            Update Your Location
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div class="table-responsive--sm table-responsive">
+                            <table id="data-table" class="table table--light style--two">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Pick Up Date</th>
+                                        <th>Tracking Number</th>
+                                        <th>Truck Plate Number</th>
+                                        <th>Destination</th>
+                                        <th>Status</th>
+                                        <th>Remarks</th>
+                                        <th>Proof of Delivery</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($bookings as $detail)
+                                        <tr class="clickable-row" data-bs-target="#orderModal{{ $detail->id }}">
+                                            <td>{{ \Carbon\Carbon::parse($detail->date)->format('F d, Y g:i A') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($detail->date_of_pick_up)->format('F d, Y g:i A') }}
+                                            </td>
+                                            <td>{{ $detail->tracking_number }}</td>
+                                            <td>{{ $detail->plate_number }}</td>
+                                            <td>{{ $detail->consignee_address }}</td>
+                                            <td>{{ $detail->status }}</td>
+                                            <td>{{ $detail->remarks }}</td>
+                                            <td>
+                                                @if ($detail->proof_of_delivery)
+                                                    <a href="{{ asset($detail->proof_of_delivery) }}"
+                                                        target="_blank">View
+                                                        Proof</a>
+                                                @else
+                                                    No proof uploaded
+                                                @endif
+                                            </td>
+                                            <td class="action-btn">
+                                                <!-- Dropdown for Actions -->
+                                                <div class="dropdown">
+                                                    <button class="btn btn-primary dropdown-toggle" type="button"
+                                                        id="actionsDropdown{{ $detail->id }}"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        Actions
+                                                    </button>
+                                                    <ul class="dropdown-menu"
+                                                        aria-labelledby="actionsDropdown{{ $detail->id }}">
+                                                        <!-- Show Travel Guide -->
+                                                        <li>
+                                                            <button class="dropdown-item" type="button"
+                                                                data-bs-toggle="modal" data-bs-target="#routeModal"
+                                                                data-merchant-address="{{ $detail->merchant_address }}"
+                                                                data-consignee-address="{{ $detail->consignee_address }}"
+                                                                data-id="{{ $detail->id }}">
+                                                                Show Travel Guide for Booking #{{ $detail->id }}
+                                                            </button>
+                                                        </li>
+                                                        <!-- Update Status -->
+                                                        <li>
+                                                            <button class="dropdown-item" type="button"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#updateStatusModal{{ $detail->id }}">
+                                                                Update Status
+                                                            </button>
+                                                        </li>
+                                                        <!-- Update Location -->
+                                                        <li>
+                                                            <button class="dropdown-item" type="button"
+                                                                data-id="{{ $detail->id }}" data-bs-toggle="modal"
+                                                                data-bs-target="#updateLocationModal">
+                                                                Update Your Location
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </div>
 
-                                            <!-- Status Update Modal -->
-                                            <div class="modal fade" id="updateStatusModal{{ $detail->id }}"
-                                                tabindex="-1"
-                                                aria-labelledby="updateStatusModalLabel{{ $detail->id }}"
-                                                aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title"
-                                                                id="updateStatusModalLabel{{ $detail->id }}">
-                                                                Update Order Status
-                                                            </h5>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <!-- Update Status Form -->
-                                                            <form class="status-form"
-                                                                action="{{ route('update.order.status', $detail->id) }}"
-                                                                method="POST" enctype="multipart/form-data">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <input type="hidden" name="update_type" value="status">
-                                                                <div class="mb-3">
-                                                                    <label for="order_status" class="form-label">Order
-                                                                        Status</label>
-                                                                    <select name="status"
-                                                                        class="order_status form-select" required>
-                                                                        <option value="Pod_returned">Pod returned
-                                                                        </option>
-                                                                        <option value="Delivery_successful">Delivery
-                                                                            successful</option>
-                                                                        <option value="For_Pick-up">For Pick-up</option>
-                                                                        <option value="First_delivery_attempt">First
-                                                                            Delivery Attempt</option>
-                                                                        <option value="In_Transit">In Transit</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="mb-3 date_of_pick_up_container"
-                                                                    style="display: none;">
-                                                                    <label for="date_of_pick_up"
-                                                                        class="form-label">Date
-                                                                        of Pick-up</label>
-                                                                    <input type="datetime-local"
-                                                                        name="date_of_pick_up" class="form-control">
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="remarks" class="form-label">Add
-                                                                        Remarks</label>
-                                                                    <input type="text" name="remarks"
-                                                                        class="form-control"
-                                                                        placeholder="Add remarks here">
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="proof_of_delivery"
-                                                                        class="form-label">Upload Proof of
-                                                                        Delivery</label>
-                                                                    <input type="file" name="proof_of_delivery"
-                                                                        class="form-control">
-                                                                </div>
-                                                                <button type="submit"
-                                                                    class="btn btn-primary">Submit</button>
-                                                            </form>
+                                                <!-- Status Update Modal -->
+                                                <div class="modal fade" id="updateStatusModal{{ $detail->id }}"
+                                                    tabindex="-1"
+                                                    aria-labelledby="updateStatusModalLabel{{ $detail->id }}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"
+                                                                    id="updateStatusModalLabel{{ $detail->id }}">
+                                                                    Update Order Status
+                                                                </h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <!-- Update Status Form -->
+                                                                <form class="status-form"
+                                                                    action="{{ route('update.order.status', $detail->id) }}"
+                                                                    method="POST" enctype="multipart/form-data">
+                                                                    @csrf
+                                                                    @method('PATCH')
+                                                                    <input type="hidden" name="update_type"
+                                                                        value="status">
+                                                                    <div class="mb-3">
+                                                                        <label for="order_status"
+                                                                            class="form-label">Order
+                                                                            Status</label>
+                                                                        <select name="status"
+                                                                            class="order_status form-select" required>
+                                                                            <option value="Pod_returned">Pod returned
+                                                                            </option>
+                                                                            <option value="Delivery_successful">Delivery
+                                                                                successful</option>
+                                                                            <option value="For_Pick-up">For Pick-up
+                                                                            </option>
+                                                                            <option value="First_delivery_attempt">First
+                                                                                Delivery Attempt</option>
+                                                                            <option value="In_Transit">In Transit
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="mb-3 date_of_pick_up_container"
+                                                                        style="display: none;">
+                                                                        <label for="date_of_pick_up"
+                                                                            class="form-label">Date
+                                                                            of Pick-up</label>
+                                                                        <input type="datetime-local"
+                                                                            name="date_of_pick_up"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label for="remarks" class="form-label">Add
+                                                                            Remarks</label>
+                                                                        <input type="text" name="remarks"
+                                                                            class="form-control"
+                                                                            placeholder="Add remarks here">
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label for="proof_of_delivery"
+                                                                            class="form-label">Upload Proof of
+                                                                            Delivery</label>
+                                                                        <input type="file" name="proof_of_delivery"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary">Submit</button>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="9">No bookings found.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="9">No bookings found.</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="modal fade" id="updateLocationModal" tabindex="-1"
-                aria-labelledby="updateLocationModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="updateLocationModalLabel">Update Location</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                <div class="modal fade" id="updateLocationModal" tabindex="-1"
+                    aria-labelledby="updateLocationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateLocationModalLabel">Update Location</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="updateLocationForm" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <div class="mb-3">
+                                        <label for="location" class="form-label">New Location</label>
+                                        <input type="text" class="form-control" id="location" name="location"
+                                            required>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Update Location</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                            <form id="updateLocationForm" method="POST">
-                                @csrf
-                                @method('PATCH')
-                                <div class="mb-3">
-                                    <label for="location" class="form-label">New Location</label>
-                                    <input type="text" class="form-control" id="location" name="location"
-                                        required>
+                    </div>
+                </div>
+
+                @foreach ($bookings as $detail)
+                    <!-- Modal for Booking Details -->
+                    <div class="modal fade" id="orderModal{{ $detail->id }}" tabindex="-1"
+                        aria-labelledby="orderModalLabel{{ $detail->id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content" id="printContent{{ $detail->id }}">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="orderModalLabel{{ $detail->id }}">Booking Details
+                                        for
+                                        Tracking #{{ $detail->tracking_number }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><strong>Date:</strong>
+                                        {{ \Carbon\Carbon::parse($detail->date)->format('F d, Y g:i A') }}</p>
+                                    <p><strong>Pick Up Date:</strong>
+                                        {{ \Carbon\Carbon::parse($detail->date_of_pick_up)->format('F d, Y g:i A') }}
+                                    </p>
+                                    <p><strong>Tracking Number:</strong> {{ $detail->tracking_number }}</p>
+                                    <p><strong>Truck Plate Number:</strong> {{ $detail->plate_number }}</p>
+                                    <p><strong>Destination:</strong> {{ $detail->consignee_address }}</p>
+                                    <p><strong>Status:</strong> {{ $detail->status }}</p>
+                                    <p><strong>Remarks:</strong> {{ $detail->remarks }}</p>
+                                    <p><strong>Proof of Delivery:</strong>
+                                        @if ($detail->proof_of_delivery)
+                                            <a href="{{ asset($detail->proof_of_delivery) }}" target="_blank">View
+                                                Proof</a>
+                                        @else
+                                            No proof uploaded
+                                        @endif
+                                    </p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Update Location</button>
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary"
+                                        onclick="printModal({{ $detail->id }})">Print</button>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endforeach
+
+                <!-- CSS to hide elements during print -->
+
+
+
+
+
             </div>
-
-            @foreach ($bookings as $detail)
-            <!-- Modal for Booking Details -->
-            <div class="modal fade" id="orderModal{{ $detail->id }}" tabindex="-1"
-                aria-labelledby="orderModalLabel{{ $detail->id }}" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content" id="printContent{{ $detail->id }}">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="orderModalLabel{{ $detail->id }}">Booking Details for
-                                Tracking #{{ $detail->tracking_number }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p><strong>Date:</strong>
-                                {{ \Carbon\Carbon::parse($detail->date)->format('F d, Y g:i A') }}</p>
-                            <p><strong>Pick Up Date:</strong>
-                                {{ \Carbon\Carbon::parse($detail->date_of_pick_up)->format('F d, Y g:i A') }}</p>
-                            <p><strong>Tracking Number:</strong> {{ $detail->tracking_number }}</p>
-                            <p><strong>Truck Plate Number:</strong> {{ $detail->plate_number }}</p>
-                            <p><strong>Destination:</strong> {{ $detail->consignee_address }}</p>
-                            <p><strong>Status:</strong> {{ $detail->status }}</p>
-                            <p><strong>Remarks:</strong> {{ $detail->remarks }}</p>
-                            <p><strong>Proof of Delivery:</strong>
-                                @if ($detail->proof_of_delivery)
-                                    <a href="{{ asset($detail->proof_of_delivery) }}" target="_blank">View
-                                        Proof</a>
-                                @else
-                                    No proof uploaded
-                                @endif
-                            </p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary"
-                                data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="printModal({{ $detail->id }})">Print</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-
-        <!-- CSS to hide elements during print -->
-
-
-
-
-
         </div>
     </div>
     <script>
@@ -513,6 +527,8 @@
 
     <!-- FileSaver.js for CSV export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://script.viserlab.com/courierlab/demo/assets/viseradmin/js/app.js?v=3"></script>
+
 
 
     <script>

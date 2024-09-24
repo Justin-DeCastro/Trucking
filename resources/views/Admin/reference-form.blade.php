@@ -110,22 +110,13 @@
         <div class="container-fluid px-3 px-sm-0">
             <div class="body-wrapper">
                 <div class="bodywrapper__inner">
-                    <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                        <header class="card-header">
-                            <h1 class="page-title"><strong></strong></h1>
-                        </header>
-
-                        <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                        </div>
-                    </div>
-
-                    <section style="padding: 60px 0;">
+                    <section>
                         <div
                             style="max-width: 900px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
                             <div style="text-align: center; margin-bottom: 40px;">
                                 <div style="text-align: right;">
                                     <button type="button" onclick="downloadForm()" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                                        Download Form
+                                       <i class="fa fa-download"> </i>
                                     </button>
                                 </div>
                                 <!-- Logo -->

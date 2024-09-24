@@ -18,6 +18,7 @@
     @include('Components.Admin.Sidebar')
     <!-- sidebar end -->
 
+    <div class="container-fluid px-3 px-sm-0">
     <div class="body-wrapper">
         <div class="bodywrapper__inner">
             <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center pb-3">

@@ -173,23 +173,16 @@
         <div class="container-fluid px-3 px-sm-0">
             <div class="body-wrapper">
                 <div class="bodywrapper__inner">
-                    <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                        <header class="card-header">
-                            <h1 class="page-title"><strong></strong></h1>
-                        </header>
-
-                        <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                        </div>
-                    </div>
+                   
 
                     <section>
                        <div id="formContainer"
                             style="max-width: 800px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
                             <div style="text-align: center; margin-bottom: 40px;">
 
-                               <div style="text-align: right; margin-top: 20px;">
+                               <div style="text-align: right;">
                                     <button id="downloadBtn" style="padding: 12px 24px; background-color: #28a745; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background-color 0.3s ease;">
-                                        Download Form as PDF
+                                       <i class="fa fa-download"> </i>
                                     </button>
                                 </div>
                                 <!-- Logo -->

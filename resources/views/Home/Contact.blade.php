@@ -84,8 +84,7 @@
 
 
 
-    <section class="breadcrumb bg-img mb-0"
-       data-background-image="Home/gdr_header.png">
+    <section class="breadcrumb bg-img mb-0" data-background-image="Home/gdr_header.png">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
@@ -104,7 +103,7 @@
                     <div class="section-heading style-left">
                         <h4 class="section-heading__title">Contact</h4>
                         <p class="section-heading__desc">
-                             Roberto S. Jamir Jr., VP Finance
+                            Roberto S. Jamir Jr., VP Finance
                             <br><br>
                             Phone: +639 270 454 343<br>
                             Mobile: +639 193 455 535<br>
@@ -115,12 +114,17 @@
                         </p>
                     </div>
                     <div class="maps-section">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3867.1768141833113!2d121.11556227359348!3d14.24290568573695!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd628c69e9a851%3A0xef819023d0c64888!2sTotal%20(Pulo%2C%20Cabuyao)!5e0!3m2!1sen!2sph!4v1724740237115!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                            style="border:0;" width="100%" allowfullscreen="" loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <div class="ratio ratio-16x9">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3867.1768141833113!2d121.11556227359348!3d14.24290568573695!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd628c69e9a851%3A0xef819023d0c64888!2sTotal%20(Pulo%2C%20Cabuyao)!5e0!3m2!1sen!2sph!4v1724740237115!5m2!1sen!2sph"
+                                style="border:0;" allowfullscreen="" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
                     </div>
+
                 </div>
+
                 <div class="col-lg-5">
                     <div class="section-heading style-left">
                         <h4 class="section-heading__title">Get In Touch</h4>
@@ -134,29 +138,28 @@
                         <div class="row">
                             <div class="col-sm-12 form-group">
                                 <div class="input--group">
-                                    <input class="form-control form--control" name="name" type="text" value=""
-                                        placeholder="">
+                                    <input class="form-control form--control" name="name" type="text"
+                                        value="" placeholder="">
                                     <label class="form--label">Your Name</label>
                                 </div>
                             </div>
                             <div class="col-sm-12 form-group">
                                 <div class="input--group">
-                                    <input class="form-control form--control" name="email" type="email" value=""
-                                        placeholder="">
+                                    <input class="form-control form--control" name="email" type="email"
+                                        value="" placeholder="">
                                     <label class="form--label">Enter Email Address</label>
                                 </div>
                             </div>
                             <div class="col-sm-12 form-group">
                                 <div class="input--group">
-                                    <input class="form-control form--control" name="subject" type="text" value=""
-                                        placeholder="">
+                                    <input class="form-control form--control" name="subject" type="text"
+                                        value="" placeholder="">
                                     <label class="form--label">Enter Your Subject</label>
                                 </div>
                             </div>
                             <div class="col-sm-12 form-group">
                                 <div class="input--group">
-                                    <textarea class="form-control form--control" name="message" wrap="off"
-                                        placeholder=""></textarea>
+                                    <textarea class="form-control form--control" name="message" wrap="off" placeholder=""></textarea>
                                     <label class="form--label textarea-label" for="your-message">Enter Your
                                         Message</label>
                                 </div>
@@ -169,23 +172,23 @@
                                     </button>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
+        </div>
     </section>
 
-    @if(session('success'))
-    <script>
-        Swal.fire({
-            imageUrl: "Home/GDR.jpg",
-            imageHeight: 100,
-            imageAlt: "A tall image",
-            title: 'Success!',
-            text: '{{ session('success') }}'
-        });
-    </script>
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                imageUrl: "Home/GDR.jpg",
+                imageHeight: 100,
+                imageAlt: "A tall image",
+                title: 'Success!',
+                text: '{{ session('success') }}'
+            });
+        </script>
     @endif
 
 
